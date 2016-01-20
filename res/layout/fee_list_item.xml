@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <CheckBox
+        android:id="@+id/selecter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rb_btn_selector_orange_to_white"
+        android:button="@null"
+        android:checked="false"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="舞蹈"
+        android:textColor="@drawable/text_style_grey_to_white"
+        android:textSize="@dimen/text_s12" />
+
+</LinearLayout>

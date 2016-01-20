@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F3F3"
+    android:orientation="vertical" >
+
+    <com.util.weight.CustomTopBarNew
+        android:id="@+id/id_search_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:background="#FFFFFF"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_marginLeft="16dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_chat_search" />
+
+        <EditText
+            android:id="@+id/id_search_contacts_edit"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_contacts_hint"
+            style="@style/Theme_EditText"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/ic_search_contacts_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:enabled="false"
+            android:background="@drawable/btn_search_back"
+            android:text="@string/search_contacts_cancel" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/id_search_contacts_list"
+        style="@style/widget_listview"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </ListView>
+
+    <ViewStub
+        android:id="@+id/id_search_contacts_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/layout_search_contacts_empty" />
+
+</LinearLayout>

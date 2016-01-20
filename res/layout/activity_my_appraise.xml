@@ -1,0 +1,155 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_input_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/light_grey_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/title_view"
+        layout="@layout/main_title_view"
+        android:visibility="visible" />
+
+    <RadioGroup
+        android:id="@+id/rg_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_recive"
+            android:layout_weight="1"
+            android:background="@drawable/rb_selector_bg"
+            android:button="@null"
+            android:checked="true"
+            android:ems="5"
+            android:gravity="center"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:singleLine="true"
+            android:text="收到的评价"
+            android:textColor="@drawable/text_style_grey_to_red"
+            android:textSize="@dimen/text_s16" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/min_grey" />
+
+        <RadioButton
+            android:id="@+id/rb_appraise_others"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rb_selector_bg"
+            android:button="@null"
+            android:ems="5"
+            android:gravity="center"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:singleLine="true"
+            android:text="对别人的评价"
+            android:textColor="@drawable/text_style_grey_to_red"
+            android:textSize="@dimen/text_s16" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rg_appraise_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_all"
+            android:layout_weight="1"
+            android:background="@drawable/btn_radio_selector_left1"
+            android:button="@null"
+            android:checked="true"
+            android:ems="5"
+            android:gravity="center"
+            android:paddingBottom="7dip"
+            android:paddingTop="7dip"
+            android:singleLine="true"
+            android:text="全部"
+            android:textColor="@drawable/text_style_grey_to_white"
+            android:textSize="@dimen/text_s14" />
+
+        <RadioButton
+            android:id="@+id/rb_good"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_radio_selector_center1"
+            android:button="@null"
+            android:ems="5"
+            android:gravity="center"
+            android:paddingBottom="7dip"
+            android:paddingTop="7dip"
+            android:singleLine="true"
+            android:text="好评"
+            android:textColor="@drawable/text_style_grey_to_white"
+            android:textSize="@dimen/text_s14" />
+
+        <RadioButton
+            android:id="@+id/rb_mid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_radio_selector_center1"
+            android:button="@null"
+            android:ems="5"
+            android:gravity="center"
+            android:paddingBottom="7dip"
+            android:paddingTop="7dip"
+            android:singleLine="true"
+            android:text="中评"
+            android:textColor="@drawable/text_style_grey_to_white"
+            android:textSize="@dimen/text_s14" />
+
+        <RadioButton
+            android:id="@+id/rb_worst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_radio_selector_right1"
+            android:button="@null"
+            android:ems="5"
+            android:gravity="center"
+            android:paddingBottom="7dip"
+            android:paddingTop="7dip"
+            android:singleLine="true"
+            android:text="差评"
+            android:textColor="@drawable/text_style_grey_to_white"
+            android:textSize="@dimen/text_s14" />
+    </RadioGroup>
+
+    <com.util.weight.PullToRefreshView
+        android:id="@+id/pullToRefreshView"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/lv_notice"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="2dip"
+            android:cacheColorHint="#00000000"
+            android:divider="@color/grey"
+            android:dividerHeight="1dp"
+            android:fadingEdge="none"
+            android:focusableInTouchMode="true"
+            android:listSelector="@color/transparent"
+            android:scrollbars="none" >
+        </ListView>
+    </com.util.weight.PullToRefreshView>
+
+</LinearLayout>

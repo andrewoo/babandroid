@@ -1,0 +1,259 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/light_grey_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/view_title"
+        layout="@layout/main_title_view" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/min_grey" />
+
+                <RelativeLayout
+                    android:id="@+id/rel_sound_effect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0.5dp"
+                    android:background="@drawable/bg_white_to_grey"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="10dp" >
+
+                    <ImageView
+                        android:id="@+id/img_icon"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/setting_sound_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/img_icon"
+                        android:text="Sound Effect"
+                        android:textColor="@color/deep_grey"
+                        android:textSize="@dimen/text_s14" />
+
+                    <CheckBox
+                        android:id="@+id/ck_sound_effect"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right|center_vertical"
+                        android:background="@drawable/ck_selector_red2"
+                        android:button="@null"
+                        android:checked="true"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="5dip"
+                        android:paddingTop="5dip" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/min_grey" />
+
+                <RelativeLayout
+                    android:id="@+id/rel_character_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0.5dp"
+                    android:background="@drawable/bg_white_to_grey"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="10dp" >
+
+                    <ImageView
+                        android:id="@+id/img_icon"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/setting_char_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/img_icon"
+                        android:text="Character test"
+                        android:textColor="@color/deep_grey"
+                        android:textSize="@dimen/text_s14" />
+
+                    <CheckBox
+                        android:id="@+id/ck_character_test"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right|center_vertical"
+                        android:background="@drawable/ck_selector_red2"
+                        android:button="@null"
+                        android:checked="true"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="5dip"
+                        android:paddingTop="5dip" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/min_grey" />
+
+                <RelativeLayout
+                    android:id="@+id/rel_check_tone_when_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0.5dp"
+                    android:background="@drawable/bg_white_to_grey"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="10dp" >
+
+                    <ImageView
+                        android:id="@+id/img_icon"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/setting_tone_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/img_icon"
+                        android:text="Check TONE when test"
+                        android:textColor="@color/deep_grey"
+                        android:textSize="@dimen/text_s14" />
+
+                    <CheckBox
+                        android:id="@+id/ck_check_tone_when_test"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right|center_vertical"
+                        android:background="@drawable/ck_selector_red2"
+                        android:button="@null"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="5dip"
+                        android:paddingTop="5dip" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/min_grey" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/min_grey" />
+
+                <RelativeLayout
+                    android:id="@+id/rel_reminders"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_white_to_grey"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="10dp" >
+
+                    <ImageView
+                        android:id="@+id/img_icon"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/setting_reminder_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/img_icon"
+                        android:text="Reminders"
+                        android:textColor="@color/deep_grey"
+                        android:textSize="@dimen/text_s14" />
+
+                    <CheckBox
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="right|center_vertical"
+                        android:background="@drawable/ck_selector_red2"
+                        android:button="@null"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="5dip"
+                        android:paddingTop="5dip"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/arrow" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/min_grey" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/bg_white_to_grey"
+                android:gravity="center_vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="Logou out"
+                    android:textColor="@color/orange_2.1"
+                    android:textSize="@dimen/text_s14" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

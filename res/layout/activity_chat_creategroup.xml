@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_list_bac"
+    android:orientation="vertical" >
+
+    <com.util.weight.CustomTopBarNew
+        android:id="@+id/id_creategroup_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <GridView
+        android:id="@+id/id_group_contacts_list"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="#00000000"
+        android:fadingEdge="none"
+        android:focusableInTouchMode="true"
+	    android:horizontalSpacing="16dp"
+	    android:verticalSpacing="6dp"
+        android:numColumns="3"
+        android:verticalScrollbarPosition="right"
+        android:choiceMode="multipleChoice"
+        android:listSelector="@color/transparent" >
+    </GridView>
+
+</LinearLayout>

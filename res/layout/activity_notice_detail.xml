@@ -1,0 +1,718 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/light_grey_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/view_title"
+        layout="@layout/main_title_view" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dp"
+        android:layout_weight="1"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbarStyle="outsideOverlay" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                android:paddingLeft="@dimen/notice_detail_left_padding"
+                android:paddingRight="@dimen/notice_detail_right_padding"
+                android:paddingTop="@dimen/notice_detail_top_padding" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                    android:paddingTop="@dimen/notice_detail_top_padding" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="通告名称："
+                        android:visibility="gone"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_activity_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="广州七月车展活动广州七月车展活动广州七月车展活动"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                    android:paddingTop="@dimen/notice_detail_top_padding" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal" >
+                        
+						<ImageView
+				            android:layout_width="wrap_content"
+				            android:layout_height="20dip"
+				            android:adjustViewBounds="true"
+				            android:scaleType="centerInside"
+				            android:src="@drawable/img_ic_time_flag" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="5dip"
+                            android:ellipsize="end"
+                            android:maxEms="9"
+                            android:singleLine="true"
+                            android:text="发布时间："
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/text_s12" />
+
+                        <TextView
+                            android:id="@+id/tv_publish_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text="2015-07-08 10:50"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/text_s12" />
+                        
+                    </LinearLayout>
+                    
+                    <TextView
+                        android:id="@+id/tv_publish_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:background="@color/color_orange"
+                        android:padding="3dip"
+                        android:text="官方代发"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:orientation="horizontal"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/tv_activity_publisher"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxEms="9"
+                            android:singleLine="true"
+                            android:text="发布人：小张"
+                            android:textColor="@color/grey"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <com.util.weight.RoundImageView
+                            android:id="@+id/riv_publisher"
+                            android:layout_width="40dip"
+                            android:layout_height="40dip"
+                            android:layout_marginLeft="5dip"
+                            android:layout_marginRight="5dip"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_launcher" >
+                        </com.util.weight.RoundImageView>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+           	</LinearLayout>
+           	
+             <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:paddingLeft="@dimen/notice_detail_left_padding"
+                 android:paddingRight="@dimen/notice_detail_right_padding"
+                 android:paddingTop="@dimen/notice_detail_top_padding"
+                 android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                 android:layout_marginTop="5dip"
+                 android:background="@color/white"
+                 android:gravity="center_vertical"
+                 android:orientation="horizontal" >
+
+                 <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:gravity="center_vertical"
+                     android:orientation="horizontal" >
+
+                     <ImageView
+			            android:layout_width="wrap_content"
+		            	android:layout_height="25dip"
+			            android:adjustViewBounds="true"
+			            android:scaleType="centerInside"
+			            android:src="@drawable/img_notic_flag1" />
+                     
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:paddingLeft="5dip"
+                         android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                     	 android:paddingTop="@dimen/notice_detail_top_padding"
+                         android:text="活动时间"
+                         android:textColor="@color/black"
+                         android:textSize="14sp" />
+
+                     <TextView
+                         android:id="@+id/tv_activity_date"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="1"
+                         android:gravity="right|center_vertical"
+                         android:text="7月14号——7月16号"
+                         android:textColor="@color/black"
+                         android:textSize="14sp" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:gravity="center_vertical|right"
+                     android:visibility="gone"
+                     android:orientation="horizontal" >
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text=""
+                         android:textColor="@color/black"
+                         android:textSize="14sp" />
+
+                     <TextView
+                         android:id="@+id/tv_activity_time"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="10:00——12:00"
+                         android:textColor="@color/black"
+                         android:textSize="14sp" />
+                 </LinearLayout>
+            	</LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:gravity="center_vertical"
+                 android:orientation="horizontal"
+                 android:layout_marginTop="1dip"
+                 android:background="@color/white"
+                 android:paddingLeft="@dimen/notice_detail_left_padding"
+               	 android:paddingRight="@dimen/notice_detail_right_padding"
+                 android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                 android:paddingTop="@dimen/notice_detail_top_padding" >
+
+                 <ImageView
+		            android:layout_width="wrap_content"
+		            android:layout_height="25dip"
+		            android:adjustViewBounds="true"
+		            android:scaleType="centerInside"
+		            android:src="@drawable/img_notic_flag2" />
+                 
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:paddingLeft="5dip"
+                     android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                     android:paddingTop="@dimen/notice_detail_top_padding"
+                     android:text="活动地点"
+                     android:textColor="@color/black"
+                     android:textSize="14sp" />
+
+                 <TextView
+                     android:id="@+id/tv_activity_address"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:gravity="right|center_vertical"
+                     android:text="深圳市"
+                     android:textColor="@color/black"
+                     android:textSize="14sp" />
+             </LinearLayout>
+             
+            <LinearLayout
+                android:id="@+id/lv_zhaomu"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone" >
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/notice_detail_left_padding"
+                    android:paddingRight="@dimen/notice_detail_right_padding"
+                    android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                    android:paddingTop="@dimen/notice_detail_top_padding" >
+
+                    <ImageView
+			            android:layout_width="wrap_content"
+		            	android:layout_height="25dip"
+			            android:adjustViewBounds="true"
+			            android:scaleType="centerInside"
+			            android:src="@drawable/img_notic_flag3" />
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                        android:paddingTop="@dimen/notice_detail_top_padding"
+                        android:paddingLeft="5dip"
+                        android:text="备注"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                        android:paddingTop="@dimen/notice_detail_top_padding"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dip"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/notice_detail_left_padding"
+                    android:paddingRight="@dimen/notice_detail_right_padding" >
+
+                    <TextView
+                        android:id="@+id/tv_activity_mark"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                        android:paddingTop="@dimen/notice_detail_top_padding"
+                        android:text="面试时间7月11日，集合地点：琶洲会展中心A区，集合时间：每天早晨9：00，服装和化妆师由公司统一安排。"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp" />
+                    
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_addremarks"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dip"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:orientation="vertical" >
+                    
+                    <LinearLayout
+	                    android:layout_width="fill_parent"
+	                    android:layout_height="wrap_content"
+	                    android:background="@color/white"
+	                    android:gravity="center_vertical"
+	                    android:orientation="horizontal"
+	                    android:paddingLeft="@dimen/notice_detail_left_padding"
+	                    android:paddingRight="@dimen/notice_detail_right_padding"
+	                    android:paddingTop="@dimen/notice_detail_top_padding"
+	                    android:paddingBottom="@dimen/notice_detail_bottom_padding" >
+	
+	                    <ImageView
+				            android:layout_width="wrap_content"
+		            		android:layout_height="25dip"
+				            android:adjustViewBounds="true"
+				            android:scaleType="centerInside"
+				            android:src="@drawable/img_notic_flag4" />
+	                    
+	                    <TextView
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:paddingBottom="@dimen/notice_detail_bottom_padding"
+	                        android:paddingTop="@dimen/notice_detail_top_padding"
+	                        android:paddingLeft="5dip"
+	                        android:text="报名方式"
+	                        android:textColor="@color/black"
+	                        android:textSize="14sp" />
+	
+	                    <TextView
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:paddingBottom="@dimen/notice_detail_bottom_padding"
+	                        android:paddingTop="@dimen/notice_detail_top_padding"
+	                        android:text=""
+	                        android:textColor="@color/grey"
+	                        android:textSize="14sp" />
+	                </LinearLayout>
+                
+	                <LinearLayout
+	                    android:id="@+id/layout_contact"
+	                    android:layout_width="fill_parent"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginTop="1dip"
+	                    android:paddingLeft="@dimen/notice_detail_left_padding"
+                    	android:paddingRight="@dimen/notice_detail_right_padding"
+	                    android:background="@color/white"
+	                    android:gravity="center"
+	                    android:orientation="vertical" >
+	
+	                    <TextView
+	                        android:id="@+id/tv_look_contacts"
+	                        android:layout_width="match_parent"
+	                        android:layout_height="wrap_content"
+	                        android:layout_marginLeft="10dip"
+	                        android:layout_marginRight="10dip"
+	                        android:layout_marginTop="20dip"
+	                        android:layout_marginBottom="20dip"
+	                        android:paddingLeft="5dip"
+	                        android:paddingRight="5dip"
+	                        android:paddingTop="10dip"
+	                        android:paddingBottom="10dip"
+	                        android:background="@drawable/btn_selector_orange"
+	                        android:gravity="center"
+	                        android:minEms="5"
+	                        android:singleLine="true"
+	                        android:text="查看报名方式"
+	                        android:textColor="@color/white"
+	                        android:textSize="14sp" />
+	                    
+	                </LinearLayout>
+	                
+	                <LinearLayout
+	                    android:id="@+id/layout_contacts"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content"
+					    android:gravity="center_vertical"
+					    android:orientation="vertical"
+					    android:visibility="gone" >
+	                    
+	                </LinearLayout>
+                
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                    android:paddingLeft="@dimen/notice_detail_left_padding"
+                    android:paddingRight="@dimen/notice_detail_right_padding"
+                    android:paddingTop="@dimen/notice_detail_top_padding" >
+
+                    <ImageView
+			            android:layout_width="wrap_content"
+			            android:layout_height="20dip"
+			            android:adjustViewBounds="true"
+			            android:scaleType="centerInside"
+			            android:src="@drawable/img_notic_flag5" />
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                        android:paddingTop="@dimen/notice_detail_top_padding"
+                        android:paddingLeft="5dip"
+                        android:text="报名截止："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_s12" />
+
+                    <TextView
+                        android:id="@+id/tv_activity_enddate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/notice_detail_bottom_padding"
+                        android:paddingTop="@dimen/notice_detail_top_padding"
+                        android:text="2015-07-10 23:59"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_s13" />
+                    
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_btns_jia1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dip"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/tv_manager"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dip"
+                        android:background="@drawable/btn_selector_notice_red"
+                        android:gravity="center"
+                        android:minEms="5"
+                        android:padding="5dip"
+                        android:singleLine="true"
+                        android:text="管理通告"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_btns_jia2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dip"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/tv_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dip"
+                        android:background="@drawable/btn_selector_notice_red"
+                        android:gravity="center"
+                        android:minEms="5"
+                        android:padding="5dip"
+                        android:singleLine="true"
+                        android:text="删除"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_btns_yi1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dip"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/tv_cancle_signup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dip"
+                        android:background="@drawable/btn_selector_notice_red"
+                        android:gravity="center"
+                        android:minEms="5"
+                        android:padding="5dip"
+                        android:singleLine="true"
+                        android:text="取消报名"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_btns_yi2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dip"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/tv_refuse_inview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dip"
+                        android:background="@drawable/btn_selector_notice_red"
+                        android:gravity="center"
+                        android:minEms="5"
+                        android:padding="5dip"
+                        android:singleLine="true"
+                        android:text="拒绝面试"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_accept_inview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dip"
+                        android:background="@drawable/btn_selector_notice_red"
+                        android:gravity="center"
+                        android:minEms="5"
+                        android:padding="5dip"
+                        android:singleLine="true"
+                        android:text="同意面试"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_btns_yi3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dip"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/tv_judge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dip"
+                        android:background="@drawable/btn_selector_notice_red"
+                        android:gravity="center"
+                        android:minEms="5"
+                        android:padding="5dip"
+                        android:singleLine="true"
+                        android:text="评价"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_btns_normal1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dip"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/tv_send_msg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dip"
+                        android:background="@drawable/btn_selector_notice_red"
+                        android:gravity="center"
+                        android:minEms="5"
+                        android:padding="5dip"
+                        android:singleLine="true"
+                        android:text="发消息"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_collect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dip"
+                        android:background="@drawable/btn_selector_notice_red"
+                        android:gravity="center"
+                        android:minEms="5"
+                        android:padding="5dip"
+                        android:singleLine="true"
+                        android:text="收藏通告"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+    </ScrollView>
+    
+    <LinearLayout
+        android:id="@+id/layout_btns_new"
+        android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="1dip"
+		android:background="@color/light_grey_white"
+		android:visibility="gone"
+		android:gravity="center"
+		android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_delete_notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:background="@drawable/btn_selector_notice_red"
+            android:gravity="center"
+            android:minEms="5"
+            android:padding="5dip"
+            android:singleLine="true"
+            android:text="关闭报名"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+        
+        <TextView
+            android:id="@+id/tv_add_addremark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:background="@drawable/btn_selector_notice_red"
+            android:gravity="center"
+            android:minEms="5"
+            android:padding="5dip"
+            android:singleLine="true"
+            android:text="补充说明"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_dealy_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:background="@drawable/btn_selector_notice_red"
+            android:gravity="center"
+            android:minEms="5"
+            android:padding="5dip"
+            android:singleLine="true"
+            android:text="修改报名截止"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:visibility="gone"
+        android:background="@color/min_grey" />
+
+</LinearLayout>

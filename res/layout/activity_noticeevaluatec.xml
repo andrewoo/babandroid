@@ -1,0 +1,182 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contextView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/dark_white"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/view_title"
+        layout="@layout/main_title_view" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dip" >
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="通告名称："
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/text_notice_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="广州7月车展活动"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                    
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_darkgrey" />
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="10dip" >
+                    
+                    <com.util.weight.RoundImageView
+                        android:id="@+id/iv_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dip"
+                        android:padding="5dp"
+						android:src="@drawable/ic_launcher" />
+
+                    <TextView
+                        android:id="@+id/text_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:padding="5dp"
+                        android:text="经纪人小张"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                    
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_darkgrey" />
+
+                <LinearLayout
+                    android:id="@+id/layout_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:padding="5dip"
+                    android:orientation="vertical" >
+                    
+                    <RadioGroup
+			            android:id="@+id/rg_appraise_bar"
+			            android:layout_width="fill_parent"
+			            android:layout_height="wrap_content"
+			            android:gravity="center"
+			            android:orientation="horizontal" >
+			
+			            <RadioButton
+			                android:id="@+id/rb_good"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_marginRight="15dip"
+			                android:padding="5dip"
+			                android:button="@null"
+			                android:checked="true"
+			                android:drawableLeft="@drawable/ck_selector_red"
+			                android:gravity="center"
+			                android:text="好评"
+			                android:textColor="@color/black"
+			                android:textSize="15sp" />
+			
+			            <RadioButton
+			                android:id="@+id/rb_mid"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_marginRight="15dip"
+			                android:padding="5dip"
+			                android:button="@null"
+			                android:drawableLeft="@drawable/ck_selector_red"
+			                android:gravity="center"
+			                android:text="中评"
+			                android:textColor="@color/black"
+			                android:textSize="15sp" />
+			
+			            <RadioButton
+			                android:id="@+id/rb_worst"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_marginRight="15dip"
+			                android:padding="5dip"
+			                android:button="@null"
+			                android:drawableLeft="@drawable/ck_selector_red"
+			                android:gravity="center"
+			                android:text="差评"
+			                android:textColor="@color/black"
+			                android:textSize="15sp" />
+			        </RadioGroup>
+			
+				    <LinearLayout
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:layout_margin="5dip"
+				        android:orientation="vertical" >
+				
+				        <TextView
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:gravity="left|center_vertical"
+				            android:text="评价内容："
+				            android:textColor="@color/grey"
+				            android:textSize="14sp" />
+				
+				        <EditText
+				            android:id="@+id/et_eva_content"
+				            android:layout_width="match_parent"
+				            android:layout_height="wrap_content"
+				            android:background="@drawable/input_grey_n"
+				            android:gravity="top|left"
+				            android:hint="亲，写点什么吧，您的意见很重要"
+				            android:lines="3"
+				            android:padding="5dip"
+				            android:textColor="@color/black"
+				            android:textSize="14sp" />
+				    </LinearLayout>
+                    
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

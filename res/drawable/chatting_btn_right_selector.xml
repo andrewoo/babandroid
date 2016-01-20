@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/chat_btn_pressed" android:state_pressed="true"></item>
+    <item android:state_selected="true"><layer-list>
+            <item><shape>
+                    <solid android:color="@color/chat_btn_pressed" />
+
+                    <corners android:bottomRightRadius="5dp" />
+                </shape></item>
+            <item android:bottom="3dp"><shape>
+                    <solid android:color="#FFFFFF" />
+                </shape></item>
+        </layer-list></item>
+</selector>

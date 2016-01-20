@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey_white"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_pick_from_take"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white_to_grey"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="拍照"
+        android:textColor="@color/deep_grey"
+        android:textSize="@dimen/text_s16" />
+
+    <TextView
+        android:id="@+id/tv_pick_from_dicm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/bg_white_to_grey"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="从相册选取"
+        android:textColor="@color/deep_grey"
+        android:textSize="@dimen/text_s16" />
+
+    <TextView
+        android:id="@+id/tv_pick_from_self"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/bg_white_to_grey"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="从私人相册选取"
+        android:textColor="@color/deep_grey"
+        android:textSize="@dimen/text_s16"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_show_cancle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_white_to_grey"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="取消"
+        android:textColor="@color/deep_grey"
+        android:textSize="@dimen/text_s16" />
+
+</LinearLayout>

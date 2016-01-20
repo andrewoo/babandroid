@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/default_dialog_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_top_btn_bg"
+        android:clickable="false"
+        android:gravity="center"
+        android:paddingTop="5dip"
+        android:text="退出"
+        android:textColor="@color/orange_2.1"
+        android:textSize="@dimen/text_s16" />
+
+    <TextView
+        android:id="@+id/dialog_content"
+        style="@style/dialog_msg_alert_txt_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="false"
+        android:gravity="center"
+        android:paddingBottom="15dip"
+        android:paddingLeft="0dip"
+        android:paddingTop="10dip"
+        android:text="您确定要退出吗？"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/text_s14" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_grey_white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="0dip"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_bottom_left_btn"
+            android:text="取消"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_s14" />
+
+        <Button
+            android:id="@+id/commit_btn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_bottom_right_btn"
+            android:text="确定"
+            android:textColor="@color/orange_2.1"
+            android:textSize="@dimen/text_s14" />
+    </LinearLayout>
+
+</LinearLayout>

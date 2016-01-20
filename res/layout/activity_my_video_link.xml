@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/light_grey_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/view_title"
+        layout="@layout/main_title_view" />
+
+    <EditText
+        android:id="@+id/edit_video_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/input_selector_white"
+        android:gravity="top"
+        android:hint=""
+        android:minHeight="100dp"
+        android:paddingLeft="5dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_s14" />
+
+</LinearLayout>

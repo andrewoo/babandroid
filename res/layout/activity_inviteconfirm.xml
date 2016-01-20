@@ -1,0 +1,339 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/dark_white"
+ 	android:orientation="vertical">
+
+	<include
+        android:id="@+id/view_title"
+        layout="@layout/main_title_view" />
+	
+	<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	        
+	        <LinearLayout
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:background="@color/white"
+		        android:padding="5dip"
+		        android:orientation="vertical" >
+		        
+		        <LinearLayout
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:padding="5dip"
+			        android:orientation="vertical" >
+			        
+			        <TextView
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:gravity="center_vertical"
+			            android:textColor="@color/gray"
+			            android:textSize="15sp"
+			            android:text="确认对象：" />
+			        
+			    </LinearLayout>
+		        
+		        <com.util.weight.SelfGridView
+		            android:id="@+id/gridview_users"
+		            android:layout_width="wrap_content"
+		            android:layout_height="match_parent"
+		            android:gravity="center"
+		            android:horizontalSpacing="2dp"
+		            android:listSelector="@android:color/transparent"
+		            android:longClickable="true"
+		            android:maxHeight="700dp"
+		            android:numColumns="3"
+		            android:stretchMode="columnWidth"
+		            android:verticalSpacing="2dp" >
+		        </com.util.weight.SelfGridView>
+		        
+		        <View
+		            android:layout_width="match_parent"
+		            android:layout_height="1dp"
+		            android:background="@color/color_darkgrey" />
+		        
+		        <LinearLayout
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:padding="5dip"
+			        android:orientation="horizontal" >
+			        
+			        <TextView
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:gravity="center_vertical"
+			            android:textColor="@color/gray"
+			            android:textSize="15sp"
+			            android:text="应聘职位：" />
+			        
+			        <TextView
+			            android:id="@+id/tv_position"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:gravity="center_vertical"
+			            android:textColor="@color/gray"
+			            android:textSize="15sp"
+			            android:text="模特" />
+			        
+			    </LinearLayout>
+			    
+		        <LinearLayout
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:padding="5dip"
+			        android:orientation="vertical" >
+			        
+			        <LinearLayout
+				        android:layout_width="fill_parent"
+				        android:layout_height="wrap_content"
+				        android:orientation="horizontal" >
+				        
+				        <TextView
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:gravity="center_vertical"
+				            android:textColor="@color/gray"
+				            android:textSize="15sp"
+				            android:text="有效期：" />
+				        
+				        <TextView
+				            android:id="@+id/tv_ptime"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:gravity="center_vertical"
+				            android:textColor="@color/gray"
+				            android:textSize="15sp"
+				            android:text="2小时" />
+				        
+				    </LinearLayout>
+				    
+			        <TextView
+			            android:id="@+id/tv_ptime_desc"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:paddingTop="5dip"
+			            android:gravity="center_vertical"
+			            android:textColor="@color/gray"
+			            android:textSize="14sp"
+			            android:text="说明：超过有效期后，报名人将无法接受通告" />
+				    
+		        </LinearLayout>
+		    
+	        </LinearLayout>
+	        
+	        <LinearLayout
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dip"
+	            android:padding="10dip"
+	            android:background="@color/white"
+	            android:orientation="vertical" >
+	            
+	            <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:gravity="center_vertical"
+		            android:paddingLeft="5dip"
+		            android:singleLine="true"
+		            android:textStyle="bold"
+		            android:textColor="@color/black"
+		            android:textSize="15sp"
+		            android:text="确认内容" />
+	            
+	            <LinearLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:padding="5dip"
+		            android:gravity="center_vertical"
+		            android:orientation="vertical" >
+		
+		            <TextView
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text="开始结束日期："
+		                android:textColor="@color/gray"
+		                android:textSize="15sp" />
+		
+		            <LinearLayout
+		                android:layout_width="fill_parent"
+		                android:layout_height="wrap_content"
+		                android:gravity="center_vertical"
+		                android:orientation="horizontal" >
+		
+		                <TextView
+		                    android:id="@+id/tv_start_date"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:layout_marginTop="5dip"
+		                    android:layout_marginBottom="5dip"
+		                    android:background="@drawable/btn_title_selector3"
+		                    android:gravity="center"
+		                    android:paddingBottom="5dip"
+		                    android:paddingLeft="5dip"
+		                    android:paddingRight="5dip"
+		                    android:paddingTop="5dip"
+		                    android:text="2015年7月15日"
+		                    android:textColor="@color/gray"
+		                    android:textSize="14sp" />
+		                
+		                <TextView
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:padding="5dip"
+			                android:text="至"
+			                android:textColor="@color/gray"
+			                android:textSize="15sp" />
+		
+		                <TextView
+		                    android:id="@+id/tv_end_date"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:layout_marginTop="5dip"
+		                    android:layout_marginBottom="5dip"
+		                    android:background="@drawable/btn_title_selector3"
+		                    android:gravity="center"
+		                    android:paddingBottom="5dip"
+		                    android:paddingLeft="5dip"
+		                    android:paddingRight="5dip"
+		                    android:paddingTop="5dip"
+		                    android:text="2015年7月15日"
+		                    android:textColor="@color/gray"
+		                    android:textSize="14sp" />
+		                
+		            </LinearLayout>
+		            
+		            <TextView
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text="开始结束时间："
+		                android:textColor="@color/gray"
+		                android:textSize="15sp" />
+		
+		            <LinearLayout
+		                android:layout_width="fill_parent"
+		                android:layout_height="wrap_content"
+		                android:gravity="center_vertical"
+		                android:orientation="horizontal" >
+		
+		                <TextView
+		                    android:id="@+id/tv_start_time"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:layout_marginTop="5dip"
+		                    android:layout_marginBottom="5dip"
+		                    android:background="@drawable/btn_title_selector3"
+		                    android:ems="5"
+		                    android:gravity="center"
+		                    android:padding="5dip"
+		                    android:text="13:00"
+		                    android:textColor="@color/gray"
+		                    android:textSize="14sp" />
+		                
+		                <TextView
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:padding="5dip"
+			                android:text="至"
+			                android:textColor="@color/gray"
+			                android:textSize="15sp" />
+		
+		                <TextView
+		                    android:id="@+id/tv_end_time"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:layout_marginTop="5dip"
+		                    android:layout_marginBottom="5dip"
+		                    android:background="@drawable/btn_title_selector3"
+		                    android:ems="5"
+		                    android:gravity="center"
+		                    android:padding="5dip"
+		                    android:text="13:00"
+		                    android:textColor="@color/gray"
+		                    android:textSize="14sp" />
+		            </LinearLayout>
+		            
+		        </LinearLayout>
+		        
+	            <LinearLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:padding="5dip"
+		            android:gravity="center_vertical"
+		            android:orientation="vertical" >
+		
+		            <TextView
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text="活动地点："
+		                android:textColor="@color/gray"
+		                android:textSize="15sp" />
+		
+		            <LinearLayout
+		                android:layout_width="fill_parent"
+		                android:layout_height="wrap_content"
+		                android:gravity="center_vertical"
+		                android:orientation="horizontal" >
+		
+		                <EditText
+				            android:id="@+id/et_address"
+				            android:layout_width="match_parent"
+				            android:layout_height="wrap_content"
+				            android:padding="5dip"
+				            android:hint="输入活动的地点"
+				            android:textColor="@color/black"
+				            android:textSize="14sp"
+				            android:background="@drawable/input_grey_n" />
+		                
+		            </LinearLayout>
+		            
+		        </LinearLayout>
+		        
+	            <LinearLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:padding="5dip"
+		            android:orientation="vertical" >
+		
+		            <TextView
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text="备注："
+		                android:textColor="@color/gray"
+		                android:textSize="15sp" />
+		
+		            <LinearLayout
+		                android:layout_width="fill_parent"
+		                android:layout_height="wrap_content"
+		                android:gravity="center_vertical"
+		                android:orientation="horizontal" >
+		
+		                <EditText
+				            android:id="@+id/et_addmark"
+				            android:layout_width="match_parent"
+				            android:layout_height="wrap_content"
+				            android:padding="5dip"
+				            android:lines="5"
+				            android:gravity="top|left"
+				            android:textColor="@color/black"
+				            android:textSize="14sp"
+				            android:background="@drawable/input_grey_n" />
+		                
+		            </LinearLayout>
+		            
+		        </LinearLayout>
+	            
+	        </LinearLayout>
+	        
+	    </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

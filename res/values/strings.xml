@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ChineseSkill-</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="home_nav01">Discover</string>
+    <string name="home_nav02">Learn</string>
+    <string name="home_nav03">Me</string>
+    <string name="home_nav04">More</string>
+    <string name="home_nav05">退出登录</string>
+    <string name="pull_to_refresh_footer_release_label">松开后加载</string>
+    <string name="pull_to_refresh_footer_pull_label">上拉加载更多</string>
+    <string name="pull_to_refresh_footer_refreshing_label">loading\u2026;</string>
+    <string name="title_activity_pic_util">PicUtilActivity</string>
+    <string name="title_activity_add_position">AddPositionActivity</string>
+    <string name="chatcontacts_item_intro">&#040;%1$s&#041;</string>
+    <string name="dialog_title_del">确定删除 %1$s &#063;</string>
+    <string name="str_copy">copy</string>
+    <string name="str_delete">delete</string>
+    <string name="user_logout">"您的账号已在其他设备登录，您被迫下线。\n如果这不是您本人的操作，建议您修改密码。"</string>
+    <string name="relogin">重新登录</string>
+    <string name="confirm">确定</string>
+
+    <string-array name="chat_message_icon_array">
+        <item>@drawable/ic_chat_push</item>
+        <item>@drawable/ic_chat_system</item>
+    </string-array>
+    <string-array name="chat_message_array">
+        <item>新推荐</item>
+        <item>系统消息</item>
+    </string-array>
+
+    <string name="click_more">点击查看详情</string>
+    <string name="chatting_push">新推荐</string>
+    <string name="chatting_system">系统消息</string>
+    <string name="person_add_contact">添加联系人</string>
+    <string name="person_del_contact">删除联系人</string>
+    <string name="search_contacts_hint">手机号/有通告ID</string>
+    <string name="search_contacts_cancel">取消</string>
+    <string name="search_contacts_list_empty_hint">搜索联系人</string>
+    <string name="conversation_list_empty">暂无聊天信息</string>
+    <string name="chat_create_group_ok_format">确定&#040;%1$s&#041;</string>
+    <string name="chat_push_msg">新推荐</string>
+    <string name="chat_push_msg_format">新推荐&#040;%1$d&#041;</string>
+    <string name="chat_push_msg_format_moredata">新推荐...</string>
+    <string name="local_picture_not_found_toast">暂无外部存储，某些本地图片不可预览</string>
+    <string name="yesterday">昨天</string>
+    <string name="before_dawn">凌晨</string>
+    <string name="morning">早上</string>
+    <string name="afternoon">下午</string>
+    <string name="night">晚上</string>
+    <string name="monday">周一</string>
+    <string name="tuesday">周二</string>
+    <string name="wednesday">周三</string>
+    <string name="thursday">周四</string>
+    <string name="friday">周五</string>
+    <string name="saturday">周六</string>
+    <string name="sunday">周日</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="second">秒</string>
+    <!-- 消息 by liyunlong 20150925 end -->
+
+</resources>

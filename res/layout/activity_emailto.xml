@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/dark_white"
+ 	android:orientation="vertical">
+
+	<include
+        android:id="@+id/view_title"
+        layout="@layout/main_title_view" />
+	
+	<ScrollView
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:overScrollMode="never" >
+	    
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_margin="5dip"
+	        android:background="@color/white"
+	        android:gravity="center_horizontal" >
+	        
+	        <EditText
+	            android:id="@+id/et_content"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="15dip"
+	            android:layout_marginRight="15dip"
+	            android:layout_marginTop="10dip"
+	            android:layout_marginBottom="10dip"
+	            android:padding="5dip"
+	            android:lines="5"
+	            android:gravity="top|left"
+	            android:hint="最多输入300个字符"
+	            android:maxLength="300"
+	            android:textColor="@color/black"
+	            android:textSize="16sp"
+	            android:background="@drawable/input_grey_n" />
+	        
+	    </LinearLayout>
+    
+    </ScrollView>
+
+</LinearLayout>

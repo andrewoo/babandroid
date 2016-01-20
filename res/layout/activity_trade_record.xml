@@ -1,0 +1,116 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_input_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/light_grey_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/title_view"
+        layout="@layout/main_title_view"
+        android:visibility="visible" />
+
+    <RadioGroup
+        android:id="@+id/rg_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_payment"
+            android:layout_weight="1"
+            android:background="@drawable/rb_selector_bg"
+            android:button="@null"
+            android:checked="true"
+            android:ems="5"
+            android:gravity="center"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:singleLine="true"
+            android:text="付款记录"
+            android:textColor="@drawable/text_style_grey_to_red"
+            android:textSize="13sp" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/min_grey" />
+
+        <RadioButton
+            android:id="@+id/rb_gathering"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rb_selector_bg"
+            android:button="@null"
+            android:ems="5"
+            android:gravity="center"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:singleLine="true"
+            android:text="收款记录"
+            android:textColor="@drawable/text_style_grey_to_red"
+            android:textSize="13sp" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/rel_identification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0.5dp"
+        android:layout_marginTop="0.5dp"
+        android:background="@drawable/bg_white_to_grey"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp" >
+
+        <TextView
+            android:id="@+id/text_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="付款总金额："
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_s14" />
+
+        <TextView
+            android:id="@+id/text_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_to_grey"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text=""
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_s14" />
+    </LinearLayout>
+
+    <com.util.weight.PullToRefreshView
+        android:id="@+id/pullToRefreshView"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/lv_notice"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="2dip"
+            android:cacheColorHint="#00000000"
+            android:divider="@color/grey"
+            android:dividerHeight="1dp"
+            android:fadingEdge="none"
+            android:focusableInTouchMode="true"
+            android:listSelector="@color/transparent"
+            android:scrollbars="none" >
+        </ListView>
+    </com.util.weight.PullToRefreshView>
+
+</LinearLayout>
