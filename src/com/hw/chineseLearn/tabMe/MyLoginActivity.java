@@ -1,6 +1,7 @@
 package com.hw.chineseLearn.tabMe;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +25,7 @@ public class MyLoginActivity extends BaseActivity {
 	private String TAG = "==MyLoginActivity==";
 	private Context context;
 
-	TextView btn_login;
+	private TextView btn_login, btn_forgot_psw, btn_sign_up;
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
 	SimpleModel simpleModel;
@@ -45,9 +46,13 @@ public class MyLoginActivity extends BaseActivity {
 	 */
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Sign up", View.GONE, View.GONE, 0);
+				"Sign In", View.GONE, View.GONE, 0);
 		btn_login = (TextView) findViewById(R.id.btn_login);
+		btn_forgot_psw = (TextView) findViewById(R.id.btn_forgot_psw);
+		btn_sign_up = (TextView) findViewById(R.id.btn_sign_up);
 		btn_login.setOnClickListener(onClickListener);
+		btn_forgot_psw.setOnClickListener(onClickListener);
+		btn_sign_up.setOnClickListener(onClickListener);
 
 	}
 
@@ -109,7 +114,15 @@ public class MyLoginActivity extends BaseActivity {
 				finish();
 				break;
 
-			case R.id.btn_login:
+			case R.id.btn_login://
+				break;
+			case R.id.btn_forgot_psw:
+				startActivity(new Intent(MyLoginActivity.this,
+						MyForgotPswActivity.class));
+				break;
+			case R.id.btn_sign_up:
+				startActivity(new Intent(MyLoginActivity.this,
+						MyRegisterActivity.class));
 				break;
 
 			default:

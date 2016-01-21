@@ -17,8 +17,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.interfaces.NetUtil;
@@ -30,13 +34,14 @@ import com.util.tool.SharedPreferencesUtil;
 import com.util.tool.UiUtil;
 
 public class BaseActivity extends FragmentActivity {
-
+	private String TAG = "BaseActivity";
 	public List<Fragment> listFragment;
 
 	private List<BaseTaskPost> recordPost = new Vector<BaseTaskPost>();
 	private ThreadPoolManager threadPoolManager;
 	private static SharedPreferencesUtil spUtil;
 	private AlertDialog logoutDialog;
+	View contentView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,8 @@ public class BaseActivity extends FragmentActivity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 全屏
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);// 竖屏
 		// setContentView(R.layout.activity_main);
+		contentView = LayoutInflater.from(getApplicationContext()).inflate(
+				R.layout.activity_main, null);
 		listFragment = new ArrayList<Fragment>();
 		threadPoolManager = ThreadPoolManager.getInstance();
 		spUtil = SharedPreferencesUtil.getInstance(this);
@@ -245,7 +252,7 @@ public class BaseActivity extends FragmentActivity {
 			closeProgressDialog();
 			if (msg.what == AppFinal.SUCCESS) {
 				if (msg.obj == null) {
-					UiUtil.showToast(context, "请求数据超时，或网络连接失败！");
+					UiUtil.showToast(context, "time out！");
 				} else {
 					if (callBack != null) {
 						try {
@@ -256,7 +263,7 @@ public class BaseActivity extends FragmentActivity {
 					}
 				}
 			} else if (msg.what == AppFinal.NET_FAILED) {
-				UiUtil.showToast(context, "网络连接失败");
+				UiUtil.showToast(context, "network failed");
 			}
 
 		}
@@ -313,7 +320,7 @@ public class BaseActivity extends FragmentActivity {
 	}
 
 	ProgressDialog progressDialog;
-	String msg = "正在执行，请稍后...";
+	String msg = "loading...";
 
 	/*
 	 * 显示提示框
@@ -354,6 +361,20 @@ public class BaseActivity extends FragmentActivity {
 		if (progressDialog != null) {
 			progressDialog.dismiss();
 			progressDialog = null;
+		}
+		closeWindowSoftInput();
+	}
+
+	private void closeWindowSoftInput() {
+
+		InputMethodManager imm = (InputMethodManager) getApplicationContext()
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		boolean isSoftActive = imm.isActive();
+		Log.d("-MianWebActivity-", "isSoftActive：" + isSoftActive);
+		if (isSoftActive) {
+			imm.hideSoftInputFromWindow(
+					contentView.getApplicationWindowToken(), 0); // 强制隐藏键盘
+			Log.d(TAG, "强制隐藏键盘");
 		}
 	}
 }
