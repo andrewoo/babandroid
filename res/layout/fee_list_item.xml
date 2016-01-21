@@ -9,7 +9,7 @@
         android:id="@+id/selecter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rb_btn_selector_orange_to_white"
+        android:background="@drawable/rb_selector_textcolor"
         android:button="@null"
         android:checked="false"
         android:gravity="center"

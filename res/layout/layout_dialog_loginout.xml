@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical|center_horizontal"
+    android:background="@color/deep_grey"
     android:orientation="vertical" >
 
     <TextView
@@ -15,7 +16,7 @@
         android:gravity="center"
         android:paddingTop="5dip"
         android:text="退出"
-        android:textColor="@color/orange_2.1"
+        android:textColor="@color/chinese_skill_blue"
         android:textSize="@dimen/text_s16" />
 
     <TextView
@@ -60,7 +61,7 @@
             android:layout_weight="1"
             android:background="@drawable/dialog_bottom_right_btn"
             android:text="确定"
-            android:textColor="@color/orange_2.1"
+            android:textColor="@color/chinese_skill_blue"
             android:textSize="@dimen/text_s14" />
     </LinearLayout>
 

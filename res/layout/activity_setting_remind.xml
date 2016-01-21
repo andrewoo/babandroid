@@ -2,380 +2,226 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/light_grey_white"
+    android:background="@color/white"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
     <include
-        android:id="@+id/title_view"
+        android:id="@+id/view_title"
         layout="@layout/main_title_view" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent"
+        android:paddingTop="30dp"
+        android:scrollbars="none" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="10dp" >
+            android:orientation="vertical" >
 
-            <RelativeLayout
-                android:id="@+id/rel_new_notice_tuijian"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0.5dp"
-                android:background="@drawable/bg_white_to_grey"
-                android:gravity="center_vertical"
-                android:paddingBottom="5dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:paddingTop="5dp" >
-
-                <ImageView
-                    android:id="@+id/img_icon"
-                    android:layout_width="17dp"
-                    android:layout_height="17dp"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/img_new_notice_intrduce" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/img_icon"
-                    android:text="新通告推荐通知"
-                    android:textColor="@color/deep_grey"
-                    android:textSize="@dimen/text_s14" />
-
-                <CheckBox
-                    android:id="@+id/ck_new_notice"
-                    android:layout_width="45dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="left|center_vertical"
-                    android:background="@drawable/ck_selector_green"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="left|center_vertical" />
-            </RelativeLayout>
+                android:text="Which days would you like to be reminded to learn ?"
+                android:textColor="@color/deep_grey"
+                android:textSize="@dimen/text_s15" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@color/white"
-                android:orientation="vertical" >
+                android:background="#F7F7F7"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" >
 
-                <RelativeLayout
-                    android:id="@+id/rel_sound"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_to_grey"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="5dp" >
-
-                    <ImageView
-                        android:id="@+id/img_icon"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/img_sound" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/img_icon"
-                        android:text="声音"
-                        android:textColor="@color/deep_grey"
-                        android:textSize="@dimen/text_s14" />
+                    android:gravity="center"
+                    android:orientation="horizontal" >
 
                     <CheckBox
-                        android:id="@+id/ck_sound"
-                        android:layout_width="45dp"
-                        android:layout_height="35dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="left|center_vertical"
-                        android:background="@drawable/ck_selector_green"
+                        android:id="@+id/ck_sunday"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rb_selector_bg1"
                         android:button="@null"
                         android:checked="true"
-                        android:gravity="left|center_vertical" />
-                </RelativeLayout>
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="SUN"
+                        android:textColor="@drawable/text_style_grey_to_white" />
+
+                    <CheckBox
+                        android:id="@+id/ck_monday"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rb_selector_bg1"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="MON"
+                        android:textColor="@drawable/text_style_grey_to_white" />
+
+                    <CheckBox
+                        android:id="@+id/ck_tuesday"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rb_selector_bg1"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="TUE"
+                        android:textColor="@drawable/text_style_grey_to_white" />
+
+                    <CheckBox
+                        android:id="@+id/ck_wednesday"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/rb_selector_bg1"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="WED"
+                        android:textColor="@drawable/text_style_grey_to_white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <CheckBox
+                        android:id="@+id/ck_thursday"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rb_selector_bg1"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="THU"
+                        android:textColor="@drawable/text_style_grey_to_white" />
+
+                    <CheckBox
+                        android:id="@+id/ck_friday"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rb_selector_bg1"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="FRI"
+                        android:textColor="@drawable/text_style_grey_to_white" />
+
+                    <CheckBox
+                        android:id="@+id/ck_saturday"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/rb_selector_bg1"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="SAT"
+                        android:textColor="@drawable/text_style_grey_to_white" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="What time of a day?"
+                android:textColor="@color/deep_grey"
+                android:textSize="@dimen/text_s15" />
+
+            <TextView
+                android:id="@+id/txt_time"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_circle_grey"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="11:11"
+                android:textColor="@color/deep_grey"
+                android:textSize="@dimen/text_s18" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" >
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginLeft="15dp"
-                    android:background="@color/light_grey_white" />
-
-                <RelativeLayout
-                    android:id="@+id/rel_shake"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0.5dp"
-                    android:background="@drawable/bg_white_to_grey"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
+                    android:layout_height="1dp"
+                    android:background="@color/min_grey"
                     android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="5dp" >
+                    android:paddingRight="15dp" />
 
-                    <ImageView
-                        android:id="@+id/img_icon"
-                        android:layout_width="19dp"
-                        android:layout_height="19dp"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/img_shake" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/min_grey" />
+
+                    <Button
+                        android:id="@+id/btn_ok"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/img_icon"
-                        android:text="震动"
-                        android:textColor="@color/deep_grey"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_touming_to_grey"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Ok"
                         android:textSize="@dimen/text_s14" />
 
-                    <CheckBox
-                        android:id="@+id/ck_shake"
-                        android:layout_width="45dp"
-                        android:layout_height="35dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="left|center_vertical"
-                        android:background="@drawable/ck_selector_green"
-                        android:button="@null"
-                        android:checked="false"
-                        android:gravity="left|center_vertical" />
-                </RelativeLayout>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/min_grey" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:text="当有通告运行时，您可以设置是否需要声音和震动"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/text_s12"
-                    android:visibility="gone" />
-
-                <RelativeLayout
-                    android:id="@+id/rel_notice_publish"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0.5dp"
-                    android:background="@drawable/bg_white_to_grey"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <Button
+                        android:id="@+id/btn_cancel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:text="发布通告消息免打扰"
-                        android:textColor="@color/grey"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_touming_to_grey"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Cancel"
                         android:textSize="@dimen/text_s14" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/arrow" />
-                </RelativeLayout>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/min_grey" />
+                </LinearLayout>
 
-                <RelativeLayout
-                    android:id="@+id/rel_notice_recive"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0.5dp"
-                    android:background="@drawable/bg_white_to_grey"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:text="接通告消息免打扰"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/text_s14" />
-
-                    <CheckBox
-                        android:id="@+id/ck_notice_recive"
-                        android:layout_width="65dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="left|center_vertical"
-                        android:background="@drawable/ck_selector_green"
-                        android:button="@null"
-                        android:checked="true"
-                        android:gravity="left|center_vertical" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rel_system_msg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0.5dp"
-                    android:background="@drawable/bg_white_to_grey"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:text="系统消息免打扰"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/text_s14" />
-
-                    <CheckBox
-                        android:id="@+id/ck_system_msg"
-                        android:layout_width="65dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="left|center_vertical"
-                        android:background="@drawable/ck_selector_green"
-                        android:button="@null"
-                        android:checked="true"
-                        android:gravity="left|center_vertical" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rel_stranger_msg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0.5dp"
-                    android:background="@drawable/bg_white_to_grey"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:text="陌生人消息免打扰"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/text_s14" />
-
-                    <CheckBox
-                        android:id="@+id/ck_stranger_msg"
-                        android:layout_width="65dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="left|center_vertical"
-                        android:background="@drawable/ck_selector_green"
-                        android:button="@null"
-                        android:checked="true"
-                        android:gravity="left|center_vertical" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rel_cared_msg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0.5dp"
-                    android:background="@drawable/bg_white_to_grey"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:text="关注的人消息免打扰"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/text_s14" />
-
-                    <CheckBox
-                        android:id="@+id/ck_cared_msg"
-                        android:layout_width="65dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="left|center_vertical"
-                        android:background="@drawable/ck_selector_green"
-                        android:button="@null"
-                        android:checked="false"
-                        android:gravity="left|center_vertical" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rel_mail_msg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_white_to_grey"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:text="发通告邮件提醒"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/text_s14" />
-
-                    <CheckBox
-                        android:id="@+id/ck_mail_msg"
-                        android:layout_width="65dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="left|center_vertical"
-                        android:background="@drawable/ck_selector_green"
-                        android:button="@null"
-                        android:checked="false"
-                        android:gravity="left|center_vertical" />
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:text="通告发布，有新报名时，发通告提醒您。"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/text_s12"
-                    android:visibility="gone" />
+                    android:layout_height="1dp"
+                    android:background="@color/min_grey" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

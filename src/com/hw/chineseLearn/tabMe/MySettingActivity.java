@@ -2,6 +2,7 @@ package com.hw.chineseLearn.tabMe;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -120,10 +121,8 @@ public class MySettingActivity extends BaseActivity {
 				break;
 
 			case R.id.rel_reminders:
-				// Intent intent2 = new Intent();
-				// intent2.setClass(MySettingActivity.this,
-				// YTGAboutActivity1.class);
-				// startActivity(intent2);
+				startActivity(new Intent(MySettingActivity.this,
+						MySettingRemindersActivity.class));
 
 				break;
 

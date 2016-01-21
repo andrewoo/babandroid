@@ -1,11 +1,14 @@
 package com.hw.chineseLearn.tabMe;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -93,6 +96,13 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 		super.onResume();
 	}
 
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		closeWindowSoftInput();
+	}
+
 	/**
 	 * 初始化
 	 */
@@ -160,4 +170,16 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 		rel_settings.setOnClickListener(this);
 	}
 
+	private void closeWindowSoftInput() {
+
+		InputMethodManager imm = (InputMethodManager) getActivity()
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		boolean isSoftActive = imm.isActive();
+		Log.d("-MianWebActivity-", "isSoftActive：" + isSoftActive);
+		if (isSoftActive) {
+			imm.hideSoftInputFromWindow(
+					contentView.getApplicationWindowToken(), 0); // 强制隐藏键盘
+			// Log.d(TAG, "强制隐藏键盘");
+		}
+	}
 }

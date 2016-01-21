@@ -41,7 +41,7 @@ public class BaseActivity extends FragmentActivity {
 	private ThreadPoolManager threadPoolManager;
 	private static SharedPreferencesUtil spUtil;
 	private AlertDialog logoutDialog;
-	View contentView;
+	private View contentView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -362,19 +362,18 @@ public class BaseActivity extends FragmentActivity {
 			progressDialog.dismiss();
 			progressDialog = null;
 		}
-		closeWindowSoftInput();
 	}
 
-	private void closeWindowSoftInput() {
+	protected void closeWindowSoftInput(View view) {
 
 		InputMethodManager imm = (InputMethodManager) getApplicationContext()
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		boolean isSoftActive = imm.isActive();
 		Log.d("-MianWebActivity-", "isSoftActive：" + isSoftActive);
 		if (isSoftActive) {
-			imm.hideSoftInputFromWindow(
-					contentView.getApplicationWindowToken(), 0); // 强制隐藏键盘
+			imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0); // 强制隐藏键盘
 			Log.d(TAG, "强制隐藏键盘");
 		}
 	}
+
 }

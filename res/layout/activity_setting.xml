@@ -10,7 +10,7 @@
         android:id="@+id/view_title"
         layout="@layout/main_title_view" />
 
-    <ScrollView
+    <com.util.weight.ElasticScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -250,10 +250,10 @@
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="5dp"
                     android:text="Logou out"
-                    android:textColor="@color/orange_2.1"
+                    android:textColor="@color/chinese_skill_blue"
                     android:textSize="@dimen/text_s14" />
             </RelativeLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.util.weight.ElasticScrollView>
 
 </LinearLayout>

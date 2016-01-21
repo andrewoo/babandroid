@@ -347,6 +347,7 @@
     <color name="dialog_delete_btn">#313131</color>
     <color name="dialog_delete_btn_pressed">#80313131</color>
     <color name="color_yanghong">#FF3028</color>
-    <color name="orange_2.1">#FF4401</color>
+    <color name="chinese_skill_blue">#5B83AB</color>
+    <color name="chinese_skill_blue1">#1AA0AA</color>
 
 </resources>

@@ -48,7 +48,7 @@
                     android:src="@drawable/new_user_img" />
 
                 <EditText
-                    android:id="@+id/txt_username"
+                    android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="40dip"
                     android:background="@null"
@@ -68,7 +68,6 @@
                 android:background="@color/min_grey" />
 
             <LinearLayout
-                android:id="@+id/layout_btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
                 android:layout_marginLeft="20dip"
@@ -82,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dip"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/btn_selector_login"
+                    android:background="@drawable/btn_selector_loginwx1"
                     android:gravity="center"
                     android:padding="10dip"
                     android:singleLine="true"

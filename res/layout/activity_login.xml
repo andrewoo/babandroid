@@ -16,7 +16,7 @@
         android:layout_height="0.5dp"
         android:background="@color/min_grey" />
 
-    <ScrollView
+    <com.util.weight.ElasticScrollView
         android:layout_width="fill_parent"
         android:layout_height="0.0dp"
         android:layout_weight="1"
@@ -117,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dip"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/btn_selector_login"
+                    android:background="@drawable/btn_selector_loginwx1"
                     android:gravity="center"
                     android:padding="10dip"
                     android:singleLine="true"
@@ -174,11 +174,12 @@
                     android:layout_marginLeft="20dip"
                     android:layout_marginRight="20dip"
                     android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_touming_to_grey"
                     android:gravity="center"
                     android:padding="10dip"
                     android:singleLine="true"
-                    android:text="Forgot Password"
-                    android:textColor="#5B83AB"
+                    android:text="Forgot Password?"
+                    android:textColor="@color/chinese_skill_blue"
                     android:textSize="@dimen/text_s15" />
 
                 <TextView
@@ -188,6 +189,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="20dip"
                     android:layout_marginRight="20dip"
+                    android:background="@drawable/bg_touming_to_grey"
                     android:gravity="center"
                     android:padding="10dip"
                     android:singleLine="true"
@@ -196,7 +198,7 @@
                     android:textSize="@dimen/text_s15" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.util.weight.ElasticScrollView>
 
     <TextView
         android:layout_width="match_parent"

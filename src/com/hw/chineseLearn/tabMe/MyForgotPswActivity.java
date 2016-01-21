@@ -1,9 +1,14 @@
 package com.hw.chineseLearn.tabMe;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,18 +26,23 @@ import com.util.thread.ThreadWithDialogTask;
  */
 public class MyForgotPswActivity extends BaseActivity {
 
-	private String TAG = "==MyLoginActivity==";
+	private String TAG = "==MyForgotPswActivity==";
 	private Context context;
 
+	EditText et_email;
 	TextView btn_confirm;
+
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
 	SimpleModel simpleModel;
+	View contentView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_forgot_psw);
+		contentView = LayoutInflater.from(this).inflate(
+				R.layout.activity_forgot_psw, null);
+		setContentView(contentView);
 		context = this;
 		tdt = new ThreadWithDialogTask();
 		interfaces = new HttpInterfaces(this);
@@ -46,6 +56,8 @@ public class MyForgotPswActivity extends BaseActivity {
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Forgot Password", View.GONE, View.GONE, 0);
+		et_email = (EditText) findViewById(R.id.et_email);
+
 		btn_confirm = (TextView) findViewById(R.id.btn_confirm);
 		btn_confirm.setOnClickListener(onClickListener);
 
@@ -97,6 +109,10 @@ public class MyForgotPswActivity extends BaseActivity {
 
 	}
 
+	private void closeWindowSoftInput() {
+		super.closeWindowSoftInput(contentView);
+	}
+
 	OnClickListener onClickListener = new OnClickListener() {
 
 		@Override
@@ -105,11 +121,15 @@ public class MyForgotPswActivity extends BaseActivity {
 			switch (arg0.getId()) {
 
 			case R.id.iv_title_left:// 返回
-
+				closeWindowSoftInput();
 				finish();
 				break;
 
 			case R.id.btn_confirm:
+				if ("".equals(et_email.getText().toString()))
+					showNothingInputDialog();
+
+				// confirm
 				break;
 
 			default:
@@ -118,6 +138,37 @@ public class MyForgotPswActivity extends BaseActivity {
 		}
 	};
 
+	/**
+	 * 对话框
+	 */
+	private void showNothingInputDialog() {
+
+		final AlertDialog mModifyDialog = new AlertDialog.Builder(context)
+				.create();
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View view = inflater.inflate(R.layout.layout_dialog_loginout, null);
+		TextView title = (TextView) view.findViewById(R.id.dialog_title);
+		title.setVisibility(View.GONE);
+		TextView content = (TextView) view.findViewById(R.id.dialog_content);
+		Button ok = (Button) view.findViewById(R.id.commit_btn);
+		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
+		cancel.setVisibility(View.GONE);
+
+		title.setText("Title");
+		content.setText("Please input your email");
+		title.setGravity(Gravity.CENTER_HORIZONTAL);
+		ok.setText("OK");
+		ok.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				mModifyDialog.dismiss();
+			}
+		});
+
+		mModifyDialog.show();
+		mModifyDialog.setContentView(view);
+	}
 	// public class LoginOut implements ThreadWithDialogListener {
 	//
 	// @Override
