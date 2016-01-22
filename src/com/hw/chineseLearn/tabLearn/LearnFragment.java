@@ -168,7 +168,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		pagerList.add(layout1);
 		pagerList.add(layout2);
 
-		getViewPagerData(0);
+		getViewPagerData();
 
 	}
 
