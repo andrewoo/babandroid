@@ -1,0 +1,229 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/light_grey_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <com.util.weight.ElasticScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/min_grey" />
+
+            <RelativeLayout
+                android:id="@+id/rel_survival_kit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_to_grey"
+                android:gravity="center_vertical"
+                android:padding="15dp" >
+
+                <ImageView
+                    android:id="@+id/img_survival_kit"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/tab_discover_survival_kit" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/img_survival_kit"
+                    android:text="Survival Kit"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_s14" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/min_grey" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/min_grey" />
+
+            <RelativeLayout
+                android:id="@+id/rel_pinyin_chart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_to_grey"
+                android:gravity="center_vertical"
+                android:padding="15dp" >
+
+                <ImageView
+                    android:id="@+id/img_pinyin_chart"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/tab_discover_pinyin" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/img_pinyin_chart"
+                    android:text="Pinyin Chart"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_s14" />
+
+                <ImageView
+                    android:id="@+id/img_arrow_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/min_grey" />
+
+            <RelativeLayout
+                android:id="@+id/rel_pinyin_tone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_to_grey"
+                android:gravity="center_vertical"
+                android:padding="15dp" >
+
+                <ImageView
+                    android:id="@+id/img_pinyin_tone"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/tab_discover_pinyin_tone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/img_pinyin_tone"
+                    android:text="Pinyin Tone"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_s14" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/min_grey" />
+
+            <RelativeLayout
+                android:id="@+id/rel_strokes_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_to_grey"
+                android:gravity="center_vertical"
+                android:padding="15dp" >
+
+                <ImageView
+                    android:id="@+id/img_strokes_order"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/tab_discover_strokes_order" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/img_strokes_order"
+                    android:text="Strokes Order"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_s14" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/min_grey" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/min_grey" />
+
+            <RelativeLayout
+                android:id="@+id/rel_fluent_now"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_to_grey"
+                android:gravity="center_vertical"
+                android:padding="15dp" >
+
+                <ImageView
+                    android:id="@+id/img_fluent_now"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/tab_discover_fluent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/img_fluent_now"
+                    android:text="Fluent Now"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_s14" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/min_grey" />
+        </LinearLayout>
+    </com.util.weight.ElasticScrollView>
+
+</LinearLayout>
