@@ -11,8 +11,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -90,7 +88,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			interfaces = new HttpInterfaces(MainActivity.this);
 		}
 
-		setTitle(View.GONE, View.GONE, "Learn", View.GONE, View.GONE);
+		setTitle(View.GONE, View.VISIBLE, R.drawable.review_button, "",
+				View.GONE, View.VISIBLE, R.drawable.review_button);
 
 	}
 
@@ -98,23 +97,37 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	private View view_title;
 
 	/**
+	 * 顶部标题栏
+	 * 
 	 * @param textLeft
 	 *            是否显示左边文字
 	 * @param imgLeft
 	 *            是否显示左边图片
 	 * @param title
 	 *            标题
+	 * @param imgLeftDrawable
+	 *            左边图片资源
 	 * @param textRight
 	 *            是否显示右边文字
 	 * @param imgRight
 	 *            是否显示右边图片
+	 * @param imgRightDrawable
+	 *            右边图片资源
 	 */
-	public void setTitle(int textLeft, int imgLeft, String title,
-			int textRight, int imgRight) {
-		view_title = (View) this.findViewById(R.id.view_title);
-		TextView tv_title = (TextView) view_title.findViewById(R.id.tv_title);
-		tv_title.setText(title);
+	@SuppressWarnings("deprecation")
+	public void setTitle(int textLeft, int imgLeft, int imgLeftDrawable,
+			String title, int textRight, int imgRight, int imgRightDrawable) {
 
+		View view_title = (View) this.findViewById(R.id.view_title);
+		Button btn_title = (Button) view_title.findViewById(R.id.btn_title);
+		if ("".equals(title)) {
+			btn_title.setBackgroundDrawable(context.getResources().getDrawable(
+					R.drawable.logo));
+		} else {
+			btn_title.setBackgroundDrawable(context.getResources().getDrawable(
+					R.drawable.btn_white_no_corners));
+		}
+		btn_title.setText(title);
 		TextView tv_title_left = (TextView) view_title
 				.findViewById(R.id.tv_title_left);
 		tv_title_left.setVisibility(textLeft);
@@ -123,7 +136,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				.findViewById(R.id.iv_title_left);
 		iv_title_left.setVisibility(imgLeft);
 		iv_title_left.setOnClickListener(onClickListener);
-		// iv_title_left.setImageResource(R.drawable.btn_selector_top_left);
+		iv_title_left.setImageResource(imgLeftDrawable);
 
 		TextView tv_title_right = (TextView) view_title
 				.findViewById(R.id.tv_title_right);
@@ -133,6 +146,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		ImageView iv_title_right = (ImageView) view_title
 				.findViewById(R.id.iv_title_right);
 		iv_title_right.setVisibility(imgRight);
+		iv_title_right.setOnClickListener(onClickListener);
+		iv_title_right.setImageResource(imgRightDrawable);
 
 	}
 
@@ -143,9 +158,12 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			// TODO Auto-generated method stub
 			switch (arg0.getId()) {
 
-			case R.id.iv_title_left:// 返回
+			case R.id.iv_title_left:// share
 
-				finish();
+				break;
+
+			case R.id.iv_title_right:// review
+
 				break;
 
 			default:
@@ -174,7 +192,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				discoverFragment = new DiscoverFragment();
 				navigateToNoAnimWithId(discoverFragment, R.id.container1);
 			}
-			setTitle(View.GONE, View.GONE, "Discover", View.GONE, View.GONE);
+			setTitle(View.GONE, View.GONE, 0, "Discover", View.GONE, View.GONE,
+					0);
 			break;
 		case R.id.home_rb_nav02:
 			selectIndex = 1;
@@ -183,7 +202,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				learnFragment = new LearnFragment();
 				navigateToNoAnimWithId(learnFragment, R.id.container2);
 			}
-			setTitle(View.GONE, View.GONE, "Learn", View.GONE, View.GONE);
+			setTitle(View.GONE, View.VISIBLE, R.drawable.review_button, "",
+					View.GONE, View.VISIBLE, R.drawable.review_button);
 			break;
 		case R.id.home_rb_nav03:
 			selectIndex = 2;
@@ -192,7 +212,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				mineFragment = new MineFragment();
 				navigateToNoAnimWithId(mineFragment, R.id.container3);
 			}
-			setTitle(View.GONE, View.GONE, "Me", View.GONE, View.GONE);
+			setTitle(View.GONE, View.GONE, 0, "Me", View.GONE, View.GONE, 0);
 			break;
 
 		default:

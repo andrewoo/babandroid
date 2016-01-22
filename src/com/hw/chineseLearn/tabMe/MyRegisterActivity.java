@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -73,7 +74,7 @@ public class MyRegisterActivity extends BaseActivity {
 			String title, int textRight, int imgRight, int imgRightDrawable) {
 
 		View view_title = (View) findViewById(R.id.view_title);
-		TextView tv_title = (TextView) view_title.findViewById(R.id.tv_title);
+		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
 		tv_title.setText(title);
 
 		TextView tv_title_left = (TextView) view_title
@@ -94,7 +95,7 @@ public class MyRegisterActivity extends BaseActivity {
 		ImageView iv_title_right = (ImageView) view_title
 				.findViewById(R.id.iv_title_right);
 		iv_title_right.setVisibility(imgRight);
-
+		iv_title_right.setImageResource(imgRightDrawable);
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {

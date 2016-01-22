@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseFragment;
+import com.hw.chineseLearn.base.MainWebActivity;
 
 /**
  * @author yh
@@ -59,10 +60,19 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 
 			break;
 		case R.id.rel_like_us_on_facebook:
+			Intent intentFacebook = new Intent();
+			intentFacebook.putExtra("url", "http://www.baidu.com");
+			intentFacebook.putExtra("title", "Like us on Facebook");
+			intentFacebook.setClass(getActivity(), MainWebActivity.class);
+			startActivity(intentFacebook);
 
 			break;
 		case R.id.rel_rate_this_app:
-
+			Intent intentRate = new Intent();
+			intentRate.putExtra("url", "http://www.baidu.com");
+			intentRate.putExtra("title", "Rate this app");
+			intentRate.setClass(getActivity(), MainWebActivity.class);
+			startActivity(intentRate);
 			break;
 		case R.id.rel_settings:
 			startActivity(new Intent(getActivity(), MySettingActivity.class));

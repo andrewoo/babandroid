@@ -50,11 +50,6 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	private int currentItem = 0;
 
 	// 列表-上下拉刷新
-	private PullToRefreshView pullToRefreshView;
-	private ListView lv_notice;
-	private NoticesListAdapter adapter;
-	private ArrayList<MeiTuanGuessBaseModel> noticeList;
-
 	private String serverTime = "";
 	private int pageIndex = 1, pageSize = 10;
 	private boolean IsEnd = false;
@@ -68,10 +63,6 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 
 	private boolean IsCollect = false;
 	AddressSelectPopMenu popWin;
-	/**
-	 * 中部ViewPager
-	 */
-	private ViewPager viewPager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -131,60 +122,6 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	 */
 	public void init() {
 
-		pullToRefreshView = (PullToRefreshView) contentView
-				.findViewById(R.id.pullToRefreshView);
-		lv_notice = (ListView) contentView.findViewById(R.id.lv_notice);
-
-		layout_adv = LayoutInflater.from(getActivity()).inflate(
-				R.layout.layout_notice_adv, null);
-		lv_notice.addHeaderView(layout_adv);
-
-		noticeList = new ArrayList<MeiTuanGuessBaseModel>();
-		adapter = new NoticesListAdapter(getActivity(), noticeList);
-		lv_notice.setAdapter(adapter);
-		lv_notice.setDividerHeight(0);
-
-		pullToRefreshView
-				.setOnHeaderRefreshListener(new OnHeaderRefreshListener() {
-					@Override
-					public void onHeaderRefresh(PullToRefreshView view) {
-
-						view.onHeaderRefreshComplete();
-
-						IsEnd = false;
-						pageIndex = 1;
-						noticeList.clear();
-						adapter.noticeList = noticeList;
-						adapter.notifyDataSetChanged();
-
-						task.RunWithMsg(getActivity(), new LoadNoticesThread(),
-								"正在加载…");
-					}
-				});
-
-		pullToRefreshView
-				.setOnFooterRefreshListener(new OnFooterRefreshListener() {
-					@Override
-					public void onFooterRefresh(PullToRefreshView view) {
-						view.onFooterRefreshComplete();
-						// if (IsEnd) {
-						// Toast.makeText(getActivity(), "暂无更多数据",
-						// Toast.LENGTH_SHORT).show();
-						// } else {
-						// task.RunWithMsg(getActivity(),
-						// new LoadNoticesThread(), "正在加载…");
-						// }
-					}
-				});
-
-		pullToRefreshView
-				.setOnRefreshTouchListener(new OnRefreshTouchListener() {
-
-					@Override
-					public void onTouchListener(PullToRefreshView view) {
-
-					}
-				});
 		createCenter();
 	}
 
@@ -213,9 +150,6 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	private void createCenter() {
 		// TODO Auto-generated method stub
 
-		viewPager = (ViewPager) contentView.findViewById(R.id.center_menu);
-		LinearLayout linDots = (LinearLayout) contentView
-				.findViewById(R.id.lin_dots);// 滑动的小点
 		pagerList = new ArrayList<View>();
 
 		View v = contentView.findViewById(R.id.v_dot0);
@@ -231,120 +165,11 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		View layout2 = LayoutInflater.from(getActivity()).inflate(
 				R.layout.activity_gv_center, null);
 
-		linDots.setVisibility(View.VISIBLE);
-
 		pagerList.add(layout1);
 		pagerList.add(layout2);
 
 		getViewPagerData(0);
 
-		viewPager.setAdapter(new ViewPagerAdapter(pagerList));
-		viewPager.setCurrentItem(0);
-
-		// ViewPAger监听
-		ViewpagerChangeListener guidePager = new ViewpagerChangeListener(
-				getActivity(), dots);
-		viewPager.setOnPageChangeListener(guidePager);
-
-	}
-
-	/**
-	 * 
-	 * ViewPager 适配器
-	 * 
-	 * @author
-	 * 
-	 */
-	class ViewPagerAdapter extends PagerAdapter {
-		List<View> list = new ArrayList<View>();
-
-		public ViewPagerAdapter(List<View> list) {
-			this.list = list;
-		}
-
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			return list.size();
-		}
-
-		@Override
-		public boolean isViewFromObject(View arg0, Object arg1) {
-			// TODO Auto-generated method stub
-			return arg0 == arg1;
-		}
-
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
-			ViewPager pViewPager = ((ViewPager) container);
-			pViewPager.removeView(list.get(position));
-		}
-
-		@Override
-		public Object instantiateItem(View arg0, int arg1) {
-			ViewPager pViewPager = ((ViewPager) arg0);
-			pViewPager.addView(list.get(arg1));
-			return list.get(arg1);
-		}
-	}
-
-	/**
-	 * 
-	 * viewpager 滑动监听类
-	 * 
-	 * @author YF
-	 * 
-	 */
-	class ViewpagerChangeListener implements OnPageChangeListener {
-
-		private static final String Tag = "ViewpagerChangeListener";
-		List<View> dots;
-		Context context;
-		int currentItem;
-		private int oldPosition = 0;
-
-		/**
-		 * @param context
-		 * @param dots
-		 *            构造函数
-		 */
-		public ViewpagerChangeListener(Context context, List<View> dots) {
-			this.context = context;
-			this.dots = dots;
-		}
-
-		public ViewpagerChangeListener(Context context) {
-			this.context = context;
-		}
-
-		@Override
-		public void onPageScrollStateChanged(int arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void onPageScrolled(int arg0, float arg1, int arg2) {
-			// TODO Auto-generated method stub
-
-		}
-
-		/**
-		 * 滑动事件
-		 */
-		@Override
-		public void onPageSelected(int position) {
-			// TODO Auto-generated method stub
-			currentItem = position;
-			currentPager = position;
-			// 改变圆点(焦点)
-			dots.get(oldPosition).setBackgroundResource(
-					R.drawable.welcome_center_dot_default);
-			dots.get(position).setBackgroundResource(
-					R.drawable.welcome_center_dot_pressed);
-			oldPosition = position;
-			getViewPagerData(position);
-		}
 	}
 
 	/**
@@ -352,35 +177,18 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	 * 
 	 * @param
 	 */
-	public void getViewPagerData(int pagerIndex) {
+	public void getViewPagerData() {
 		// TODO Auto-generated method stub
-		View v = pagerList.get(pagerIndex);
-		centGridView = (GridView) v.findViewById(R.id.gv_center_gridview);
+		centGridView = (GridView)contentView.findViewById(R.id.gv_center_gridview);
 
-		if (pagerIndex == 0) {
-			// theNewInfoCount[5] = 2;
-			images = new int[]
+		images = new int[] { R.drawable.ic_category_0,
+				R.drawable.ic_category_1, R.drawable.ic_category_2,
+				R.drawable.ic_category_3, R.drawable.ic_category_4,
+				R.drawable.ic_category_5, R.drawable.ic_category_6,
+				R.drawable.ic_category_7 };
 
-			{ R.drawable.ic_category_0, R.drawable.ic_category_1,
-					R.drawable.ic_category_2, R.drawable.ic_category_3,
-					R.drawable.ic_category_4, R.drawable.ic_category_5,
-					R.drawable.ic_category_6, R.drawable.ic_category_7 };
-
-			texts = new String[] { "美食", "电影", "酒店", "KTV", "NEW", "优惠买单",
-					"周边游", "今日新单" };
-
-		} else if (pagerIndex == 1) {
-
-			images = new int[]
-
-			{ R.drawable.ic_category_8, R.drawable.ic_category_9,
-					R.drawable.ic_category_10, R.drawable.ic_category_11,
-					R.drawable.ic_category_12, R.drawable.ic_category_13,
-					R.drawable.ic_category_14, R.drawable.ic_category_15 };
-
-			texts = new String[] { "9", "10", "11", "12", "13", "14", "15",
-					"16" };
-		}
+		texts = new String[] { "Basics1", "Basics2", "Basics3", "Color", "Number&Measure", "Food", "Shape",
+				"Nature" };// Negation Question Time Tense 
 
 		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
 		for (int i = 0; i < images.length; i++) {
@@ -399,47 +207,6 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 				new int[] { R.id.itemImage, R.id.itemText, R.id.itemSign });
 		centGridView.setAdapter(saImageItemsViewPager);
 		saImageItemsViewPager.notifyDataSetChanged();
-	}
-
-	/**
-	 * @author
-	 */
-	public class LoadNoticesThread implements ThreadWithDialogListener {
-		@Override
-		public boolean TaskMain() {
-			noticeModel = null;
-			HttpInterfaces interfaces = new HttpInterfaces(getActivity());
-
-			noticeModel = interfaces.getNotices(pageIndex, pageSize);
-			return true;
-		}
-
-		@Override
-		public boolean OnTaskDone() {
-			IsRefresh = false;
-			if (noticeModel != null) {
-				if (noticeModel.getStatus() == 1) {
-					if (noticeModel.getData() != null) {
-						if (noticeModel.getData().size() < pageSize) {
-							IsEnd = true;
-						} else {
-							pageIndex++;
-						}
-						noticeList.addAll(noticeModel.getData());
-						adapter.noticeList = noticeList;
-						adapter.notifyDataSetChanged();
-					}
-				}
-
-			}
-			return true;
-		}
-
-		@Override
-		public boolean OnTaskDismissed() {
-			// TODO Auto-generated method stub
-			return true;
-		}
 	}
 
 }
