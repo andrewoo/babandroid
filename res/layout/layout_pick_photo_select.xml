@@ -13,8 +13,8 @@
         android:background="@drawable/bg_white_to_grey"
         android:gravity="center"
         android:padding="10dip"
-        android:text="拍照"
-        android:textColor="@color/deep_grey"
+        android:text="Take Photo"
+        android:textColor="@color/red"
         android:textSize="@dimen/text_s16" />
 
     <TextView
@@ -25,7 +25,7 @@
         android:background="@drawable/bg_white_to_grey"
         android:gravity="center"
         android:padding="10dip"
-        android:text="从相册选取"
+        android:text="Choose Existing"
         android:textColor="@color/deep_grey"
         android:textSize="@dimen/text_s16" />
 
@@ -50,7 +50,7 @@
         android:background="@drawable/bg_white_to_grey"
         android:gravity="center"
         android:padding="10dip"
-        android:text="取消"
+        android:text="cancel"
         android:textColor="@color/deep_grey"
         android:textSize="@dimen/text_s16" />
 

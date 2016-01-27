@@ -122,6 +122,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 拼音练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.PinyinExerciseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
         <!-- 网页 -->
         <activity
             android:name="com.hw.chineseLearn.base.MainWebActivity"
@@ -151,9 +160,24 @@
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
 
+        <!-- 个人中心页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabMe.MyAccountActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
         <!-- 忘记密码页面 -->
         <activity
             android:name="com.hw.chineseLearn.tabMe.MyForgotPswActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateVisible" >
+        </activity>
+        <!-- 修改密码页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabMe.MyChangePswActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateVisible" >

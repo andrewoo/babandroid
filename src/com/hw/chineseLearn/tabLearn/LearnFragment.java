@@ -2,79 +2,53 @@ package com.hw.chineseLearn.tabLearn;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.HomeFunctionAdapter_new;
-import com.hw.chineseLearn.adapter.NoticesListAdapter;
+import com.hw.chineseLearn.adapter.LearnUnitAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
-import com.hw.chineseLearn.interfaces.HttpInterfaces;
-import com.hw.chineseLearn.model.MeiTuanGuessBaseModel;
+import com.hw.chineseLearn.model.LearnSubjectBaseModel;
 import com.hw.chineseLearn.model.NoticeModel;
-import com.util.thread.ThreadWithDialogListener;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.weight.AddressSelectPopMenu;
-import com.util.weight.PullToRefreshView;
-import com.util.weight.PullToRefreshView.OnFooterRefreshListener;
-import com.util.weight.PullToRefreshView.OnHeaderRefreshListener;
-import com.util.weight.PullToRefreshView.OnRefreshTouchListener;
+import com.util.weight.SelfGridView;
 
 /**
+ * 学习-首页
+ * 
  * @author yh
  */
 @SuppressLint("NewApi")
 public class LearnFragment extends BaseFragment implements OnClickListener {
 	private View contentView;// 主view
 
-	// 首页轮播图
-	private View layout_adv;
-	// private AdvViewPagerAdapter pagerAdapter;
-	private LinearLayout layout_dots;
-	private ArrayList<View> dot_view;
-	private int currentItem = 0;
-
-	// 列表-上下拉刷新
-	private String serverTime = "";
-	private int pageIndex = 1, pageSize = 10;
-	private boolean IsEnd = false;
-	public static boolean IsRefresh = false;
-
 	private ThreadWithDialogTask task;
-	private NoticeModel noticeModel;
 	public static LearnFragment fragment;
-
-	private boolean IsFirst = true;
-
-	private boolean IsCollect = false;
-	AddressSelectPopMenu popWin;
+	Context context;
+	LearnUnitAdapter learnUnit1Adapter, learnUnit2Adapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		fragment = this;
+		context = getActivity();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		contentView = inflater.inflate(R.layout.fragment_notice, null);
+		contentView = inflater.inflate(R.layout.fragment_learn, null);
 
 		task = new ThreadWithDialogTask();
 
@@ -121,56 +95,13 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	 * 初始化
 	 */
 	public void init() {
-
-		createCenter();
-	}
-
-	HomeFunctionAdapter_new saImageItemsViewPager;
-	/**
-	 * ViewPager中所有的页面，list size有几个，就有几个页面
-	 */
-	ArrayList<View> pagerList;
-	GridView centGridView;
-	/**
-	 * 滑动的小圆点
-	 */
-	public List<View> dots;
-	int currentPager = 0;
-
-	// 主菜单的文本
-	private String texts[] = null;
-	// 主菜单的图标
-	private int images[] = null;
-
-	public int[] theNewInfoCount = new int[30];
-
-	/**
-	 * 中部Viewpager
-	 */
-	private void createCenter() {
-		// TODO Auto-generated method stub
-
-		pagerList = new ArrayList<View>();
-
-		View v = contentView.findViewById(R.id.v_dot0);
-		View v1 = contentView.findViewById(R.id.v_dot1);
-
-		dots = new ArrayList<View>();
-
-		dots.add(v);
-		dots.add(v1);
-		// 实例化一个view 添加到pagerList中
-		View layout1 = LayoutInflater.from(getActivity()).inflate(
-				R.layout.activity_gv_center, null);
-		View layout2 = LayoutInflater.from(getActivity()).inflate(
-				R.layout.activity_gv_center, null);
-
-		pagerList.add(layout1);
-		pagerList.add(layout2);
-
 		getViewPagerData();
-
 	}
+
+	ArrayList<LearnSubjectBaseModel> listBase = new ArrayList<LearnSubjectBaseModel>();
+	ArrayList<LearnSubjectBaseModel> listAdvance = new ArrayList<LearnSubjectBaseModel>();
+
+	SelfGridView centGridView, centGridView1;
 
 	/**
 	 * 显示数据并设置监听
@@ -179,34 +110,178 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	 */
 	public void getViewPagerData() {
 		// TODO Auto-generated method stub
-		centGridView = (GridView)contentView.findViewById(R.id.gv_center_gridview);
+		centGridView = (SelfGridView) contentView
+				.findViewById(R.id.gv_center_gridview);
 
-		images = new int[] { R.drawable.ic_category_0,
-				R.drawable.ic_category_1, R.drawable.ic_category_2,
-				R.drawable.ic_category_3, R.drawable.ic_category_4,
-				R.drawable.ic_category_5, R.drawable.ic_category_6,
-				R.drawable.ic_category_7 };
+		LearnSubjectBaseModel modelBase1 = new LearnSubjectBaseModel();
+		modelBase1.setIconResSuffix("lu1_1_1");
+		modelBase1.setUnitName("Basics1");
+		modelBase1.setLessonList("1;");
+		listBase.add(modelBase1);
 
-		texts = new String[] { "Basics1", "Basics2", "Basics3", "Color", "Number&Measure", "Food", "Shape",
-				"Nature" };// Negation Question Time Tense 
+		LearnSubjectBaseModel modelBase2 = new LearnSubjectBaseModel();
+		modelBase2.setIconResSuffix("lu0_1_2");
+		modelBase2.setUnitName("Basics2");
+		modelBase2.setLessonList("1;2;3;4");
+		listBase.add(modelBase2);
 
-		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
-		for (int i = 0; i < images.length; i++) {
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("itemImage", images[i]);
-			map.put("itemSign", this.theNewInfoCount[i]);
-			map.put("itemText", texts[i]);
-			lstImageItem.add(map);
-		}
+		LearnSubjectBaseModel modelBase3 = new LearnSubjectBaseModel();
+		modelBase3.setIconResSuffix("lu0_1_3");
+		modelBase3.setUnitName("Basics3");
+		modelBase3.setLessonList("1;2;3");
+		listBase.add(modelBase3);
 
-		saImageItemsViewPager = new HomeFunctionAdapter_new(
-				getActivity(),
-				lstImageItem,// 数据源
-				R.layout.night_item_new,// 显示布局
-				new String[] { "itemImage", "itemText", "itemSign" },
-				new int[] { R.id.itemImage, R.id.itemText, R.id.itemSign });
-		centGridView.setAdapter(saImageItemsViewPager);
-		saImageItemsViewPager.notifyDataSetChanged();
+		LearnSubjectBaseModel modelBase4 = new LearnSubjectBaseModel();
+		modelBase4.setIconResSuffix("lu0_1_4");
+		modelBase4.setUnitName("Color");
+		modelBase4.setLessonList("1;2;3");
+		listBase.add(modelBase4);
+
+		LearnSubjectBaseModel modelBase5 = new LearnSubjectBaseModel();
+		modelBase5.setIconResSuffix("lu0_1_5");
+		modelBase5.setUnitName("Number&Measure");
+		modelBase5.setLessonList("1;2;3");
+		listBase.add(modelBase5);
+
+		LearnSubjectBaseModel modelBase6 = new LearnSubjectBaseModel();
+		modelBase6.setIconResSuffix("lu0_1_6");
+		modelBase6.setUnitName("Food");
+		modelBase6.setLessonList("1;2;3");
+		listBase.add(modelBase6);
+
+		LearnSubjectBaseModel modelBase7 = new LearnSubjectBaseModel();
+		modelBase7.setIconResSuffix("lu0_2_1");
+		modelBase7.setUnitName("Shape");
+		modelBase7.setLessonList("1;2;3");
+		listBase.add(modelBase7);
+
+		LearnSubjectBaseModel modelBase8 = new LearnSubjectBaseModel();
+		modelBase8.setIconResSuffix("lu0_2_2");
+		modelBase8.setUnitName("Nature");
+		modelBase8.setLessonList("1;2;3");
+		listBase.add(modelBase8);
+
+		LearnSubjectBaseModel modelBase9 = new LearnSubjectBaseModel();
+		modelBase9.setIconResSuffix("lu0_2_3");
+		modelBase9.setUnitName("Negation");
+		modelBase9.setLessonList("1;2;3");
+		listBase.add(modelBase9);
+
+		LearnSubjectBaseModel modelBase10 = new LearnSubjectBaseModel();
+		modelBase10.setIconResSuffix("lu0_2_4");
+		modelBase10.setUnitName("Question");
+		modelBase10.setLessonList("1;2;3");
+		listBase.add(modelBase10);
+
+		LearnSubjectBaseModel modelBase11 = new LearnSubjectBaseModel();
+		modelBase11.setIconResSuffix("lu0_3_1");
+		modelBase11.setUnitName("Time");
+		modelBase11.setLessonList("1;2;3");
+		listBase.add(modelBase11);
+
+		LearnSubjectBaseModel modelBase12 = new LearnSubjectBaseModel();
+		modelBase12.setIconResSuffix("lu0_3_2");
+		modelBase12.setUnitName("Tense");
+		modelBase12.setLessonList("1;2;3;4");
+		listBase.add(modelBase12);
+
+		learnUnit1Adapter = new LearnUnitAdapter(context, listBase);
+		centGridView.setAdapter(learnUnit1Adapter);
+		learnUnit1Adapter.notifyDataSetChanged();
+
+		ImageView img = (ImageView) contentView.findViewById(R.id.img);
+		img.setImageResource(context.getResources().getIdentifier(
+				"account_changepsw", "drawable", context.getPackageName()));
+
+		centGridView1 = (SelfGridView) contentView
+				.findViewById(R.id.gv_center_gridview1);
+
+		LearnSubjectBaseModel modelAdvance1 = new LearnSubjectBaseModel();
+		modelAdvance1.setIconResSuffix("lu0_3_3");
+		modelAdvance1.setUnitName("Number");
+		modelAdvance1.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance1);
+
+		LearnSubjectBaseModel modelAdvance2 = new LearnSubjectBaseModel();
+		modelAdvance2.setIconResSuffix("lu0_3_4");
+		modelAdvance2.setUnitName("Animal & Adverb");
+		modelAdvance2.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance2);
+
+		LearnSubjectBaseModel modelAdvance3 = new LearnSubjectBaseModel();
+		modelAdvance3.setIconResSuffix("lu0_3_5");
+		modelAdvance3.setUnitName("Question");
+		modelAdvance3.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance3);
+
+		LearnSubjectBaseModel modelAdvance4 = new LearnSubjectBaseModel();
+		modelAdvance4.setIconResSuffix("lu0_4_1");
+		modelAdvance4.setUnitName("Family & Adjective");
+		modelAdvance4.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance4);
+
+		LearnSubjectBaseModel modelAdvance5 = new LearnSubjectBaseModel();
+		modelAdvance5.setIconResSuffix("lu0_4_2");
+		modelAdvance5.setUnitName("Clothing & Aspect");
+		modelAdvance5.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance5);
+
+		LearnSubjectBaseModel modelAdvance6 = new LearnSubjectBaseModel();
+		modelAdvance6.setIconResSuffix("lu0_4_3");
+		modelAdvance6.setUnitName("Shopping");
+		modelAdvance6.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance6);
+
+		LearnSubjectBaseModel modelAdvance7 = new LearnSubjectBaseModel();
+		modelAdvance7.setIconResSuffix("lu0_4_4");
+		modelAdvance7.setUnitName("HouseHold & Existential");
+		modelAdvance7.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance7);
+
+		LearnSubjectBaseModel modelAdvance8 = new LearnSubjectBaseModel();
+		modelAdvance8.setIconResSuffix("lu0_4_5");
+		modelAdvance8.setUnitName("Country & Verb+guo");
+		modelAdvance8.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance8);
+
+		LearnSubjectBaseModel modelAdvance9 = new LearnSubjectBaseModel();
+		modelAdvance9.setIconResSuffix("lu0_4_6");
+		modelAdvance9.setUnitName("Language");
+		modelAdvance9.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance9);
+
+		LearnSubjectBaseModel modelAdvance10 = new LearnSubjectBaseModel();
+		modelAdvance10.setIconResSuffix("lu0_4_7");
+		modelAdvance10.setUnitName("A+bu/mei+A");
+		modelAdvance10.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance10);
+
+		LearnSubjectBaseModel modelAdvance11 = new LearnSubjectBaseModel();
+		modelAdvance11.setIconResSuffix("lu0_5_1");
+		modelAdvance11.setUnitName("Travel & Alternative");
+		modelAdvance11.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance11);
+
+		LearnSubjectBaseModel modelAdvance12 = new LearnSubjectBaseModel();
+		modelAdvance12.setIconResSuffix("lu0_5_2");
+		modelAdvance12.setUnitName("Festival");
+		modelAdvance12.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance12);
+
+		LearnSubjectBaseModel modelAdvance13 = new LearnSubjectBaseModel();
+		modelAdvance13.setIconResSuffix("lu0_5_3");
+		modelAdvance13.setUnitName("Dinning & Double Object");
+		modelAdvance13.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance13);
+
+		LearnSubjectBaseModel modelAdvance14 = new LearnSubjectBaseModel();
+		modelAdvance14.setIconResSuffix("lu0_5_4");
+		modelAdvance14.setUnitName("Food & Passive Voice");
+		modelAdvance14.setLessonList("1;2;3");
+		listAdvance.add(modelAdvance14);
+
+		 learnUnit2Adapter = new LearnUnitAdapter(context, listAdvance);
+		 centGridView1.setAdapter(learnUnit2Adapter);
+
 	}
-
 }

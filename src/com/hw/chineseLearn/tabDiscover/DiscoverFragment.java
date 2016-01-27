@@ -1,6 +1,7 @@
 package com.hw.chineseLearn.tabDiscover;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +70,8 @@ public class DiscoverFragment extends BaseFragment implements OnClickListener {
 
 			break;
 		case R.id.rel_pinyin_chart:
-
+			startActivity(new Intent(getActivity(),
+					PinyinExerciseActivity.class));
 			break;
 		case R.id.rel_pinyin_tone:
 

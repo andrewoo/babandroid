@@ -39,6 +39,7 @@ public class MyRegisterActivity extends BaseActivity {
 		interfaces = new HttpInterfaces(this);
 		init();
 		CustomApplication.app.addActivity(this);
+		super.gestureDetector();
 	}
 
 	/**

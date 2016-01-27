@@ -80,7 +80,7 @@ public class DiscoverFragment1 extends BaseFragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		contentView = inflater.inflate(R.layout.fragment_notice, null);
+		contentView = inflater.inflate(R.layout.fragment_learn, null);
 
 		task = new ThreadWithDialogTask();
 

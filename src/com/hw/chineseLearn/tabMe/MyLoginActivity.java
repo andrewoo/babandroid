@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.interfaces.AppConstants;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
 import com.hw.chineseLearn.model.SimpleModel;
 import com.util.thread.ThreadWithDialogTask;
@@ -48,6 +49,7 @@ public class MyLoginActivity extends BaseActivity {
 		interfaces = new HttpInterfaces(this);
 		init();
 		CustomApplication.app.addActivity(this);
+		super.gestureDetector();
 	}
 
 	/**
@@ -66,6 +68,13 @@ public class MyLoginActivity extends BaseActivity {
 		btn_login.setOnClickListener(onClickListener);
 		btn_forgot_psw.setOnClickListener(onClickListener);
 		btn_sign_up.setOnClickListener(onClickListener);
+		emailString = CustomApplication.app.preferencesUtil.getValue(
+				AppConstants.LOGIN_USERNAME, "");
+		pswString = CustomApplication.app.preferencesUtil.getValue(
+				AppConstants.LOGIN_PWD, "");
+
+		txt_username.setText(emailString);
+		et_pwd.setText(pswString);
 
 	}
 
@@ -133,6 +142,7 @@ public class MyLoginActivity extends BaseActivity {
 
 			case R.id.btn_login://
 				signIn();
+
 				break;
 			case R.id.btn_forgot_psw:
 				startActivity(new Intent(MyLoginActivity.this,
@@ -148,13 +158,15 @@ public class MyLoginActivity extends BaseActivity {
 			}
 		}
 	};
+	String emailString = "";
+	String pswString = "";
 
 	/**
 	 * 登录
 	 */
 	private void signIn() {
-		String emailString = txt_username.getText().toString();
-		String pswString = et_pwd.getText().toString();
+		emailString = txt_username.getText().toString();
+		pswString = et_pwd.getText().toString();
 		if ("".equals(emailString)) {
 			showNothingInputDialog(R.id.txt_username);
 
@@ -162,6 +174,14 @@ public class MyLoginActivity extends BaseActivity {
 			showNothingInputDialog(R.id.et_pwd);
 		} else {
 			// sign in
+			CustomApplication.app.isLogin = true;
+			CustomApplication.app.finishActivity(this);
+			// 保存账户和密码
+			CustomApplication.app.preferencesUtil.setValue(
+					AppConstants.LOGIN_USERNAME, emailString);
+			CustomApplication.app.preferencesUtil.setValue(
+					AppConstants.LOGIN_PWD, pswString);
+			closeWindowSoftInput();
 		}
 	}
 
@@ -213,6 +233,7 @@ public class MyLoginActivity extends BaseActivity {
 		mModifyDialog.show();
 		mModifyDialog.setContentView(view);
 	}
+
 	// public class LoginOut implements ThreadWithDialogListener {
 	//
 	// @Override

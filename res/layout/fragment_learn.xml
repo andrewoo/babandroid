@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/light_grey_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <com.util.weight.SelfGridView
+                android:id="@+id/gv_center_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnWidth="80dp"
+                android:descendantFocusability="afterDescendants"
+                android:gravity="center"
+                android:horizontalSpacing="7dp"
+                android:listSelector="#00000000"
+                android:numColumns="3"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="7dp" >
+            </com.util.weight.SelfGridView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_selector_loginwx1"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:text="TestOut"
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <com.util.weight.SelfGridView
+                android:id="@+id/gv_center_gridview1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:columnWidth="80dp"
+                android:descendantFocusability="afterDescendants"
+                android:gravity="center"
+                android:horizontalSpacing="7dp"
+                android:listSelector="#00000000"
+                android:numColumns="3"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="7dp" >
+            </com.util.weight.SelfGridView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -14,10 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseFragment;
+import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.base.MainWebActivity;
+import com.hw.chineseLearn.interfaces.AppConstants;
 
 /**
  * @author yh
@@ -32,6 +35,8 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 			rel_rate_this_app, rel_settings;
 
 	public static MineFragment fragment;
+
+	private TextView text_name;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,10 +59,15 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.lin_personal_info:
-			startActivity(new Intent(getActivity(), MyLoginActivity.class));
+			if (CustomApplication.app.isLogin) {
+				startActivity(new Intent(getActivity(), MyAccountActivity.class));
+			} else {
+				startActivity(new Intent(getActivity(), MyLoginActivity.class));
+			}
+
 			break;
 		case R.id.rel_download_mererials:
-
+			// startActivity(new Intent(getActivity(), MyLoginActivity.class));
 			break;
 		case R.id.rel_like_us_on_facebook:
 			Intent intentFacebook = new Intent();
@@ -104,6 +114,7 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		setUserData();
 	}
 
 	@Override
@@ -120,6 +131,7 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 		lin_personal_info = (LinearLayout) contentView
 				.findViewById(R.id.lin_personal_info);
 
+		text_name = (TextView) contentView.findViewById(R.id.text_name);
 		rg_chinese_display = (RadioGroup) contentView
 				.findViewById(R.id.rg_chinese_display);
 		rg_chinese_display
@@ -178,6 +190,21 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 		rel_like_us_on_facebook.setOnClickListener(this);
 		rel_rate_this_app.setOnClickListener(this);
 		rel_settings.setOnClickListener(this);
+	}
+
+	/**
+	 * 设置个人帐号数据
+	 */
+	private void setUserData() {
+
+		if (CustomApplication.app.isLogin) {
+			String emailString = CustomApplication.app.preferencesUtil
+					.getValue(AppConstants.LOGIN_USERNAME, "");
+			text_name.setText(emailString);
+		} else {
+			text_name.setText("Sign in/Sign up");
+		}
+
 	}
 
 	private void closeWindowSoftInput() {
