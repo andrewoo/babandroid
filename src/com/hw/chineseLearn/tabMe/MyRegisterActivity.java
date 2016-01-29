@@ -108,7 +108,7 @@ public class MyRegisterActivity extends BaseActivity {
 
 			case R.id.iv_title_left:// 返回
 
-				finish();
+				CustomApplication.app.finishActivity(MyRegisterActivity.this);
 				break;
 
 			case R.id.btn_login:

@@ -198,6 +198,22 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
+
+        <!-- 课程总览页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonViewActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 课程练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonExerciseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
     </application>
 
 </manifest>

@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.HomeFunctionAdapter_new;
 import com.hw.chineseLearn.adapter.NoticesListAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
@@ -185,7 +184,6 @@ public class DiscoverFragment1 extends BaseFragment implements OnClickListener {
 		createCenter();
 	}
 
-	HomeFunctionAdapter_new saImageItemsViewPager;
 	/**
 	 * ViewPager中所有的页面，list size有几个，就有几个页面
 	 */
@@ -388,14 +386,14 @@ public class DiscoverFragment1 extends BaseFragment implements OnClickListener {
 			lstImageItem.add(map);
 		}
 
-		saImageItemsViewPager = new HomeFunctionAdapter_new(
-				getActivity(),
-				lstImageItem,// 数据源
-				R.layout.night_item_new,// 显示布局
-				new String[] { "itemImage", "itemText", "itemSign" },
-				new int[] { R.id.itemImage, R.id.itemText, R.id.itemSign });
-		centGridView.setAdapter(saImageItemsViewPager);
-		saImageItemsViewPager.notifyDataSetChanged();
+		// saImageItemsViewPager = new HomeFunctionAdapter_new(
+		// getActivity(),
+		// lstImageItem,// 数据源
+		// R.layout.night_item_new,// 显示布局
+		// new String[] { "itemImage", "itemText", "itemSign" },
+		// new int[] { R.id.itemImage, R.id.itemText, R.id.itemSign });
+		// centGridView.setAdapter(saImageItemsViewPager);
+		// saImageItemsViewPager.notifyDataSetChanged();
 	}
 
 	/**

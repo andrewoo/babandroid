@@ -58,7 +58,6 @@ public class BaseActivity extends FragmentActivity {
 		listFragment = new ArrayList<Fragment>();
 		threadPoolManager = ThreadPoolManager.getInstance();
 		spUtil = SharedPreferencesUtil.getInstance(this);
-		// gestureDetector();
 	}
 
 	@Override
@@ -198,6 +197,24 @@ public class BaseActivity extends FragmentActivity {
 		// R.anim.fragment_slide_right_exit);
 		// ft.add(R.id.content,fragment);
 		ft.replace(R.id.container, fragment);
+		ft.addToBackStack(null);
+		ft.commit();
+	}
+
+	/**
+	 * fragment替换
+	 * 
+	 * @param fragment
+	 */
+	public void replaceTo1(Fragment fragment) {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction ft = fragmentManager.beginTransaction();
+		// ft.setCustomAnimations(R.anim.fragment_slide_right_enter,
+		// R.anim.fragment_slide_left_exit,
+		// R.anim.fragment_slide_left_enter,
+		// R.anim.fragment_slide_right_exit);
+		// ft.add(R.id.content,fragment);
+		ft.replace(R.id.container1, fragment);
 		ft.addToBackStack(null);
 		ft.commit();
 	}
@@ -414,10 +431,10 @@ public class BaseActivity extends FragmentActivity {
 	}
 
 	// 重写activity的触摸事件
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// 2.让手势识别器生效
-		mGestureDetector.onTouchEvent(event);
-		return super.onTouchEvent(event);
-	}
+	// @Override
+	// public boolean onTouchEvent(MotionEvent event) {
+	// // 2.让手势识别器生效
+	// mGestureDetector.onTouchEvent(event);
+	// return super.onTouchEvent(event);
+	// }
 }

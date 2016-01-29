@@ -120,10 +120,6 @@
     <color name="orchid">#DA70D6</color>
     <!-- 淡紫色 -->
     <color name="thistle">#D8BFD8</color>
-    <!-- 蓟色 -->
-    <color name="lightgray">#D3D3D3</color>
-    <!-- 亮灰色 -->
-    <color name="lightgrey">#D3D3D3</color>
     <!-- 亮灰色 -->
     <color name="tan">#D2B48C</color>
     <!-- 茶色 -->
@@ -317,7 +313,6 @@
 
     <!-- 最深灰文字 -->
     <color name="max_grey">#999999</color>
-    <color name="light_gray">#D3D3D3</color>
     <color name="dark_white">#EEEEEE</color>
     <color name="skyblue1">#6599E4</color>
     <color name="text_title_color">#222222</color>
@@ -327,7 +322,6 @@
     <color name="color_darkgrey">#C3C3C3</color>
     <color name="text_greywhite">#F0F0F0</color>
     <color name="text_colorgrey">#D4D4D4</color>
-    <color name="chat_detail_split_line_color">#d3d3d3</color>
     <color name="item_click_bg_color">#dddddd</color>
     <color name="menu_item_back_pres_color">#3773cb</color>
     <color name="jpush_blue">#3f80dc</color>
@@ -349,5 +343,6 @@
     <color name="color_yanghong">#FF3028</color>
     <color name="chinese_skill_blue">#5B83AB</color>
     <color name="chinese_skill_blue1">#1AA0AA</color>
+    <color name="chinese_skill_orange">#FF8B00</color>
 
 </resources>

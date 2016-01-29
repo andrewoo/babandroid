@@ -23,7 +23,7 @@
         android:id="@+id/np__numberpicker_input"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        class="com.hw.chineseLearn.numberpicker.lib.NumberPicker$CustomEditText"
+        class="com.util.weight.NumberPicker$CustomEditText"
         android:background="@null"
         android:gravity="center"
         android:singleLine="true"

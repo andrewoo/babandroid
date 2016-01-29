@@ -17,6 +17,7 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
 import com.hw.chineseLearn.model.SimpleModel;
+import com.hw.chineseLearn.tabLearn.LessonViewActivity;
 import com.util.thread.ThreadWithDialogTask;
 
 /**
@@ -123,7 +124,7 @@ public class MyForgotPswActivity extends BaseActivity {
 
 			case R.id.iv_title_left:// 返回
 				closeWindowSoftInput();
-				finish();
+				CustomApplication.app.finishActivity(MyForgotPswActivity.this);
 				break;
 
 			case R.id.btn_confirm:

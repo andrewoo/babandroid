@@ -110,7 +110,8 @@ public class MySettingRemindersActivity extends BaseActivity {
 
 			case R.id.iv_title_left:// 返回
 
-				finish();
+				CustomApplication.app
+						.finishActivity(MySettingRemindersActivity.this);
 				break;
 
 			case R.id.rel_reminders:
