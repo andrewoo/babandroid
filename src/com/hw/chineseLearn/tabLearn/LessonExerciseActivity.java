@@ -277,7 +277,7 @@ public class LessonExerciseActivity extends BaseActivity {
 				.findViewById(R.id.btn_report_bug);
 
 		Button btn_next = (Button) pview.findViewById(R.id.btn_next);
-
+		//
 		final CustomDialog builder = new CustomDialog(this, R.style.my_dialog)
 				.create(pview, false, 1f, 1f, 1);
 		builder.show();
