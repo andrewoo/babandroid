@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp" >
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LESSON"
+        android:textColor="@color/deep_grey"
+        android:textSize="@dimen/text_s18" />
+
+    <TextView
+        android:id="@+id/tv_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="1 of 2"
+        android:textColor="@color/chinese_skill_blue1"
+        android:textSize="@dimen/text_s16" />
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="人；男人；女人；男孩；女孩"
+        android:textColor="@color/deep_grey"
+        android:textSize="@dimen/text_s14" />
+
+    <Button
+        android:id="@+id/btn_redo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_selector_loginwx1"
+        android:gravity="center"
+        android:padding="10dip"
+        android:singleLine="true"
+        android:text="Redo"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_s14" />
+
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_selector_loginwx1"
+        android:gravity="center"
+        android:padding="10dip"
+        android:singleLine="true"
+        android:text="Start"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_s14" />
+
+</LinearLayout>
