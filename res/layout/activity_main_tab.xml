@@ -49,33 +49,83 @@
         android:paddingBottom="@dimen/main_nav_padding"
         android:paddingTop="@dimen/main_nav_padding" >
 
-        <Button
-            android:id="@+id/home_rb_nav01"
-            style="@style/main_btn_style"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:id="@+id/lin_1"
+            android:layout_width="0.0dp"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/main_navi_one"
-            android:text="@string/home_nav01"
-            android:textColor="@drawable/rb_selector_textcolor" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/home_rb_nav02"
-            style="@style/main_btn_style"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/main_navi_two"
-            android:text="@string/home_nav02"
-            android:textColor="@drawable/rb_selector_textcolor" />
+            <Button
+                android:id="@+id/home_rb_nav01"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/main_navi_one"
+                android:focusable="false" />
 
-        <Button
-            android:id="@+id/home_rb_nav03"
-            style="@style/main_btn_style"
-            android:layout_width="fill_parent"
+            <TextView
+                android:id="@+id/home_tv_nav01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:focusable="false"
+                android:text="@string/home_nav01"
+                android:textColor="@drawable/rb_selector_textcolor"
+                android:textSize="@dimen/text_s10" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_2"
+            android:layout_width="0.0dp"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/main_navi_three"
-            android:paddingTop="3dp"
-            android:text="@string/home_nav03"
-            android:textColor="@drawable/rb_selector_textcolor" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/home_rb_nav02"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/main_navi_two"
+                android:focusable="false" />
+
+            <TextView
+                android:id="@+id/home_tv_nav02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:focusable="false"
+                android:text="@string/home_nav02"
+                android:textColor="@drawable/rb_selector_textcolor"
+                android:textSize="@dimen/text_s10" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_3"
+            android:layout_width="0.0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/home_rb_nav03"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/main_navi_three"
+                android:focusable="false" />
+
+            <TextView
+                android:id="@+id/home_tv_nav03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:focusable="false"
+                android:text="@string/home_nav03"
+                android:textColor="@drawable/rb_selector_textcolor"
+                android:textSize="@dimen/text_s10" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

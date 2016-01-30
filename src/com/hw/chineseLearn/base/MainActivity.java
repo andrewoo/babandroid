@@ -3,8 +3,10 @@ package com.hw.chineseLearn.base;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,14 +29,20 @@ import com.hw.chineseLearn.tabMe.MineFragment;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
+import com.util.weight.CustomDialog;
 
 public class MainActivity extends BaseActivity implements OnClickListener {
 	private String TAG = "==MainActivity==";
 	Context context;
 	View contentView;
 	public int selectIndex = -1;
+	private int[] bottomLinIds;
 	private int[] bottomBtnIds;
+	private int[] bottomTvIds;
+	private LinearLayout[] mLinList;
 	private Button[] mBtnList;
+	private TextView[] mTvList;
+
 	private FrameLayout[] containers;
 	private int[] containerIds;
 
@@ -70,15 +79,31 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			containers[i] = (FrameLayout) findViewById(containerIds[i]);
 		}
 
+		bottomLinIds = new int[] { R.id.lin_1, R.id.lin_2, R.id.lin_3 };
 		bottomBtnIds = new int[] { R.id.home_rb_nav01, R.id.home_rb_nav02,
 				R.id.home_rb_nav03 };
+		bottomTvIds = new int[] { R.id.home_tv_nav01, R.id.home_tv_nav02,
+				R.id.home_tv_nav03 };
 
+		mLinList = new LinearLayout[bottomLinIds.length];
 		mBtnList = new Button[bottomBtnIds.length];
+		mTvList = new TextView[bottomTvIds.length];
+
+		for (int i = 0; i < bottomLinIds.length; i++) {
+			mLinList[i] = (LinearLayout) findViewById(bottomLinIds[i]);
+			mLinList[i].setOnClickListener(this);
+		}
+
 		for (int i = 0; i < bottomBtnIds.length; i++) {
 			mBtnList[i] = (Button) findViewById(bottomBtnIds[i]);
-			mBtnList[i].setOnClickListener(this);
+			mBtnList[i].setClickable(false);
+		}
+		for (int i = 0; i < bottomTvIds.length; i++) {
+			mTvList[i] = (TextView) findViewById(bottomTvIds[i]);
+			mTvList[i].setClickable(false);
 
 		}
+
 		performClickBtn(1);
 
 		if (tdt == null) {
@@ -88,8 +113,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			interfaces = new HttpInterfaces(MainActivity.this);
 		}
 
-		setTitle(View.GONE, View.VISIBLE, R.drawable.review_button, "",
-				View.GONE, View.VISIBLE, R.drawable.review_button);
+		setTitle(View.GONE, View.VISIBLE, R.drawable.img_share, "", View.GONE,
+				View.VISIBLE, R.drawable.review_button);
 
 	}
 
@@ -151,27 +176,6 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 	}
 
-	OnClickListener onClickListener = new OnClickListener() {
-
-		@Override
-		public void onClick(View arg0) {
-			// TODO Auto-generated method stub
-			switch (arg0.getId()) {
-
-			case R.id.iv_title_left:// share
-
-				break;
-
-			case R.id.iv_title_right:// review
-
-				break;
-
-			default:
-				break;
-			}
-		}
-	};
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -186,7 +190,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	public void onClick(View v) {
 		int v_id = v.getId();
 		switch (v_id) {
-		case R.id.home_rb_nav01:
+		case R.id.lin_1:
 			selectIndex = 0;
 			if (discoverFragment == null) {
 				discoverFragment = new DiscoverFragment();
@@ -195,7 +199,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			setTitle(View.GONE, View.GONE, 0, "Discover", View.GONE, View.GONE,
 					0);
 			break;
-		case R.id.home_rb_nav02:
+		case R.id.lin_2:
 			selectIndex = 1;
 
 			if (learnFragment == null) {
@@ -205,7 +209,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			setTitle(View.GONE, View.VISIBLE, R.drawable.review_button, "",
 					View.GONE, View.VISIBLE, R.drawable.review_button);
 			break;
-		case R.id.home_rb_nav03:
+		case R.id.lin_3:
 			selectIndex = 2;
 
 			if (mineFragment == null) {
@@ -235,16 +239,21 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 		for (int i = 0; i < bottomBtnIds.length; i++) {
 			if (index == i) {
+				mLinList[i].setSelected(true);
 				mBtnList[i].setSelected(true);
+				mTvList[i].setSelected(true);
+
 			} else {
+				mLinList[i].setSelected(false);
 				mBtnList[i].setSelected(false);
+				mTvList[i].setSelected(false);
 			}
 		}
 
 	}
 
 	public void performClickBtn(int i) {
-		mBtnList[i].performClick();
+		mLinList[i].performClick();
 	}
 
 	long mExitTime = 0;
@@ -304,6 +313,47 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 
+	private void showShareDialog() {
+		// 一个自定义的布局，作为显示的内容
+		View pview = LayoutInflater.from(context).inflate(
+				R.layout.layout_learn_share_dialog, null);
+
+		Button btn_copy_link = (Button) pview.findViewById(R.id.btn_copy_link);
+		LinearLayout lin_messenger = (LinearLayout) pview
+				.findViewById(R.id.lin_messenger);
+		LinearLayout lin_twitter = (LinearLayout) pview
+				.findViewById(R.id.lin_twitter);
+		LinearLayout lin_mail = (LinearLayout) pview
+				.findViewById(R.id.lin_mail);
+		LinearLayout lin_whatsapp = (LinearLayout) pview
+				.findViewById(R.id.lin_whatsapp);
+		LinearLayout lin_line = (LinearLayout) pview
+				.findViewById(R.id.lin_line);
+
+		final CustomDialog builder = new CustomDialog(MainActivity.this,
+				R.style.my_dialog).create(pview, true, 1f, 1f, 1);
+		builder.show();
+		builder.setCancelable(true);
+
+		btn_copy_link.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				UiUtil.showToast(context, "Copyed");
+				builder.dismiss();
+			}
+		});
+
+		builder.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				// TODO Auto-generated method stub
+			}
+		});
+
+	}
+
 	/**
 	 * 自定义广播接收器
 	 * 
@@ -340,4 +390,25 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 	}
 
+	OnClickListener onClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			switch (arg0.getId()) {
+
+			case R.id.iv_title_left:// share
+
+				showShareDialog();
+				break;
+
+			case R.id.iv_title_right:// review
+
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
 }
