@@ -122,22 +122,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- 拼音练习页面 -->
-        <activity
-            android:name="com.hw.chineseLearn.tabDiscover.PinyinExerciseActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" >
-        </activity>
-
-        <!-- 网页 -->
-        <activity
-            android:name="com.hw.chineseLearn.base.MainWebActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" >
-        </activity>
         <!-- 首页 -->
         <activity
             android:name="com.hw.chineseLearn.base.MainActivity"
@@ -145,6 +129,51 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
+        <!-- 救生工具页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.SurvivalKitActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- 拼音练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.PinyinExerciseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- 拼音音调页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.PinyinToneActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 拼写练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.StrokesOrderActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 流畅练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.FluentActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- 网页 -->
+        <activity
+            android:name="com.hw.chineseLearn.base.MainWebActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
         <!-- 注册页面 -->
         <activity
             android:name="com.hw.chineseLearn.tabMe.MyRegisterActivity"

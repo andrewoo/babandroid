@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 一级版块列表的选项布局 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_white_to_grey" >
-
-    <ImageView
-        android:id="@+id/father_icon"
-        android:layout_width="37dp"
-        android:layout_height="37dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:visibility="gone" >
-    </ImageView>
-
-    <TextView
-        android:id="@+id/father_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="12.0dp"
-        android:layout_marginLeft="10.0dp"
-        android:layout_marginTop="12.0dp"
-        android:gravity="center"
-        android:text="模特(10人)"
-        android:textColor="@color/grey"
-        android:textSize="@dimen/text_s16" />
+    android:background="@color/whitesmoke"
+    android:gravity="center_vertical"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp" >
 
     <TextView
         android:id="@+id/board_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerInParent="true"
-        android:layout_marginRight="20.0dp"
         android:background="@drawable/selector_1" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tv_father_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10.0dp"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:text="一"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/text_s16" />
+
+    <TextView
+        android:id="@+id/tv_child_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="17"
+        android:textColor="@color/deep_grey"
+        android:textSize="@dimen/text_s12" />
+
+</LinearLayout>

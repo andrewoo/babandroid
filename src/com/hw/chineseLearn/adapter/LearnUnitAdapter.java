@@ -90,7 +90,7 @@ public class LearnUnitAdapter extends BaseAdapter {
 				layoutParams.setMargins(5, 5, 5, 5);
 				imageView.setLayoutParams(layoutParams);
 				imageView.setBackground(context.getResources().getDrawable(
-						R.drawable.bg_circle_blue));
+						R.drawable.bg_circle_blue)); 
 				holder.lin_dots.addView(imageView);
 			}
 		}
