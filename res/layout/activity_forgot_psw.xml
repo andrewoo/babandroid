@@ -81,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dip"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/btn_selector_loginwx1"
+                    android:background="@drawable/btn_bg_blue"
                     android:gravity="center"
                     android:padding="10dip"
                     android:singleLine="true"

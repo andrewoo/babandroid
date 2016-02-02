@@ -39,8 +39,6 @@ public class GalleryAdapter extends BaseAdapter {
 		inflater = LayoutInflater.from(mContext);
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
-		ScaleAnimation scaleAnimation;
-
 	}
 
 	@Override
@@ -61,17 +59,12 @@ public class GalleryAdapter extends BaseAdapter {
 		return position;
 	}
 
-	public void setSelectItem(int selectItem) {
-
-		this.selectItem = selectItem;
-	}
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		ViewHolder holder = null;
 
-		if (mapView.get(position) == null) {
+		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = inflater.inflate(R.layout.layout_gellay_item, null);
 			holder.tv_description = (TextView) convertView
@@ -84,10 +77,9 @@ public class GalleryAdapter extends BaseAdapter {
 			holder.btn_redo = (Button) convertView.findViewById(R.id.btn_redo);
 			holder.btn_start = (Button) convertView
 					.findViewById(R.id.btn_start);
-			mapView.put(position, convertView);
+
 			convertView.setTag(holder);
 		} else {
-			convertView = mapView.get(position);
 			holder = (ViewHolder) convertView.getTag();
 		}
 		// if (selectItem == position) {
@@ -103,23 +95,23 @@ public class GalleryAdapter extends BaseAdapter {
 		//
 		// }
 
-		 holder.btn_redo.setOnClickListener(new View.OnClickListener() {
-		
-		 @Override
-		 public void onClick(View arg0) {
-		 // TODO Auto-generated method stub
-		 (mContext).startActivity(new Intent(mContext,
-		 LessonExerciseActivity.class));
-		 }
-		 });
-		 holder.btn_start.setOnClickListener(new View.OnClickListener() {
-		
-		 @Override
-		 public void onClick(View arg0) {
-		 // TODO Auto-generated method stub
-		 Log.d("11111", "2222222");
-		 }
-		 });
+		holder.btn_redo.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				(mContext).startActivity(new Intent(mContext,
+						LessonExerciseActivity.class));
+			}
+		});
+		holder.btn_start.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Log.d("11111", "2222222");
+			}
+		});
 
 		return convertView;
 	}

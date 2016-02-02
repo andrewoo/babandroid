@@ -57,108 +57,22 @@ public class PinyinToneActivity extends BaseActivity {
 		centGridView = (SelfGridView) contentView
 				.findViewById(R.id.gv_tone_gridview);
 
-		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-		modelBase1.setIconResSuffix("pinyintone_1");
-		modelBase1.setUnitName("");
-		modelBase1.setLessonList("");
-		modelBase1.setEnable(true);
-		listBase.add(modelBase1);
+		for (int i = 0; i < 67; i++) {
+			LearnUnitBaseModel modelBase = new LearnUnitBaseModel();
 
-		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
-		modelBase2.setIconResSuffix("pinyintone_l2");
-		modelBase2.setUnitName("");
-		modelBase2.setLessonList("");
-		listBase.add(modelBase2);
+			if (i == 0) {
+				modelBase.setEnable(true);
+				modelBase.setIconResSuffix("pinyintone_" + (i + 1));
+			} else if (i == 1) {
+				modelBase.setEnable(false);
+				modelBase.setIconResSuffix("pinyintone_l" + (i + 1));
+			} else {
+				modelBase.setEnable(false);
+				modelBase.setIconResSuffix("pinyintone_" + (i + 1));
+			}
 
-		LearnUnitBaseModel modelBase3 = new LearnUnitBaseModel();
-		modelBase3.setIconResSuffix("pinyintone_3");
-		modelBase3.setUnitName("");
-		modelBase3.setLessonList("");
-		listBase.add(modelBase3);
-
-		LearnUnitBaseModel modelBase4 = new LearnUnitBaseModel();
-		modelBase4.setIconResSuffix("pinyintone_4");
-		modelBase4.setUnitName("");
-		modelBase4.setLessonList("");
-		listBase.add(modelBase4);
-
-		LearnUnitBaseModel modelBase5 = new LearnUnitBaseModel();
-		modelBase5.setIconResSuffix("pinyintone_5");
-		modelBase5.setUnitName("");
-		modelBase5.setLessonList("");
-		listBase.add(modelBase5);
-
-		LearnUnitBaseModel modelBase6 = new LearnUnitBaseModel();
-		modelBase6.setIconResSuffix("pinyintone_6");
-		modelBase6.setUnitName("Food");
-		modelBase6.setLessonList("");
-		listBase.add(modelBase6);
-
-		LearnUnitBaseModel modelBase7 = new LearnUnitBaseModel();
-		modelBase7.setIconResSuffix("pinyintone_7");
-		modelBase7.setUnitName("");
-		modelBase7.setLessonList("");
-		listBase.add(modelBase7);
-
-		LearnUnitBaseModel modelBase8 = new LearnUnitBaseModel();
-		modelBase8.setIconResSuffix("pinyintone_8");
-		modelBase8.setUnitName("");
-		modelBase8.setLessonList("");
-		listBase.add(modelBase8);
-
-		LearnUnitBaseModel modelBase9 = new LearnUnitBaseModel();
-		modelBase9.setIconResSuffix("pinyintone_9");
-		modelBase9.setUnitName("");
-		modelBase9.setLessonList("");
-		listBase.add(modelBase9);
-
-		LearnUnitBaseModel modelBase10 = new LearnUnitBaseModel();
-		modelBase10.setIconResSuffix("pinyintone_10");
-		modelBase10.setUnitName("");
-		modelBase10.setLessonList("");
-		listBase.add(modelBase10);
-
-		LearnUnitBaseModel modelBase11 = new LearnUnitBaseModel();
-		modelBase11.setIconResSuffix("pinyintone_11");
-		modelBase11.setUnitName("");
-		modelBase11.setLessonList("");
-		listBase.add(modelBase11);
-
-		LearnUnitBaseModel modelBase12 = new LearnUnitBaseModel();
-		modelBase12.setIconResSuffix("pinyintone_12");
-		modelBase12.setUnitName("");
-		modelBase12.setLessonList("");
-		listBase.add(modelBase12);
-
-		LearnUnitBaseModel modelBase13 = new LearnUnitBaseModel();
-		modelBase13.setIconResSuffix("pinyintone_13");
-		modelBase13.setUnitName("");
-		modelBase13.setLessonList("");
-		listBase.add(modelBase13);
-
-		LearnUnitBaseModel modelBase14 = new LearnUnitBaseModel();
-		modelBase14.setIconResSuffix("pinyintone_14");
-		modelBase14.setUnitName("");
-		modelBase14.setLessonList("");
-		listBase.add(modelBase14);
-
-		LearnUnitBaseModel modelBase15 = new LearnUnitBaseModel();
-		modelBase15.setIconResSuffix("pinyintone_15");
-		modelBase15.setUnitName("");
-		modelBase15.setLessonList("");
-		listBase.add(modelBase15);
-
-		LearnUnitBaseModel modelBase16 = new LearnUnitBaseModel();
-		modelBase16.setIconResSuffix("pinyintone_16");
-		modelBase16.setUnitName("");
-		modelBase16.setLessonList("");
-		listBase.add(modelBase16);
-
-		LearnUnitBaseModel modelBase17 = new LearnUnitBaseModel();
-		modelBase17.setIconResSuffix("pinyintone_17");
-		modelBase17.setUnitName("");
-		modelBase17.setLessonList("");
-		listBase.add(modelBase17);
+			listBase.add(modelBase);
+		}
 
 		adapter = new ToneAdapter(context, listBase);
 		centGridView.setAdapter(adapter);
@@ -193,10 +107,10 @@ public class PinyinToneActivity extends BaseActivity {
 			LearnUnitBaseModel learnUnitBaseModel = listBase.get(arg2);
 			if (learnUnitBaseModel != null) {
 				boolean isEnable = learnUnitBaseModel.isEnable();
-				// if (isEnable) {
-				startActivity(new Intent(PinyinToneActivity.this,
-						LessonViewActivity.class));
-				// }
+				if (isEnable) {
+					startActivity(new Intent(PinyinToneActivity.this,
+							LessonViewActivity.class));
+				}
 			}
 		}
 	};

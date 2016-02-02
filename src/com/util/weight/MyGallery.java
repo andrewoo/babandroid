@@ -89,70 +89,72 @@ public class MyGallery extends Gallery {
 	}
 
 	// 控制gallery中每个图片的旋转(重写的gallery中方法)
-//	protected boolean getChildStaticTransformation(View child, Transformation t) {
-//		// 取得当前子view的半径值
-//		final int childCenter = getCenterOfView(child);
-//		final int childWidth = child.getWidth();
-//		// 旋转角度
-//		int rotationAngle = 0;
-//		// 重置转换状态
-//		t.clear();
-//		// 设置转换类型
-//		t.setTransformationType(Transformation.TYPE_MATRIX);
-//		// 如果图片位于中心位置不需要进行旋转
-//		if (childCenter == mCoveflowCenter) {
-//			transformImageBitmap(child, t, 0);
-//		} else {
-//			// 根据图片在gallery中的位置来计算图片的旋转角度
-//			rotationAngle = (int) (((float) (mCoveflowCenter - childCenter) / childWidth) * mMaxRotationAngle);
-//			System.out.println("rotationAngle:" + rotationAngle);
-//			// 如果旋转角度绝对值大于最大旋转角度返回（-mMaxRotationAngle或mMaxRotationAngle;）
-//			if (Math.abs(rotationAngle) > mMaxRotationAngle) {
-//				rotationAngle = (rotationAngle < 0) ? -mMaxRotationAngle
-//						: mMaxRotationAngle;
-//			}
-//			transformImageBitmap(child, t, rotationAngle);
-//		}
-//		return true;
-//	}
-//
-//	/** 
-//     *  
-//     */
-//	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-//		mCoveflowCenter = getCenterOfCoverflow();
-//		super.onSizeChanged(w, h, oldw, oldh);
-//	}
-//
-//	private void transformImageBitmap(View child, Transformation t,
-//			int rotationAngle) {
-//		// 对效果进行保存
-//		mCamera.save();
-//		final Matrix imageMatrix = t.getMatrix();
-//		// 图片高度
-//		final int imageHeight = child.getLayoutParams().height;
-//		// 图片宽度
-//		final int imageWidth = child.getLayoutParams().width;
-//
-//		// 返回旋转角度的绝对值
-//		final int rotation = Math.abs(rotationAngle);
-//
-//		// 在Z轴上正向移动camera的视角，实际效果为放大图片。
-//		// 如果在Y轴上移动，则图片上下移动；X轴上对应图片左右移动。
-//		mCamera.translate(0.0f, 0.0f, 100.0f);
-//		// As the angle of the view gets less, zoom in
-//		if (rotation < mMaxRotationAngle) {
-//			float zoomAmount = (float) (mMaxZoom + (rotation * 1.5));
-//			mCamera.translate(0.0f, 0.0f, zoomAmount);
-//		}
-//		// 在Y轴上旋转，对应图片竖向向里翻转。
-//		// 如果在X轴上旋转，则对应图片横向向里翻转。
-//		// mCamera.rotateY(rotationAngle);
-//		mCamera.getMatrix(imageMatrix);
-//		imageMatrix.preTranslate(-(imageWidth / 2), -(imageHeight / 2));
-//		imageMatrix.postTranslate((imageWidth / 2), (imageHeight / 2));
-//		mCamera.restore();
-//	}
+	// protected boolean getChildStaticTransformation(View child, Transformation
+	// t) {
+	// // 取得当前子view的半径值
+	// final int childCenter = getCenterOfView(child);
+	// final int childWidth = child.getWidth();
+	// // 旋转角度
+	// int rotationAngle = 0;
+	// // 重置转换状态
+	// t.clear();
+	// // 设置转换类型
+	// t.setTransformationType(Transformation.TYPE_MATRIX);
+	// // 如果图片位于中心位置不需要进行旋转
+	// if (childCenter == mCoveflowCenter) {
+	// transformImageBitmap(child, t, 0);
+	// } else {
+	// // 根据图片在gallery中的位置来计算图片的旋转角度
+	// rotationAngle = (int) (((float) (mCoveflowCenter - childCenter) /
+	// childWidth) * mMaxRotationAngle);
+	// System.out.println("rotationAngle:" + rotationAngle);
+	// // 如果旋转角度绝对值大于最大旋转角度返回（-mMaxRotationAngle或mMaxRotationAngle;）
+	// if (Math.abs(rotationAngle) > mMaxRotationAngle) {
+	// rotationAngle = (rotationAngle < 0) ? -mMaxRotationAngle
+	// : mMaxRotationAngle;
+	// }
+	// transformImageBitmap(child, t, rotationAngle);
+	// }
+	// return true;
+	// }
+
+	/** 
+     *  
+     */
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		mCoveflowCenter = getCenterOfCoverflow();
+		super.onSizeChanged(w, h, oldw, oldh);
+	}
+
+	// private void transformImageBitmap(View child, Transformation t,
+	// int rotationAngle) {
+	// // 对效果进行保存
+	// mCamera.save();
+	// final Matrix imageMatrix = t.getMatrix();
+	// // 图片高度
+	// final int imageHeight = child.getLayoutParams().height;
+	// // 图片宽度
+	// final int imageWidth = child.getLayoutParams().width;
+	//
+	// // 返回旋转角度的绝对值
+	// final int rotation = Math.abs(rotationAngle);
+	//
+	// // 在Z轴上正向移动camera的视角，实际效果为放大图片。
+	// // 如果在Y轴上移动，则图片上下移动；X轴上对应图片左右移动。
+	// mCamera.translate(0.0f, 0.0f, 100.0f);
+	// // As the angle of the view gets less, zoom in
+	// if (rotation < mMaxRotationAngle) {
+	// float zoomAmount = (float) (mMaxZoom + (rotation * 1.5));
+	// mCamera.translate(0.0f, 0.0f, zoomAmount);
+	// }
+	// // 在Y轴上旋转，对应图片竖向向里翻转。
+	// // 如果在X轴上旋转，则对应图片横向向里翻转。
+	// // mCamera.rotateY(rotationAngle);
+	// mCamera.getMatrix(imageMatrix);
+	// imageMatrix.preTranslate(-(imageWidth / 2), -(imageHeight / 2));
+	// imageMatrix.postTranslate((imageWidth / 2), (imageHeight / 2));
+	// mCamera.restore();
+	// }
 
 	private boolean isScrollingLeft(MotionEvent e1, MotionEvent e2) {
 		return e2.getX() > e1.getX();

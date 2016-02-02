@@ -159,18 +159,32 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_copy_link"
+            <LinearLayout
+                android:id="@+id/lin_copy_link"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/btn_selector_loginwx1"
+                android:background="@drawable/btn_bg_blue"
                 android:gravity="center"
-                android:padding="10dip"
-                android:text="Copy Link"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_s18" />
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp" >
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/copy_link_img" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="Copy Link"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_s18" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

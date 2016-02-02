@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnUnitAdapter;
@@ -37,6 +38,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 
 	private ThreadWithDialogTask task;
 	public static LearnFragment fragment;
+	private RelativeLayout rel_test_out;
 	Context context;
 	LearnUnitAdapter learnUnit1Adapter, learnUnit2Adapter;
 
@@ -63,6 +65,9 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.rel_test_out:
+			startActivity(new Intent(getActivity(), LessonTestOutActivity.class));
+			break;
 		default:
 			break;
 		}
@@ -93,13 +98,6 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		// "Learn is loading…");
 	}
 
-	/**
-	 * 初始化
-	 */
-	public void init() {
-		getViewPagerData();
-	}
-
 	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
 	ArrayList<LearnUnitBaseModel> listAdvance = new ArrayList<LearnUnitBaseModel>();
 
@@ -110,8 +108,12 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	 * 
 	 * @param
 	 */
-	public void getViewPagerData() {
+	public void init() {
 		// TODO Auto-generated method stub
+		rel_test_out = (RelativeLayout) contentView
+				.findViewById(R.id.rel_test_out);
+		rel_test_out.setOnClickListener(this);
+
 		centGridView = (SelfGridView) contentView
 				.findViewById(R.id.gv_center_gridview);
 
@@ -119,6 +121,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		modelBase1.setIconResSuffix("lu1_1_1");
 		modelBase1.setUnitName("Basics1");
 		modelBase1.setLessonList("1;");
+		modelBase1.setEnable(true);
 		listBase.add(modelBase1);
 
 		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
@@ -189,12 +192,8 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 
 		learnUnit1Adapter = new LearnUnitAdapter(context, listBase);
 		centGridView.setAdapter(learnUnit1Adapter);
-		centGridView.setOnItemClickListener(itemClickListener1);
+		centGridView.setOnItemClickListener(itemClickListener);
 		learnUnit1Adapter.notifyDataSetChanged();
-
-		ImageView img = (ImageView) contentView.findViewById(R.id.img);
-		img.setImageResource(context.getResources().getIdentifier(
-				"account_changepsw", "drawable", context.getPackageName()));
 
 		centGridView1 = (SelfGridView) contentView
 				.findViewById(R.id.gv_center_gridview1);
@@ -299,10 +298,10 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 			LearnUnitBaseModel learnUnitBaseModel = listBase.get(arg2);
 			if (learnUnitBaseModel != null) {
 				boolean isEnable = learnUnitBaseModel.isEnable();
-				// if (isEnable) {
-				startActivity(new Intent(getActivity(),
-						LessonViewActivity.class));
-				// }
+				if (isEnable) {
+					startActivity(new Intent(getActivity(),
+							LessonViewActivity.class));
+				}
 			}
 		}
 	};
@@ -316,10 +315,10 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 			LearnUnitBaseModel learnUnitBaseModel = listAdvance.get(arg2);
 			if (learnUnitBaseModel != null) {
 				boolean isEnable = learnUnitBaseModel.isEnable();
-				// if (isEnable) {
-				startActivity(new Intent(getActivity(),
-						LessonViewActivity.class));
-				// }
+				if (isEnable) {
+					startActivity(new Intent(getActivity(),
+							LessonViewActivity.class));
+				}
 			}
 		}
 	};

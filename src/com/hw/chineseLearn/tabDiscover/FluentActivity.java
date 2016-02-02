@@ -19,13 +19,13 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 
 /**
- * 拼写练习
+ * 流畅练习
  * 
  * @author yh
  */
 public class FluentActivity extends BaseActivity {
 
-	private String TAG = "==StrokesOrderActivity==";
+	private String TAG = "==FluentActivity==";
 	private Context context;
 	View contentView;
 	private ExpandableListView expandableListView;
@@ -41,7 +41,7 @@ public class FluentActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		contentView = LayoutInflater.from(this).inflate(
-				R.layout.activity_pinyin_exercise, null);
+				R.layout.activity_strokes_order, null);
 		setContentView(contentView);
 		CustomApplication.app.addActivity(this);
 		context = this;
@@ -52,9 +52,8 @@ public class FluentActivity extends BaseActivity {
 	 * 初始化
 	 */
 	public void init() {
-		setTitle(View.GONE, View.VISIBLE,
-				R.drawable.btn_selector_top_left_white, "Strokes Order",
-				View.GONE, View.GONE, 0);
+		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
+				"Fluent Now", View.GONE, View.GONE, 0);
 		expandableListView = (ExpandableListView) contentView
 				.findViewById(R.id.expandableListView);
 		adapter = new MyExpandableListAdapter(context, groups, children);

@@ -21,7 +21,7 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_marginTop="10dp"
-        android:background="@drawable/btn_selector_loginwx1"
+        android:background="@drawable/btn_bg_blue"
         android:gravity="center"
         android:padding="10dip"
         android:singleLine="true"

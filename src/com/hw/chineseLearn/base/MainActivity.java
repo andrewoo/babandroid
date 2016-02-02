@@ -206,7 +206,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				learnFragment = new LearnFragment();
 				navigateToNoAnimWithId(learnFragment, R.id.container2);
 			}
-			setTitle(View.GONE, View.VISIBLE, R.drawable.review_button, "",
+			setTitle(View.GONE, View.VISIBLE, R.drawable.img_share, "",
 					View.GONE, View.VISIBLE, R.drawable.review_button);
 			break;
 		case R.id.lin_3:
@@ -318,7 +318,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		View pview = LayoutInflater.from(context).inflate(
 				R.layout.layout_learn_share_dialog, null);
 
-		Button btn_copy_link = (Button) pview.findViewById(R.id.btn_copy_link);
+		LinearLayout lin_copy_link = (LinearLayout) pview
+				.findViewById(R.id.lin_copy_link);
 		LinearLayout lin_messenger = (LinearLayout) pview
 				.findViewById(R.id.lin_messenger);
 		LinearLayout lin_twitter = (LinearLayout) pview
@@ -335,7 +336,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		builder.show();
 		builder.setCancelable(true);
 
-		btn_copy_link.setOnClickListener(new OnClickListener() {
+		lin_copy_link.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

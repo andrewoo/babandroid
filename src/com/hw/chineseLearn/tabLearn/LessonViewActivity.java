@@ -1,9 +1,7 @@
 package com.hw.chineseLearn.tabLearn;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,10 +9,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,7 +18,7 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.GalleryAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.util.tool.UiUtil;
+import com.util.weight.CoverFlow;
 import com.util.weight.MyGallery;
 
 /**
@@ -35,12 +31,13 @@ public class LessonViewActivity extends BaseActivity implements
 
 	private String TAG = "==LessonViewActivity==";
 	public Context context;
-	private MyGallery gallery;
+	private MyGallery gallery;// CoverFlow
 	private GalleryAdapter adapter;
 	private ImageView iv_unit_img;
 	View contentView;
 	int width;
 	int height;
+	AnimationSet animationSet;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +55,6 @@ public class LessonViewActivity extends BaseActivity implements
 
 	}
 
-	private void closeWindowSoftInput() {
-		super.closeWindowSoftInput(contentView);
-	}
-
 	/**
 	 * 初始化
 	 */
@@ -74,9 +67,9 @@ public class LessonViewActivity extends BaseActivity implements
 		gallery = (MyGallery) findViewById(R.id.gallery);
 		adapter = new GalleryAdapter(this);
 		gallery.setAdapter(adapter);
+		gallery.setAnimationDuration(1500);
 		gallery.setSpacing(CustomApplication.app.displayMetrics.widthPixels / 10 * 1);
 		gallery.setOnItemSelectedListener(this);
-		gallery.setOnItemClickListener(onItemClick);
 
 		iv_unit_img = (ImageView) findViewById(R.id.iv_unit_img);
 		iv_unit_img.setOnClickListener(onClickListener);
@@ -124,7 +117,7 @@ public class LessonViewActivity extends BaseActivity implements
 
 		View view_title = (View) this.findViewById(R.id.view_title);
 		view_title.setBackgroundColor(context.getResources().getColor(
-				R.color.chinese_skill_blue1));
+				R.color.chinese_skill_blue));
 		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
 		tv_title.setText(title);
 		tv_title.setTextColor(context.getResources().getColor(R.color.white));
@@ -175,18 +168,6 @@ public class LessonViewActivity extends BaseActivity implements
 	public void onItemSelected(AdapterView<?> arg0, View convertView,
 			int position, long arg3) {
 		// TODO Auto-generated method stub
-		// adapter.setSelectItem(position); // 当滑动时，事件响应，调用适配器中的这个方法。
-		// adapter.notifyDataSetChanged();
-		// Button btn_redo = (Button) convertView.findViewById(R.id.btn_redo);
-		// btn_redo.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		// startActivity(new Intent(LessonViewActivity.this,
-		// LessonExerciseActivity.class));
-		// }
-		// });
 	}
 
 	@Override
@@ -194,36 +175,5 @@ public class LessonViewActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 
 	}
-
-	AnimationSet animationSet;
-
-	OnItemClickListener onItemClick = new OnItemClickListener() {
-
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View view, int arg2,
-				long arg3) {
-			// TODO Auto-generated method stub
-
-			// 创建一个AnimationSet对象（AnimationSet是存放多个Animations的集合）
-			animationSet = new AnimationSet(true);
-
-			ScaleAnimation scaleAnimation = new ScaleAnimation(1, 0.1f, 1,
-					0.1f, Animation.RELATIVE_TO_SELF, 0.5f,
-					Animation.RELATIVE_TO_SELF, 0.5f);
-			// 设置动画执行之前等待的时间（单位：毫秒）
-			scaleAnimation.setStartOffset(1000);
-			// 设置动画执行的时间（单位：毫秒）
-			scaleAnimation.setDuration(2000);
-			// 如果fillAfter设为true，则动画执行后，控件将停留在动画结束的状态
-			// 运行了一下发现以下奇怪的现象
-			// scaleAnimation.setFillAfter(true);不会停留在动画结束的状态
-			// animationSet.setFillAfter(true);则会停留在动画结束的状态
-			animationSet.setFillAfter(true);
-			// 将ScaleAnimation对象添加到AnimationSet当中
-			animationSet.addAnimation(scaleAnimation);
-			// 使用ImageView的startAnimation方法开始执行动画
-			view.startAnimation(animationSet);
-		}
-	};
 
 }

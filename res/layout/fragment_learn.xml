@@ -33,13 +33,15 @@
             </com.util.weight.SelfGridView>
 
             <RelativeLayout
+                android:id="@+id/rel_test_out"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/btn_selector_loginwx1"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_bg_orange"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingRight="10dp" >
@@ -57,7 +59,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:src="@drawable/testout_img" />
             </RelativeLayout>
 
             <com.util.weight.SelfGridView

@@ -23,8 +23,7 @@ public class LearnUnitAdapter extends BaseAdapter {
 	public ArrayList<LearnUnitBaseModel> list;
 	private LayoutInflater inflater;
 
-	public LearnUnitAdapter(Context context,
-			ArrayList<LearnUnitBaseModel> list) {
+	public LearnUnitAdapter(Context context, ArrayList<LearnUnitBaseModel> list) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
 		this.list = list;
@@ -60,7 +59,8 @@ public class LearnUnitAdapter extends BaseAdapter {
 		ViewHolder holder = null;
 		if (mapView.get(position) == null) {
 			holder = new ViewHolder();
-			convertView = inflater.inflate(R.layout.layout_unit_grid_item, null);
+			convertView = inflater
+					.inflate(R.layout.layout_unit_grid_item, null);
 			holder.iv_img = (ImageView) convertView
 					.findViewById(R.id.iv_unit_img);
 			holder.tv_name = (TextView) convertView
@@ -80,18 +80,21 @@ public class LearnUnitAdapter extends BaseAdapter {
 		String unitName = model.getUnitName();
 		String imageName = "" + model.getIconResSuffix();
 		String lessonList = model.getLessonList();
-		if (lessonList != null) {
-			String[] lessonId = lessonList.split(";");
 
-			Log.e("________", "lessonId.length:" + lessonId.length);
-			for (int i = 0; i < lessonId.length; i++) {
-				ImageView imageView = new ImageView(context);
-				LayoutParams layoutParams = new LayoutParams(15, 15);
-				layoutParams.setMargins(5, 5, 5, 5);
-				imageView.setLayoutParams(layoutParams);
-				imageView.setBackground(context.getResources().getDrawable(
-						R.drawable.bg_circle_blue)); 
-				holder.lin_dots.addView(imageView);
+		if (model.isEnable()) {
+			if (lessonList != null) {
+				String[] lessonId = lessonList.split(";");
+
+				Log.e("________", "lessonId.length:" + lessonId.length);
+				for (int i = 0; i < lessonId.length; i++) {
+					ImageView imageView = new ImageView(context);
+					LayoutParams layoutParams = new LayoutParams(15, 15);
+					layoutParams.setMargins(5, 5, 5, 5);
+					imageView.setLayoutParams(layoutParams);
+					imageView.setBackground(context.getResources().getDrawable(
+							R.drawable.bg_circle_blue));
+					holder.lin_dots.addView(imageView);
+				}
 			}
 		}
 
