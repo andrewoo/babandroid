@@ -345,5 +345,10 @@
     <color name="chinese_skill_blue_deeper">#047B87</color>
     <color name="chinese_skill_orange">#EAA05C</color>
     <color name="chinese_skill_orange_deeper">#DDA576</color>
+    <color name="chinese_skill_red">#E57C86</color>
+    <color name="chinese_skill_green">#5AB75A</color>
+    <color name="chinese_skill_yellow">#F4B460</color>
+    
+    
 
 </resources>

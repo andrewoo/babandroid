@@ -12,8 +12,7 @@
     <dimen name="text_large_size">22sp</dimen>
     <!-- Topbar  by liyunlong 20150925 end -->
     <!-- listView -->
-	<dimen name="listview_divider_height">1dp</dimen>
-
+    <dimen name="listview_divider_height">1dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="main_nav_padding">5dip</dimen>
@@ -30,6 +29,13 @@
     <dimen name="report_margin_right">10dip</dimen>
     <dimen name="report_margin_top">10dip</dimen>
     <dimen name="report_margin_bottom">10dip</dimen>
+    <dimen name="text_s38">38sp</dimen>
+    <dimen name="text_s36">36sp</dimen>
+    <dimen name="text_s34">34sp</dimen>
+    <dimen name="text_s32">32sp</dimen>
+    <dimen name="text_s30">30sp</dimen>
+    <dimen name="text_s28">28sp</dimen>
+    <dimen name="text_s26">26sp</dimen>
     <dimen name="text_s24">24sp</dimen>
     <dimen name="text_s22">22sp</dimen>
     <dimen name="text_s20">20sp</dimen>
