@@ -61,7 +61,7 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Character Review", View.GONE, View.VISIBLE,
+				"Sentence Review", View.GONE, View.VISIBLE,
 				R.drawable.revie_pen);
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
@@ -71,11 +71,12 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 			modelBase1.setUnitName("我是男孩");
 			listBase.add(modelBase1);
 		}
-		reviewListAdapter = new ReviewListAdapter(context, listBase);
-		listView.setAdapter(reviewListAdapter);
+		if (reviewListAdapter == null) {
+			reviewListAdapter = new ReviewListAdapter(context, listBase);
+			listView.setAdapter(reviewListAdapter);
+			reviewListAdapter.notifyDataSetChanged();
+		}
 		listView.setOnItemClickListener(onItemclickListener);
-		reviewListAdapter.notifyDataSetChanged();
-
 	}
 
 	/**

@@ -61,7 +61,7 @@ public class LessonReViewWordActivity extends BaseActivity {
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Character Review", View.GONE, View.VISIBLE,
+				"Word Review", View.GONE, View.VISIBLE,
 				R.drawable.revie_pen);
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,6 +42,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	private RelativeLayout rel_test_out;
 	Context context;
 	LearnUnitAdapter learnUnit1Adapter, learnUnit2Adapter;
+	private String TAG = "LearnFragment";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity();
+		Log.d(TAG, "onCreate");
 	}
 
 	@Override
@@ -58,7 +61,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		task = new ThreadWithDialogTask();
 
 		init();
-
+		Log.d(TAG, "onCreateView");
 		return contentView;
 	}
 
@@ -77,12 +80,13 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+		Log.d(TAG, "onActivityCreated");
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-
+		Log.d(TAG, "onStart");
 	}
 
 	@Override
@@ -189,12 +193,12 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		modelBase12.setUnitName("Tense");
 		modelBase12.setLessonList("1;2;3;4");
 		listBase.add(modelBase12);
-
-		learnUnit1Adapter = new LearnUnitAdapter(context, listBase);
-		centGridView.setAdapter(learnUnit1Adapter);
-		centGridView.setOnItemClickListener(itemClickListener);
-		learnUnit1Adapter.notifyDataSetChanged();
-
+		if (learnUnit1Adapter == null) {
+			learnUnit1Adapter = new LearnUnitAdapter(context, listBase);
+			centGridView.setAdapter(learnUnit1Adapter);
+			centGridView.setOnItemClickListener(itemClickListener);
+			learnUnit1Adapter.notifyDataSetChanged();
+		}
 		centGridView1 = (SelfGridView) contentView
 				.findViewById(R.id.gv_center_gridview1);
 
@@ -282,10 +286,12 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		modelAdvance14.setLessonList("1;2;3");
 		listAdvance.add(modelAdvance14);
 
-		learnUnit2Adapter = new LearnUnitAdapter(context, listAdvance);
-		centGridView1.setAdapter(learnUnit2Adapter);
+		if (learnUnit2Adapter == null) {
+			learnUnit2Adapter = new LearnUnitAdapter(context, listAdvance);
+			centGridView1.setAdapter(learnUnit2Adapter);
+			learnUnit2Adapter.notifyDataSetChanged();
+		}
 		centGridView1.setOnItemClickListener(itemClickListener1);
-		learnUnit2Adapter.notifyDataSetChanged();
 	}
 
 	OnItemClickListener itemClickListener = new OnItemClickListener() {
