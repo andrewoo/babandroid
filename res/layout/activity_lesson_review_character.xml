@@ -94,6 +94,7 @@
                     android:background="@drawable/recorder_animate_bg"
                     android:padding="5dp"
                     android:src="@drawable/loop_play" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
