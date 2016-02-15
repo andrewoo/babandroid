@@ -25,7 +25,7 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
 import com.hw.chineseLearn.tabDiscover.DiscoverFragment;
 import com.hw.chineseLearn.tabLearn.LearnFragment;
-import com.hw.chineseLearn.tabLearn.LessonReViewActivity;
+import com.hw.chineseLearn.tabLearn.LearnReViewActivity;
 import com.hw.chineseLearn.tabMe.MineFragment;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.SystemHelper;
@@ -407,7 +407,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			case R.id.iv_title_right:// review
 				
 				startActivity(new Intent(MainActivity.this,
-						LessonReViewActivity.class));
+						LearnReViewActivity.class));
 				break;
 
 			default:

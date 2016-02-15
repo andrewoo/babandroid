@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.tabLearn.LessonExerciseActivity;
+import com.hw.chineseLearn.tabLearn.LessonReViewActivity;
 import com.hw.chineseLearn.tabLearn.LessonViewActivity;
 import com.hw.chineseLearn.tabMe.MyForgotPswActivity;
 import com.util.tool.UiUtil;
@@ -77,7 +78,8 @@ public class GalleryAdapter extends BaseAdapter {
 			holder.btn_redo = (Button) convertView.findViewById(R.id.btn_redo);
 			holder.btn_start = (Button) convertView
 					.findViewById(R.id.btn_start);
-
+			holder.btn_review = (Button) convertView
+					.findViewById(R.id.btn_review);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -95,6 +97,14 @@ public class GalleryAdapter extends BaseAdapter {
 		//
 		// }
 
+		if (holder.btn_redo.getVisibility() == View.VISIBLE) {
+			holder.btn_start.setVisibility(View.GONE);
+		}
+		if (holder.btn_start.getVisibility() == View.VISIBLE) {
+			holder.btn_redo.setVisibility(View.GONE);
+			holder.btn_review.setVisibility(View.GONE);
+		}
+
 		holder.btn_redo.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -109,7 +119,18 @@ public class GalleryAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Log.d("11111", "2222222");
+				(mContext).startActivity(new Intent(mContext,
+						LessonExerciseActivity.class));
+			}
+		});
+
+		holder.btn_review.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				(mContext).startActivity(new Intent(mContext,
+						LessonReViewActivity.class));
 			}
 		});
 
@@ -123,5 +144,6 @@ public class GalleryAdapter extends BaseAdapter {
 		public TextView tv_description;
 		public Button btn_redo;
 		public Button btn_start;
+		public Button btn_review;
 	}
 }
