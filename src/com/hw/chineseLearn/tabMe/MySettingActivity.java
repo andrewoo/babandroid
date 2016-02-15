@@ -19,6 +19,8 @@ import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
 import com.hw.chineseLearn.model.SimpleModel;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.weight.SlideSwitch;
+import com.util.weight.SlideSwitch.SlideListener;
 
 /**
  * 设置
@@ -35,6 +37,9 @@ public class MySettingActivity extends BaseActivity {
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
 	SimpleModel simpleModel;
+	SlideSwitch ck_sound_effect;
+	SlideSwitch ck_character_test;
+	SlideSwitch ck_check_tone_when_test;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,49 @@ public class MySettingActivity extends BaseActivity {
 		rel_reminders.setOnClickListener(onClickListener);
 		rel_logout.setOnClickListener(onClickListener);
 
+		ck_sound_effect = (SlideSwitch) findViewById(R.id.ck_sound_effect);
+		ck_sound_effect.setSlideListener(new SlideListener() {
+			@Override
+			public void open() {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void close() {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		ck_character_test = (SlideSwitch) findViewById(R.id.ck_character_test);
+		ck_character_test.setSlideListener(new SlideListener() {
+			@Override
+			public void open() {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void close() {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		ck_check_tone_when_test = (SlideSwitch) findViewById(R.id.ck_check_tone_when_test);
+		ck_check_tone_when_test.setSlideListener(new SlideListener() {
+			@Override
+			public void open() {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void close() {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	/**

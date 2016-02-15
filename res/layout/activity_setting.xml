@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:slideswitch="http://schemas.android.com/apk/res/com.hw.chineseLearn"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/light_grey_white"
@@ -58,18 +59,15 @@
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 
-                    <CheckBox
+                    <com.util.weight.SlideSwitch
                         android:id="@+id/ck_sound_effect"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="55dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
-                        android:layout_gravity="right|center_vertical"
-                        android:background="@drawable/ck_selector_red2"
-                        android:button="@null"
-                        android:checked="true"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="5dip"
-                        android:paddingTop="5dip" />
+                        android:layout_centerVertical="true"
+                        slideswitch:isOpen="true"
+                        slideswitch:shape="circle"
+                        slideswitch:themeColor="@color/chinese_skill_blue" />
                 </RelativeLayout>
 
                 <View
@@ -106,18 +104,15 @@
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 
-                    <CheckBox
+                    <com.util.weight.SlideSwitch
                         android:id="@+id/ck_character_test"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="55dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
-                        android:layout_gravity="right|center_vertical"
-                        android:background="@drawable/ck_selector_red2"
-                        android:button="@null"
-                        android:checked="true"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="5dip"
-                        android:paddingTop="5dip" />
+                        android:layout_centerVertical="true"
+                        slideswitch:isOpen="true"
+                        slideswitch:shape="circle"
+                        slideswitch:themeColor="@color/chinese_skill_blue" />
                 </RelativeLayout>
 
                 <View
@@ -154,17 +149,15 @@
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 
-                    <CheckBox
+                    <com.util.weight.SlideSwitch
                         android:id="@+id/ck_check_tone_when_test"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="55dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
-                        android:layout_gravity="right|center_vertical"
-                        android:background="@drawable/ck_selector_red2"
-                        android:button="@null"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="5dip"
-                        android:paddingTop="5dip" />
+                        android:layout_centerVertical="true"
+                        slideswitch:isOpen="false"
+                        slideswitch:shape="circle"
+                        slideswitch:themeColor="@color/chinese_skill_blue" />
                 </RelativeLayout>
 
                 <View

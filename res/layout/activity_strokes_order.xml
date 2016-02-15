@@ -20,8 +20,8 @@
         android:cacheColorHint="#ffc9c9c9"
         android:childIndicator="@null"
         android:choiceMode="singleChoice"
-        android:divider="@drawable/divider"
-        android:dividerHeight="2.0dp"
+        android:divider="@drawable/bg_divider"
+        android:dividerHeight="0.5dp"
         android:fadingEdge="none"
         android:groupIndicator="@null" >
     </ExpandableListView>
