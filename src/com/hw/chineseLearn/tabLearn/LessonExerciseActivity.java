@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -66,6 +68,12 @@ public class LessonExerciseActivity extends BaseActivity {
 	LearnWordSelectFragment wordSelectFragment;
 	LearnWordInputFragment wordInputFragment;
 
+	Button btn_next;
+	Button btn_report_bug;
+	// 一个自定义的布局，作为显示的内容
+	View pview = null;
+	CustomDialog builder;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,6 +81,9 @@ public class LessonExerciseActivity extends BaseActivity {
 				R.layout.activity_lesson_exercise, null);
 		setContentView(contentView);
 		context = this;
+		pview = LayoutInflater.from(context).inflate(
+				R.layout.layout_learn_exercise_check_dialog, null);
+
 		init();
 		CustomApplication.app.addActivity(this);
 
@@ -183,8 +194,9 @@ public class LessonExerciseActivity extends BaseActivity {
 
 				}
 				break;
+			}else{
+				
 			}
-
 		}
 	}
 
@@ -269,17 +281,23 @@ public class LessonExerciseActivity extends BaseActivity {
 	}
 
 	private void showCheckDialog() {
-		// 一个自定义的布局，作为显示的内容
-		View pview = LayoutInflater.from(context).inflate(
-				R.layout.layout_learn_exercise_check_dialog, null);
+		// 题目下标加一
+		exerciseIndex++;
+		Log.d(TAG, "题目下标:" + exerciseIndex);
 
-		Button btn_report_bug = (Button) pview
-				.findViewById(R.id.btn_report_bug);
+		btn_report_bug = (Button) pview.findViewById(R.id.btn_report_bug);
+		btn_next = (Button) pview.findViewById(R.id.btn_next);
 
-		Button btn_next = (Button) pview.findViewById(R.id.btn_next);
-		//
-		final CustomDialog builder = new CustomDialog(this, R.style.my_dialog)
-				.create(pview, false, 1f, 1f, 1);
+		if (exerciseIndex == exerciseCount) {// 最后一道题目
+			btn_next.setText("Finish");
+		} else {
+			btn_next.setText("Next");
+		}
+
+		if (builder == null) {
+			builder = new CustomDialog(this, R.style.my_dialog).create(pview,
+					false, 1f, 1f, 1);
+		}
 		builder.show();
 		builder.setCancelable(false);
 		builder.setOnKeyListener(onKeyListener);
@@ -316,10 +334,11 @@ public class LessonExerciseActivity extends BaseActivity {
 				default:
 					break;
 				}
-				// 题目下标加一
-				exerciseIndex++;
-				if (exerciseIndex > exerciseCount - 1) {
-					exerciseIndex = exerciseCount - 1;
+
+				if (exerciseIndex == exerciseCount) {// 最后一道题目
+					startActivityForResult(new Intent(
+							LessonExerciseActivity.this,
+							LessonResultActivity.class), 100);
 				}
 
 				builder.dismiss();
@@ -346,4 +365,18 @@ public class LessonExerciseActivity extends BaseActivity {
 			}
 		}
 	};
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
+		switch (resultCode) {
+		case 0:
+			exerciseIndex = 0;
+			navigateToNoAnimWithId(imageSelectFragment, R.id.container1);
+			break;
+
+		default:
+			break;
+		}
+
+	};
+
 }
