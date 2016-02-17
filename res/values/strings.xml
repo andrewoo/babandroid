@@ -10,8 +10,8 @@
     <string name="home_nav03">Me</string>
     <string name="home_nav04">More</string>
     <string name="home_nav05">退出登录</string>
-    <string name="pull_to_refresh_footer_release_label">松开后加载</string>
-    <string name="pull_to_refresh_footer_pull_label">上拉加载更多</string>
+    <string name="pull_to_refresh_footer_release_label">Release to see more</string>
+    <string name="pull_to_refresh_footer_pull_label">Pull to see more</string>
     <string name="pull_to_refresh_footer_refreshing_label">loading\u2026;</string>
     <string name="title_activity_pic_util">PicUtilActivity</string>
     <string name="title_activity_add_position">AddPositionActivity</string>

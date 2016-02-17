@@ -1,47 +1,45 @@
 package com.hw.chineseLearn.tabDiscover;
 
+import java.util.ArrayList;
+
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.MyExpandableListAdapter;
+import com.hw.chineseLearn.adapter.FluentNowAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
 /**
  * 流畅练习
  * 
  * @author yh
  */
-public class FluentActivity extends BaseActivity {
+public class FluentListActivity extends BaseActivity {
 
 	private String TAG = "==FluentActivity==";
 	private Context context;
 	View contentView;
-	private ExpandableListView expandableListView;
-	private ExpandableListAdapter adapter;
-	public String[] groups = { "Ios", "Android", "全部联系人" };
-	public String[][] children = {
-			{ "A11", "A12", "A13", "A14" },
-			{ "B21", "B22", "B23", "B24" },
-			{ "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-					"C11" } };
+	ListView lv_fluent_list;
+	FluentNowAdapter adapter;
+	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		contentView = LayoutInflater.from(this).inflate(
-				R.layout.activity_strokes_order, null);
+				R.layout.activity_fluent_now, null);
 		setContentView(contentView);
 		CustomApplication.app.addActivity(this);
 		context = this;
@@ -54,19 +52,39 @@ public class FluentActivity extends BaseActivity {
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Fluent Now", View.GONE, View.GONE, 0);
-		expandableListView = (ExpandableListView) contentView
-				.findViewById(R.id.expandableListView);
-		adapter = new MyExpandableListAdapter(context, groups, children);
-		expandableListView.setAdapter(adapter);
-		// 监听父列表的弹出事件
-		expandableListView
-				.setOnGroupExpandListener(new ExpandableListViewListenerC());
-		// 监听父列表的关闭事件
-		expandableListView
-				.setOnGroupCollapseListener(new ExpandableListViewListenerB());
-		// 监听子列表
-		expandableListView
-				.setOnChildClickListener(new ExpandableListViewListenerA());
+		View footerView = LayoutInflater.from(context).inflate(
+				R.layout.layout_fluent_list_footer, null);
+		lv_fluent_list = (ListView) contentView
+				.findViewById(R.id.lv_fluent_list);
+		lv_fluent_list.setOnItemClickListener(onItemclickListener);
+		lv_fluent_list.addFooterView(footerView);
+
+		footerView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				//
+				startActivity(new Intent(FluentListActivity.this,
+						FluentAddLessonActivity.class));
+			}
+		});
+
+		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
+		modelBase1.setIconResSuffix("ls_catt_16");
+		modelBase1.setUnitName("你好！");
+		modelBase1.setDescription("Hello!");
+		listBase.add(modelBase1);
+
+		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
+		modelBase2.setIconResSuffix("ls_catt_8");
+		modelBase2.setUnitName("请问邮局在哪儿？");
+		modelBase2.setDescription("Where is the post office?");
+		listBase.add(modelBase2);
+
+		adapter = new FluentNowAdapter(context, listBase);
+		lv_fluent_list.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {
@@ -78,12 +96,25 @@ public class FluentActivity extends BaseActivity {
 
 			case R.id.iv_title_left:// 返回
 
-				CustomApplication.app.finishActivity(FluentActivity.this);
+				CustomApplication.app.finishActivity(FluentListActivity.this);
 				break;
 
 			default:
 				break;
 			}
+		}
+	};
+
+	OnItemClickListener onItemclickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			// TODO Auto-generated method stub
+
+			startActivity(new Intent(FluentListActivity.this,
+					FluentDetailActivity.class));
+
 		}
 	};
 
@@ -133,54 +164,4 @@ public class FluentActivity extends BaseActivity {
 		iv_title_right.setImageResource(imgRightDrawable);
 
 	}
-
-	/**
-	 * 监听子级列表的点击事件
-	 * 
-	 * @author Administrator
-	 * 
-	 */
-	public class ExpandableListViewListenerA implements
-			ExpandableListView.OnChildClickListener {
-
-		@Override
-		public boolean onChildClick(ExpandableListView parent, View v,
-				int groupPosition, int childPosition, long id) {
-			// TODO Auto-generated method stub
-			setTitle(children[groupPosition][childPosition]);
-			return false;
-		}
-	}
-
-	/**
-	 * 监听父级列表的关闭事件事件
-	 * 
-	 * @author Administrator
-	 * 
-	 */
-	public class ExpandableListViewListenerB implements
-			ExpandableListView.OnGroupCollapseListener {
-
-		@Override
-		public void onGroupCollapse(int groupPosition) {
-			// TODO Auto-generated method stub
-			setTitle(groups[groupPosition] + "关闭");
-		}
-	}
-
-	/**
-	 * 监听父级列表的弹出事件
-	 * 
-	 * @author Administrator
-	 * 
-	 */
-	public class ExpandableListViewListenerC implements
-			ExpandableListView.OnGroupExpandListener {
-		@Override
-		public void onGroupExpand(int groupPosition) {
-			// TODO Auto-generated method stub
-			setTitle(groups[groupPosition] + "弹出");
-		}
-	}
-
 }

@@ -194,8 +194,8 @@ public class LessonExerciseActivity extends BaseActivity {
 
 				}
 				break;
-			}else{
-				
+			} else {
+
 			}
 		}
 	}
@@ -370,7 +370,6 @@ public class LessonExerciseActivity extends BaseActivity {
 		switch (resultCode) {
 		case 0:
 			exerciseIndex = 0;
-			navigateToNoAnimWithId(imageSelectFragment, R.id.container1);
 			break;
 
 		default:

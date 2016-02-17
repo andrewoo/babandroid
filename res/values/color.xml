@@ -348,7 +348,7 @@
     <color name="chinese_skill_red">#E57C86</color>
     <color name="chinese_skill_green">#5AB75A</color>
     <color name="chinese_skill_yellow">#F4B460</color>
-    
+    <color name="chinese_skill_activity_bg">#F7F7F7</color>
     
 
 </resources>

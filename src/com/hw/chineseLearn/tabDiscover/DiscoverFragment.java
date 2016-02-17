@@ -81,7 +81,7 @@ public class DiscoverFragment extends BaseFragment implements OnClickListener {
 
 			break;
 		case R.id.rel_fluent_now:
-			startActivity(new Intent(getActivity(), FluentActivity.class));
+			startActivity(new Intent(getActivity(), FluentListActivity.class));
 			break;
 		default:
 			break;

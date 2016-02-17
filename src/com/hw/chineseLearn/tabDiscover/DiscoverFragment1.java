@@ -131,9 +131,9 @@ public class DiscoverFragment1 extends BaseFragment implements OnClickListener {
 				.findViewById(R.id.pullToRefreshView);
 		lv_notice = (ListView) contentView.findViewById(R.id.lv_notice);
 
-		layout_adv = LayoutInflater.from(getActivity()).inflate(
-				R.layout.layout_notice_adv, null);
-		lv_notice.addHeaderView(layout_adv);
+//		layout_adv = LayoutInflater.from(getActivity()).inflate(
+//				R.layout.layout_notice_adv, null);
+//		lv_notice.addHeaderView(layout_adv);
 
 		noticeList = new ArrayList<MeiTuanGuessBaseModel>();
 		adapter = new NoticesListAdapter(getActivity(), noticeList);
@@ -208,28 +208,28 @@ public class DiscoverFragment1 extends BaseFragment implements OnClickListener {
 	private void createCenter() {
 		// TODO Auto-generated method stub
 
-		viewPager = (ViewPager) contentView.findViewById(R.id.center_menu);
-		LinearLayout linDots = (LinearLayout) contentView
-				.findViewById(R.id.lin_dots);// 滑动的小点
-		pagerList = new ArrayList<View>();
-
-		View v = contentView.findViewById(R.id.v_dot0);
-		View v1 = contentView.findViewById(R.id.v_dot1);
+//		viewPager = (ViewPager) contentView.findViewById(R.id.center_menu);
+//		LinearLayout linDots = (LinearLayout) contentView
+//				.findViewById(R.id.lin_dots);// 滑动的小点
+//		pagerList = new ArrayList<View>();
+//
+//		View v = contentView.findViewById(R.id.v_dot0);
+//		View v1 = contentView.findViewById(R.id.v_dot1);
 
 		dots = new ArrayList<View>();
 
-		dots.add(v);
-		dots.add(v1);
-		// 实例化一个view 添加到pagerList中
-		View layout1 = LayoutInflater.from(getActivity()).inflate(
-				R.layout.activity_gv_center, null);
-		View layout2 = LayoutInflater.from(getActivity()).inflate(
-				R.layout.activity_gv_center, null);
-
-		linDots.setVisibility(View.VISIBLE);
-
-		pagerList.add(layout1);
-		pagerList.add(layout2);
+//		dots.add(v);
+//		dots.add(v1);
+//		// 实例化一个view 添加到pagerList中
+//		View layout1 = LayoutInflater.from(getActivity()).inflate(
+//				R.layout.activity_gv_center, null);
+//		View layout2 = LayoutInflater.from(getActivity()).inflate(
+//				R.layout.activity_gv_center, null);
+//
+//		linDots.setVisibility(View.VISIBLE);
+//
+//		pagerList.add(layout1);
+//		pagerList.add(layout2);
 
 		getViewPagerData(0);
 
