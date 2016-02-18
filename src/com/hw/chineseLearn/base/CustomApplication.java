@@ -1,5 +1,6 @@
 package com.hw.chineseLearn.base;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 import org.litepal.LitePalApplication;
@@ -15,6 +16,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -57,6 +59,8 @@ public class CustomApplication extends LitePalApplication {
 	public String IMEI = "";
 
 	private static Stack<Activity> activityStack;
+
+	public ArrayList<LearnUnitBaseModel> favouriteList = new ArrayList<LearnUnitBaseModel>();
 
 	@Override
 	public void onCreate() {

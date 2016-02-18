@@ -3,6 +3,7 @@ package com.hw.chineseLearn.tabDiscover;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -193,38 +194,43 @@ public class FluentAddLessonActivity extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View convertView,
 				int arg2, long arg3) {
 			// TODO Auto-generated method stub
-			convertView = adapter.mapView.get(arg2);
-			ImageView img_add_lesson = (ImageView) convertView
-					.findViewById(R.id.img_add_lesson);
-			final RoundProgressBar progress_download = (RoundProgressBar) convertView
-					.findViewById(R.id.progress_download);
-			img_add_lesson.setOnClickListener(new View.OnClickListener() {
+			// convertView = adapter.mapView.get(arg2);
+			// ImageView img_add_lesson = (ImageView) convertView
+			// .findViewById(R.id.img_add_lesson);
+			// final RoundProgressBar progress_download = (RoundProgressBar)
+			// convertView
+			// .findViewById(R.id.progress_download);
+			// img_add_lesson.setOnClickListener(new View.OnClickListener() {
+			//
+			// @Override
+			// public void onClick(View arg0) {
+			// // TODO Auto-generated method stub
+			// // img_add_lesson.setVisibility(View.GONE);
+			// progress_download.setVisibility(View.VISIBLE);
+			// new Thread(new Runnable() {
+			// private int progress = 0;
+			//
+			// @Override
+			// public void run() {
+			// while (progress <= 100) {
+			// progress += 3;
+			// System.out.println(progress);
+			// progress_download.setProgress(progress);
+			// try {
+			// Thread.sleep(100);
+			// } catch (InterruptedException e) {
+			// e.printStackTrace();
+			// }
+			// }
+			//
+			// }
+			// }).start();
+			// }
+			// });
 
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					// img_add_lesson.setVisibility(View.GONE);
-					progress_download.setVisibility(View.VISIBLE);
-					new Thread(new Runnable() {
-						private int progress = 0;
+			startActivity(new Intent(FluentAddLessonActivity.this,
+					FluentDetailActivity.class));
 
-						@Override
-						public void run() {
-							while (progress <= 100) {
-								progress += 3;
-								System.out.println(progress);
-								progress_download.setProgress(progress);
-								try {
-									Thread.sleep(100);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-
-						}
-					}).start();
-				}
-			});
 		}
 	};
 

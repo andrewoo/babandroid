@@ -136,6 +136,15 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
+
+        <!-- 救生练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.SurvivalKitDetailActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
         <!-- 拼音练习页面 -->
         <activity
             android:name="com.hw.chineseLearn.tabDiscover.PinyinExerciseActivity"
@@ -167,7 +176,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
 
-        
         <!-- 流畅练习页面 -->
         <activity
             android:name="com.hw.chineseLearn.tabDiscover.FluentDetailActivity"
@@ -175,7 +183,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
-        
+
         <!-- 添加流畅练习课程 -->
         <activity
             android:name="com.hw.chineseLearn.tabDiscover.FluentAddLessonActivity"

@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,15 +82,21 @@ public class FluentDetailAdapter extends BaseAdapter {
 					R.layout.layout_fluent_detail_list_item, null);
 			holder.lin_bg = (LinearLayout) convertView
 					.findViewById(R.id.lin_bg);
+			holder.lin_content = (LinearLayout) convertView
+					.findViewById(R.id.lin_content);
 			holder.rel_funcations = (RelativeLayout) convertView
 					.findViewById(R.id.rel_funcations);
-			holder.iv_tag = (ImageView) convertView.findViewById(R.id.img_tag);
+			holder.rel_funcations.setVisibility(View.GONE);
 			holder.txt_sentence_cn = (TextView) convertView
 					.findViewById(R.id.txt_sentence_cn);
 			holder.txt_sentence_en = (TextView) convertView
 					.findViewById(R.id.txt_sentence_en);
-			holder.img_level = (ImageView) convertView
-					.findViewById(R.id.img_level);
+			holder.img_play = (ImageView) convertView
+					.findViewById(R.id.img_play);
+			holder.img_record = (ImageView) convertView
+					.findViewById(R.id.img_record);
+			holder.img_record_play = (ImageView) convertView
+					.findViewById(R.id.img_record_play);
 
 			convertView.setTag(holder);
 		} else {
@@ -103,9 +110,11 @@ public class FluentDetailAdapter extends BaseAdapter {
 		if (position % 2 == 0) {
 			holder.lin_bg.setBackground(context.getResources().getDrawable(
 					R.drawable.chat_from_bg_normal));
+			holder.lin_content.setGravity(Gravity.LEFT);
 		} else {
 			holder.lin_bg.setBackground(context.getResources().getDrawable(
 					R.drawable.chat_to_bg_normal));
+			holder.lin_content.setGravity(Gravity.RIGHT);
 		}
 
 		String sentenceCn = model.getUnitName();
@@ -114,32 +123,31 @@ public class FluentDetailAdapter extends BaseAdapter {
 
 		holder.txt_sentence_cn.setText("" + sentenceCn);
 		holder.txt_sentence_en.setText("" + sentenceEn);
-		holder.iv_tag.setImageResource(resources.getIdentifier(imageName,
-				"drawable", context.getPackageName()));
 
-		// if (selectPosition == position) {// 选中
-		// holder.lin_content.setBackground(resources
-		// .getDrawable(R.drawable.bg_blue));
-		// holder.txt_word_name.setTextColor(colorWhite);
-		// holder.iv_tag.setImageDrawable(resources
-		// .getDrawable(R.drawable.word_model1_sel));
-		// } else {// 未选中
-		// holder.lin_content.setBackground(resources
-		// .getDrawable(R.drawable.bg_white1));
-		// holder.txt_word_name.setTextColor(colorBlack);
-		// holder.iv_tag.setImageDrawable(resources
-		// .getDrawable(R.drawable.word_model1_unsel));
-		// }
+		if (selectPosition == position) {// 选中
+			holder.rel_funcations.setVisibility(View.VISIBLE);
+			holder.lin_content.setGravity(Gravity.CENTER);
+		} else {// 未选中
+			holder.rel_funcations.setVisibility(View.GONE);
+
+			if (position % 2 == 0) {
+				holder.lin_content.setGravity(Gravity.LEFT);
+			} else {
+				holder.lin_content.setGravity(Gravity.RIGHT);
+			}
+		}
 
 		return convertView;
 	}
 
 	public class ViewHolder {
 		private LinearLayout lin_bg;
+		private LinearLayout lin_content;
 		private RelativeLayout rel_funcations;
-		private ImageView iv_tag;
 		private TextView txt_sentence_cn;
 		private TextView txt_sentence_en;
-		private ImageView img_level;
+		private ImageView img_play;
+		private ImageView img_record;
+		private ImageView img_record_play;
 	}
 }

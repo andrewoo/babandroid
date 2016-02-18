@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 
-public class MyExpandableListAdapter extends BaseExpandableListAdapter {
+public class MyExpandableListAdapterStrokes extends BaseExpandableListAdapter {
 	private String[] groups;
 	private String[][] children;
 	private Context context;
@@ -34,7 +34,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 		TextView tv_child_count;
 	}
 
-	public MyExpandableListAdapter(Context context, String[] groups,
+	public MyExpandableListAdapterStrokes(Context context, String[] groups,
 			String[][] children) {
 		this.groups = groups;
 		this.children = children;
@@ -60,7 +60,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
 		if (convertView == null) {
 			convertView = this.childInflater.inflate(
-					R.layout.expend_listview_item_child, null);
+					R.layout.expend_listview_item_child_strokes_order, null);
 			cvHolder = new ChildViewHolder();
 
 			cvHolder.tv_child_no = (TextView) convertView
@@ -101,7 +101,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
 		if (convertView == null) {
 			convertView = groupInflater.inflate(
-					R.layout.expend_listview_item_father, null);
+					R.layout.expend_listview_item_father_strokes_order, null);
 			gvHolder = new GroupViewHolder();
 			gvHolder.tv_father_title = (TextView) convertView
 					.findViewById(R.id.tv_father_title);

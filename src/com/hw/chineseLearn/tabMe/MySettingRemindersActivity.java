@@ -3,14 +3,16 @@ package com.hw.chineseLearn.tabMe;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
@@ -18,13 +20,18 @@ import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
 import com.hw.chineseLearn.model.SimpleModel;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.weight.NumberPicker;
+import com.util.weight.NumberPicker.Formatter;
+import com.util.weight.NumberPicker.OnScrollListener;
+import com.util.weight.NumberPicker.OnValueChangeListener;
 
 /**
  * 提醒设置
  * 
  * @author yh
  */
-public class MySettingRemindersActivity extends BaseActivity {
+public class MySettingRemindersActivity extends BaseActivity implements
+		OnValueChangeListener, OnScrollListener, Formatter {
 
 	private String TAG = "==MySettingRemindersActivity==";
 	private Context context;
@@ -32,6 +39,13 @@ public class MySettingRemindersActivity extends BaseActivity {
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
 	SimpleModel simpleModel;
+	TextView txt_time;
+	LinearLayout lin_time_picker;
+	NumberPicker hourPicker, minutePicker;
+	Button btn_ok, btn_cancel;
+	private String timeString;
+	private int hour = 9;
+	private int minute = 30;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +65,41 @@ public class MySettingRemindersActivity extends BaseActivity {
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Reminders", View.GONE, View.GONE, 0);
+		txt_time = (TextView) findViewById(R.id.txt_time);
+		txt_time.setOnClickListener(onClickListener);
+
+		btn_ok = (Button) findViewById(R.id.btn_ok);
+		btn_cancel = (Button) findViewById(R.id.btn_cancel);
+		btn_ok.setOnClickListener(onClickListener);
+		btn_cancel.setOnClickListener(onClickListener);
+
+		lin_time_picker = (LinearLayout) findViewById(R.id.lin_time_picker);
+		lin_time_picker.setVisibility(View.GONE);
+		hourPicker = (NumberPicker) findViewById(R.id.hourpicker);
+		minutePicker = (NumberPicker) findViewById(R.id.minuteicker);
+
+		timeString = CustomApplication.app.preferencesUtil.getValue(
+				"timeString", "09:30");
+		String time[] = timeString.split(":");
+
+		hour = Integer.parseInt(time[0]);
+		minute = Integer.parseInt(time[1]);
+
+		txt_time.setText(setTimeString(hour, minute));
+
+		hourPicker.setFormatter(this);
+		hourPicker.setOnValueChangedListener(this);
+		hourPicker.setOnScrollListener(this);
+		hourPicker.setMaxValue(24);
+		hourPicker.setMinValue(0);
+		hourPicker.setValue(hour);
+
+		minutePicker.setFormatter(this);
+		minutePicker.setOnValueChangedListener(this);
+		minutePicker.setOnScrollListener(this);
+		minutePicker.setMaxValue(59);
+		minutePicker.setMinValue(0);
+		minutePicker.setValue(minute);
 
 	}
 
@@ -115,111 +164,87 @@ public class MySettingRemindersActivity extends BaseActivity {
 				break;
 
 			case R.id.rel_reminders:
-				// Intent intent2 = new Intent();
-				// intent2.setClass(MySettingActivity.this,
-				// YTGAboutActivity1.class);
-				// startActivity(intent2);
 
 				break;
 
-			case R.id.rel_logout:
-				showLogOutDialog();
+			case R.id.txt_time:
+				lin_time_picker.setVisibility(View.VISIBLE);
+				txt_time.setVisibility(View.GONE);
 				break;
+			case R.id.btn_ok:
+				lin_time_picker.setVisibility(View.GONE);
+				txt_time.setVisibility(View.VISIBLE);
+				txt_time.setText(timeString);
 
+				break;
+			case R.id.btn_cancel:
+
+				break;
 			default:
 				break;
 			}
 		}
 	};
 
-	/**
-	 * 退出登录对话框
-	 */
-	private void showLogOutDialog() {
-
-		final AlertDialog mModifyDialog = new AlertDialog.Builder(
-				MySettingRemindersActivity.this).create();
-		LayoutInflater inflater = LayoutInflater
-				.from(MySettingRemindersActivity.this);
-		View view = inflater.inflate(R.layout.layout_dialog_loginout, null);
-		TextView title = (TextView) view.findViewById(R.id.dialog_title);
-		TextView content = (TextView) view.findViewById(R.id.dialog_content);
-		Button ok = (Button) view.findViewById(R.id.commit_btn);
-		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
-		title.setText("退出");
-		content.setText("您确定要退出吗？");
-		title.setGravity(Gravity.CENTER_HORIZONTAL);
-		ok.setText("确定");
-		cancel.setText("取消");
-		ok.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				// tdt.RunWithMsg(MySettingActivity.this, new LoginOut(),
-				// "正在退出...");
-			}
-		});
-		cancel.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mModifyDialog.dismiss();
-			}
-		});
-		mModifyDialog.show();
-		mModifyDialog.setContentView(view);
+	@Override
+	public String format(int value) {
+		// TODO Auto-generated method stub
+		String tmpStr = String.valueOf(value);
+		if (value < 10) {
+			tmpStr = "0" + tmpStr;
+		}
+		return tmpStr;
 	}
 
-	// public class LoginOut implements ThreadWithDialogListener {
-	//
-	// @Override
-	// public boolean TaskMain() {
-	// simpleModel = interfaces.loginout();
-	// return true;
-	// }
-	//
-	// @Override
-	// public boolean OnTaskDismissed() {
-	// // TODO Auto-generated method stub
-	// return true;
-	// }
-	//
-	// @Override
-	// public boolean OnTaskDone() {
-	//
-	// if (simpleModel == null) {
-	// UiUtil.showToast(getApplicationContext(), "退出登录失败！");
-	// return false;
-	// }
-	// if ("success".equals(simpleModel.getStatus())) {
-	//
-	// UiUtil.showToast(getApplicationContext(), "退出登录成功！");
-	//
-	// CustomApplication.app.loginBaseModel = null;
-	// CustomApplication.app.isLogin = false;
-	// CustomApplication.app.openId = "";
-	// CustomApplication.app.weChatNickName = "";
-	// CustomApplication.app.preferencesUtil.setValue(
-	// AppConstants.LOGIN_PWD, "");
-	//
-	// CustomApplication.app.preferencesUtil.getValue(
-	// AppConstants.LOGIN_PWD, "");
-	//
-	// Intent intent = new Intent();
-	// intent.setClass(MySettingActivity.this, WXEntryActivity.class);
-	// intent.putExtra("logout", false);
-	// intent.putExtra("login", -1);
-	// startActivity(intent);
-	// // MainActivity.mainActivity.selectIndex = 0;
-	// NoticeFragment.IsRefresh = true;
-	// CustomApplication.app.finishAllActivity();
-	// MainActivity.mainActivity.performClickBtn(0);
-	//
-	// } else {
-	//
-	// UiUtil.showToast(getApplicationContext(), "退出登录失败！");
-	// }
-	// return true;
-	// }
-	// }
+	@Override
+	public void onScrollStateChange(NumberPicker view, int scrollState) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+		// TODO Auto-generated method stub
+
+		switch (picker.getId()) {
+
+		case R.id.hourpicker:
+			hour = newVal;
+			break;
+		case R.id.minuteicker:
+			minute = newVal;
+			break;
+
+		default:
+			break;
+		}
+		setTimeString(hour, minute);
+	}
+
+	/**
+	 * 
+	 * 设置选择的时间
+	 * 
+	 * @param hour
+	 * @param minute
+	 * @return timeString
+	 */
+	private String setTimeString(int hour, int minute) {
+		if (hour < 10) {
+			return timeString = "0" + hour + ":" + minute;
+		}
+		return timeString = "" + hour + ":" + minute;
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+
+		CustomApplication.app.preferencesUtil
+				.setValue("timeString", timeString);
+		Log.d(TAG + "onDestroy", "timeString:" + timeString);
+
+	}
 
 }

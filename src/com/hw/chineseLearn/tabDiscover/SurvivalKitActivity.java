@@ -3,6 +3,7 @@ package com.hw.chineseLearn.tabDiscover;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.LearnUnitAdapter;
 import com.hw.chineseLearn.adapter.SurvivalKitAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
@@ -46,6 +46,34 @@ public class SurvivalKitActivity extends BaseActivity {
 		init();
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		if (CustomApplication.app.favouriteList.size() != 0) {
+			LearnUnitBaseModel modelBase = new LearnUnitBaseModel();
+			modelBase.setIconResSuffix("favorite_img");
+			modelBase.setUnitName("Favourite");
+			listBase.set(0, modelBase);
+		} else {
+			for (int i = 0; i < listBase.size(); i++) {
+				LearnUnitBaseModel modelBase = listBase.get(i);
+
+				if (modelBase == null) {
+					continue;
+				}
+				String unitName = modelBase.getUnitName();
+				if ("Favourite".equals(unitName)) {
+					listBase.remove(i);
+					break;
+				}
+			}
+		}
+		adapter.notifyDataSetChanged();
+
+	}
+
 	/**
 	 * 初始化
 	 */
@@ -54,7 +82,13 @@ public class SurvivalKitActivity extends BaseActivity {
 				"Survival Kit", View.GONE, View.GONE, 0);
 		lv_survival = (ListView) contentView.findViewById(R.id.lv_survival);
 		lv_survival.setOnItemClickListener(onItemclickListener);
+		initDatas();
+		adapter = new SurvivalKitAdapter(context, listBase);
+		lv_survival.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+	}
 
+	private void initDatas() {
 		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
 		modelBase1.setIconResSuffix("survival_0_0_1");
 		modelBase1.setUnitName("Basics");
@@ -114,10 +148,6 @@ public class SurvivalKitActivity extends BaseActivity {
 		modelBase12.setIconResSuffix("survival_3_2_0");
 		modelBase12.setUnitName("Tools");
 		listBase.add(modelBase12);
-
-		adapter = new SurvivalKitAdapter(context, listBase);
-		lv_survival.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {
@@ -144,6 +174,11 @@ public class SurvivalKitActivity extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			// TODO Auto-generated method stub
+			String title = listBase.get(arg2).getUnitName();
+			Intent intent = new Intent(SurvivalKitActivity.this,
+					SurvivalKitDetailActivity.class);
+			intent.putExtra("title", title);
+			startActivity(intent);
 
 		}
 	};

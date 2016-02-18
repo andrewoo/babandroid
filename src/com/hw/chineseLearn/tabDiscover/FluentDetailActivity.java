@@ -36,17 +36,17 @@ public class FluentDetailActivity extends BaseActivity {
 	private String TAG = "==FluentDetailActivity==";
 	private Context context;
 	View contentView;
-	ListView lv_add_lesson;
+	ListView lv_fluent_list;
 	FluentDetailAdapter adapter;
 	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
-	// 列表-上下拉刷新
 	int selectIndex = 0;
+	String title = "Title";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		contentView = LayoutInflater.from(this).inflate(
-				R.layout.activity_fluent_now, null);
+				R.layout.activity_fluent_detail, null);
 		setContentView(contentView);
 		CustomApplication.app.addActivity(this);
 		context = this;
@@ -58,16 +58,20 @@ public class FluentDetailActivity extends BaseActivity {
 	 */
 	public void init() {
 
-		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Add Lesson", View.GONE, View.GONE, 0);
-		lv_add_lesson = (ListView) contentView
+		setTitle(View.GONE, View.VISIBLE,
+				R.drawable.btn_selector_top_left_white, title, View.GONE,
+				View.GONE, 0);
+		lv_fluent_list = (ListView) contentView
 				.findViewById(R.id.lv_fluent_list);
-		lv_add_lesson.setOnItemClickListener(onItemclickListener);
+		lv_fluent_list.setSelector(context.getResources().getDrawable(
+				R.drawable.bg_touming));
+		lv_fluent_list.setOnItemClickListener(onItemclickListener);
 
 		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
 		modelBase1.setIconResSuffix("ls_catt_16");
 		modelBase1.setUnitName("你好！");
 		modelBase1.setDescription("Hello!");
+		listBase.add(modelBase1);
 		listBase.add(modelBase1);
 
 		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
@@ -78,18 +82,25 @@ public class FluentDetailActivity extends BaseActivity {
 
 		LearnUnitBaseModel modelBase3 = new LearnUnitBaseModel();
 		modelBase3.setIconResSuffix("ls_catt_16");
-		modelBase3.setUnitName("你好！");
-		modelBase3.setDescription("Hello!");
+		modelBase3.setUnitName("这条路直走,到拐弯处左转。");
+		modelBase3
+				.setDescription("Go down the street and turn left at the corner!");
 		listBase.add(modelBase3);
 
 		LearnUnitBaseModel modelBase4 = new LearnUnitBaseModel();
 		modelBase4.setIconResSuffix("ls_catt_8");
-		modelBase4.setUnitName("请问邮局在哪儿？");
-		modelBase4.setDescription("Where is the post office?");
+		modelBase4.setUnitName("谢谢你！");
+		modelBase4.setDescription("Thanks a lot !");
 		listBase.add(modelBase4);
 
+		LearnUnitBaseModel modelBase5 = new LearnUnitBaseModel();
+		modelBase5.setIconResSuffix("ls_catt_8");
+		modelBase5.setUnitName("不客气！");
+		modelBase5.setDescription("My pleasure！");
+		listBase.add(modelBase5);
+
 		adapter = new FluentDetailAdapter(context, listBase);
-		lv_add_lesson.setAdapter(adapter);
+		lv_fluent_list.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 
 	}
@@ -117,6 +128,8 @@ public class FluentDetailActivity extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View convertView,
 				int arg2, long arg3) {
 			// TODO Auto-generated method stub
+			adapter.setSelection(arg2);
+			adapter.notifyDataSetChanged();
 		}
 	};
 
@@ -142,8 +155,11 @@ public class FluentDetailActivity extends BaseActivity {
 			String title, int textRight, int imgRight, int imgRightDrawable) {
 
 		View view_title = (View) this.findViewById(R.id.view_title);
+		view_title.setBackgroundColor(context.getResources().getColor(
+				R.color.chinese_skill_blue));
 		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
 		tv_title.setText(title);
+		tv_title.setTextColor(context.getResources().getColor(R.color.white));
 
 		TextView tv_title_left = (TextView) view_title
 				.findViewById(R.id.tv_title_left);

@@ -21,158 +21,164 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="Which days would you like to be reminded to learn ?"
-                android:textColor="@color/deep_grey"
-                android:textSize="@dimen/text_s15" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#F7F7F7"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp" >
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="Which days would you like to be reminded to learn ?"
+                    android:textColor="@color/deep_grey"
+                    android:textSize="@dimen/text_s15" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#F7F7F7"
                     android:gravity="center"
-                    android:orientation="horizontal" >
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp" >
 
-                    <CheckBox
-                        android:id="@+id/ck_sunday"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/rb_selector_bg1"
-                        android:button="@null"
-                        android:checked="true"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="5dp"
-                        android:text="SUN"
-                        android:textColor="@drawable/text_style_grey_to_white" />
+                        android:orientation="horizontal" >
 
-                    <CheckBox
-                        android:id="@+id/ck_monday"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/rb_selector_bg1"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="MON"
-                        android:textColor="@drawable/text_style_grey_to_white" />
+                        <CheckBox
+                            android:id="@+id/ck_sunday"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/rb_selector_bg1"
+                            android:button="@null"
+                            android:checked="true"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="SUN"
+                            android:textColor="@drawable/text_style_grey_to_white"
+                            android:textSize="@dimen/text_s12" />
 
-                    <CheckBox
-                        android:id="@+id/ck_tuesday"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/rb_selector_bg1"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="TUE"
-                        android:textColor="@drawable/text_style_grey_to_white" />
+                        <CheckBox
+                            android:id="@+id/ck_monday"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/rb_selector_bg1"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="MON"
+                            android:textColor="@drawable/text_style_grey_to_white"
+                            android:textSize="@dimen/text_s12" />
 
-                    <CheckBox
-                        android:id="@+id/ck_wednesday"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/rb_selector_bg1"
-                        android:button="@null"
+                        <CheckBox
+                            android:id="@+id/ck_tuesday"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/rb_selector_bg1"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="TUE"
+                            android:textColor="@drawable/text_style_grey_to_white"
+                            android:textSize="@dimen/text_s12" />
+
+                        <CheckBox
+                            android:id="@+id/ck_wednesday"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/rb_selector_bg1"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="WED"
+                            android:textColor="@drawable/text_style_grey_to_white"
+                            android:textSize="@dimen/text_s12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="5dp"
-                        android:text="WED"
-                        android:textColor="@drawable/text_style_grey_to_white" />
+                        android:orientation="horizontal" >
+
+                        <CheckBox
+                            android:id="@+id/ck_thursday"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/rb_selector_bg1"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="THU"
+                            android:textColor="@drawable/text_style_grey_to_white"
+                            android:textSize="@dimen/text_s12" />
+
+                        <CheckBox
+                            android:id="@+id/ck_friday"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/rb_selector_bg1"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="FRI"
+                            android:textColor="@drawable/text_style_grey_to_white"
+                            android:textSize="@dimen/text_s12" />
+
+                        <CheckBox
+                            android:id="@+id/ck_saturday"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/rb_selector_bg1"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="SAT"
+                            android:textColor="@drawable/text_style_grey_to_white"
+                            android:textSize="@dimen/text_s12" />
+                    </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="What time of a day?"
+                    android:textColor="@color/deep_grey"
+                    android:textSize="@dimen/text_s15" />
+
+                <TextView
+                    android:id="@+id/txt_time"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_circle_grey"
                     android:gravity="center"
-                    android:orientation="horizontal" >
-
-                    <CheckBox
-                        android:id="@+id/ck_thursday"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/rb_selector_bg1"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="THU"
-                        android:textColor="@drawable/text_style_grey_to_white" />
-
-                    <CheckBox
-                        android:id="@+id/ck_friday"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/rb_selector_bg1"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="FRI"
-                        android:textColor="@drawable/text_style_grey_to_white" />
-
-                    <CheckBox
-                        android:id="@+id/ck_saturday"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/rb_selector_bg1"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="SAT"
-                        android:textColor="@drawable/text_style_grey_to_white" />
-                </LinearLayout>
+                    android:padding="15dp"
+                    android:text="09:30"
+                    android:textColor="@color/deep_grey"
+                    android:textSize="@dimen/text_s20"
+                    android:textStyle="bold" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="What time of a day?"
-                android:textColor="@color/deep_grey"
-                android:textSize="@dimen/text_s15" />
-
-            <TextView
-                android:id="@+id/txt_time"
-                android:layout_width="85dp"
-                android:layout_height="85dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_circle_grey"
-                android:gravity="center"
-                android:padding="15dp"
-                android:text="11:11"
-                android:textColor="@color/deep_grey"
-                android:textSize="@dimen/text_s18" />
-
             <LinearLayout
+                android:id="@+id/lin_time_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp" >
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/min_grey"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp" />
+                android:orientation="vertical" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -180,48 +186,89 @@
                     android:gravity="center"
                     android:orientation="horizontal" >
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/min_grey" />
+                    <com.util.weight.NumberPicker
+                        android:id="@+id/hourpicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-                    <Button
-                        android:id="@+id/btn_ok"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_touming_to_grey"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="Ok"
-                        android:textSize="@dimen/text_s14" />
+                        android:layout_gravity="center_vertical"
+                        android:text=":" />
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/min_grey" />
-
-                    <Button
-                        android:id="@+id/btn_cancel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_touming_to_grey"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="Cancel"
-                        android:textSize="@dimen/text_s14" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/min_grey" />
+                    <com.util.weight.NumberPicker
+                        android:id="@+id/minuteicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/min_grey" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp" >
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/min_grey"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal" >
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/min_grey" />
+
+                        <Button
+                            android:id="@+id/btn_ok"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_touming_to_grey"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Ok"
+                            android:textSize="@dimen/text_s14" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/min_grey" />
+
+                        <Button
+                            android:id="@+id/btn_cancel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_touming_to_grey"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Cancel"
+                            android:textSize="@dimen/text_s14" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/min_grey" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/min_grey" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

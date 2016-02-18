@@ -11,9 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.MyExpandableListAdapter;
+import com.hw.chineseLearn.adapter.MyExpandableListAdapterStrokes;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.util.tool.UiUtil;
 
 /**
  * 拼写练习
@@ -26,7 +27,7 @@ public class StrokesOrderActivity extends BaseActivity {
 	private Context context;
 	View contentView;
 	private ExpandableListView expandableListView;
-	private MyExpandableListAdapter adapter;
+	private MyExpandableListAdapterStrokes adapter;
 	public String[] groups = { "一", "人", "八", "么", "儿", "儿", "儿", "儿", "儿",
 			"儿", "儿", "儿", "儿", "儿", "儿", "儿", "儿", "儿", "儿", "儿" };
 	public String[][] children = {
@@ -88,7 +89,7 @@ public class StrokesOrderActivity extends BaseActivity {
 				"Strokes Order", View.GONE, View.GONE, 0);
 		expandableListView = (ExpandableListView) contentView
 				.findViewById(R.id.expandableListView);
-		adapter = new MyExpandableListAdapter(context, groups, children);
+		adapter = new MyExpandableListAdapterStrokes(context, groups, children);
 		expandableListView.setAdapter(adapter);
 		// 监听父列表的弹出事件
 		expandableListView
@@ -180,6 +181,8 @@ public class StrokesOrderActivity extends BaseActivity {
 				int groupPosition, int childPosition, long id) {
 			// TODO Auto-generated method stub
 			setTitle(children[groupPosition][childPosition]);
+
+			UiUtil.showToast(context, "Item clicked!" + childPosition);
 			return false;
 		}
 	}

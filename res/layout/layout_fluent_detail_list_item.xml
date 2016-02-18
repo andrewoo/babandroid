@@ -2,7 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:background="@drawable/bg_touming"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp" >
 
     <LinearLayout
         android:id="@+id/lin_bg"
@@ -12,11 +17,12 @@
         android:orientation="vertical" >
 
         <LinearLayout
+            android:id="@+id/lin_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="10dp" >
+            android:padding="10dp" >
 
             <TextView
                 android:id="@+id/txt_sentence_cn"
@@ -47,20 +53,32 @@
             android:padding="10dp" >
 
             <ImageView
-                android:id="@+id/img_tag"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:id="@+id/img_play"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/ls_catt_16" />
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/img_record"
+                android:src="@drawable/ls_play_3" />
 
             <ImageView
-                android:id="@+id/img_level"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentRight="true"
+                android:id="@+id/img_record"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/ls_diff_img_0" />
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/recorder_animate_bg"
+                android:src="@drawable/recorder_animate_01" />
+
+            <ImageView
+                android:id="@+id/img_record_play"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/img_record"
+                android:background="@drawable/ls_record_play_grey" />
         </RelativeLayout>
     </LinearLayout>
 
