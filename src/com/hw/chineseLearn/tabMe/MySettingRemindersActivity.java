@@ -230,10 +230,21 @@ public class MySettingRemindersActivity extends BaseActivity implements
 	 * @return timeString
 	 */
 	private String setTimeString(int hour, int minute) {
+		String hourString = "";
+		String minuteString = "";
 		if (hour < 10) {
-			return timeString = "0" + hour + ":" + minute;
+			hourString = "0" + hour;
+		} else {
+			hourString = "" + hour;
 		}
-		return timeString = "" + hour + ":" + minute;
+
+		if (minute < 10) {
+			minuteString = "0" + minute;
+		} else {
+			minuteString = "" + minute;
+		}
+
+		return timeString = hourString + ":" + minuteString;
 	}
 
 	@Override

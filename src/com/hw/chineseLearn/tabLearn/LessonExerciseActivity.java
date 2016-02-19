@@ -328,7 +328,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					replaceTo1(imageMoveFragment);
 					break;
 				case 4:
-					replaceTo1(new MineFragment());
+					replaceTo1(sentenceMoveFragment);
 					break;
 
 				default:
