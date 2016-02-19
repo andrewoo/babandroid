@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -21,6 +21,7 @@ import com.hw.chineseLearn.adapter.LearnUnitAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.weight.ViewArea;
 
 /**
  * 学习-拼汉子
@@ -35,13 +36,14 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private ThreadWithDialogTask task;
 	public static LearnImageMoveFragment fragment;
 	Context context;
-	LearnUnitAdapter learnUnit1Adapter, learnUnit2Adapter;
 
 	private ImageView iv_dv_view;
 	private TextView tv_drag_view;
 	private int startx;
 	private int starty;
 	private SharedPreferences sp;
+	LinearLayout lin_content;
+	private ViewArea viewArea;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,10 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		tv_drag_view = (TextView) contentView.findViewById(R.id.tv_drag_view);
 		sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
 		iv_dv_view.setOnTouchListener(onTouchListener);
+		viewArea = new ViewArea(context, R.drawable.blue_trumpet_1); // 自定义布局控件，用来初始化并存放自定义imageView
 
+		lin_content = (LinearLayout) contentView.findViewById(R.id.lin_content);
+		lin_content.addView(viewArea);
 		return contentView;
 	}
 
@@ -159,9 +164,9 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 					int screenWidth = CustomApplication.app.displayMetrics.widthPixels;
 					int screenHeight = CustomApplication.app.displayMetrics.heightPixels;
-					
-					if ((newl < 20) || (newt < 20) || (newr > screenWidth/2)
-							|| (newb > screenHeight/2)) {
+
+					if ((newl < 20) || (newt < 20) || (newr > screenWidth / 2)
+							|| (newb > screenHeight / 2)) {
 						break;
 					}
 
