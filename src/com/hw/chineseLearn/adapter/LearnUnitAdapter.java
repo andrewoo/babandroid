@@ -86,6 +86,7 @@ public class LearnUnitAdapter extends BaseAdapter {
 				String[] lessonId = lessonList.split(";");
 
 				Log.e("________", "lessonId.length:" + lessonId.length);
+				holder.lin_dots.removeAllViews();
 				for (int i = 0; i < lessonId.length; i++) {
 					ImageView imageView = new ImageView(context);
 					LayoutParams layoutParams = new LayoutParams(15, 15);

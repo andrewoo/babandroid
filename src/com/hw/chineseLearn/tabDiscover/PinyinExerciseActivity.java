@@ -57,12 +57,12 @@ public class PinyinExerciseActivity extends BaseActivity {
 	 * 初始化
 	 */
 	public void init() {
-		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Pinyin Chart", View.GONE, View.GONE, 0);
+		setTitle(View.GONE, View.VISIBLE,
+				R.drawable.btn_selector_top_left_white, "Pinyin Chart",
+				View.GONE, View.GONE, 0);
 		mHead = (RelativeLayout) findViewById(R.id.head);
 		mHead.setFocusable(true);
 		mHead.setClickable(true);
-		mHead.setBackgroundColor(Color.parseColor("#b2d235"));
 		mHead.setOnTouchListener(new ListViewAndHeadViewTouchLinstener());
 
 		mListView1 = (ListView) findViewById(R.id.listView1);
@@ -115,6 +115,9 @@ public class PinyinExerciseActivity extends BaseActivity {
 		View view_title = (View) this.findViewById(R.id.view_title);
 		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
 		tv_title.setText(title);
+		tv_title.setTextColor(context.getResources().getColor(R.color.white));
+		view_title.setBackgroundColor(context.getResources().getColor(
+				R.color.chinese_skill_blue));
 
 		TextView tv_title_left = (TextView) view_title
 				.findViewById(R.id.tv_title_left);

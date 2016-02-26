@@ -108,7 +108,7 @@ public class LessonViewActivity extends BaseActivity implements
 		animationSet.setRepeatCount(3);
 		animationSet.setRepeatMode(Animation.REVERSE);
 		// 使用ImageView的startAnimation方法开始执行动画
-		iv_unit_img.startAnimation(animationSet);
+		// iv_unit_img.startAnimation(animationSet);
 	}
 
 	/**
@@ -210,14 +210,14 @@ public class LessonViewActivity extends BaseActivity implements
 							View views = entry.getValue();
 							LinearLayout lin_c = (LinearLayout) views
 									.findViewById(R.id.lin_c);
-							lin_c.setLayoutParams(new RelativeLayout.LayoutParams(
+							lin_c.setLayoutParams(new LinearLayout.LayoutParams(
 									width, height));
 							Log.d(TAG, "选中！");
 						} else {
 							View views = entry.getValue();
 							LinearLayout lin_c = (LinearLayout) views
 									.findViewById(R.id.lin_c);
-							lin_c.setLayoutParams(new RelativeLayout.LayoutParams(
+							lin_c.setLayoutParams(new LinearLayout.LayoutParams(
 									LayoutParams.WRAP_CONTENT,
 									LayoutParams.WRAP_CONTENT));
 							Log.d(TAG, "未选中！");
@@ -239,11 +239,11 @@ public class LessonViewActivity extends BaseActivity implements
 		Log.d(TAG, "selection:" + selection);
 		adapter.setSelection(position);
 
-		Message message = new Message();
-		message.arg1 = 4;
-		message.arg2 = position;
-		message.what = 1;
-		mHandler.sendMessageDelayed(message, 5);
+		// Message message = new Message();
+		// message.arg1 = 4;
+		// message.arg2 = position;
+		// message.what = 1;
+		// mHandler.sendMessageDelayed(message, 5);
 
 		Button btn_redo = (Button) convertView.findViewById(R.id.btn_redo);
 		Button btn_start = (Button) convertView.findViewById(R.id.btn_start);

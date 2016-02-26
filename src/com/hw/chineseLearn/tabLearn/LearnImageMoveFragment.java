@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,10 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.LearnUnitAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.util.thread.ThreadWithDialogTask;
@@ -38,7 +37,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	Context context;
 
 	private ImageView iv_dv_view;
-	private TextView tv_drag_view;
 	private int startx;
 	private int starty;
 	private SharedPreferences sp;
@@ -63,13 +61,9 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		task = new ThreadWithDialogTask();
 
 		iv_dv_view = (ImageView) contentView.findViewById(R.id.iv_dv_view);
-		tv_drag_view = (TextView) contentView.findViewById(R.id.tv_drag_view);
 		sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
-		iv_dv_view.setOnTouchListener(onTouchListener);
+		// iv_dv_view.setOnTouchListener(onTouchListener);
 		viewArea = new ViewArea(context, R.drawable.blue_trumpet_1); // 自定义布局控件，用来初始化并存放自定义imageView
-
-		lin_content = (LinearLayout) contentView.findViewById(R.id.lin_content);
-		lin_content.addView(viewArea);
 		return contentView;
 	}
 
@@ -99,6 +93,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		super.onStop();
 	}
 
+	Point point = new Point();
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -108,10 +104,12 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		// iv_dv_view.getRight() + x, iv_dv_view.getBottom() + y);
 		// iv_dv_view.invalidate();//界面重新渲染
 
-		LayoutParams params = (LayoutParams) iv_dv_view.getLayoutParams();
-		params.leftMargin = x;
-		params.topMargin = y;
-		iv_dv_view.setLayoutParams(params);
+		// LayoutParams params = (LayoutParams) iv_dv_view.getLayoutParams();
+		// params.leftMargin = x;
+		// params.topMargin = y;
+		// iv_dv_view.setLayoutParams(params);
+		// point.x = startx;
+		// point.y = starty;
 	}
 
 	OnTouchListener onTouchListener = new View.OnTouchListener() {
@@ -132,15 +130,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动对应的事件
 					int x = (int) event.getRawX();
 					int y = (int) event.getRawY();
-
-					if (y < 400) {
-						// 设置TextView在窗体的下面
-						tv_drag_view.layout(tv_drag_view.getLeft(), 420,
-								tv_drag_view.getRight(), 440);
-					} else {
-						tv_drag_view.layout(tv_drag_view.getLeft(), 60,
-								tv_drag_view.getRight(), 80);
-					}
 
 					// 获取手指移动的距离
 					int dx = x - startx;

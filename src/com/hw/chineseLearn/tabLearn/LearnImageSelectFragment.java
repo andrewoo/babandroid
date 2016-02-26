@@ -46,12 +46,38 @@ public class LearnImageSelectFragment extends BaseFragment implements
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity();
+
+		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
+		modelBase1.setIconResSuffix("lu1_1_1");
+		modelBase1.setUnitName("Basics1");
+		modelBase1.setLessonList("1;");
+		listBase.add(modelBase1);
+
+		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
+		modelBase2.setIconResSuffix("lu0_1_2");
+		modelBase2.setUnitName("Basics2");
+		modelBase2.setLessonList("1;2;3;4");
+		listBase.add(modelBase2);
+
+		LearnUnitBaseModel modelBase3 = new LearnUnitBaseModel();
+		modelBase3.setIconResSuffix("lu0_1_3");
+		modelBase3.setUnitName("Basics3");
+		modelBase3.setLessonList("1;2;3");
+		listBase.add(modelBase3);
+
+		LearnUnitBaseModel modelBase4 = new LearnUnitBaseModel();
+		modelBase4.setIconResSuffix("lu0_1_4");
+		modelBase4.setUnitName("Color");
+		modelBase4.setLessonList("1;2;3");
+		listBase.add(modelBase4);
+
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		contentView = inflater.inflate(R.layout.fragment_lesson_image_select, null);
+		contentView = inflater.inflate(R.layout.fragment_lesson_image_select,
+				null);
 
 		task = new ThreadWithDialogTask();
 
@@ -104,30 +130,6 @@ public class LearnImageSelectFragment extends BaseFragment implements
 
 		gv_image = (GridView) contentView.findViewById(R.id.gv_image);
 
-		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-		modelBase1.setIconResSuffix("lu1_1_1");
-		modelBase1.setUnitName("Basics1");
-		modelBase1.setLessonList("1;");
-		listBase.add(modelBase1);
-
-		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
-		modelBase2.setIconResSuffix("lu0_1_2");
-		modelBase2.setUnitName("Basics2");
-		modelBase2.setLessonList("1;2;3;4");
-		listBase.add(modelBase2);
-
-		LearnUnitBaseModel modelBase3 = new LearnUnitBaseModel();
-		modelBase3.setIconResSuffix("lu0_1_3");
-		modelBase3.setUnitName("Basics3");
-		modelBase3.setLessonList("1;2;3");
-		listBase.add(modelBase3);
-
-		LearnUnitBaseModel modelBase4 = new LearnUnitBaseModel();
-		modelBase4.setIconResSuffix("lu0_1_4");
-		modelBase4.setUnitName("Color");
-		modelBase4.setLessonList("1;2;3");
-		listBase.add(modelBase4);
-
 		learnImageSelectAdapter = new LearnImageSelectAdapter(context, listBase);
 		gv_image.setAdapter(learnImageSelectAdapter);
 		gv_image.setOnItemClickListener(itemClickListener);
@@ -143,7 +145,6 @@ public class LearnImageSelectFragment extends BaseFragment implements
 			// TODO Auto-generated method stub
 			learnImageSelectAdapter.setSelection(position);
 			learnImageSelectAdapter.notifyDataSetChanged();
-			UiUtil.showToast(context, "hahahha");
 			LearnUnitBaseModel learnUnitBaseModel = listBase.get(position);
 			if (learnUnitBaseModel != null) {
 			}

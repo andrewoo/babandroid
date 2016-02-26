@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/chinese_skill_blue"
     android:orientation="vertical" >
 
     <include
@@ -10,16 +11,15 @@
 
     <include
         android:id="@+id/head"
-        android:layout_below="@+id/textView1"
         layout="@layout/layout_pinyin_item" />
 
     <ListView
         android:id="@+id/listView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/head"
         android:cacheColorHint="@android:color/transparent"
-        android:divider="@null" >
+        android:divider="@null"
+        android:listSelector="@color/transparent" >
     </ListView>
 
 </LinearLayout>

@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_white_to_grey"
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
     android:padding="5dp" >
@@ -14,6 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:gravity="center"
         android:text="Column1"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -44,6 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:gravity="center"
                     android:text="Column2"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -53,6 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:gravity="center"
                     android:text="Column3"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -62,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:gravity="center"
                     android:text="Column4"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -71,6 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:gravity="center"
                     android:text="Column5"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -80,6 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:gravity="center"
                     android:text="Column6"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -89,11 +94,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:gravity="center"
                     android:text="Column7"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </LinearLayout>
-
-            </com.util.weight.MyHScrollView>
+        </com.util.weight.MyHScrollView>
     </com.util.weight.InterceptScrollContainer>
 
 </RelativeLayout>

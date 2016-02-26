@@ -43,6 +43,10 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	Context context;
 	LearnUnitAdapter learnUnit1Adapter, learnUnit2Adapter;
 	private String TAG = "LearnFragment";
+	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
+	ArrayList<LearnUnitBaseModel> listAdvance = new ArrayList<LearnUnitBaseModel>();
+
+	SelfGridView centGridView, centGridView1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,80 +55,11 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		fragment = this;
 		context = getActivity();
 		Log.d(TAG, "onCreate");
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		contentView = inflater.inflate(R.layout.fragment_learn, null);
-
-		task = new ThreadWithDialogTask();
-
-		init();
-		Log.d(TAG, "onCreateView");
-		return contentView;
-	}
-
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.rel_test_out:
-			startActivity(new Intent(getActivity(), LessonTestOutActivity.class));
-			break;
-		default:
-			break;
-		}
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-		Log.d(TAG, "onActivityCreated");
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		Log.d(TAG, "onStart");
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-	}
-
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		// task.RunWithMsg(getActivity(), new LoadNoticesThread(),
-		// "Learn is loading…");
-	}
-
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
-	ArrayList<LearnUnitBaseModel> listAdvance = new ArrayList<LearnUnitBaseModel>();
-
-	SelfGridView centGridView, centGridView1;
-
-	/**
-	 * 显示数据并设置监听
-	 * 
-	 * @param
-	 */
-	public void init() {
-		// TODO Auto-generated method stub
-		rel_test_out = (RelativeLayout) contentView
-				.findViewById(R.id.rel_test_out);
-		rel_test_out.setOnClickListener(this);
-
-		centGridView = (SelfGridView) contentView
-				.findViewById(R.id.gv_center_gridview);
 
 		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
 		modelBase1.setIconResSuffix("lu1_1_1");
 		modelBase1.setUnitName("Basics1");
-		modelBase1.setLessonList("1;");
+		modelBase1.setLessonList("1;2");
 		modelBase1.setEnable(true);
 		listBase.add(modelBase1);
 
@@ -193,15 +128,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		modelBase12.setUnitName("Tense");
 		modelBase12.setLessonList("1;2;3;4");
 		listBase.add(modelBase12);
-		if (learnUnit1Adapter == null) {
-			learnUnit1Adapter = new LearnUnitAdapter(context, listBase);
-			centGridView.setAdapter(learnUnit1Adapter);
-			centGridView.setOnItemClickListener(itemClickListener);
-			learnUnit1Adapter.notifyDataSetChanged();
-		}
-		centGridView1 = (SelfGridView) contentView
-				.findViewById(R.id.gv_center_gridview1);
-
+		// ////////////////////////////////////////////////////////////////////
 		LearnUnitBaseModel modelAdvance1 = new LearnUnitBaseModel();
 		modelAdvance1.setIconResSuffix("lu0_3_3");
 		modelAdvance1.setUnitName("Number");
@@ -286,6 +213,62 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		modelAdvance14.setLessonList("1;2;3");
 		listAdvance.add(modelAdvance14);
 
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		contentView = inflater.inflate(R.layout.fragment_learn, null);
+
+		task = new ThreadWithDialogTask();
+
+		init();
+		Log.d(TAG, "onCreateView");
+		return contentView;
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.rel_test_out:
+			startActivity(new Intent(getActivity(), LessonTestOutActivity.class));
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		// task.RunWithMsg(getActivity(), new LoadNoticesThread(),
+		// "Learn is loading…");
+	}
+
+	/**
+	 * 显示数据并设置监听
+	 * 
+	 * @param
+	 */
+	public void init() {
+		// TODO Auto-generated method stub
+		rel_test_out = (RelativeLayout) contentView
+				.findViewById(R.id.rel_test_out);
+		rel_test_out.setOnClickListener(this);
+
+		centGridView = (SelfGridView) contentView
+				.findViewById(R.id.gv_center_gridview);
+
+		if (learnUnit1Adapter == null) {
+			learnUnit1Adapter = new LearnUnitAdapter(context, listBase);
+			centGridView.setAdapter(learnUnit1Adapter);
+			centGridView.setOnItemClickListener(itemClickListener);
+			learnUnit1Adapter.notifyDataSetChanged();
+		}
+
+		centGridView1 = (SelfGridView) contentView
+				.findViewById(R.id.gv_center_gridview1);
 		if (learnUnit2Adapter == null) {
 			learnUnit2Adapter = new LearnUnitAdapter(context, listAdvance);
 			centGridView1.setAdapter(learnUnit2Adapter);
