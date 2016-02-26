@@ -1,5 +1,6 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,23 +11,28 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.tabMe.MineFragment;
 import com.util.weight.CustomDialog;
 
 /**
@@ -49,7 +55,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	 */
 	int score = 0;
 	/**
-	 * 当前课程下标
+	 * 当前题目下标
 	 */
 	int exerciseIndex = 0;// 第一道题
 	/**
@@ -63,16 +69,14 @@ public class LessonExerciseActivity extends BaseActivity {
 	int panderLife = 0;
 	LearnImageMoveFragment imageMoveFragment;
 	LearnSentenceMoveFragment sentenceMoveFragment;
-
 	LearnImageSelectFragment imageSelectFragment;
 	LearnWordSelectFragment wordSelectFragment;
 	LearnWordInputFragment wordInputFragment;
 
-	Button btn_next;
-	Button btn_report_bug;
 	// 一个自定义的布局，作为显示的内容
-	View pview = null;
+	View checkView = null;
 	CustomDialog builder;
+	private int utilId = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +84,74 @@ public class LessonExerciseActivity extends BaseActivity {
 		contentView = LayoutInflater.from(this).inflate(
 				R.layout.activity_lesson_exercise, null);
 		setContentView(contentView);
-		context = this;
-		pview = LayoutInflater.from(context).inflate(
-				R.layout.layout_learn_exercise_check_dialog, null);
 
-		init();
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			if (bundle.containsKey("utilId")) {
+				utilId = bundle.getInt("utilId");
+			}
+		}
+		// for test
+		if (utilId == 0) {
+			isCurrentTestRight = true;
+		} else {
+			isCurrentTestRight = false;
+		}
+		context = this;
 		CustomApplication.app.addActivity(this);
+		init();
+		initMediaPlayer();
+		playRightSound();
+	}
+
+	MediaPlayer mediaPlayer = null;
+
+	private void initMediaPlayer() {
+
+		if (mediaPlayer == null) {
+			mediaPlayer = new MediaPlayer();
+		}
+	}
+
+	public void playWrongSound() {
+		AssetManager am = getAssets();// 获得该应用的AssetManager
+		try {
+			AssetFileDescriptor afd = am.openFd("sounds/wrong_sound.mp3");
+			mediaPlayer.setDataSource(afd.getFileDescriptor());
+			mediaPlayer.prepare(); // 准备
+			mediaPlayer.start();
+			return;
+		} catch (IOException localIOException1) {
+		}
+	}
+
+	public void playRightSound() {
+		AssetManager am = getAssets();// 获得该应用的AssetManager
+		try {
+			AssetFileDescriptor afd = am.openFd("sounds/correct_sound.mp3");
+			mediaPlayer.setDataSource(afd.getFileDescriptor());
+			mediaPlayer.prepare(); // 准备
+			mediaPlayer.start();
+			return;
+		} catch (IOException localIOException1) {
+		}
+	}
+
+	// 存放progressView的集合
+	HashMap<Integer, ImageView> panderView = new HashMap<Integer, ImageView>();
+
+	// 存放progressView的集合
+	HashMap<Integer, ImageView> progressView = new HashMap<Integer, ImageView>();
+
+	/**
+	 * 当前测试的题答案是否正确
+	 */
+	private boolean isCurrentTestRight;
+
+	/**
+	 * 初始化
+	 */
+	public void init() {
 
 		if (imageSelectFragment == null) {
 			imageSelectFragment = new LearnImageSelectFragment();
@@ -105,25 +171,26 @@ public class LessonExerciseActivity extends BaseActivity {
 			sentenceMoveFragment = new LearnSentenceMoveFragment();
 		}
 
-	}
+		checkView = LayoutInflater.from(context).inflate(
+				R.layout.layout_learn_exercise_check_dialog, null);
 
-	// 存放progressView的集合
-	HashMap<Integer, ImageView> panderView = new HashMap<Integer, ImageView>();
-
-	// 存放progressView的集合
-	HashMap<Integer, ImageView> progressView = new HashMap<Integer, ImageView>();
-
-	/**
-	 * 初始化
-	 */
-	public void init() {
-		lin_pander_life = (LinearLayout) findViewById(R.id.lin_pander_life);
-		txt_lesson_score = (TextView) findViewById(R.id.txt_lesson_score);
-
-		lin_lesson_progress = (LinearLayout) findViewById(R.id.lin_lesson_progress);
 		btn_check = (Button) findViewById(R.id.btn_check);
 		btn_check.setOnClickListener(onClickListener);
+		initTestDatas();
+	}
+
+	private void initTestDatas() {
+		lin_pander_life = (LinearLayout) findViewById(R.id.lin_pander_life);
+		txt_lesson_score = (TextView) findViewById(R.id.txt_lesson_score);
+		lin_lesson_progress = (LinearLayout) findViewById(R.id.lin_lesson_progress);
+
+		score = 0;
+		txt_lesson_score.setText("" + score);
+		exerciseIndex = 0;// 第一道题
+
 		panderLife = 5;
+		panderView.clear();
+		lin_pander_life.removeAllViews();
 		for (int i = 0; i < panderLife; i++) {
 			ImageView imageView = new ImageView(context);
 			LayoutParams layoutParams = new LayoutParams(60, 60);
@@ -134,11 +201,12 @@ public class LessonExerciseActivity extends BaseActivity {
 			imageView.setId(i);
 			lin_pander_life.addView(imageView);
 			panderView.put(i, imageView);
-
 		}
 
 		// exerciseCount=list.size();
-		exerciseCount = 17;
+		exerciseCount = 15;
+		progressView.clear();
+		lin_lesson_progress.removeAllViews();
 		for (int i = 0; i < exerciseCount; i++) {
 			ImageView imageView = new ImageView(context);
 			LayoutParams layoutParams = new LayoutParams(
@@ -149,13 +217,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					R.drawable.bg_progress_noraml));
 			lin_lesson_progress.addView(imageView);
 			progressView.put(i, imageView);
-
 		}
-		// setProgressViewBg(0, R.drawable.bg_progress_rigth);
-		// setProgressViewBg(1, R.drawable.bg_progress_rigth);
-		// setProgressViewBg(2, R.drawable.bg_progress_rigth);
-		// setProgressViewBg(3, R.drawable.bg_progress_wrong);
-		// setProgressViewBg(4, R.drawable.bg_progress_rigth);
 	}
 
 	/**
@@ -177,17 +239,31 @@ public class LessonExerciseActivity extends BaseActivity {
 				case R.drawable.bg_progress_rigth:
 					score = score + 60;
 					txt_lesson_score.setText("" + score);
+					if (index == exerciseCount - 1) {
+						// UiUtil.showToast(context, "last test");
+					}
+					// playRightSound();
+					showCheckDialog(true);
 					break;
 				case R.drawable.bg_progress_wrong:
 					score = score - 60;
 					if (score < 0)
 						score = 0;
 					txt_lesson_score.setText("" + score);
-					if (panderView.size() > 1) {
-						lin_pander_life.removeView(panderView.get(panderView
-								.size() - 1));
-					}
 
+					lin_pander_life.removeView(panderView.get(panderLife - 1));
+					panderLife--;
+					Log.d(TAG, "panderLife:" + panderLife);
+
+					if (panderLife == 0) {// lose all pander
+						Intent intent = new Intent(LessonExerciseActivity.this,
+								LessonResultActivity.class);
+						intent.putExtra("loseAllPanders", "loseAllPanders");
+						startActivityForResult(intent, 100);
+					} else {
+						// playWrongSound();
+						showCheckDialog(false);
+					}
 					break;
 				default:
 					break;
@@ -212,8 +288,13 @@ public class LessonExerciseActivity extends BaseActivity {
 				if (btn_check.getVisibility() == View.VISIBLE) {
 					btn_check.setVisibility(View.GONE);
 				}
-				setProgressViewBg(exerciseIndex, R.drawable.bg_progress_rigth);
-				showCheckDialog();
+				if (isCurrentTestRight) {
+					setProgressViewBg(exerciseIndex,
+							R.drawable.bg_progress_rigth);
+				} else {
+					setProgressViewBg(exerciseIndex,
+							R.drawable.bg_progress_wrong);
+				}
 
 				break;
 
@@ -280,23 +361,58 @@ public class LessonExerciseActivity extends BaseActivity {
 		super.closeWindowSoftInput(contentView);
 	}
 
-	private void showCheckDialog() {
-		// 题目下标加一
-		exerciseIndex++;
-		Log.d(TAG, "题目下标:" + exerciseIndex);
+	RelativeLayout rel_op;
 
-		btn_report_bug = (Button) pview.findViewById(R.id.btn_report_bug);
-		btn_next = (Button) pview.findViewById(R.id.btn_next);
+	private void showCheckDialog(boolean isRight) {
 
-		if (exerciseIndex == exerciseCount) {// 最后一道题目
+		Button btn_report_bug = (Button) checkView
+				.findViewById(R.id.btn_report_bug);
+		ImageView img_is_right = (ImageView) checkView
+				.findViewById(R.id.img_is_right);
+		Button btn_next = (Button) checkView.findViewById(R.id.btn_next);
+
+		rel_op = (RelativeLayout) checkView.findViewById(R.id.rel_op);
+		rel_op.setOnTouchListener(onTouchListener);
+		LinearLayout lin_color_bg = (LinearLayout) checkView
+				.findViewById(R.id.lin_color_bg);
+
+		TextView tv_tip = (TextView) checkView.findViewById(R.id.tv_tip);
+
+		if (isRight) {
+			btn_report_bug.setBackground(context.getResources().getDrawable(
+					R.drawable.bugreport_img_right));
+			img_is_right.setBackground(context.getResources().getDrawable(
+					R.drawable.test_correct_3));
+			lin_color_bg.setBackgroundColor(context.getResources().getColor(
+					R.color.chinese_skill_blue));
+			tv_tip.setVisibility(View.VISIBLE);
+			btn_next.setTextColor(context.getResources().getColor(
+					R.color.chinese_skill_blue));
+		} else {
+
+			btn_report_bug.setBackground(context.getResources().getDrawable(
+					R.drawable.bugreport_img_wrong));
+			img_is_right.setBackground(context.getResources().getDrawable(
+					R.drawable.test_wrong_3));
+			lin_color_bg.setBackgroundColor(context.getResources().getColor(
+					R.color.chinese_skill_yellow));
+			btn_next.setTextColor(context.getResources().getColor(
+					R.color.chinese_skill_yellow));
+			tv_tip.setVisibility(View.INVISIBLE);
+		}
+
+		if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
 			btn_next.setText("Finish");
 		} else {
 			btn_next.setText("Next");
 		}
+		// 题目下标加一
+		exerciseIndex++;
+		Log.d(TAG, "题目下标:" + exerciseIndex);
 
 		if (builder == null) {
-			builder = new CustomDialog(this, R.style.my_dialog).create(pview,
-					false, 1f, 1f, 1);
+			builder = new CustomDialog(this, R.style.my_dialog).create(
+					checkView, false, 1f, 1f, 1);
 		}
 		builder.show();
 		builder.setCancelable(false);
@@ -316,19 +432,54 @@ public class LessonExerciseActivity extends BaseActivity {
 				btn_check.setVisibility(View.VISIBLE);
 				switch (exerciseIndex) {
 				case 0:
-					replaceTo1(wordSelectFragment);
+					replaceTo2("wordSelectFragment");
+
 					break;
 				case 1:
-					replaceTo1(wordInputFragment);
+					replaceTo2("wordInputFragment");
 					break;
 				case 2:
-					replaceTo1(imageSelectFragment);
+					replaceTo2("imageSelectFragment");
 					break;
 				case 3:
-					replaceTo1(imageMoveFragment);
+					replaceTo2("imageMoveFragment");
 					break;
 				case 4:
-					replaceTo1(sentenceMoveFragment);
+					replaceTo2("sentenceMoveFragment");
+					break;
+				//
+				case 5:
+					replaceTo2("wordSelectFragment");
+
+					break;
+				case 6:
+					replaceTo2("wordInputFragment");
+					break;
+				case 7:
+					replaceTo2("imageSelectFragment");
+					break;
+				case 8:
+					replaceTo2("imageMoveFragment");
+					break;
+				case 9:
+					replaceTo2("sentenceMoveFragment");
+					break;
+				//
+				case 10:
+					replaceTo2("wordSelectFragment");
+
+					break;
+				case 11:
+					replaceTo2("wordInputFragment");
+					break;
+				case 12:
+					replaceTo2("imageSelectFragment");
+					break;
+				case 13:
+					replaceTo2("imageMoveFragment");
+					break;
+				case 14:
+					replaceTo2("sentenceMoveFragment");
 					break;
 
 				default:
@@ -336,9 +487,12 @@ public class LessonExerciseActivity extends BaseActivity {
 				}
 
 				if (exerciseIndex == exerciseCount) {// 最后一道题目
-					startActivityForResult(new Intent(
-							LessonExerciseActivity.this,
-							LessonResultActivity.class), 100);
+
+					Intent intent = new Intent(LessonExerciseActivity.this,
+							LessonResultActivity.class);
+					intent.putExtra("loseAllPanders", "");
+					startActivityForResult(intent, 100);
+
 				}
 
 				builder.dismiss();
@@ -355,6 +509,20 @@ public class LessonExerciseActivity extends BaseActivity {
 
 	}
 
+	private void replaceTo2(String type) {
+		if ("wordSelectFragment".equals(type)) {
+			replaceTo1(wordSelectFragment);
+		} else if ("wordInputFragment".equals(type)) {
+			replaceTo1(wordInputFragment);
+		} else if ("imageSelectFragment".equals(type)) {
+			replaceTo1(imageSelectFragment);
+		} else if ("imageMoveFragment".equals(type)) {
+			replaceTo1(imageMoveFragment);
+		} else if ("sentenceMoveFragment".equals(type)) {
+			replaceTo1(sentenceMoveFragment);
+		}
+	}
+
 	OnKeyListener onKeyListener = new DialogInterface.OnKeyListener() {
 		public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
 			if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -366,16 +534,108 @@ public class LessonExerciseActivity extends BaseActivity {
 		}
 	};
 
+	protected void onDestroy() {
+		super.onDestroy();
+		setResult(0);
+		if (mediaPlayer != null) {
+			if (mediaPlayer.isPlaying()) {
+				mediaPlayer.stop();
+			}
+		}
+	};
+
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
 		switch (resultCode) {
-		case 0:
-			exerciseIndex = 0;
+		case 0:// redo
+			init();
+			break;
+		case 1:// continue
+			setResult(1);
+			CustomApplication.app.finishActivity(LessonExerciseActivity.class);
 			break;
 
 		default:
 			break;
 		}
+		Log.d(TAG, "resultCode:" + resultCode);
+	};
 
+	private int startx;
+	private int starty;
+
+	OnTouchListener onTouchListener = new View.OnTouchListener() {
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			// TODO Auto-generated method stub
+			switch (v.getId()) {
+
+			// 如果手指放在imageView上拖动
+			case R.id.iv_dv_view:
+				// event.getRawX(); //获取手指第一次接触屏幕在x方向的坐标
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN:// 获取手指第一次接触屏幕
+					startx = (int) event.getRawX();
+					starty = (int) event.getRawY();
+					break;
+				case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动对应的事件
+					int x = (int) event.getRawX();
+					int y = (int) event.getRawY();
+
+					// if (y < 400) {
+					// // 设置TextView在窗体的下面
+					// tv_drag_view.layout(tv_drag_view.getLeft(), 420,
+					// tv_drag_view.getRight(), 440);
+					// } else {
+					// tv_drag_view.layout(tv_drag_view.getLeft(), 60,
+					// tv_drag_view.getRight(), 80);
+					// }
+
+					// 获取手指移动的距离
+					int dx = x - startx;
+					int dy = y - starty;
+					// 得到imageView最开始的各顶点的坐标
+					int l = rel_op.getLeft();
+					int r = rel_op.getRight();
+					int t = rel_op.getTop();
+					int b = rel_op.getBottom();
+
+					int newl = l + dx;
+					int newt = t + dy;
+					int newr = r + dx;
+					int newb = b + dy;
+					// 更改imageView在窗体的位置
+					rel_op.layout(newl, newt, newr, newb);
+
+					// 获取移动后的位置
+					startx = (int) event.getRawX();
+					starty = (int) event.getRawY();
+
+					int screenWidth = CustomApplication.app.displayMetrics.widthPixels;
+					int screenHeight = CustomApplication.app.displayMetrics.heightPixels;
+
+					if ((newl < 20) || (newt < 20) || (newr > screenWidth / 2)
+							|| (newb > screenHeight / 2)) {
+						break;
+					}
+
+					break;
+				case MotionEvent.ACTION_UP:// 手指离开屏幕对应事件
+					// Log.i(TAG, "手指离开屏幕");
+					// 记录最后view在窗体的位置
+					int lasty = rel_op.getTop();
+					int lastx = rel_op.getLeft();
+					// Editor editor = sp.edit();
+					// editor.putInt("lasty", lasty);
+					// editor.putInt("lastx", lastx);
+					// editor.commit();
+					break;
+				}
+				break;
+
+			}
+			return true;// 不会中断触摸事件的返回
+		}
 	};
 
 }

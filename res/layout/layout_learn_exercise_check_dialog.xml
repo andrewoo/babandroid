@@ -13,7 +13,7 @@
         android:background="@drawable/bugreport_img_right" />
 
     <RelativeLayout
-        android:id="@+id/lin_op"
+        android:id="@+id/rel_op"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content" >
 
             <ImageView
-                android:id="@+id/img_report_bug"
+                android:id="@+id/img_is_right"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentLeft="true"

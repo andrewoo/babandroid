@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
 import com.util.tool.SystemHelper;
+import com.util.tool.UiUtil;
 
 public class SplashActivity extends BaseActivity {
 
@@ -65,6 +67,7 @@ public class SplashActivity extends BaseActivity {
 	 * @param activity
 	 */
 	public AlertDialog createSetNetworkDialog() {
+
 		Builder builder = new AlertDialog.Builder(this)
 				.setIcon(android.R.drawable.ic_dialog_info).setTitle("请打开网络连接")
 				.setMessage("网络连接不可用，立即设置？");
@@ -121,15 +124,18 @@ public class SplashActivity extends BaseActivity {
 		}
 	}
 
+	private String TAG = "SplashActivity";
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == 0) {
 			if (-1 != SystemHelper.getNetworkType(SplashActivity.this)) {
 				this.initDataAndStartMain();
 			} else {
-				Toast.makeText(SplashActivity.this, "网络连接仍不可用，无法访问服务器数据！",
-						Toast.LENGTH_SHORT).show();
-				SplashActivity.this.finish();
+				// Toast.makeText(SplashActivity.this, "网络连接仍不可用，无法访问服务器数据！",
+				// Toast.LENGTH_SHORT).show();
+				// SplashActivity.this.finish();
+				Log.d(TAG, "网络连接仍不可用");
 			}
 		}
 	}
@@ -164,27 +170,25 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// requestWindowFeature(Window.FEATURE_NO_TITLE);// 无标题
-		// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-		// WindowManager.LayoutParams.FLAG_FULLSCREEN);// 全屏
 		this.setContentView(R.layout.splash);
-
-		copyfile();
+		// copyfile();
 		txt_version = (TextView) findViewById(R.id.txt_version);
 		txt_version.setVisibility(View.GONE);
 		txt_version.setText("V" + CustomApplication.app.getVersionName());
 
 		iv_bg = (ImageView) findViewById(R.id.iv_bg);
 		iv_logo = (ImageView) findViewById(R.id.iv_logo);
-		// LayoutParams layoutParams = (LayoutParams) iv_logo.getLayoutParams();
-		// layoutParams.width = CustomApplication.app.displayMetrics.widthPixels
-		// / 10 * 7;
-		// iv_logo.setLayoutParams(layoutParams);
+		LayoutParams layoutParams = (LayoutParams) iv_logo.getLayoutParams();
+		layoutParams.width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
+		iv_logo.setLayoutParams(layoutParams);
+
 		iv_logo.setImageDrawable(getResources().getDrawable(
 				R.drawable.cover_panda));
 
 		if (-1 == SystemHelper.getNetworkType(SplashActivity.this)) {
-			this.createSetNetworkDialog().show();
+			// this.createSetNetworkDialog().show();
+			UiUtil.showToast(getApplicationContext(),
+					"NetWork is not available");
 		} else {
 			new Timer().schedule(new TimerTask() {
 				@Override
@@ -193,7 +197,5 @@ public class SplashActivity extends BaseActivity {
 				}
 			}, 1);
 		}
-
-		System.out.println("SplashActivity");
 	}
 }

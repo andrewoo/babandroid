@@ -1,24 +1,34 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.GalleryAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.util.weight.CoverFlow;
 import com.util.weight.MyGallery;
 
 /**
@@ -38,6 +48,7 @@ public class LessonViewActivity extends BaseActivity implements
 	int width;
 	int height;
 	AnimationSet animationSet;
+	int selection = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +66,12 @@ public class LessonViewActivity extends BaseActivity implements
 
 	}
 
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+
 	/**
 	 * 初始化
 	 */
@@ -63,14 +80,14 @@ public class LessonViewActivity extends BaseActivity implements
 		setTitle(View.GONE, View.VISIBLE,
 				R.drawable.btn_selector_top_left_white, "Lesson", View.GONE,
 				View.GONE, 0);
-
-		gallery = (MyGallery) findViewById(R.id.gallery);
 		adapter = new GalleryAdapter(this);
+		gallery = (MyGallery) findViewById(R.id.gallery);
+		gallery.setOnItemClickListener(onItemclickListener);
 		gallery.setAdapter(adapter);
 		gallery.setAnimationDuration(1500);
 		gallery.setSpacing(CustomApplication.app.displayMetrics.widthPixels / 10 * 1);
 		gallery.setOnItemSelectedListener(this);
-
+		gallery.setSelection(selection);
 		iv_unit_img = (ImageView) findViewById(R.id.iv_unit_img);
 		iv_unit_img.setOnClickListener(onClickListener);
 
@@ -164,10 +181,108 @@ public class LessonViewActivity extends BaseActivity implements
 		}
 	};
 
+	OnItemClickListener onItemclickListener = new AdapterView.OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View convertView,
+				final int position, long arg3) {
+			// TODO Auto-generated method stub
+
+		}
+	};
+	Handler mHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.arg1 == 1) {
+
+			} else if (msg.arg1 == 2) {
+
+			} else if (msg.arg1 == 4) {
+
+				if (msg.what == 1) {
+
+					for (Entry<Integer, View> entry : adapter.mapView
+							.entrySet()) {
+
+						int position = entry.getKey();
+						if (position == msg.arg2) {
+							View views = entry.getValue();
+							LinearLayout lin_c = (LinearLayout) views
+									.findViewById(R.id.lin_c);
+							lin_c.setLayoutParams(new RelativeLayout.LayoutParams(
+									width, height));
+							Log.d(TAG, "选中！");
+						} else {
+							View views = entry.getValue();
+							LinearLayout lin_c = (LinearLayout) views
+									.findViewById(R.id.lin_c);
+							lin_c.setLayoutParams(new RelativeLayout.LayoutParams(
+									LayoutParams.WRAP_CONTENT,
+									LayoutParams.WRAP_CONTENT));
+							Log.d(TAG, "未选中！");
+						}
+
+					}
+				}
+			}
+			super.handleMessage(msg);
+		}
+	};
+
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View convertView,
-			int position, long arg3) {
+			final int position, long arg3) {
 		// TODO Auto-generated method stub
+
+		selection = position;
+		Log.d(TAG, "selection:" + selection);
+		adapter.setSelection(position);
+
+		Message message = new Message();
+		message.arg1 = 4;
+		message.arg2 = position;
+		message.what = 1;
+		mHandler.sendMessageDelayed(message, 5);
+
+		Button btn_redo = (Button) convertView.findViewById(R.id.btn_redo);
+		Button btn_start = (Button) convertView.findViewById(R.id.btn_start);
+		Button btn_review = (Button) convertView.findViewById(R.id.btn_review);
+
+		btn_redo.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(context,
+						LessonExerciseActivity.class);
+				intent.putExtra("utilId", position);
+				startActivityForResult(intent, 0);
+				Log.d("GalleryAdapter", "utilId:" + position);
+			}
+		});
+		btn_start.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intetnt = new Intent(context,
+						LessonExerciseActivity.class);
+				intetnt.putExtra("utilId", position);
+				startActivityForResult(intetnt, 0);
+				Log.d("GalleryAdapter", "utilId:" + position);
+			}
+		});
+
+		btn_review.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent(context, LessonReViewActivity.class));
+			}
+		});
+
 	}
 
 	@Override
@@ -175,5 +290,25 @@ public class LessonViewActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 
 	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
+		switch (resultCode) {
+		case 0:// LessonExerciseActivity 终止练习
+			gallery.setSelection(selection);// 选中当前页面
+			break;
+		case 1:// LessonExerciseActivity通过课程或者 continue要继续练习
+
+			if (selection == 1) {
+				gallery.setSelection(selection);// for bug
+			} else {
+				gallery.setSelection(selection + 1);// 选中下一个页面
+			}
+
+			break;
+		default:
+			break;
+		}
+		Log.d(TAG, "resultCode:" + resultCode);
+	};
 
 }

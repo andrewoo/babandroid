@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import ui.custom.pdgrid.DraggableGridView;
+import ui.custom.pdgrid.MyViewGroup;
 import ui.custom.pdgrid.PagedDragDropGrid;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.DragDropGridAdapter;
@@ -24,6 +26,7 @@ import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.model.TitleEntity;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.FileTools;
+import com.util.tool.UiUtil;
 
 /**
  * 拼句子
@@ -100,6 +103,14 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		super.onResume();
 	}
 
+	private MyViewGroup wordWrapView;
+	private MyViewGroup wordWrapView1;
+	private String[] strs = new String[] { "male", "boy", "female", "people",
+			"girl", "I", "good", "a", "are", "you" };
+
+	ArrayList<TextView> selectView = new ArrayList<TextView>();
+	ArrayList<TextView> serviceView = new ArrayList<TextView>();
+
 	/**
 	 * 初始化
 	 */
@@ -113,7 +124,53 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				.findViewById(R.id.column_edit_gv_gvcolumn);
 		initServiceColumn();
 		initColumn();
+
+		// wordWrapView = (MyViewGroup) contentView
+		// .findViewById(R.id.MyCustomViewGroup);
+		// wordWrapView1 = (MyViewGroup) contentView
+		// .findViewById(R.id.MyCustomViewGroup1);
+		//
+		// for (int i = 0; i < 7; i++) {
+		// final TextView textview = new TextView(context);
+		// textview.setText(strs[i]);
+		// textview.setTag(i);
+		// serviceView.add(textview);
+		//
+		// textview.setOnClickListener(new View.OnClickListener() {
+		// @Override
+		// public void onClick(View arg0) {
+		// // TODO Auto-generated method stub
+		//
+		// UiUtil.showToast(context, "tag:" + textview.getTag());
+		//
+		// TextView view = new TextView(context);
+		// view.setText(textview.getText());
+		// view.setTag((Integer) textview.getTag());
+		// selectView.add(view);
+		// addView();
+		// wordWrapView1.removeViewAt((Integer) textview.getTag());
+		// }
+		// });
+		// }
+		//
+		// for (int i = 0; i < serviceView.size(); i++) {
+		// final TextView textview = serviceView.get(i);
+		// wordWrapView1.addView(textview);
+		// }
+
 	}
+
+	// private void addView() {
+	// if (selectView.size() != 0) {
+	// for (int i = 0; i < selectView.size(); i++) {
+	// TextView textview = serviceView.get(i);
+	// if (i == (Integer) textview.getTag()) {
+	// continue;
+	// }
+	// wordWrapView.addView(textview);
+	// }
+	// }
+	// }
 
 	private void initColumn() {
 		String json = "";
@@ -128,8 +185,8 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		TitleEntity entity = new TitleEntity();
 		listEntity1 = new ArrayList<TitleEntity>();
 		try {
-			listEntity1 = entity.getListEntity(json);
-			Collections.sort(listEntity1);
+			// listEntity1 = entity.getListEntity(json);
+			// Collections.sort(listEntity1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
