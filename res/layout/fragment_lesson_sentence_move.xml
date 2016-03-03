@@ -1,15 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/lin_content"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="afterDescendants" >
 
     <LinearLayout
+        android:id="@+id/lin_play_and_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
         <Button
             android:id="@+id/btn_play_normal"
@@ -28,36 +28,42 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_line"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="152dp"
+        android:layout_below="@+id/lin_play_and_text"
         android:orientation="vertical" >
 
-        <ui.custom.pdgrid.PagedDragDropGrid
-            android:id="@+id/column_edit_grid_gv"
+        <View
+            android:id="@+id/area_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/min_grey"
-            android:scrollbars="none" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/min_grey" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/min_grey" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/min_grey" />
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="10dp" >
-
-        <GridView
-            android:id="@+id/column_edit_gv_gvcolumn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:horizontalSpacing="3dp"
-            android:numColumns="4"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp" >
-        </GridView>
-    </FrameLayout>
-
-</LinearLayout>
+</RelativeLayout>
