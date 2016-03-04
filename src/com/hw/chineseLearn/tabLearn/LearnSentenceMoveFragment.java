@@ -6,6 +6,7 @@ import java.util.Random;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
@@ -42,7 +43,9 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 	private RelativeLayout rlRoot;
 	private int linLineHeight;
+	private LinearLayout lin_play_and_text;
 	private LinearLayout lin_line;
+
 	private String TAG = "LearnSentenceMoveFragment";
 	int screenWidth, screenHeight;
 
@@ -87,6 +90,9 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				R.layout.fragment_lesson_sentence_move, null);
 		task = new ThreadWithDialogTask();
 		rlRoot = (RelativeLayout) contentView.findViewById(R.id.rl_root);
+		lin_play_and_text = (LinearLayout) contentView
+				.findViewById(R.id.lin_play_and_text);
+		lin_play_and_text.setVisibility(View.GONE);
 		lin_line = (LinearLayout) contentView.findViewById(R.id.lin_line);
 		initBottomViews();
 		initBottomGreyViews();
@@ -146,7 +152,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		}
 	}
 
-	int viewLeftRightPadding = 30;
+	int viewLeftRightPadding = 20;
 	int viewTopBottomPadding = 10;
 
 	private void initBottomViews() {

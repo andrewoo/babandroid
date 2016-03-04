@@ -1,47 +1,49 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.util.thread.ThreadWithDialogTask;
-import com.util.weight.ViewArea;
+import com.util.tool.UiUtil;
 
 /**
- * 学习-拼汉子
+ * 学习-拼汉字
  * 
  * @author yh
  */
 @SuppressLint("NewApi")
 public class LearnImageMoveFragment extends BaseFragment implements
-		OnClickListener {
+		OnClickListener, OnTouchListener {
+	private String TAG = "LearnImageMoveFragment";
 	private View contentView;// 主view
-
 	private ThreadWithDialogTask task;
 	public static LearnImageMoveFragment fragment;
 	Context context;
-
-	private ImageView iv_dv_view;
-	private int startx;
-	private int starty;
-	private SharedPreferences sp;
-	LinearLayout lin_content;
-	private ViewArea viewArea;
+	private RelativeLayout rel_root;
+	private RelativeLayout rel_top;
+	private int relTopHeight;
+	private int screenWidth, screenHeight;
+	int mizigeX;
+	int mizigeY;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,22 +51,291 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity();
+		screenWidth = CustomApplication.app.displayMetrics.widthPixels
+				- (dip2px(context, 40));
+		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
+		viewMagin = dip2px(context, 10);
+		itemViewWidth = (screenWidth - viewMagin * 2) / 3;
 
+		contentView = LayoutInflater.from(context).inflate(
+				R.layout.fragment_lesson_image_move, null);
+		task = new ThreadWithDialogTask();
+		rel_root = (RelativeLayout) contentView.findViewById(R.id.rel_root);
+		rel_top = (RelativeLayout) contentView.findViewById(R.id.rel_top);
+
+		initBgViews();
+		initMoveViews();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		contentView = inflater.inflate(R.layout.fragment_lesson_image_move,
-				null);
 
-		task = new ThreadWithDialogTask();
-
-		iv_dv_view = (ImageView) contentView.findViewById(R.id.iv_dv_view);
-		sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
-		// iv_dv_view.setOnTouchListener(onTouchListener);
-		viewArea = new ViewArea(context, R.drawable.blue_trumpet_1); // 自定义布局控件，用来初始化并存放自定义imageView
 		return contentView;
+	}
+
+	private int viewMagin;
+	private int itemViewWidth;
+
+	ArrayList<Point> pointList = new ArrayList<Point>();
+	ArrayList<ImageView> bgViewList = new ArrayList<ImageView>();
+
+	ArrayList<ImageView> moveViewList = new ArrayList<ImageView>();
+	ArrayList<Integer> orignViewX = new ArrayList<Integer>();
+	ArrayList<Integer> orignViewY = new ArrayList<Integer>();
+	ImageView mizigeView;
+
+	private void initBgViews() {
+
+		int x = 0;
+		int y = dip2px(context, 65);// topView y坐标的初始位置
+
+		for (int i = 0; i < 5; i++) {
+
+			ImageView imageView = new ImageView(context);
+			RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
+					itemViewWidth, itemViewWidth);
+			imageView.setLayoutParams(ly);
+			imageView.setBackground(context.getResources().getDrawable(
+					R.drawable.bg_white1));
+			imageView.setFocusable(false);
+			moveViewWithFingerUp(imageView, x, y);
+			bgViewList.add(imageView);
+			rel_root.addView(imageView);
+
+			int x1 = 0, y1 = y;
+
+			if (i == 4) {
+				x1 = 0;
+				y1 += (itemViewWidth + viewMagin);
+			} else {
+
+				if (x + itemViewWidth > screenWidth) {
+					x1 = 0;
+					y1 += (itemViewWidth + viewMagin);
+
+				} else {
+					x1 = x;
+					y1 = y;
+				}
+			}
+			Log.d(TAG, "x:" + x);
+			Log.d(TAG, "y:" + y);
+			Log.d(TAG, "itemViewWidth:" + itemViewWidth);
+
+			Point point = new Point();
+			point.x = x1;
+			point.y = y1;
+			pointList.add(point);
+
+			moveViewWithFingerUp(imageView, x1, y1);
+			x = x1;
+			x += (itemViewWidth + viewMagin);
+			y = y1;
+		}
+
+		mizigeView = new ImageView(context);
+		RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
+				screenWidth - itemViewWidth - viewMagin, screenWidth
+						- itemViewWidth - viewMagin);
+		mizigeView.setLayoutParams(ly);
+		mizigeView.setBackground(context.getResources().getDrawable(
+				R.drawable.mizige));
+		mizigeView.setFocusable(false);
+		rel_root.addView(mizigeView);
+
+		mizigeX = pointList.get(3).x + itemViewWidth + viewMagin;
+		mizigeY = pointList.get(3).y;
+		moveViewWithFingerUp(mizigeView, mizigeX, mizigeY);
+	}
+
+	private void initMoveViews() {
+
+		int x = 0;
+		int y = dip2px(context, 65);// topView y坐标的初始位置
+
+		for (int i = 0; i < 5; i++) {
+
+			ImageView imageView = new ImageView(context);
+			RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
+					itemViewWidth, itemViewWidth);
+			imageView.setLayoutParams(ly);
+			// imageView.setBackground(context.getResources().getDrawable(
+			// R.drawable.bg_white1));
+			imageView.setTag(i);
+			imageView.setFocusable(false);
+			imageView.setOnTouchListener(this);
+			imageView.setImageResource(context.getResources().getIdentifier(
+					"pp_" + (19 + i), "drawable", context.getPackageName()));
+
+			moveViewWithFingerUp(imageView, x, y);
+			rel_root.addView(imageView);
+
+			int x1 = 0, y1 = y;
+
+			if (i == 4) {
+				x1 = 0;
+				y1 += (itemViewWidth + viewMagin);
+			} else {
+
+				if (x + itemViewWidth > screenWidth) {
+					x1 = 0;
+					y1 += (itemViewWidth + viewMagin);
+
+				} else {
+					x1 = x;
+					y1 = y;
+				}
+			}
+			Log.d(TAG, "x:" + x);
+			Log.d(TAG, "y:" + y);
+			Log.d(TAG, "itemViewWidth:" + itemViewWidth);
+
+			orignViewX.add(x1);
+			orignViewY.add(y1);
+			moveViewWithFingerUp(imageView, x1, y1);
+			x = x1;
+			x += (itemViewWidth + viewMagin);
+			y = y1;
+
+		}
+	}
+
+	/**
+	 * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+	 */
+	public static int dip2px(Context context, float dpValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dpValue * scale + 0.5f);
+	}
+
+	/**
+	 * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+	 */
+	public static int px2dip(Context context, float pxValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (pxValue / scale + 0.5f);
+	}
+
+	/**
+	 * 设置View的布局属性，使得view随着手指移动 注意：view所在的布局必须使用RelativeLayout 而且不得设置居中等样式
+	 * 
+	 * @param view
+	 * @param rawX
+	 * @param rawY
+	 */
+	private void moveViewWithFinger(View view, float rawX, float rawY) {
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view
+				.getLayoutParams();
+		params.leftMargin = (int) rawX - view.getWidth() / 2;
+		params.topMargin = (int) rawY - relTopHeight - view.getHeight() / 2;
+		params.width = itemViewWidth * 2;
+		params.height = itemViewWidth * 2;
+		view.setLayoutParams(params);
+	}
+
+	/**
+	 * 手指移开时，确定view 的位置
+	 * 
+	 * @param view
+	 * @param rawX
+	 * @param rawY
+	 */
+	private void moveViewWithFingerUp(View view, float rawX, float rawY) {
+
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view
+				.getLayoutParams();
+		params.leftMargin = (int) rawX;
+		params.topMargin = (int) rawY;
+		view.setLayoutParams(params);
+		view.invalidate();
+	}
+
+	/**
+	 * view回到原来的位置
+	 * 
+	 * @param textView
+	 */
+	private void moveToOrignPosition(ImageView imageView) {
+
+		int tag = (Integer) imageView.getTag();
+		int x = 0, y = 0;
+		x = orignViewX.get(tag);
+		y = orignViewY.get(tag);
+		// moveViewWithFingerUp(imageView, x, y);
+
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView
+				.getLayoutParams();
+		params.leftMargin = x;
+		params.topMargin = y;
+		params.width = itemViewWidth;
+		params.height = itemViewWidth;
+		imageView.setLayoutParams(params);
+		imageView.invalidate();
+
+	}
+
+	// Sacle动画 - 渐变尺寸缩放
+	private Animation scaleAnimation = null;
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		ImageView imageView = (ImageView) v;
+		imageView.bringToFront();
+		Bitmap bitmap = ((BitmapDrawable) (imageView.getDrawable()))
+				.getBitmap();
+
+		// if (bitmap.getPixel((int) (event.getX()), ((int) event.getY())) == 0)
+		// {
+		// String aa = "点击了透明区域";
+		// Log.i("test", "" + aa);
+		// UiUtil.showToast(context, "" + aa);
+		//
+		// } else {
+		// // imageView.dispatchTouchEvent(event);
+		// UiUtil.showToast(context, "没有点击透明区域");
+		// }
+
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+
+			int[] locations = new int[2];
+			rel_top.getLocationInWindow(locations);
+			// lin_lin在屏幕中的y
+			relTopHeight = locations[1];
+			Log.d(TAG, "relTopHeight:" + relTopHeight);
+			break;
+		case MotionEvent.ACTION_MOVE:
+			moveViewWithFinger(imageView, event.getRawX(), event.getRawY());// 动态设置view的位置，拖动效果
+
+			break;
+		case MotionEvent.ACTION_UP:
+
+			float X = event.getRawX();
+			float Y = event.getRawY();
+
+			Log.d(TAG, "X：" + X);
+			Log.d(TAG, "mizigeX：" + mizigeX);
+			Log.d(TAG, "mizigeView.getWidth()：" + mizigeView.getWidth());
+
+			Log.d(TAG, "Y：" + Y);
+			Log.d(TAG, "mizigeY：" + mizigeY);
+			Log.d(TAG, "mizigeView.getHeight()：" + mizigeView.getHeight());
+
+			if ((X > (mizigeX + imageView.getWidth() / 2) && X < (mizigeX + mizigeView
+					.getWidth()))
+					&& (Y > (mizigeY + imageView.getHeight() / 2))
+					&& Y < (mizigeY + mizigeView.getHeight())) {
+				// 拖到了米字格的区域
+				UiUtil.showToast(context, "拖到了");
+			} else {
+				UiUtil.showToast(context, "木拖到");
+				moveToOrignPosition(imageView);
+			}
+
+			break;
+		}
+		return true;
 	}
 
 	@Override
@@ -75,107 +346,5 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			break;
 		}
 	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-	}
-
-	Point point = new Point();
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		int x = sp.getInt("lastx", 0);
-		int y = sp.getInt("lasty", 0);
-		// iv_dv_view.layout(iv_dv_view.getLeft() + x, iv_dv_view.getTop() + y,
-		// iv_dv_view.getRight() + x, iv_dv_view.getBottom() + y);
-		// iv_dv_view.invalidate();//界面重新渲染
-
-		// LayoutParams params = (LayoutParams) iv_dv_view.getLayoutParams();
-		// params.leftMargin = x;
-		// params.topMargin = y;
-		// iv_dv_view.setLayoutParams(params);
-		// point.x = startx;
-		// point.y = starty;
-	}
-
-	OnTouchListener onTouchListener = new View.OnTouchListener() {
-
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			// TODO Auto-generated method stub
-			switch (v.getId()) {
-
-			// 如果手指放在imageView上拖动
-			case R.id.iv_dv_view:
-				// event.getRawX(); //获取手指第一次接触屏幕在x方向的坐标
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:// 获取手指第一次接触屏幕
-					startx = (int) event.getRawX();
-					starty = (int) event.getRawY();
-					break;
-				case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动对应的事件
-					int x = (int) event.getRawX();
-					int y = (int) event.getRawY();
-
-					// 获取手指移动的距离
-					int dx = x - startx;
-					int dy = y - starty;
-					// 得到imageView最开始的各顶点的坐标
-					int l = iv_dv_view.getLeft();
-					int r = iv_dv_view.getRight();
-					int t = iv_dv_view.getTop();
-					int b = iv_dv_view.getBottom();
-
-					int newl = l + dx;
-					int newt = t + dy;
-					int newr = r + dx;
-					int newb = b + dy;
-					// 更改imageView在窗体的位置
-					iv_dv_view.layout(newl, newt, newr, newb);
-
-					// 获取移动后的位置
-					startx = (int) event.getRawX();
-					starty = (int) event.getRawY();
-
-					int screenWidth = CustomApplication.app.displayMetrics.widthPixels;
-					int screenHeight = CustomApplication.app.displayMetrics.heightPixels;
-
-					if ((newl < 20) || (newt < 20) || (newr > screenWidth / 2)
-							|| (newb > screenHeight / 2)) {
-						break;
-					}
-
-					break;
-				case MotionEvent.ACTION_UP:// 手指离开屏幕对应事件
-					// Log.i(TAG, "手指离开屏幕");
-					// 记录最后图片在窗体的位置
-					int lasty = iv_dv_view.getTop();
-					int lastx = iv_dv_view.getLeft();
-					Editor editor = sp.edit();
-					editor.putInt("lasty", lasty);
-					editor.putInt("lastx", lastx);
-					editor.commit();
-					break;
-				}
-				break;
-
-			}
-			return true;// 不会中断触摸事件的返回
-		}
-	};
 
 }
