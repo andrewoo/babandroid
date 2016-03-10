@@ -16,6 +16,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.hw.chineseLearn.db.SQLConnection;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -70,6 +71,7 @@ public class CustomApplication extends LitePalApplication {
 		// initImgLoader();
 		getTelephoneInfo();
 		getScreenSize();
+		new SQLConnection(this);
 	}
 
 	/**
@@ -255,6 +257,7 @@ public class CustomApplication extends LitePalApplication {
 			ActivityManager activityMgr = (ActivityManager) context
 					.getSystemService(Context.ACTIVITY_SERVICE);
 			activityMgr.restartPackage(context.getPackageName());
+			finishAllActivity();
 			System.exit(0);
 		} catch (Exception e) {
 		}

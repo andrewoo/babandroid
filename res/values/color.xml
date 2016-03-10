@@ -341,12 +341,13 @@
     <color name="dialog_delete_btn">#313131</color>
     <color name="dialog_delete_btn_pressed">#80313131</color>
     <color name="color_yanghong">#FF3028</color>
-    <color name="chinese_skill_blue">#1AA0AA</color>
+    <color name="chinese_skill_blue">#6CB4FF</color>
     <color name="chinese_skill_blue_deeper">#047B87</color>
     <color name="chinese_skill_orange">#EAA05C</color>
-    <color name="chinese_skill_orange_deeper">#DDA576</color>
-    <color name="chinese_skill_red">#E57C86</color>
-    <color name="chinese_skill_green">#5AB75A</color>
+    <color name="chinese_skill_orange_deeper">#2988E0</color>
+    <color name="chinese_skill_red">#E76A64</color>
+    <color name="chinese_skill_red_deeper">#D73E39</color>
+    <color name="chinese_skill_green">#50E3C2</color>
     <color name="chinese_skill_yellow">#F4B460</color>
     <color name="chinese_skill_activity_bg">#F7F7F7</color>
     <color name="chinese_skill_bottom_bar_bg">#171717</color>
