@@ -74,17 +74,18 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 	public void init() {
 		containerIds = new int[] { R.id.container1, R.id.container2,
-				R.id.container3 };
-		containers = new FrameLayout[3];
+				R.id.container3, R.id.container4 };
+		containers = new FrameLayout[containerIds.length];
 		for (int i = 0; i < containerIds.length; i++) {
 			containers[i] = (FrameLayout) findViewById(containerIds[i]);
 		}
 
-		bottomLinIds = new int[] { R.id.lin_1, R.id.lin_2, R.id.lin_3 };
-		bottomBtnIds = new int[] { R.id.home_rb_nav01, R.id.home_rb_nav02,
-				R.id.home_rb_nav03 };
-		bottomTvIds = new int[] { R.id.home_tv_nav01, R.id.home_tv_nav02,
-				R.id.home_tv_nav03 };
+		bottomLinIds = new int[] { R.id.lin_0, R.id.lin_1, R.id.lin_2,
+				R.id.lin_3 };
+		bottomBtnIds = new int[] { R.id.home_rb_nav00, R.id.home_rb_nav01,
+				R.id.home_rb_nav02, R.id.home_rb_nav03 };
+		bottomTvIds = new int[] { R.id.home_tv_nav00, R.id.home_tv_nav01,
+				R.id.home_tv_nav02, R.id.home_tv_nav03 };
 
 		mLinList = new LinearLayout[bottomLinIds.length];
 		mBtnList = new Button[bottomBtnIds.length];
@@ -105,7 +106,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 		}
 
-		performClickBtn(1);
+		performClickBtn(2);
 
 		if (tdt == null) {
 			tdt = new ThreadWithDialogTask();
@@ -178,20 +179,11 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
 	public void onClick(View v) {
 		int v_id = v.getId();
 		switch (v_id) {
-		case R.id.lin_1:
+
+		case R.id.lin_0:
 			selectIndex = 0;
 			if (discoverFragment == null) {
 				discoverFragment = new DiscoverFragment();
@@ -200,22 +192,30 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			setTitle(View.GONE, View.GONE, 0, "Discover", View.GONE, View.GONE,
 					0);
 			break;
-		case R.id.lin_2:
-			selectIndex = 1;
 
+		case R.id.lin_1:
+			selectIndex = 1;
+			// if (learnFragment == null) {
+			// learnFragment = new LearnFragment();
+			// navigateToNoAnimWithId(learnFragment, R.id.container2);
+			// }
+			setTitle(View.GONE, View.GONE, 0, "Complete", View.GONE, View.GONE,
+					0);
+			break;
+		case R.id.lin_2:
+			selectIndex = 2;
 			if (learnFragment == null) {
 				learnFragment = new LearnFragment();
-				navigateToNoAnimWithId(learnFragment, R.id.container2);
+				navigateToNoAnimWithId(learnFragment, R.id.container3);
 			}
 			setTitle(View.GONE, View.VISIBLE, R.drawable.img_share, "",
 					View.GONE, View.VISIBLE, R.drawable.review_button);
 			break;
 		case R.id.lin_3:
-			selectIndex = 2;
-
+			selectIndex = 3;
 			if (mineFragment == null) {
 				mineFragment = new MineFragment();
-				navigateToNoAnimWithId(mineFragment, R.id.container3);
+				navigateToNoAnimWithId(mineFragment, R.id.container4);
 			}
 			setTitle(View.GONE, View.GONE, 0, "Me", View.GONE, View.GONE, 0);
 			break;
@@ -227,8 +227,10 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 	}
 
-	private boolean IsClick;
-
+	/**
+	 * 
+	 * @param index
+	 */
 	private void setButtonColor(int index) {
 		for (int i = 0; i < containerIds.length; i++) {
 			if (index == i) {
@@ -264,8 +266,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
 				&& event.getAction() == KeyEvent.ACTION_DOWN
 				&& event.getRepeatCount() == 0) {
-			if (selectIndex != 1) {// 回到通告fragment
-				performClickBtn(1);
+			if (selectIndex != 2) {// 回到Learn fragment
+				performClickBtn(2);
 				return true;
 			}
 
@@ -392,6 +394,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 	}
 
+	/**
+	 * 标题栏监听
+	 */
 	OnClickListener onClickListener = new OnClickListener() {
 
 		@Override
@@ -405,7 +410,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				break;
 
 			case R.id.iv_title_right:// review
-				
+
 				startActivity(new Intent(MainActivity.this,
 						LearnReViewActivity.class));
 				break;
