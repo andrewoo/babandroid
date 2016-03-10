@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -18,13 +17,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.hw.chineseLearn.R;
 import com.util.tool.SystemHelper;
@@ -59,7 +53,6 @@ public class SplashActivity extends BaseActivity {
 	};
 
 	private ImageView iv_bg, iv_logo;
-	private TextView txt_version;
 
 	/**
 	 * 弹出设置网络连接的提示
@@ -172,30 +165,37 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.splash);
 		// copyfile();
-		txt_version = (TextView) findViewById(R.id.txt_version);
-		txt_version.setVisibility(View.GONE);
-		txt_version.setText("V" + CustomApplication.app.getVersionName());
 
 		iv_bg = (ImageView) findViewById(R.id.iv_bg);
+
+		LayoutParams layoutParams1 = (LayoutParams) iv_bg.getLayoutParams();
+		layoutParams1.width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
+		layoutParams1.height = layoutParams1.width / 10 * 4;
+		iv_bg.setLayoutParams(layoutParams1);
+		iv_bg.setImageDrawable(getResources().getDrawable(
+				R.drawable.welcome_text));
+
 		iv_logo = (ImageView) findViewById(R.id.iv_logo);
 		LayoutParams layoutParams = (LayoutParams) iv_logo.getLayoutParams();
-		layoutParams.width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
+		layoutParams.width = CustomApplication.app.displayMetrics.widthPixels / 10 * 9;
+		layoutParams.height = layoutParams.width;
 		iv_logo.setLayoutParams(layoutParams);
-
 		iv_logo.setImageDrawable(getResources().getDrawable(
-				R.drawable.cover_panda));
+				R.drawable.cover_elephant));
 
 		if (-1 == SystemHelper.getNetworkType(SplashActivity.this)) {
 			// this.createSetNetworkDialog().show();
 			UiUtil.showToast(getApplicationContext(),
 					"NetWork is not available");
 		} else {
-			new Timer().schedule(new TimerTask() {
-				@Override
-				public void run() {
-					SplashActivity.this.initDataAndStartMain();
-				}
-			}, 1);
+
 		}
+
+		new Timer().schedule(new TimerTask() {
+			@Override
+			public void run() {
+				SplashActivity.this.initDataAndStartMain();
+			}
+		}, 1);
 	}
 }

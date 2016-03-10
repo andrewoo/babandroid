@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 		}
 
-		performClickBtn(2);
+		performClickBtn(0);
 
 		if (tdt == null) {
 			tdt = new ThreadWithDialogTask();
@@ -115,8 +115,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			interfaces = new HttpInterfaces(MainActivity.this);
 		}
 
-		setTitle(View.GONE, View.VISIBLE, R.drawable.img_share, "", View.GONE,
-				View.VISIBLE, R.drawable.review_button);
+		setTitle(View.GONE, View.GONE, 0, "Learn", View.GONE, View.VISIBLE,
+				R.drawable.review_button);
 
 	}
 
@@ -147,13 +147,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 		View view_title = (View) this.findViewById(R.id.view_title);
 		Button btn_title = (Button) view_title.findViewById(R.id.btn_title);
-		if ("".equals(title)) {
-			btn_title.setBackgroundDrawable(context.getResources().getDrawable(
-					R.drawable.logo));
-		} else {
-			btn_title.setBackgroundDrawable(context.getResources().getDrawable(
-					R.drawable.btn_white_no_corners));
-		}
+		btn_title.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.btn_white_no_corners));
 		btn_title.setText(title);
 		TextView tv_title_left = (TextView) view_title
 				.findViewById(R.id.tv_title_left);
@@ -185,12 +180,13 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 		case R.id.lin_0:
 			selectIndex = 0;
-			if (discoverFragment == null) {
-				discoverFragment = new DiscoverFragment();
-				navigateToNoAnimWithId(discoverFragment, R.id.container1);
+			if (learnFragment == null) {
+				learnFragment = new LearnFragment();
+				navigateToNoAnimWithId(learnFragment, R.id.container1);
 			}
-			setTitle(View.GONE, View.GONE, 0, "Discover", View.GONE, View.GONE,
-					0);
+			setTitle(View.GONE, View.GONE, 0, "Learn", View.GONE, View.VISIBLE,
+					R.drawable.review_button);
+
 			break;
 
 		case R.id.lin_1:
@@ -204,12 +200,13 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			break;
 		case R.id.lin_2:
 			selectIndex = 2;
-			if (learnFragment == null) {
-				learnFragment = new LearnFragment();
-				navigateToNoAnimWithId(learnFragment, R.id.container3);
+
+			if (discoverFragment == null) {
+				discoverFragment = new DiscoverFragment();
+				navigateToNoAnimWithId(discoverFragment, R.id.container3);
 			}
-			setTitle(View.GONE, View.VISIBLE, R.drawable.img_share, "",
-					View.GONE, View.VISIBLE, R.drawable.review_button);
+			setTitle(View.GONE, View.GONE, 0, "Discover", View.GONE,
+					View.VISIBLE, R.drawable.img_share);
 			break;
 		case R.id.lin_3:
 			selectIndex = 3;
@@ -250,6 +247,15 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				mLinList[i].setSelected(false);
 				mBtnList[i].setSelected(false);
 				mTvList[i].setSelected(false);
+
+			}
+		}
+
+		for (int i = 0; i < mLinList.length; i++) {
+			if (index == i) {
+				mLinList[i].setClickable(false);
+			} else {
+				mLinList[i].setClickable(true);
 			}
 		}
 
@@ -266,8 +272,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
 				&& event.getAction() == KeyEvent.ACTION_DOWN
 				&& event.getRepeatCount() == 0) {
-			if (selectIndex != 2) {// 回到Learn fragment
-				performClickBtn(2);
+			if (selectIndex != 0) {// 回到Learn fragment
+				performClickBtn(0);
 				return true;
 			}
 
@@ -404,15 +410,32 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			// TODO Auto-generated method stub
 			switch (arg0.getId()) {
 
-			case R.id.iv_title_left:// share
+			case R.id.iv_title_left:
 
-				showShareDialog();
 				break;
 
-			case R.id.iv_title_right:// review
+			case R.id.iv_title_right:
 
-				startActivity(new Intent(MainActivity.this,
-						LearnReViewActivity.class));
+				switch (selectIndex) {
+
+				case 0:// review
+					startActivity(new Intent(MainActivity.this,
+							LearnReViewActivity.class));
+					break;
+				case 1:
+
+					break;
+				case 2:// share
+					showShareDialog();
+					break;
+				case 3:
+
+					break;
+
+				default:
+					break;
+				}
+
 				break;
 
 			default:

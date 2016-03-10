@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="21" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -168,6 +168,13 @@
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
 
+        <!-- 拼写笔画练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.StrokesOrderExerciseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
         <!-- 流畅练习列表页面 -->
         <activity
             android:name="com.hw.chineseLearn.tabDiscover.FluentListActivity"
