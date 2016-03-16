@@ -1,6 +1,7 @@
 package com.hw.chineseLearn.tabDiscover;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -182,7 +183,13 @@ public class StrokesOrderActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			setTitle(children[groupPosition][childPosition]);
 
-			UiUtil.showToast(context, "Item clicked!" + childPosition);
+			// UiUtil.showToast(context, "Item clicked!" + childPosition);
+			Intent intent = new Intent(StrokesOrderActivity.this,
+					StrokesOrderExerciseActivity.class);
+			String title = adapter.getChild(groupPosition, childPosition)
+					.toString();
+			intent.putExtra("title", title);
+			startActivity(intent);
 			return false;
 		}
 	}

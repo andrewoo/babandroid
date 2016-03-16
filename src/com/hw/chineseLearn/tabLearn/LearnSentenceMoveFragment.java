@@ -26,6 +26,7 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.UiUtil;
 
 /**
  * 拼句子
@@ -81,9 +82,9 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		x = 0;
-		y = dip2px(context, 50 * 3 + 1 * 2 + 50);
+		y = UiUtil.dip2px(context, 50 * 3 + 1 * 2 + 50);
 		screenWidth = CustomApplication.app.displayMetrics.widthPixels
-				- (dip2px(context, 40));
+				- (UiUtil.dip2px(context, 40));
 		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 
 		contentView = LayoutInflater.from(context).inflate(
@@ -107,7 +108,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 	private void initBottomGreyViews() {
 		xb = 0;
-		yb = dip2px(context, 152 + 50);
+		yb = UiUtil.dip2px(context, 152 + 50);
 		for (int i = 0; i < bottomViewList.size(); i++) {
 			TextView textView = new TextView(context);
 			TextView textViewB = bottomViewList.get(i);
@@ -135,10 +136,11 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 			int x1 = 0, y1 = yb;
 
-			if (xb + viewTextWidth + dip2px(context, viewLeftRightPadding) > screenWidth) {
+			if (xb + viewTextWidth
+					+ UiUtil.dip2px(context, viewLeftRightPadding) > screenWidth) {
 				rows++;
 				x1 = 0;
-				y1 += dip2px(context, 30 + 5);
+				y1 += UiUtil.dip2px(context, 30 + 5);
 
 			} else {
 				x1 = xb;
@@ -146,7 +148,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			}
 			moveViewWithFingerUp(textView, x1, y1);
 			xb = x1;
-			xb += (viewTextWidth + dip2px(context, viewLeftRightPadding));
+			xb += (viewTextWidth + UiUtil.dip2px(context, viewLeftRightPadding));
 			yb = y1;
 
 		}
@@ -185,10 +187,11 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 			int x1 = 0, y1 = y;
 
-			if (x + viewTextWidth + dip2px(context, viewLeftRightPadding) > screenWidth) {
+			if (x + viewTextWidth
+					+ UiUtil.dip2px(context, viewLeftRightPadding) > screenWidth) {
 				rows++;
 				x1 = 0;
-				y1 += dip2px(context, 30 + 5);
+				y1 += UiUtil.dip2px(context, 30 + 5);
 
 			} else {
 				x1 = x;
@@ -203,26 +206,10 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			orignViewY.add(y1);
 			moveViewWithFingerUp(textView, x1, y1);
 			x = x1;
-			x += (viewTextWidth + dip2px(context, viewLeftRightPadding));
+			x += (viewTextWidth + UiUtil.dip2px(context, viewLeftRightPadding));
 			y = y1;
 
 		}
-	}
-
-	/**
-	 * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-	 */
-	public static int dip2px(Context context, float dpValue) {
-		final float scale = context.getResources().getDisplayMetrics().density;
-		return (int) (dpValue * scale + 0.5f);
-	}
-
-	/**
-	 * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
-	 */
-	public static int px2dip(Context context, float pxValue) {
-		final float scale = context.getResources().getDisplayMetrics().density;
-		return (int) (pxValue / scale + 0.5f);
 	}
 
 	@Override
@@ -352,7 +339,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	 * @param event
 	 */
 	private void checkTouchArea(int thisTag, View v, MotionEvent event) {
-		int ylin = linLineHeight + dip2px(context, 50 * 3 + 1 * 2);//
+		int ylin = linLineHeight + UiUtil.dip2px(context, 50 * 3 + 1 * 2);//
 
 		// Log.d(TAG, "event.getRawY():" + event.getRawY());
 		// Log.d(TAG, "dip2px(context, 152):" + dip2px(context, 152));
@@ -471,8 +458,8 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			if ((int) rawX > leftX
 					&& (int) rawX < (leftX + viewWidth)
 					&& (int) rawY > (topY + linLineHeight)
-					&& (int) rawY < (topY + linLineHeight + viewHeight + dip2px(
-							context, 20))) {
+					&& (int) rawY < (topY + linLineHeight + viewHeight + UiUtil
+							.dip2px(context, 20))) {
 
 				if (currentDragTag != listTag) {
 					position = i;
@@ -504,7 +491,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	 */
 	private void refeshTopView() {
 		int x = 0;
-		int y = dip2px(context, 23);// topView y坐标的初始位置
+		int y = UiUtil.dip2px(context, 23);// topView y坐标的初始位置
 		Log.d(TAG, "topViewList.size()：" + topViewList.size());
 		for (int i = 0; i < topViewList.size(); i++) {
 			TextView textView = topViewList.get(i);
@@ -515,10 +502,11 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 			int x1 = 0, y1 = y;
 
-			if (x + viewTextWidth + dip2px(context, viewLeftRightPadding) > screenWidth) {
+			if (x + viewTextWidth
+					+ UiUtil.dip2px(context, viewLeftRightPadding) > screenWidth) {
 				rows++;
 				x1 = 0;
-				y1 += dip2px(context, 50);// y坐标增量为50dp
+				y1 += UiUtil.dip2px(context, 50);// y坐标增量为50dp
 
 			} else {
 				x1 = x;
@@ -535,7 +523,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				currentDragTag = -1;
 			}
 			x = x1;
-			x += (viewTextWidth + dip2px(context, viewLeftRightPadding));
+			x += (viewTextWidth + UiUtil.dip2px(context, viewLeftRightPadding));
 			y = y1;
 		}
 		getTopViewStrings();

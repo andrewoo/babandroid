@@ -93,6 +93,10 @@ public class SQLConnection extends SQLiteOpenHelper {
 	}
 
 	public void onCreate(SQLiteDatabase db) {
+		
+		
+//		SQLiteDatabase db = db.openOrCreateDatabase("1", null);
+		
 
 		if (isFirstRun) {
 			Log.v(TAG + "--onCreate()", "程序是第一次运行");

@@ -7,6 +7,7 @@ import org.litepal.LitePalApplication;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -24,7 +25,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.util.tool.SharedPreferencesUtil;
 import com.util.tool.UiUtil;
 
-public class CustomApplication extends LitePalApplication {
+public class CustomApplication extends Application {
 	private String TAG = "CustomApplication";
 	/**
 	 * 网络是否连接

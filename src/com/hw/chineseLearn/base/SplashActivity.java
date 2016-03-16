@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 
 import com.hw.chineseLearn.R;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.Character;
+import com.j256.ormlite.dao.Dao;
 import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
 
@@ -165,7 +169,7 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.splash);
 		// copyfile();
-
+		
 		iv_bg = (ImageView) findViewById(R.id.iv_bg);
 
 		LayoutParams layoutParams1 = (LayoutParams) iv_bg.getLayoutParams();
