@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,7 +25,7 @@ import android.widget.LinearLayout.LayoutParams;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.dao.MyDao;
-import com.hw.chineseLearn.dao.bean.Character;
+import com.hw.chineseLearn.dao.bean.Unit;
 import com.j256.ormlite.dao.Dao;
 import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
@@ -37,7 +39,7 @@ public class SplashActivity extends BaseActivity {
 	private static final int GO_GUIDE = 1001;
 
 	private static final long SPLASH_DELAY_MILLIS = 3000;
-
+	
 	private static final String SHAREDPREFERENCES_NAME = "first_pref";
 	private Handler mHandler = new Handler() {
 
@@ -169,7 +171,7 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.splash);
 		// copyfile();
-		
+
 		iv_bg = (ImageView) findViewById(R.id.iv_bg);
 
 		LayoutParams layoutParams1 = (LayoutParams) iv_bg.getLayoutParams();
@@ -202,4 +204,5 @@ public class SplashActivity extends BaseActivity {
 			}
 		}, 1);
 	}
+
 }

@@ -2,6 +2,7 @@ package com.hw.chineseLearn.adapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,29 +17,32 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
+import com.hw.chineseLearn.dao.bean.Unit;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
 public class LearnUnitAdapter extends BaseAdapter {
+	
+	private static final int TESTOUT_ITEM = 100;
 	private Context context;
-	public ArrayList<LearnUnitBaseModel> list;
+	public List<Unit> unitList;
 	private LayoutInflater inflater;
 
-	public LearnUnitAdapter(Context context, ArrayList<LearnUnitBaseModel> list) {
+	public LearnUnitAdapter(Context context, List<Unit> list) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
-		this.list = list;
+		this.unitList = list;
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return list == null ? 0 : list.size();
+		return unitList == null ? 0 : unitList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return list.get(position);
+		return unitList.get(position);
 	}
 
 	@Override
@@ -68,20 +72,21 @@ public class LearnUnitAdapter extends BaseAdapter {
 			holder.lin_dots = (LinearLayout) convertView
 					.findViewById(R.id.lin_dots);
 			mapView.put(position, convertView);
+			
 			convertView.setTag(holder);
 		} else {
 			convertView = mapView.get(position);
 			holder = (ViewHolder) convertView.getTag();
 		}
-		LearnUnitBaseModel model = list.get(position);
+		Unit model = unitList.get(position);
 		if (model == null) {
 			return convertView;
 		}
 		String unitName = model.getUnitName();
-		String imageName = "" + model.getIconResSuffix();
+		String imageName = "lu1_" + model.getIconResSuffix();
 		String lessonList = model.getLessonList();
 
-		if (model.isEnable()) {
+//		if (model.isEnable()) {
 			if (lessonList != null) {
 				String[] lessonId = lessonList.split(";");
 
@@ -89,15 +94,15 @@ public class LearnUnitAdapter extends BaseAdapter {
 				holder.lin_dots.removeAllViews();
 				for (int i = 0; i < lessonId.length; i++) {
 					ImageView imageView = new ImageView(context);
-					LayoutParams layoutParams = new LayoutParams(15, 15);
-					layoutParams.setMargins(5, 5, 5, 5);
+					LayoutParams layoutParams = new LayoutParams(5, 5);
+					layoutParams.setMargins(5, 3, 5, 3);
 					imageView.setLayoutParams(layoutParams);
 					imageView.setBackground(context.getResources().getDrawable(
 							R.drawable.bg_circle_blue));
 					holder.lin_dots.addView(imageView);
 				}
 			}
-		}
+//		}
 
 		holder.tv_name.setText("" + unitName);
 		holder.iv_img.setImageResource(context.getResources().getIdentifier(

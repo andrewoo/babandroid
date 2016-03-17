@@ -1,11 +1,11 @@
 package com.hw.chineseLearn.tabLearn;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,17 +15,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnUnitAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
+import com.hw.chineseLearn.base.MainActivity;
+import com.hw.chineseLearn.dao.bean.Unit;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.thread.ThreadWithDialogTask;
-import com.util.tool.UiUtil;
-import com.util.weight.CustomDialog;
 import com.util.weight.SelfGridView;
 
 /**
@@ -43,10 +41,15 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	Context context;
 	LearnUnitAdapter learnUnit1Adapter, learnUnit2Adapter;
 	private String TAG = "LearnFragment";
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
-	ArrayList<LearnUnitBaseModel> listAdvance = new ArrayList<LearnUnitBaseModel>();
-
+	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();//模拟数据集合
+	ArrayList<LearnUnitBaseModel> listAdvance = new ArrayList<LearnUnitBaseModel>();//模拟数据集合
+	
+	ArrayList<Unit> firstList = new ArrayList<Unit>();//testout上边的集合
+	ArrayList<Unit> sencondList = new ArrayList<Unit>();//testout下边的集合
+	
 	SelfGridView centGridView, centGridView1;
+	
+	private List<Unit> unitDataList;//存储Unit的集合
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,9 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		fragment = this;
 		context = getActivity();
 		Log.d(TAG, "onCreate");
-
+		
+		getListDataAndSpit();//得到数据库中集合数据并拆分为两个集合
+		
 		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
 		modelBase1.setIconResSuffix("lu1_1_1");
 		modelBase1.setUnitName("Basics1");
@@ -214,6 +219,23 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		listAdvance.add(modelAdvance14);
 
 	}
+	
+	/**
+	 * 得到unit集合并拆分为两个子集合
+	 */
+	private void getListDataAndSpit() {
+		
+		MainActivity  mainActicity= (MainActivity)context;
+		unitDataList = mainActicity.getUnitData();//得到数据库数据
+		Collections.sort(unitDataList);//对Unit排序
+		//把前12个存放到firstList
+		for (int i = 0; i < 12; i++) {
+			firstList.add(unitDataList.get(i));
+		}
+		for (int i = 12; i < unitDataList.size(); i++) {
+			sencondList.add(unitDataList.get(i));
+		}
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -261,7 +283,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 				.findViewById(R.id.gv_center_gridview);
 
 		if (learnUnit1Adapter == null) {
-			learnUnit1Adapter = new LearnUnitAdapter(context, listBase);
+			learnUnit1Adapter = new LearnUnitAdapter(context, firstList);
 			centGridView.setAdapter(learnUnit1Adapter);
 			centGridView.setOnItemClickListener(itemClickListener);
 			learnUnit1Adapter.notifyDataSetChanged();
@@ -270,7 +292,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		centGridView1 = (SelfGridView) contentView
 				.findViewById(R.id.gv_center_gridview1);
 		if (learnUnit2Adapter == null) {
-			learnUnit2Adapter = new LearnUnitAdapter(context, listAdvance);
+			learnUnit2Adapter = new LearnUnitAdapter(context, sencondList);
 			centGridView1.setAdapter(learnUnit2Adapter);
 			learnUnit2Adapter.notifyDataSetChanged();
 		}

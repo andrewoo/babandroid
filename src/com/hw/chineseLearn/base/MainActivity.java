@@ -1,5 +1,9 @@
 package com.hw.chineseLearn.base;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,6 +12,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,11 +28,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.Unit;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
 import com.hw.chineseLearn.tabDiscover.DiscoverFragment;
 import com.hw.chineseLearn.tabLearn.LearnFragment;
 import com.hw.chineseLearn.tabLearn.LearnReViewActivity;
 import com.hw.chineseLearn.tabMe.MineFragment;
+import com.j256.ormlite.dao.Dao;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
@@ -61,6 +70,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	public LearnFragment learnFragment = null;
 	public MineFragment mineFragment = null;
 
+	private List<Unit> unitList;// learn页面图标名字的集合
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,6 +81,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		setContentView(contentView);
 		mainActivity = this;
 		init();
+		getUnitData();// 查询数据库Unit表得到所有girdView需要字段
 	}
 
 	public void init() {
@@ -443,4 +455,27 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			}
 		}
 	};
+
+	/**
+	 * 查询数据库Unit表得到所有字段
+	 * 
+	 * @return
+	 * @return
+	 */
+	public List<Unit> getUnitData() {
+
+		Dao<Unit, String> unitdao = MyDao.getDao(Unit.class);
+		// unitdao.queryBuilder().where().eq("UnitId", 1).query();//查询一行
+		// List<Unit> iconUnitList =
+		// unitdao.queryBuilder().selectColumns("IconResSuffix").query();//查询IconResSuffix列
+		try {
+			unitList = unitdao.queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return unitList;
+	}
+
 }
