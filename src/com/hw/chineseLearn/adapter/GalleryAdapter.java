@@ -1,13 +1,13 @@
 package com.hw.chineseLearn.adapter;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.bean.Lesson;
+import com.hw.chineseLearn.dao.bean.Unit;
 
 public class GalleryAdapter extends BaseAdapter {
 	Context mContext;
@@ -31,9 +33,13 @@ public class GalleryAdapter extends BaseAdapter {
 	int width;
 	int height;
 	Animation animation;
+	private Unit unit;
+	private List<Lesson> lessonList;
 
-	public GalleryAdapter(Context mContext) {
+	public GalleryAdapter(Context mContext,Unit unit,List<Lesson> lessonList) {
 		this.mContext = mContext;
+		this.unit = unit;
+		this.lessonList = lessonList;
 		inflater = LayoutInflater.from(mContext);
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
@@ -82,7 +88,7 @@ public class GalleryAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 2; // 这里的目的是可以让图片循环浏览
+		return unit.getLessonList().split(";").length; // 这里的目的是可以让图片循环浏览
 	}
 
 	@Override
@@ -114,11 +120,12 @@ public class GalleryAdapter extends BaseAdapter {
 
 			holder.tv_description = (TextView) convertView
 					.findViewById(R.id.tv_description);
-			holder.tv_description = (TextView) convertView
-					.findViewById(R.id.tv_description);
+			holder.tv_no = (TextView) convertView
+					.findViewById(R.id.tv_no);
 
-			holder.tv_description = (TextView) convertView
-					.findViewById(R.id.tv_description);
+//			holder.tv_description = (TextView) convertView
+//					.findViewById(R.id.tv_description);
+			
 			holder.btn_redo = (Button) convertView.findViewById(R.id.btn_redo);
 			holder.btn_start = (Button) convertView
 					.findViewById(R.id.btn_start);
@@ -148,6 +155,16 @@ public class GalleryAdapter extends BaseAdapter {
 			holder.btn_redo.setVisibility(View.GONE);
 			holder.btn_review.setVisibility(View.GONE);
 		}
+		
+		String[] spitList = unit.getLessonList().split(";");
+		Integer splitLessonList = Integer.valueOf(spitList[position]);
+		System.out.println(lessonList.get(splitLessonList));
+		if(splitLessonList>=1){
+			Lesson lesson = lessonList.get(splitLessonList-1);
+			String description = lesson.getDescription();
+			holder.tv_description.setText(description);
+		}
+		holder.tv_no.setText((position+1)+"of"+unit.getLessonList().split(";").length);//1 of 2
 
 		return convertView;
 	}

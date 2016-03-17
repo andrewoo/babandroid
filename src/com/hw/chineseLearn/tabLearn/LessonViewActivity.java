@@ -1,6 +1,8 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map.Entry;
 
 import android.content.Context;
@@ -22,13 +24,15 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.GalleryAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.Lesson;
+import com.hw.chineseLearn.dao.bean.Unit;
 import com.util.weight.MyGallery;
 
 /**
@@ -57,12 +61,37 @@ public class LessonViewActivity extends BaseActivity implements
 				R.layout.activity_lesson_view, null);
 		setContentView(contentView);
 		context = this;
-		init();
+		mUnit = (Unit) getIntent().getSerializableExtra("unit");
+		// init();
+		queryLesson();
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
 
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
+
+	}
+
+	/**
+	 * 查询lesson表
+	 */
+	private void queryLesson() {
+
+		new Thread() {
+			public void run() {
+				try {
+					lessonList = MyDao.getDao(Lesson.class).queryForAll();
+					Collections.sort(lessonList);
+					Message msg = Message.obtain();
+					msg.what = 100;
+					msg.obj = lessonList;
+					mHandler.sendMessage(msg);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			};
+		}.start();
 
 	}
 
@@ -78,9 +107,9 @@ public class LessonViewActivity extends BaseActivity implements
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE,
-				R.drawable.btn_selector_top_left_white, "Lesson", View.GONE,
-				View.GONE, 0);
-		adapter = new GalleryAdapter(this);
+				R.drawable.btn_selector_top_left_white, mUnit.getUnitName(),
+				View.GONE, View.GONE, 0);
+		adapter = new GalleryAdapter(this, mUnit, lessonList);
 		gallery = (MyGallery) findViewById(R.id.gallery);
 		gallery.setOnItemClickListener(onItemclickListener);
 		gallery.setAdapter(adapter);
@@ -194,41 +223,49 @@ public class LessonViewActivity extends BaseActivity implements
 
 		@Override
 		public void handleMessage(Message msg) {
-			if (msg.arg1 == 1) {
+			// if (msg.arg1 == 1) {
+			//
+			// } else if (msg.arg1 == 2) {
+			//
+			// } else if (msg.arg1 == 4) {
+			//
+			// if (msg.what == 1) {
+			//
+			// for (Entry<Integer, View> entry : adapter.mapView
+			// .entrySet()) {
+			//
+			// int position = entry.getKey();
+			// if (position == msg.arg2) {
+			// View views = entry.getValue();
+			// LinearLayout lin_c = (LinearLayout) views
+			// .findViewById(R.id.lin_c);
+			// lin_c.setLayoutParams(new LinearLayout.LayoutParams(
+			// width, height));
+			// Log.d(TAG, "选中！");
+			// } else {
+			// View views = entry.getValue();
+			// LinearLayout lin_c = (LinearLayout) views
+			// .findViewById(R.id.lin_c);
+			// lin_c.setLayoutParams(new LinearLayout.LayoutParams(
+			// LayoutParams.WRAP_CONTENT,
+			// LayoutParams.WRAP_CONTENT));
+			// Log.d(TAG, "未选中！");
+			// }
+			//
+			// }
+			// }
+			// }
 
-			} else if (msg.arg1 == 2) {
-
-			} else if (msg.arg1 == 4) {
-
-				if (msg.what == 1) {
-
-					for (Entry<Integer, View> entry : adapter.mapView
-							.entrySet()) {
-
-						int position = entry.getKey();
-						if (position == msg.arg2) {
-							View views = entry.getValue();
-							LinearLayout lin_c = (LinearLayout) views
-									.findViewById(R.id.lin_c);
-							lin_c.setLayoutParams(new LinearLayout.LayoutParams(
-									width, height));
-							Log.d(TAG, "选中！");
-						} else {
-							View views = entry.getValue();
-							LinearLayout lin_c = (LinearLayout) views
-									.findViewById(R.id.lin_c);
-							lin_c.setLayoutParams(new LinearLayout.LayoutParams(
-									LayoutParams.WRAP_CONTENT,
-									LayoutParams.WRAP_CONTENT));
-							Log.d(TAG, "未选中！");
-						}
-
-					}
-				}
+			switch (msg.what) {
+			case 100:
+				init();
+				break;
 			}
 			super.handleMessage(msg);
 		}
 	};
+	private Unit mUnit;
+	private List<Lesson> lessonList;
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View convertView,

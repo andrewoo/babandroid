@@ -306,13 +306,14 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 				long arg3) {
 			// TODO Auto-generated method stub
 
-			LearnUnitBaseModel learnUnitBaseModel = listBase.get(arg2);
-			if (learnUnitBaseModel != null) {
-				boolean isEnable = learnUnitBaseModel.isEnable();
-				if (isEnable) {
-					startActivity(new Intent(getActivity(),
-							LessonViewActivity.class));
-				}
+			Unit unit = firstList.get(arg2);
+			if (unit != null) {
+//				boolean isEnable = unit.isEnable();
+//				if (isEnable) {f
+				Intent intent=new Intent(getActivity(),LessonViewActivity.class);
+				intent.putExtra("unit", unit);
+				startActivity(intent);
+//				}
 			}
 		}
 	};

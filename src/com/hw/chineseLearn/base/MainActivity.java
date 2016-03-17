@@ -464,7 +464,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	 */
 	public List<Unit> getUnitData() {
 
-		Dao<Unit, String> unitdao = MyDao.getDao(Unit.class);
+		Dao unitdao = MyDao.getDao(Unit.class);
 		// unitdao.queryBuilder().where().eq("UnitId", 1).query();//查询一行
 		// List<Unit> iconUnitList =
 		// unitdao.queryBuilder().selectColumns("IconResSuffix").query();//查询IconResSuffix列

@@ -12,14 +12,13 @@ public class MyDao {
 
 	public static Dao getDao(Class clazz) {
 
-		if (dao == null)
-			try {
-				DatabaseHelper helper = DatabaseHelper
-						.getHelper(CustomApplication.app);
-				dao = helper.getDao(clazz);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		try {
+			DatabaseHelper helper = DatabaseHelper
+					.getHelper(CustomApplication.app);
+			dao = helper.getDao(clazz);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		return dao;
 	}

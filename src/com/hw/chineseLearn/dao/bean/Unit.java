@@ -1,8 +1,10 @@
 package com.hw.chineseLearn.dao.bean;
 
+import java.io.Serializable;
+
 import com.j256.ormlite.field.DatabaseField;
 
-public class Unit implements Comparable {
+public class Unit  implements Comparable,Serializable {
 
 	@DatabaseField(columnName = "UnitId", id = true)
 	private int UnitId;
@@ -14,8 +16,8 @@ public class Unit implements Comparable {
 	private String LessonList;
 	@DatabaseField(columnName = "SortIndex")
 	private int SortIndex;
-	@DatabaseField(columnName = "LevelId")
-	private int LevelId;
+	 @DatabaseField(foreign = true, columnName = "LevelId")  
+	private Lesson lesson;
 	@DatabaseField(columnName = "IconResSuffix")
 	private String IconResSuffix;
 	@DatabaseField(columnName = "Version")
@@ -37,6 +39,14 @@ public class Unit implements Comparable {
 
 	public void setUnitName(String unitName) {
 		UnitName = unitName;
+	}
+
+	public Lesson getLesson() {
+		return lesson;
+	}
+
+	public void setLesson(Lesson lesson) {
+		this.lesson = lesson;
 	}
 
 	public String getDescription() {
@@ -61,14 +71,6 @@ public class Unit implements Comparable {
 
 	public void setSortIndex(int sortIndex) {
 		SortIndex = sortIndex;
-	}
-
-	public int getLevelId() {
-		return LevelId;
-	}
-
-	public void setLevelId(int levelId) {
-		LevelId = levelId;
 	}
 
 	public String getIconResSuffix() {
@@ -99,7 +101,7 @@ public class Unit implements Comparable {
 	public String toString() {
 		return "Unit [UnitId=" + UnitId + ", UnitName=" + UnitName
 				+ ", Description=" + Description + ", LessonList=" + LessonList
-				+ ", SortIndex=" + SortIndex + ", LevelId=" + LevelId
+				+ ", SortIndex=" + SortIndex + ", LevelId=" + lesson
 				+ ", IconResSuffix=" + IconResSuffix + ", Version=" + Version
 				+ ", DataUId=" + DataUId + "]";
 	}
