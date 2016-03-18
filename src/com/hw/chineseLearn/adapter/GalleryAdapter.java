@@ -21,7 +21,9 @@ import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.Lesson;
+import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
 
 public class GalleryAdapter extends BaseAdapter {
@@ -35,11 +37,13 @@ public class GalleryAdapter extends BaseAdapter {
 	Animation animation;
 	private Unit unit;
 	private List<Lesson> lessonList;
+	private List<TbLessonMaterialStatus> lessonStatusList;
 
-	public GalleryAdapter(Context mContext,Unit unit,List<Lesson> lessonList) {
+	public GalleryAdapter(Context mContext,Unit unit,List<Lesson> lessonList,List<TbLessonMaterialStatus> lessonStatusList) {
 		this.mContext = mContext;
 		this.unit = unit;
 		this.lessonList = lessonList;
+		this.lessonStatusList = lessonStatusList;
 		inflater = LayoutInflater.from(mContext);
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
@@ -131,6 +135,8 @@ public class GalleryAdapter extends BaseAdapter {
 					.findViewById(R.id.btn_start);
 			holder.btn_review = (Button) convertView
 					.findViewById(R.id.btn_review);
+			holder.btn_lock = (Button) convertView
+			.findViewById(R.id.btn_lock);
 
 			mapView.put(position, convertView);
 
@@ -148,6 +154,22 @@ public class GalleryAdapter extends BaseAdapter {
 		// height / 5 * 4));
 		// }
 
+		//判断显示start redo review
+		
+		if(lessonStatusList!=null){
+			if(lessonStatusList.get(position).getStatus()==1){
+				holder.btn_start.setVisibility(View.VISIBLE);
+				holder.btn_redo.setVisibility(View.GONE);
+				holder.btn_review.setVisibility(View.GONE);
+				holder.btn_lock .setVisibility(View.GONE);
+			}else if(lessonStatusList.get(position).getStatus()==0){
+				holder.btn_lock .setVisibility(View.VISIBLE);
+				holder.btn_start.setVisibility(View.GONE);
+				holder.btn_redo.setVisibility(View.GONE);
+				holder.btn_review.setVisibility(View.GONE);
+			}
+		}
+		
 		if (holder.btn_redo.getVisibility() == View.VISIBLE) {
 			holder.btn_start.setVisibility(View.GONE);
 		}
@@ -156,9 +178,9 @@ public class GalleryAdapter extends BaseAdapter {
 			holder.btn_review.setVisibility(View.GONE);
 		}
 		
+		//设置description 属性文本
 		String[] spitList = unit.getLessonList().split(";");
 		Integer splitLessonList = Integer.valueOf(spitList[position]);
-		System.out.println(lessonList.get(splitLessonList));
 		if(splitLessonList>=1){
 			Lesson lesson = lessonList.get(splitLessonList-1);
 			String description = lesson.getDescription();
@@ -171,6 +193,7 @@ public class GalleryAdapter extends BaseAdapter {
 
 	public class ViewHolder {
 
+		public Button btn_lock;
 		public LinearLayout lin_c;
 		public TextView tv_title;
 		public TextView tv_no;

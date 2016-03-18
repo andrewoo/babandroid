@@ -90,6 +90,22 @@
             android:text="Review"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s14" />
+        
+        <Button
+            android:id="@+id/btn_lock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_bg_blue"
+            android:gravity="center"
+            android:onClick="review"
+            android:padding="10dip"
+            android:singleLine="true"
+            android:text="Locked"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_s14" />
     </LinearLayout>
 
 </RelativeLayout>

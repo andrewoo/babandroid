@@ -17,13 +17,15 @@ public class Unit  implements Comparable,Serializable {
 	@DatabaseField(columnName = "SortIndex")
 	private int SortIndex;
 	 @DatabaseField(foreign = true, columnName = "LevelId")  
-	private Lesson lesson;
+	private Level level;
 	@DatabaseField(columnName = "IconResSuffix")
 	private String IconResSuffix;
 	@DatabaseField(columnName = "Version")
 	private int Version;
 	@DatabaseField(columnName = "DataUId")
 	private int DataUId;
+	
+	
 
 	public int getUnitId() {
 		return UnitId;
@@ -39,14 +41,6 @@ public class Unit  implements Comparable,Serializable {
 
 	public void setUnitName(String unitName) {
 		UnitName = unitName;
-	}
-
-	public Lesson getLesson() {
-		return lesson;
-	}
-
-	public void setLesson(Lesson lesson) {
-		this.lesson = lesson;
 	}
 
 	public String getDescription() {
@@ -73,6 +67,14 @@ public class Unit  implements Comparable,Serializable {
 		SortIndex = sortIndex;
 	}
 
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
 	public String getIconResSuffix() {
 		return IconResSuffix;
 	}
@@ -96,12 +98,14 @@ public class Unit  implements Comparable,Serializable {
 	public void setDataUId(int dataUId) {
 		DataUId = dataUId;
 	}
+	
+	
 
 	@Override
 	public String toString() {
 		return "Unit [UnitId=" + UnitId + ", UnitName=" + UnitName
 				+ ", Description=" + Description + ", LessonList=" + LessonList
-				+ ", SortIndex=" + SortIndex + ", LevelId=" + lesson
+				+ ", SortIndex=" + SortIndex + ", level=" + level
 				+ ", IconResSuffix=" + IconResSuffix + ", Version=" + Version
 				+ ", DataUId=" + DataUId + "]";
 	}

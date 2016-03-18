@@ -16,11 +16,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnUnitAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.MainActivity;
+import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.Unit;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.thread.ThreadWithDialogTask;
@@ -41,15 +43,15 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	Context context;
 	LearnUnitAdapter learnUnit1Adapter, learnUnit2Adapter;
 	private String TAG = "LearnFragment";
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();//模拟数据集合
-	ArrayList<LearnUnitBaseModel> listAdvance = new ArrayList<LearnUnitBaseModel>();//模拟数据集合
-	
-	ArrayList<Unit> firstList = new ArrayList<Unit>();//testout上边的集合
-	ArrayList<Unit> sencondList = new ArrayList<Unit>();//testout下边的集合
-	
+	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();// 模拟数据集合
+	ArrayList<LearnUnitBaseModel> listAdvance = new ArrayList<LearnUnitBaseModel>();// 模拟数据集合
+
+	ArrayList<Unit> firstList = new ArrayList<Unit>();// testout上边的集合
+	ArrayList<Unit> sencondList = new ArrayList<Unit>();// testout下边的集合
+
 	SelfGridView centGridView, centGridView1;
-	
-	private List<Unit> unitDataList;//存储Unit的集合
+
+	private List<Unit> unitDataList;// 存储Unit的集合
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,9 +60,9 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		fragment = this;
 		context = getActivity();
 		Log.d(TAG, "onCreate");
-		
-		getListDataAndSpit();//得到数据库中集合数据并拆分为两个集合
-		
+
+		getListDataAndSpit();// 得到数据库中集合数据并拆分为两个集合
+
 		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
 		modelBase1.setIconResSuffix("lu1_1_1");
 		modelBase1.setUnitName("Basics1");
@@ -219,16 +221,16 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		listAdvance.add(modelAdvance14);
 
 	}
-	
+
 	/**
 	 * 得到unit集合并拆分为两个子集合
 	 */
 	private void getListDataAndSpit() {
-		
-		MainActivity  mainActicity= (MainActivity)context;
-		unitDataList = mainActicity.getUnitData();//得到数据库数据
-		Collections.sort(unitDataList);//对Unit排序
-		//把前12个存放到firstList
+
+		MainActivity mainActicity = (MainActivity) context;
+		unitDataList = mainActicity.getUnitData();// 得到数据库数据
+		Collections.sort(unitDataList);// 对Unit排序
+		// 把前12个存放到firstList
 		for (int i = 0; i < 12; i++) {
 			firstList.add(unitDataList.get(i));
 		}
@@ -302,18 +304,24 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	OnItemClickListener itemClickListener = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 				long arg3) {
 			// TODO Auto-generated method stub
-
-			Unit unit = firstList.get(arg2);
-			if (unit != null) {
-//				boolean isEnable = unit.isEnable();
-//				if (isEnable) {f
-				Intent intent=new Intent(getActivity(),LessonViewActivity.class);
-				intent.putExtra("unit", unit);
-				startActivity(intent);
-//				}
+			if(position==0){
+				
+				Unit unit = firstList.get(position);
+				if (unit != null) {
+					// boolean isEnable = unit.isEnable();
+					// if (isEnable) {f
+					Intent intent = new Intent(getActivity(),
+							LessonViewActivity.class);
+					intent.putExtra("unit", unit);
+					intent.putExtra("position", position);
+					startActivity(intent);
+					// }
+				}
+			}else{
+				Toast.makeText(getActivity(), "暂未解锁", 0).show();
 			}
 		}
 	};
@@ -324,13 +332,14 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			// TODO Auto-generated method stub
-			LearnUnitBaseModel learnUnitBaseModel = listAdvance.get(arg2);
-			if (learnUnitBaseModel != null) {
-				boolean isEnable = learnUnitBaseModel.isEnable();
-				if (isEnable) {
-					startActivity(new Intent(getActivity(),
-							LessonViewActivity.class));
-				}
+			Unit unit2 = sencondList.get(arg2);
+			if (unit2 != null) {
+				// boolean isEnable = learnUnitBaseModel.isEnable();
+				// if (isEnable) {
+				Intent intent=new Intent(getActivity(),LessonViewActivity.class);
+				intent.putExtra("unit2",unit2);
+				startActivity(intent);
+				// }
 			}
 		}
 	};

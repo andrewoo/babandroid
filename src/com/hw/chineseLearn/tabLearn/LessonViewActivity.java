@@ -1,9 +1,10 @@
 package com.hw.chineseLearn.tabLearn;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Random;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
@@ -23,7 +23,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -32,6 +31,8 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.Lesson;
+import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
+import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
 import com.util.weight.MyGallery;
 
@@ -43,6 +44,8 @@ import com.util.weight.MyGallery;
 public class LessonViewActivity extends BaseActivity implements
 		OnItemSelectedListener {
 
+	protected static final int LESSON_QUERY = 100;
+	protected static final int TB_LESSON = 200;
 	private String TAG = "==LessonViewActivity==";
 	public Context context;
 	private MyGallery gallery;// CoverFlow
@@ -53,6 +56,9 @@ public class LessonViewActivity extends BaseActivity implements
 	int height;
 	AnimationSet animationSet;
 	int selection = 0;
+	private List<TbLessonMaterialStatus> lessonStatusList;// tbLesson表
+	private Unit mUnit;// 当前Unit列
+	private List<Lesson> lessonList;// lesson表
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +68,10 @@ public class LessonViewActivity extends BaseActivity implements
 		setContentView(contentView);
 		context = this;
 		mUnit = (Unit) getIntent().getSerializableExtra("unit");
-		// init();
-		queryLesson();
+		queryLesson();// 查询lesson表
+		queryTbLesson();// 查询tbLesson得到状态List
+		init();// 初始化gallery和动画
+
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
 
@@ -73,26 +81,60 @@ public class LessonViewActivity extends BaseActivity implements
 	}
 
 	/**
+	 * 滑动时调用得到当前lesson的正则表达式对应的bean
+	 */
+	private void getRepeatRegex() {
+		Lesson lesson = lessonList.get(Integer.valueOf(mUnit.getLessonList()
+				.split(";")[selection]) - 1);
+		String[] questions = lesson.getRepeatRegex().split("#");
+		List<LessonRepeatRegex> regexes=new ArrayList<LessonRepeatRegex>();
+		for (int i=0;i<questions.length;i++) {// 遍历把值加入到实体beanList
+			// 0:11;1;1#
+//			0:2splitFenHao[0]
+//			0:12
+//			;1              1
+//			;2				last			
+			LessonRepeatRegex regex = new LessonRepeatRegex();
+			String[] splitFenHao = questions[i].split(";");
+			if(splitFenHao[0].indexOf("-")!=-1){
+				String[] splitLgTableId = splitFenHao[0].split("-");
+				int nextInt = new Random().nextInt(splitLgTableId.length);
+				splitFenHao[0]= splitLgTableId[nextInt];
+			}
+			String[] splitMaoHao = splitFenHao[0].split(":");
+			regex.setLgTable(Integer.valueOf(splitMaoHao[0]));//-分割后：前的数字
+			regex.setLgTableId(Integer.valueOf(splitMaoHao[1]));//-分割后：后的数字
+			regex.setCount(Integer.valueOf(splitFenHao[splitFenHao.length-1]));// 得到最后一个字符
+			regexes.add(regex);
+		}
+		Log.e("LessonRepeatRegex", regexes.toString());
+	}
+
+	/**
+	 * 查询TbLesson----表
+	 */
+	private void queryTbLesson() {
+		try {
+			lessonStatusList = MyDao.getDao(TbLessonMaterialStatus.class)
+					.queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Collections.sort(lessonStatusList);
+	}
+
+	/**
 	 * 查询lesson表
 	 */
 	private void queryLesson() {
-
-		new Thread() {
-			public void run() {
-				try {
-					lessonList = MyDao.getDao(Lesson.class).queryForAll();
-					Collections.sort(lessonList);
-					Message msg = Message.obtain();
-					msg.what = 100;
-					msg.obj = lessonList;
-					mHandler.sendMessage(msg);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			};
-		}.start();
-
+		try {
+			lessonList = MyDao.getDao(Lesson.class).queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Collections.sort(lessonList);
 	}
 
 	@Override
@@ -109,7 +151,7 @@ public class LessonViewActivity extends BaseActivity implements
 		setTitle(View.GONE, View.VISIBLE,
 				R.drawable.btn_selector_top_left_white, mUnit.getUnitName(),
 				View.GONE, View.GONE, 0);
-		adapter = new GalleryAdapter(this, mUnit, lessonList);
+		adapter = new GalleryAdapter(this, mUnit, lessonList, lessonStatusList);
 		gallery = (MyGallery) findViewById(R.id.gallery);
 		gallery.setOnItemClickListener(onItemclickListener);
 		gallery.setAdapter(adapter);
@@ -255,17 +297,8 @@ public class LessonViewActivity extends BaseActivity implements
 			// }
 			// }
 			// }
-
-			switch (msg.what) {
-			case 100:
-				init();
-				break;
-			}
-			super.handleMessage(msg);
 		}
 	};
-	private Unit mUnit;
-	private List<Lesson> lessonList;
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View convertView,
@@ -273,6 +306,7 @@ public class LessonViewActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 
 		selection = position;
+		getRepeatRegex();// 得到正则表达式
 		Log.d(TAG, "selection:" + selection);
 		adapter.setSelection(position);
 
@@ -340,7 +374,6 @@ public class LessonViewActivity extends BaseActivity implements
 			} else {
 				gallery.setSelection(selection + 1);// 选中下一个页面
 			}
-
 			break;
 		default:
 			break;
