@@ -2,6 +2,7 @@ package com.hw.chineseLearn.adapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,11 +19,12 @@ import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
 public class LearnImageSelectAdapter extends BaseAdapter {
 	private Context context;
-	public ArrayList<LearnUnitBaseModel> list;
+	public ArrayList<LGWord> list;
 	private LayoutInflater inflater;
 
 	private int width, height;
@@ -32,10 +34,10 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 	int colorBlack = -1;
 
 	public LearnImageSelectAdapter(Context context,
-			ArrayList<LearnUnitBaseModel> list) {
+			List<LGWord> list) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
-		this.list = list;
+		this.list = (ArrayList<LGWord>) list;
 		resources = context.getResources();
 		colorWhite = resources.getColor(R.color.white);
 		colorBlack = resources.getColor(R.color.black);
@@ -93,13 +95,16 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 		}
 		// convertView.setLayoutParams(new LinearLayout.LayoutParams(
 		// LayoutParams.WRAP_CONTENT, convertView.getWidth() / 3 * 4));
-		LearnUnitBaseModel model = list.get(position);
+		LGWord model = list.get(position);
 		if (model == null) {
 			return convertView;
 		}
 
-		String unitName = model.getUnitName();
-		String imageName = "" + model.getIconResSuffix();
+		String unitName = model.getWord()+"/"+model.getPinyin();
+		String imageName = "a" + model.getMainPic();
+		if(imageName.indexOf(".")!=-1){
+			imageName=imageName.substring(0, imageName.indexOf("."));
+		}
 
 		holder.txt_word_name.setText("" + unitName);
 		holder.iv_img.setImageResource(resources.getIdentifier(imageName,

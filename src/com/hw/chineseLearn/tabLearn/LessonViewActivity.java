@@ -3,6 +3,7 @@ package com.hw.chineseLearn.tabLearn;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -81,25 +82,36 @@ public class LessonViewActivity extends BaseActivity implements
 	}
 
 	/**
-	 * 滑动时调用得到当前lesson的正则表达式对应的bean
+	 * 滑动时调用,得到当前lesson表的repeatRegex对应的beanList
+	 * @return 
+	 * 
 	 */
-	private void getRepeatRegex() {
+	private List<LessonRepeatRegex> getRepeatRegexBeanList() {
 		Lesson lesson = lessonList.get(Integer.valueOf(mUnit.getLessonList()
 				.split(";")[selection]) - 1);
 		String[] questions = lesson.getRepeatRegex().split("#");
 		List<LessonRepeatRegex> regexes=new ArrayList<LessonRepeatRegex>();
+		List<LessonRepeatRegex> subRegexes=new ArrayList<LessonRepeatRegex>();
 		for (int i=0;i<questions.length;i++) {// 遍历把值加入到实体beanList
-			// 0:11;1;1#
-//			0:2splitFenHao[0]
-//			0:12
-//			;1              1
-//			;2				last			
 			LessonRepeatRegex regex = new LessonRepeatRegex();
 			String[] splitFenHao = questions[i].split(";");
 			if(splitFenHao[0].indexOf("-")!=-1){
 				String[] splitLgTableId = splitFenHao[0].split("-");
-				int nextInt = new Random().nextInt(splitLgTableId.length);
-				splitFenHao[0]= splitLgTableId[nextInt];
+				for (int j = 0; j < Integer.valueOf(splitFenHao[splitFenHao.length-1]); j++) {
+					if(j == 0){
+						regex.setLgTable(Integer.valueOf(splitLgTableId[j].split(":")[0]));
+						regex.setLgTableId(Integer.valueOf(splitLgTableId[j].split(":")[1]));
+						regex.setCount(Integer.valueOf(splitFenHao[splitFenHao.length-1]));
+						subRegexes.add(regex);
+					}else{
+						LessonRepeatRegex regex1 = new LessonRepeatRegex();
+						regex1.setLgTable(Integer.valueOf(splitLgTableId[j].split(":")[0]));
+						regex1.setLgTableId(Integer.valueOf(splitLgTableId[j].split(":")[1]));
+						regex1.setCount(Integer.valueOf(splitFenHao[splitFenHao.length-1]));
+						subRegexes.add(new Random().nextInt(subRegexes.size()), regex1);
+					}
+				}
+				continue;
 			}
 			String[] splitMaoHao = splitFenHao[0].split(":");
 			regex.setLgTable(Integer.valueOf(splitMaoHao[0]));//-分割后：前的数字
@@ -107,7 +119,8 @@ public class LessonViewActivity extends BaseActivity implements
 			regex.setCount(Integer.valueOf(splitFenHao[splitFenHao.length-1]));// 得到最后一个字符
 			regexes.add(regex);
 		}
-		Log.e("LessonRepeatRegex", regexes.toString());
+		regexes.addAll(subRegexes);
+		return regexes;
 	}
 
 	/**
@@ -306,7 +319,7 @@ public class LessonViewActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 
 		selection = position;
-		getRepeatRegex();// 得到正则表达式
+		 final ArrayList<LessonRepeatRegex> regexes= (ArrayList<LessonRepeatRegex>) getRepeatRegexBeanList();// 得到正则表达式中所有题型的集合
 		Log.d(TAG, "selection:" + selection);
 		adapter.setSelection(position);
 
@@ -337,10 +350,11 @@ public class LessonViewActivity extends BaseActivity implements
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Intent intetnt = new Intent(context,
+				Intent intent = new Intent(context,
 						LessonExerciseActivity.class);
-				intetnt.putExtra("utilId", position);
-				startActivityForResult(intetnt, 0);
+				intent.putExtra("utilId", position);
+				intent.putExtra("regexes", regexes);
+				startActivityForResult(intent, 0);
 				Log.d("GalleryAdapter", "utilId:" + position);
 			}
 		});

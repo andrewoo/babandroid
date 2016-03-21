@@ -1,6 +1,8 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,9 +19,13 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnImageSelectAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGModel_Word_010;
+import com.hw.chineseLearn.dao.bean.LGWord;
+import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.j256.ormlite.stmt.Where;
 import com.util.thread.ThreadWithDialogTask;
-import com.util.tool.UiUtil;
 
 /**
  * 学习-选图片
@@ -39,6 +45,7 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	GridView gv_image;
 	TextView txt_name;
 	String question = "\"color\"";
+	private List<LGWord> lgWordList=new ArrayList<LGWord>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,8 @@ public class LearnImageSelectFragment extends BaseFragment implements
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity();
-
+		initDBdata();//初始化数据库数据
+		
 		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
 		modelBase1.setIconResSuffix("lu1_1_1");
 		modelBase1.setUnitName("Basics1");
@@ -71,6 +79,31 @@ public class LearnImageSelectFragment extends BaseFragment implements
 		modelBase4.setLessonList("1;2;3");
 		listBase.add(modelBase4);
 
+	}
+
+	/**
+	 * 得到数据库中数据
+	 */
+	private void initDBdata() {
+		LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments().getSerializable("lessonRepeatRegex");
+		//根据lessonRepeatRegex.getId查询LGword得到Translations
+		try {
+			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(lessonRepeatRegex.getLgTableId());
+			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao.getDao(LGModel_Word_010.class).queryBuilder().where().eq("WordId", lgWord.getWordId()).queryForFirst();
+			System.out.println("22"+ MyDao.getDao(LGModel_Word_010.class).queryBuilder().where().eq("WordId", lgWord.getWordId()).queryForFirst());
+			String imageOptions = Word_010.getImageOptions();
+			String[] splitFenHao = imageOptions.split(";");//得到查询LgWord表的wordid数组
+			for (int i = 0; i < splitFenHao.length; i++) {
+				LGWord lGWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(splitFenHao[i]);
+//				String mainPicName = lGWord.getWordId()+"-"+lGWord.getMainPic();
+//				lGWord.setMainPic(mainPicName);
+				lgWordList.add(lGWord);
+			}
+			question = lgWord.getTranslations();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -130,7 +163,7 @@ public class LearnImageSelectFragment extends BaseFragment implements
 
 		gv_image = (GridView) contentView.findViewById(R.id.gv_image);
 
-		learnImageSelectAdapter = new LearnImageSelectAdapter(context, listBase);
+		learnImageSelectAdapter = new LearnImageSelectAdapter(context, lgWordList);
 		gv_image.setAdapter(learnImageSelectAdapter);
 		gv_image.setOnItemClickListener(itemClickListener);
 		learnImageSelectAdapter.notifyDataSetChanged();
