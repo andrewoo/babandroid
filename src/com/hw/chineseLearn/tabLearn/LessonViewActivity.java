@@ -111,6 +111,9 @@ public class LessonViewActivity extends BaseActivity implements
 						subRegexes.add(new Random().nextInt(subRegexes.size()), regex1);
 					}
 				}
+				Collections.shuffle(subRegexes);//打乱顺序
+				regexes.addAll(subRegexes);
+				subRegexes.clear();
 				continue;
 			}
 			String[] splitMaoHao = splitFenHao[0].split(":");
@@ -119,7 +122,6 @@ public class LessonViewActivity extends BaseActivity implements
 			regex.setCount(Integer.valueOf(splitFenHao[splitFenHao.length-1]));// 得到最后一个字符
 			regexes.add(regex);
 		}
-		regexes.addAll(subRegexes);
 		return regexes;
 	}
 

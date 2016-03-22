@@ -21,6 +21,7 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.util.tool.BitmapLoader;
 
 public class LearnImageSelectAdapter extends BaseAdapter {
 	private Context context;
@@ -107,6 +108,8 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 		}
 
 		holder.txt_word_name.setText("" + unitName);
+		
+		
 		holder.iv_img.setImageResource(resources.getIdentifier(imageName,
 				"drawable", context.getPackageName()));
 

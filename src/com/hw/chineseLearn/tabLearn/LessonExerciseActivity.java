@@ -1,6 +1,7 @@
 package com.hw.chineseLearn.tabLearn;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,8 @@ public class LessonExerciseActivity extends BaseActivity {
 	private int utilId = 0;
 
 	private List<LessonRepeatRegex> regexes;
+	
+	private List<Integer> isFirstList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -184,10 +187,10 @@ public class LessonExerciseActivity extends BaseActivity {
 	 */
 	public void init() {
 
-		if (imageSelectFragment == null) {
-			imageSelectFragment = new LearnImageSelectFragment();
-			navigateToNoAnimWithId(imageSelectFragment, R.id.container1);
-		}
+//		if (imageSelectFragment == null) {
+//			imageSelectFragment = new LearnImageSelectFragment();
+//			navigateToNoAnimWithId(imageSelectFragment, R.id.container1);
+//		}
 
 		if (wordSelectFragment == null) {
 			wordSelectFragment = new LearnWordSelectFragment();
@@ -249,7 +252,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			lin_lesson_progress.addView(imageView);
 			progressView.put(i, imageView);
 		}
-		regexToView(regexes.get(exerciseIndex).getLgTable());//第一次进入时
+		regexToView(regexes.get(exerciseIndex));//第一次进入时
 	}
 
 	/**
@@ -462,9 +465,10 @@ public class LessonExerciseActivity extends BaseActivity {
 			public void onClick(View v) {
 				btn_check.setVisibility(View.VISIBLE);
 				//learn表中regex第一位 对应View关系
-				regexToView(regexes.get(exerciseIndex).getLgTable());
 				if(exerciseIndex<exerciseCount){
 					exerciseIndex++;
+					System.out.println("exerciseIndex"+exerciseIndex);
+					regexToView(regexes.get(exerciseIndex));
 				}
 //				switch (regexes.get(exerciseIndex).getRandomSubject()) {//得到随机数确定查哪张表010--060
 //				case 0:
@@ -570,6 +574,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		}
 	};
 
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		setResult(0);
@@ -578,6 +583,7 @@ public class LessonExerciseActivity extends BaseActivity {
 				mediaPlayer.stop();
 			}
 		}
+		isFirstList.clear();
 	};
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
@@ -677,16 +683,26 @@ public class LessonExerciseActivity extends BaseActivity {
 	/**
 	 * learn表中regex对应表关系
 	 */
-	private void regexToView(int lgTable) {
-		
+	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
+		int lgTable = lessonRepeatRegex.getLgTable();
+		System.out.println("lgTable"+lgTable);
 		if(lgTable==0){
-			LessonRepeatRegex lessonRepeatRegex = regexes.get(exerciseIndex);
-			int randomSubject = regexes.get(exerciseIndex).getRandomSubject();
-			switch (1) {
+			int randomSubject = lessonRepeatRegex.getRandomSubject();
+			System.out.println("getRandomSubject"+randomSubject);
+			if(isFirst(lessonRepeatRegex.getLgTableId())){//判断 如果是第一次出现的ID 就从 word010表中查询
+				System.out.println("isFirst"+lessonRepeatRegex.getLgTableId());
+				randomSubject=1;
+			}
+			switch (randomSubject) {
 			case 1:
+				System.out.println("bundlelessonRepeatRegex"+lessonRepeatRegex);
+				imageSelectFragment=new LearnImageSelectFragment();
 				Bundle bundle=new Bundle();
 				bundle.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
 				imageSelectFragment.setArguments(bundle);//把题传过去
+//				if(!imageSelectFragment.isAdded()){
+//					navigateToNoAnimWithId(imageSelectFragment, R.id.container1);
+//				}
 				replaceTo2("imageSelectFragment");
 				break;
 			case 2:
@@ -726,4 +742,18 @@ public class LessonExerciseActivity extends BaseActivity {
 			replaceTo2("imageMoveFragment");
 		}
 	}
+	
+	/**
+	 * 判断随机ID是否是第一次出现
+	 * @return
+	 */
+	private boolean isFirst(int id) {
+		isFirstList=new ArrayList<Integer>();
+		if(!isFirstList.contains(id)){
+			isFirstList.add(id);
+			return true;
+		}
+		return false;
+	}
+	
 }

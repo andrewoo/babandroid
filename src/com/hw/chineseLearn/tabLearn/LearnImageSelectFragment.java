@@ -90,7 +90,6 @@ public class LearnImageSelectFragment extends BaseFragment implements
 		try {
 			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(lessonRepeatRegex.getLgTableId());
 			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao.getDao(LGModel_Word_010.class).queryBuilder().where().eq("WordId", lgWord.getWordId()).queryForFirst();
-			System.out.println("22"+ MyDao.getDao(LGModel_Word_010.class).queryBuilder().where().eq("WordId", lgWord.getWordId()).queryForFirst());
 			String imageOptions = Word_010.getImageOptions();
 			String[] splitFenHao = imageOptions.split(";");//得到查询LgWord表的wordid数组
 			for (int i = 0; i < splitFenHao.length; i++) {
