@@ -7,6 +7,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.tool.BitmapLoader;
 
 public class LearnImageSelectAdapter extends BaseAdapter {
+	private static final String ASSETS_LGWORD_PATH ="data/lgword/";
 	private Context context;
 	public ArrayList<LGWord> list;
 	private LayoutInflater inflater;
@@ -33,6 +35,7 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 	private Resources resources = null;
 	int colorWhite = -1;
 	int colorBlack = -1;
+	
 
 	public LearnImageSelectAdapter(Context context,
 			List<LGWord> list) {
@@ -102,16 +105,12 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 		}
 
 		String unitName = model.getWord()+"/"+model.getPinyin();
-		String imageName = "a" + model.getMainPic();
-		if(imageName.indexOf(".")!=-1){
-			imageName=imageName.substring(0, imageName.indexOf("."));
-		}
-
+		String imageName = model.getMainPic();
 		holder.txt_word_name.setText("" + unitName);
-		
-		
-		holder.iv_img.setImageResource(resources.getIdentifier(imageName,
-				"drawable", context.getPackageName()));
+		Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGWORD_PATH+imageName);
+		holder.iv_img.setImageBitmap(bitmap);
+//		holder.iv_img.setImageResource(resources.getIdentifier(imageName,
+//				"drawable", context.getPackageName()));
 
 		if (selectPosition == position) {// 选中
 			holder.lin_content.setBackground(resources

@@ -1,16 +1,19 @@
 package com.util.tool;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.List;
+
+import com.hw.chineseLearn.base.CustomApplication;
+
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * Created by Ken on 2015/2/9.
@@ -277,4 +280,27 @@ public class BitmapLoader {
     public static int clamp(int x, int a, int b) {
         return (x < a) ? a : (x > b) ? b : x;
     }
+    
+    /**
+     * 从assets目录得到图片
+     * @param fileName
+     * @return
+     */
+    public static Bitmap getImageFromAssetsFile(String fileName)  
+    {  
+        Bitmap image = null;  
+        AssetManager am = CustomApplication.app.getResources().getAssets();  
+        try  
+        {  
+            InputStream is = am.open(fileName);  
+            image = BitmapFactory.decodeStream(is);  
+            is.close();  
+        }  
+        catch (IOException e)  
+        {  
+            e.printStackTrace();  
+        }  
+    
+        return image;  
+    }  
 }
