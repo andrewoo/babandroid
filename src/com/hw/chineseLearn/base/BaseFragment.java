@@ -10,7 +10,7 @@ import android.view.ViewGroup;
  * @author yh
  * 
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,5 +30,6 @@ public class BaseFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
+	public abstract boolean isRight();
 
 }

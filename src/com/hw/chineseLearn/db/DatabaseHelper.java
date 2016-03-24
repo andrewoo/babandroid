@@ -3,14 +3,33 @@ package com.hw.chineseLearn.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.hw.chineseLearn.base.CustomApplication;
+import com.j256.ormlite.android.AndroidConnectionSource;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 
   
-public class DatabaseHelper extends OrmLiteSqliteOpenHelper  
+public class DatabaseHelper extends OrmLiteSqliteOpenHelper 
 {
 	
+
 	private static DatabaseHelper instance;
+	
+	public static final String DATABASE_PATH = CustomApplication.app.getFilesDir() + "/chineselearn.db";
+	
+	 private AndroidConnectionSource connectionSource;
+
+    @Override
+    public synchronized SQLiteDatabase getWritableDatabase() {
+        return SQLiteDatabase.openDatabase(DATABASE_PATH, null,
+                SQLiteDatabase.OPEN_READWRITE);
+    }
+
+    public synchronized SQLiteDatabase getReadableDatabase() {
+        return SQLiteDatabase.openDatabase(DATABASE_PATH, null,
+                SQLiteDatabase.OPEN_READONLY);
+    }
+	
 	
 	public DatabaseHelper(Context context) {
 		super(context, "chineselearn.db", null, 1);
@@ -29,7 +48,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 	
 	public static synchronized DatabaseHelper getHelper(Context context)
 	{
-		context = context.getApplicationContext();
 		if (instance == null)
 		{
 			synchronized (DatabaseHelper.class)
@@ -40,7 +58,5 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 		}
 		return instance;
 	}
-
-	
 	
 }  

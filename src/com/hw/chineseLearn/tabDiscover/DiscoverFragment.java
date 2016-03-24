@@ -111,4 +111,10 @@ public class DiscoverFragment extends BaseFragment implements OnClickListener {
 		super.onResume();
 	}
 
+	@Override
+	public boolean isRight() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

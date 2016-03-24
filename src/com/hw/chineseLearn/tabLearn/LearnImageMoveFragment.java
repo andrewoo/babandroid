@@ -1,6 +1,9 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,11 +21,17 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGCharacter;
+import com.hw.chineseLearn.dao.bean.LGCharacterPart;
+import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.BitmapLoader;
 import com.util.tool.UiUtil;
 
 /**
@@ -33,6 +42,7 @@ import com.util.tool.UiUtil;
 @SuppressLint("NewApi")
 public class LearnImageMoveFragment extends BaseFragment implements
 		OnClickListener, OnTouchListener {
+	private static final String ASSETS_LGCHARACTERPART_PATH = "data/character_part/";
 	private String TAG = "LearnImageMoveFragment";
 	private View contentView;// 主view
 	private ThreadWithDialogTask task;
@@ -40,10 +50,14 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	Context context;
 	private RelativeLayout rel_root;
 	private RelativeLayout rel_top;
+	private TextView tv_word;
 	private int relTopHeight;
 	private int screenWidth, screenHeight;
 	int mizigeX;
 	int mizigeY;
+	private List<String> picList = new ArrayList<String>();
+	private List<String> randomList = new ArrayList<String>();
+	private List<String> partPicNameList = new ArrayList<String>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,20 +65,46 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity();
+		initData();// 得到传过来的参数
 		screenWidth = CustomApplication.app.displayMetrics.widthPixels
 				- (dip2px(context, 40));
 		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 		viewMagin = dip2px(context, 10);
 		itemViewWidth = (screenWidth - viewMagin * 2) / 3;
 
-		contentView = LayoutInflater.from(context).inflate(
-				R.layout.fragment_lesson_image_move, null);
-		task = new ThreadWithDialogTask();
-		rel_root = (RelativeLayout) contentView.findViewById(R.id.rel_root);
-		rel_top = (RelativeLayout) contentView.findViewById(R.id.rel_top);
+		initView();
 
 		initBgViews();
 		initMoveViews();
+	}
+
+	private void initView() {
+		contentView = LayoutInflater.from(context).inflate(
+				R.layout.fragment_lesson_image_move, null);
+		task = new ThreadWithDialogTask();
+		tv_word=(TextView) contentView.findViewById(R.id.tv_word);
+		tv_word.setText(title);
+		rel_root = (RelativeLayout) contentView.findViewById(R.id.rel_root);
+		rel_top = (RelativeLayout) contentView.findViewById(R.id.rel_top);
+	}
+
+	private void initData() {
+
+		try {
+			LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments()
+					.getSerializable("lessonRepeatRegex");
+			List<String> characPicList = getCharacPicList(lessonRepeatRegex);// 得到需要显示的5张图片集合
+			for (int i = 0; i < characPicList.size(); i++) {
+				LGCharacterPart lgCharacterPart = (LGCharacterPart) MyDao
+						.getDao(LGCharacterPart.class).queryForId(
+								Integer.valueOf(characPicList.get(i)));
+				String picName = lgCharacterPart.getPartName();
+				partPicNameList.add(picName);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -165,10 +205,13 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			imageView.setTag(i);
 			imageView.setFocusable(false);
 			imageView.setOnTouchListener(this);
-			imageView.setImageResource(context.getResources().getIdentifier(
-					"pp_" + (19 + i), "drawable", context.getPackageName()));
-
-			moveViewWithFingerUp(imageView, x, y);
+			// imageView.setImageResource(context.getResources().getIdentifier(
+			// "pp_" + (19 + i), "drawable", context.getPackageName()));
+			String imageName = partPicNameList.get(i);
+			Bitmap bitmap = BitmapLoader
+					.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
+							+ imageName);
+			imageView.setImageBitmap(bitmap);
 			rel_root.addView(imageView);
 
 			int x1 = 0, y1 = y;
@@ -277,6 +320,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 	// Sacle动画 - 渐变尺寸缩放
 	private Animation scaleAnimation = null;
+	private String title;
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
@@ -347,4 +391,58 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		}
 	}
 
+	/**
+	 * 随机取出需要的5张部首图片
+	 * 
+	 * @param lessonRepeatRegex
+	 * @return
+	 * @throws SQLException
+	 */
+	private List<String> getCharacPicList(LessonRepeatRegex lessonRepeatRegex)
+			throws SQLException {
+
+		int lgTableId = lessonRepeatRegex.getLgTableId();
+		LGCharacter lGCharacterPart = (LGCharacter) MyDao.getDao(
+				LGCharacter.class).queryForId(lgTableId);
+		title = getTitle(lGCharacterPart);
+		String[] picArray = lGCharacterPart.getPartOptions().split(";");
+		String[] answerPicArray = lGCharacterPart.getPartAnswer().split(";");
+		for (int i = 0; i < picArray.length; i++) {
+			for (int j = 0; j < answerPicArray.length; j++) {
+				System.out.println("picArray[i]" + picArray[i]);
+				System.out.println("answerPicArray[j]" + answerPicArray[j]);
+				if (Integer.valueOf(picArray[i].trim()) == Integer
+						.valueOf(answerPicArray[j].trim())) {
+					picList.add(picArray[i]);
+				}
+			}
+			if (randomList.indexOf(picArray[i]) == -1
+					&& picList.indexOf(picArray[i]) == -1) {
+				randomList.add(picArray[i]);
+			}
+		}
+		System.out.println("picList" + picList);
+		System.out.println("randomList" + randomList);
+		if (picList.size() < 5) {
+			Collections.shuffle(randomList);
+			int x = 5 - picList.size();
+			for (int i = 0; i < x; i++) {
+				picList.add(randomList.get(i));
+			}
+		}
+		System.out.println("picList2222" + picList);
+		return picList;
+	}
+
+	@Override
+	public boolean isRight() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private String getTitle(LGCharacter lGCharacterPart) {
+		String pinyin = lGCharacterPart.getPinyin();
+		String replace = lGCharacterPart.getTranslation().replace(";", "/");
+		return "["+pinyin+"]"+replace;
+	}
 }

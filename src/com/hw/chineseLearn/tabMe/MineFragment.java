@@ -219,4 +219,10 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 			// Log.d(TAG, "强制隐藏键盘");
 		}
 	}
+
+	@Override
+	public boolean isRight() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

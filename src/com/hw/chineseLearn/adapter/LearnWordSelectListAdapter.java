@@ -1,38 +1,33 @@
 package com.hw.chineseLearn.adapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.hw.chineseLearn.dao.bean.LGWord;
 
 public class LearnWordSelectListAdapter extends BaseAdapter {
 	private Context context;
-	public ArrayList<LearnUnitBaseModel> list;
+	public ArrayList<LGWord> list;
 	private LayoutInflater inflater;
 
 	private int width, height;
-	private int selectPosition;
+	private int selectPosition=-1;
 	private Resources resources = null;
 	int colorWhite = -1;
 	int colorBlack = -1;
 
 	public LearnWordSelectListAdapter(Context context,
-			ArrayList<LearnUnitBaseModel> list) {
+			ArrayList<LGWord> list) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
 		this.list = list;
@@ -90,12 +85,12 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		LearnUnitBaseModel model = list.get(position);
+		LGWord model = list.get(position);
 		if (model == null) {
 			return convertView;
 		}
 
-		String unitName = model.getUnitName();
+		String unitName = model.getWord()+"/"+model.getPinyin();
 		holder.tv_child_char.setText("" + unitName);
 
 		if (selectPosition == position) {// 选中

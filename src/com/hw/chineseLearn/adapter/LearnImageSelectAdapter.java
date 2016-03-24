@@ -25,13 +25,14 @@ import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.tool.BitmapLoader;
 
 public class LearnImageSelectAdapter extends BaseAdapter {
+	
 	private static final String ASSETS_LGWORD_PATH ="data/lgword/";
 	private Context context;
 	public ArrayList<LGWord> list;
 	private LayoutInflater inflater;
 
 	private int width, height;
-	private int selectPosition;
+	private int selectPosition=-1;
 	private Resources resources = null;
 	int colorWhite = -1;
 	int colorBlack = -1;

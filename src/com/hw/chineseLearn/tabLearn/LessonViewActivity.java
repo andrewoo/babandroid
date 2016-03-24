@@ -83,43 +83,52 @@ public class LessonViewActivity extends BaseActivity implements
 
 	/**
 	 * 滑动时调用,得到当前lesson表的repeatRegex对应的beanList
-	 * @return 
+	 * 
+	 * @return
 	 * 
 	 */
 	private List<LessonRepeatRegex> getRepeatRegexBeanList() {
 		Lesson lesson = lessonList.get(Integer.valueOf(mUnit.getLessonList()
 				.split(";")[selection]) - 1);
 		String[] questions = lesson.getRepeatRegex().split("#");
-		List<LessonRepeatRegex> regexes=new ArrayList<LessonRepeatRegex>();
-		List<LessonRepeatRegex> subRegexes=new ArrayList<LessonRepeatRegex>();
-		for (int i=0;i<questions.length;i++) {// 遍历把值加入到实体beanList
+		List<LessonRepeatRegex> regexes = new ArrayList<LessonRepeatRegex>();
+		List<LessonRepeatRegex> subRegexes = new ArrayList<LessonRepeatRegex>();
+		for (int i = 0; i < questions.length; i++) {// 遍历把值加入到实体beanList
 			LessonRepeatRegex regex = new LessonRepeatRegex();
 			String[] splitFenHao = questions[i].split(";");
-			if(splitFenHao[0].indexOf("-")!=-1){
+			if (splitFenHao[0].indexOf("-") != -1) {
 				String[] splitLgTableId = splitFenHao[0].split("-");
-				for (int j = 0; j < Integer.valueOf(splitFenHao[splitFenHao.length-1]); j++) {
-					if(j == 0){
-						regex.setLgTable(Integer.valueOf(splitLgTableId[j].split(":")[0]));
-						regex.setLgTableId(Integer.valueOf(splitLgTableId[j].split(":")[1]));
-						regex.setCount(Integer.valueOf(splitFenHao[splitFenHao.length-1]));
+				for (int j = 0; j < Integer
+						.valueOf(splitFenHao[splitFenHao.length - 1]); j++) {
+					if (j == 0) {
+						regex.setLgTable(Integer.valueOf(splitLgTableId[j]
+								.split(":")[0]));
+						regex.setLgTableId(Integer.valueOf(splitLgTableId[j]
+								.split(":")[1]));
+						regex.setCount(Integer
+								.valueOf(splitFenHao[splitFenHao.length - 1]));
 						subRegexes.add(regex);
-					}else{
+					} else {
 						LessonRepeatRegex regex1 = new LessonRepeatRegex();
-						regex1.setLgTable(Integer.valueOf(splitLgTableId[j].split(":")[0]));
-						regex1.setLgTableId(Integer.valueOf(splitLgTableId[j].split(":")[1]));
-						regex1.setCount(Integer.valueOf(splitFenHao[splitFenHao.length-1]));
-						subRegexes.add(new Random().nextInt(subRegexes.size()), regex1);
+						regex1.setLgTable(Integer.valueOf(splitLgTableId[j]
+								.split(":")[0]));
+						regex1.setLgTableId(Integer.valueOf(splitLgTableId[j]
+								.split(":")[1]));
+						regex1.setCount(Integer
+								.valueOf(splitFenHao[splitFenHao.length - 1]));
+						subRegexes.add(new Random().nextInt(subRegexes.size()),
+								regex1);
 					}
 				}
-				Collections.shuffle(subRegexes);//打乱顺序
+				Collections.shuffle(subRegexes);// 打乱顺序
 				regexes.addAll(subRegexes);
 				subRegexes.clear();
 				continue;
 			}
 			String[] splitMaoHao = splitFenHao[0].split(":");
-			regex.setLgTable(Integer.valueOf(splitMaoHao[0]));//-分割后：前的数字
-			regex.setLgTableId(Integer.valueOf(splitMaoHao[1]));//-分割后：后的数字
-			regex.setCount(Integer.valueOf(splitFenHao[splitFenHao.length-1]));// 得到最后一个字符
+			regex.setLgTable(Integer.valueOf(splitMaoHao[0]));// -分割后：前的数字
+			regex.setLgTableId(Integer.valueOf(splitMaoHao[1]));// -分割后：后的数字
+			regex.setCount(Integer.valueOf(splitFenHao[splitFenHao.length - 1]));// 得到最后一个字符
 			regexes.add(regex);
 		}
 		return regexes;
@@ -330,7 +339,9 @@ public class LessonViewActivity extends BaseActivity implements
 		// message.arg2 = position;
 		// message.what = 1;
 		// mHandler.sendMessageDelayed(message, 5);
-
+		if(convertView==null){
+			convertView=View.inflate(this, R.layout.layout_gellay_item, null);
+			}
 		Button btn_redo = (Button) convertView.findViewById(R.id.btn_redo);
 		Button btn_start = (Button) convertView.findViewById(R.id.btn_start);
 		Button btn_review = (Button) convertView.findViewById(R.id.btn_review);
@@ -343,6 +354,7 @@ public class LessonViewActivity extends BaseActivity implements
 				Intent intent = new Intent(context,
 						LessonExerciseActivity.class);
 				intent.putExtra("utilId", position);
+				intent.putExtra("regexes", regexes);
 				startActivityForResult(intent, 0);
 				Log.d("GalleryAdapter", "utilId:" + position);
 			}

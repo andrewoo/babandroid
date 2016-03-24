@@ -35,7 +35,9 @@ import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
+import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.util.weight.CustomDialog;
 
@@ -71,6 +73,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	 * 生命值
 	 */
 	int panderLife = 0;
+	BaseFragment baseFragment;
 	LearnImageMoveFragment imageMoveFragment;
 	LearnSentenceMoveFragment sentenceMoveFragment;
 	LearnImageSelectFragment imageSelectFragment;
@@ -84,7 +87,7 @@ public class LessonExerciseActivity extends BaseActivity {
 
 	private List<LessonRepeatRegex> regexes;
 	
-	private List<Integer> isFirstList;
+	private List<Integer> isFirstList;//第一次出现保存在此集合
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +99,11 @@ public class LessonExerciseActivity extends BaseActivity {
 		initBudle();//初始化数据
 		
 		// for test
-		if (utilId == 0) {
-			isCurrentTestRight = true;
-		} else {
-			isCurrentTestRight = false;
-		}
+//		if (utilId == 0) {
+//			isCurrentTestRight = true;
+//		} else {
+//			isCurrentTestRight = false;
+//		}
 		context = this;
 		CustomApplication.app.addActivity(this);
 		init();
@@ -123,11 +126,11 @@ public class LessonExerciseActivity extends BaseActivity {
 			}
 		}
 		int randomSubject =0;
-		//给每个Subject赋值确定查哪张表
+		//给每个Subject随机赋值确定查哪张表
 		for (int i = 0; i < regexes.size(); i++) {
 			int lgTable = regexes.get(i).getLgTable();
 			if(lgTable==0){
-				randomSubject=new Random().nextInt(6)+1;
+				randomSubject=new Random().nextInt(5)+1;
 				regexes.get(i).setRandomSubject(randomSubject);
 			}else if(lgTable==1){
 				randomSubject=new Random().nextInt(5)+1;
@@ -192,18 +195,18 @@ public class LessonExerciseActivity extends BaseActivity {
 //			navigateToNoAnimWithId(imageSelectFragment, R.id.container1);
 //		}
 
-		if (wordSelectFragment == null) {
-			wordSelectFragment = new LearnWordSelectFragment();
-		}
+//		if (wordSelectFragment == null) {
+//			wordSelectFragment = new LearnWordSelectFragment();
+//		}
 		if (wordInputFragment == null) {
 			wordInputFragment = new LearnWordInputFragment();
 		}
-		if (imageMoveFragment == null) {
-			imageMoveFragment = new LearnImageMoveFragment();
-		}
-		if (sentenceMoveFragment == null) {
-			sentenceMoveFragment = new LearnSentenceMoveFragment();
-		}
+//		if (imageMoveFragment == null) {
+//			imageMoveFragment = new LearnImageMoveFragment();
+//		}
+//		if (sentenceMoveFragment == null) {
+//			sentenceMoveFragment = new LearnSentenceMoveFragment();
+//		}
 
 		checkView = LayoutInflater.from(context).inflate(
 				R.layout.layout_learn_exercise_check_dialog, null);
@@ -241,6 +244,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		exerciseCount = regexes.size();
 		progressView.clear();
 		lin_lesson_progress.removeAllViews();
+		//加上十几个背景块
 		for (int i = 0; i < exerciseCount; i++) {
 			ImageView imageView = new ImageView(context);
 			LayoutParams layoutParams = new LayoutParams(
@@ -278,7 +282,7 @@ public class LessonExerciseActivity extends BaseActivity {
 						// UiUtil.showToast(context, "last test");
 					}
 					// playRightSound();
-					showCheckDialog(true);
+//					showCheckDialog(true);
 					break;
 				case R.drawable.bg_progress_wrong:
 					score = score - 60;
@@ -297,7 +301,7 @@ public class LessonExerciseActivity extends BaseActivity {
 						startActivityForResult(intent, 100);
 					} else {
 						// playWrongSound();
-						showCheckDialog(false);
+//						showCheckDialog(false);
 					}
 					break;
 				default:
@@ -323,12 +327,15 @@ public class LessonExerciseActivity extends BaseActivity {
 				if (btn_check.getVisibility() == View.VISIBLE) {
 					btn_check.setVisibility(View.GONE);
 				}
+				isCurrentTestRight=baseFragment.isRight();
 				if (isCurrentTestRight) {
-					setProgressViewBg(exerciseIndex,
+					setProgressViewBg(exerciseIndex,//设置进度快的背景
 							R.drawable.bg_progress_rigth);
+					showCheckDialog(true);
 				} else {
 					setProgressViewBg(exerciseIndex,
 							R.drawable.bg_progress_wrong);
+					showCheckDialog(false);
 				}
 				break;
 
@@ -397,6 +404,10 @@ public class LessonExerciseActivity extends BaseActivity {
 
 	RelativeLayout rel_op;
 
+	/**
+	 * check的对话框
+	 * @param isRight
+	 */
 	private void showCheckDialog(boolean isRight) {
 
 		Button btn_report_bug = (Button) checkView
@@ -404,12 +415,13 @@ public class LessonExerciseActivity extends BaseActivity {
 		ImageView img_is_right = (ImageView) checkView
 				.findViewById(R.id.img_is_right);
 		Button btn_next = (Button) checkView.findViewById(R.id.btn_next);
-
+		TextView tv_answer= (TextView) checkView.findViewById(R.id.tv_answer);
+		String answer = MyDao.getAnswer(lessonRepeatRegex);//得到答案后赋值
+		tv_answer.setText(answer);
 		rel_op = (RelativeLayout) checkView.findViewById(R.id.rel_op);
 		rel_op.setOnTouchListener(onTouchListener);
 		LinearLayout lin_color_bg = (LinearLayout) checkView
 				.findViewById(R.id.lin_color_bg);
-
 		TextView tv_tip = (TextView) checkView.findViewById(R.id.tv_tip);
 
 		if (isRight) {
@@ -467,7 +479,6 @@ public class LessonExerciseActivity extends BaseActivity {
 				//learn表中regex第一位 对应View关系
 				if(exerciseIndex<exerciseCount){
 					exerciseIndex++;
-					System.out.println("exerciseIndex"+exerciseIndex);
 					regexToView(regexes.get(exerciseIndex));
 				}
 //				switch (regexes.get(exerciseIndex).getRandomSubject()) {//得到随机数确定查哪张表010--060
@@ -679,43 +690,55 @@ public class LessonExerciseActivity extends BaseActivity {
 			return true;// 不会中断触摸事件的返回
 		}
 	};
+	private LessonRepeatRegex lessonRepeatRegex;
 	
 	/**
 	 * learn表中regex对应表关系
 	 */
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
+		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
 		System.out.println("lgTable"+lgTable);
 		if(lgTable==0){
 			int randomSubject = lessonRepeatRegex.getRandomSubject();
-			System.out.println("getRandomSubject"+randomSubject);
 			if(isFirst(lessonRepeatRegex.getLgTableId())){//判断 如果是第一次出现的ID 就从 word010表中查询
-				System.out.println("isFirst"+lessonRepeatRegex.getLgTableId());
 				randomSubject=1;
 			}
-			switch (randomSubject) {
-			case 1:
-				System.out.println("bundlelessonRepeatRegex"+lessonRepeatRegex);
+			switch (4) {
+			case 1://对应选择图片题  题目中文
 				imageSelectFragment=new LearnImageSelectFragment();
+				baseFragment=imageSelectFragment;
 				Bundle bundle=new Bundle();
 				bundle.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
 				imageSelectFragment.setArguments(bundle);//把题传过去
-//				if(!imageSelectFragment.isAdded()){
-//					navigateToNoAnimWithId(imageSelectFragment, R.id.container1);
-//				}
-				replaceTo2("imageSelectFragment");
+				replaceTo2("imageSelectFragment"); 
 				break;
-			case 2:
+			case 2://单选中问题 无图片
+				wordSelectFragment=new LearnWordSelectFragment();
+				baseFragment=wordSelectFragment;
+				Bundle bundle2=new Bundle();
+				bundle2.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
+				wordSelectFragment.setArguments(bundle2);//把题传过去
 				replaceTo2("wordSelectFragment");
 				break;
-			case 3:
-				replaceTo2("imageMoveFragment");
+			case 3://tag英文
+				sentenceMoveFragment=new LearnSentenceMoveFragment();
+				baseFragment=sentenceMoveFragment;
+				Bundle bundle3=new Bundle();
+				bundle3.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
+				sentenceMoveFragment.setArguments(bundle3);//把题传过去
+				replaceTo2("sentenceMoveFragment");
 				break;
-			case 4:
+			case 4://单词翻译输入英语
+				wordInputFragment=new LearnWordInputFragment();
+				baseFragment=wordInputFragment;
+				Bundle bundle4=new Bundle();
+				bundle4.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
+				wordInputFragment.setArguments(bundle4);//把题传过去
 				replaceTo2("wordInputFragment");
 				break;
 			case 5:
-				replaceTo2("wordSelectFragment");
+				replaceTo2("wordSelectFragment");//题目中文 选项英文
 				break;
 			default:
 				break;
@@ -729,7 +752,7 @@ public class LessonExerciseActivity extends BaseActivity {
 				replaceTo2("wordInputFragment");
 				break;
 			case 3:
-				replaceTo2("wordSelectFragment");
+				replaceTo2("sentenceMoveFragment");
 				break;
 			case 4:
 				replaceTo2("sentenceMoveFragment");
@@ -739,6 +762,11 @@ public class LessonExerciseActivity extends BaseActivity {
 				break;
 			}
 		}else if(lgTable==2){
+			imageMoveFragment=new LearnImageMoveFragment();
+			baseFragment=imageMoveFragment;
+			Bundle bundle=new Bundle();
+			bundle.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
+			imageMoveFragment.setArguments(bundle);//把题传过去
 			replaceTo2("imageMoveFragment");
 		}
 	}

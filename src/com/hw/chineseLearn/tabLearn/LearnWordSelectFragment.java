@@ -1,29 +1,29 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.LearnUnitAdapter;
 import com.hw.chineseLearn.adapter.LearnWordSelectListAdapter;
-import com.hw.chineseLearn.adapter.ReviewListAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGModel_Word_020;
+import com.hw.chineseLearn.dao.bean.LGWord;
+import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.thread.ThreadWithDialogTask;
-import com.util.weight.SelfGridView;
 
 /**
  * 句子选择
@@ -42,7 +42,11 @@ public class LearnWordSelectFragment extends BaseFragment implements
 	String question = "我是男人";
 	private ListView listView;
 	LearnWordSelectListAdapter adapter;
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
+	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();//testdata
+	ArrayList<LGWord> lgWordList=new ArrayList<LGWord>();
+	private LGModel_Word_020 word_020;
+	private boolean isRight;
+	private int answer;// 此题的答案lgword.getanswer
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class LearnWordSelectFragment extends BaseFragment implements
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity();
+		initData();
 
 		for (int i = 0; i < 4; i++) {
 			LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
@@ -68,6 +73,25 @@ public class LearnWordSelectFragment extends BaseFragment implements
 
 	}
 
+	private void initData() {
+		LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments().getSerializable("lessonRepeatRegex");
+		int lgTableId = lessonRepeatRegex.getLgTableId();//查020 得到options 拆分后查LGWord 赋值
+		try {
+			word_020 = (LGModel_Word_020) MyDao.getDao(LGModel_Word_020.class).queryBuilder().where().eq("WordId",lgTableId).queryForFirst();
+			answer = word_020.getAnswer();
+			LGWord lgWord1= (LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
+			question= "Select"+"\""+lgWord1.getTranslations()+"\"";
+			String[] splitWordId = word_020.getOptions().split(";");
+			 for (int i = 0; i < splitWordId.length; i++) {
+				 LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(Integer.valueOf(splitWordId[i]));
+				 lgWordList.add(lgWord);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -75,7 +99,6 @@ public class LearnWordSelectFragment extends BaseFragment implements
 				null);
 		task = new ThreadWithDialogTask();
 		init();
-		System.out.println("onCreateView");
 		return contentView;
 
 	}
@@ -122,7 +145,7 @@ public class LearnWordSelectFragment extends BaseFragment implements
 		txt_name.setText(question);
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
-		adapter = new LearnWordSelectListAdapter(context, listBase);
+		adapter = new LearnWordSelectListAdapter(context, lgWordList);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(onItemclickListener);
 		adapter.notifyDataSetChanged();
@@ -133,12 +156,20 @@ public class LearnWordSelectFragment extends BaseFragment implements
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View convertView,
 				int position, long arg3) {
-			// TODO Auto-generated method stub
 
 			adapter.setSelection(position);
 			adapter.notifyDataSetChanged();
+			
+			LGWord lgWord = lgWordList.get(position);
+			if (lgWord.getWordId() == answer) {
+				isRight = true;
+			}else{
+				isRight=false;
+			}
 
 		}
 	};
-
+	public boolean isRight() {
+		return isRight;
+	}
 }

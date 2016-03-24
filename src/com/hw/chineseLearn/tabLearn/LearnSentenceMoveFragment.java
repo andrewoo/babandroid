@@ -1,12 +1,12 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,6 +25,11 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGModel_Word_030;
+import com.hw.chineseLearn.dao.bean.LGWord;
+import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
+import com.j256.ormlite.stmt.Where;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.UiUtil;
 
@@ -46,6 +51,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	private int linLineHeight;
 	private LinearLayout lin_play_and_text;
 	private LinearLayout lin_line;
+	private TextView txt_name;
 
 	private String TAG = "LearnSentenceMoveFragment";
 	int screenWidth, screenHeight;
@@ -81,6 +87,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity();
+		initData();
 		x = 0;
 		y = UiUtil.dip2px(context, 50 * 3 + 1 * 2 + 50);
 		screenWidth = CustomApplication.app.displayMetrics.widthPixels
@@ -93,10 +100,29 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		rlRoot = (RelativeLayout) contentView.findViewById(R.id.rl_root);
 		lin_play_and_text = (LinearLayout) contentView
 				.findViewById(R.id.lin_play_and_text);
-		lin_play_and_text.setVisibility(View.GONE);
+//		lin_play_and_text.setVisibility(View.GONE);
 		lin_line = (LinearLayout) contentView.findViewById(R.id.lin_line);
+		txt_name=(TextView) contentView.findViewById(R.id.txt_name);
+		txt_name.setText(title);
 		initBottomViews();
 		initBottomGreyViews();
+	}
+
+	private void initData() {
+		
+		LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments().getSerializable("lessonRepeatRegex");
+		//根据lgid查询lgword表得到 word和pinyin，设置给title 查询030表得到options切割后设置给text块
+		int lgTableId = lessonRepeatRegex.getLgTableId();
+		try {
+			LGWord word=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
+			title = word.getWord()+"/"+word.getPinyin();
+			LGModel_Word_030 word3=(LGModel_Word_030) MyDao.getDao(LGModel_Word_030.class).queryBuilder().where().eq("WordId", lgTableId).queryForFirst();
+			textSplits = word3.getOptions().split(";");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
@@ -157,9 +183,13 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	int viewLeftRightPadding = 20;
 	int viewTopBottomPadding = 10;
 
+	private String[] textSplits;
+
+	private String title;
+
 	private void initBottomViews() {
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < textSplits.length; i++) {
 
 			final TextView textView = new TextView(context);
 			LinearLayout.LayoutParams ly = new LinearLayout.LayoutParams(
@@ -167,7 +197,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			textView.setLayoutParams(ly);
 			textView.setPadding(viewLeftRightPadding, viewTopBottomPadding,
 					viewLeftRightPadding, viewTopBottomPadding);
-			String word = words[random.nextInt(words.length)];
+			String word = textSplits[i];
 			textView.setText("" + word);
 			textView.setBackground(context.getResources().getDrawable(
 					R.drawable.bg_white_to_blue));
@@ -622,6 +652,14 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+	}
+
+	/**
+	 * 判断当前题是否正确
+	 */
+	@Override
+	public boolean isRight() {
+		return false;
 	}
 
 }

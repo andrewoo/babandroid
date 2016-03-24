@@ -1,9 +1,8 @@
 package com.hw.chineseLearn.base;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
-
-import org.litepal.LitePalApplication;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -13,10 +12,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.database.sqlite.SQLiteDatabase;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.hw.chineseLearn.db.DatabaseHelper;
 import com.hw.chineseLearn.db.SQLConnection;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -73,6 +74,19 @@ public class CustomApplication extends Application {
 		getTelephoneInfo();
 		getScreenSize();
 		new SQLConnection(this);
+		initDB();
+	}
+
+	private void initDB() {
+		File f = new File(DatabaseHelper.DATABASE_PATH);
+        if (!f.exists()) {
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(
+            		DatabaseHelper.DATABASE_PATH,null);
+            DatabaseHelper orm = new DatabaseHelper(this);
+            orm.onCreate(db);
+            db.close();
+        }
+		
 	}
 
 	/**

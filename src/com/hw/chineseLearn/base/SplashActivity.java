@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -27,6 +28,7 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.Unit;
 import com.j256.ormlite.dao.Dao;
+import com.util.tool.FileTools;
 import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
 
@@ -39,7 +41,7 @@ public class SplashActivity extends BaseActivity {
 	private static final int GO_GUIDE = 1001;
 
 	private static final long SPLASH_DELAY_MILLIS = 3000;
-	
+
 	private static final String SHAREDPREFERENCES_NAME = "first_pref";
 	private Handler mHandler = new Handler() {
 
@@ -114,7 +116,8 @@ public class SplashActivity extends BaseActivity {
 				SHAREDPREFERENCES_NAME, MODE_PRIVATE);
 
 		this.isFirstIn = preferences.getBoolean("isFirstIn", true);
-
+		
+		FileTools.copyDb("chineselearn.db");
 		if (!this.isFirstIn) {
 			this.mHandler.sendEmptyMessageDelayed(GO_HOME, SPLASH_DELAY_MILLIS);
 		} else {
@@ -171,7 +174,7 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.splash);
 		// copyfile();
-
+		FileTools.copyDb("chineselearn.db");
 		iv_bg = (ImageView) findViewById(R.id.iv_bg);
 
 		LayoutParams layoutParams1 = (LayoutParams) iv_bg.getLayoutParams();
@@ -203,6 +206,8 @@ public class SplashActivity extends BaseActivity {
 				SplashActivity.this.initDataAndStartMain();
 			}
 		}, 1);
+		
+
 	}
 
 }

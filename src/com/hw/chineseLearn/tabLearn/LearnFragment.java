@@ -344,4 +344,10 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		}
 	};
 
+	@Override
+	public boolean isRight() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

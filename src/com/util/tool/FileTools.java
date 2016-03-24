@@ -1,6 +1,17 @@
 package com.util.tool;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -8,10 +19,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-
-
-
+import android.os.Environment;
 import android.util.Log;
+
+import com.hw.chineseLearn.base.CustomApplication;
 
 public class FileTools {
 
@@ -199,5 +210,29 @@ public class FileTools {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public static void copyDb(String dbName) {
+		try {
+			InputStream inputStream = CustomApplication.app.getAssets().open(dbName);
+			
+			File filesDir =CustomApplication.app.getFilesDir(); 
+			
+			File addressDbFile = new File(filesDir,dbName);
+//			if(addressDbFile.exists() && addressDbFile.length()>0){ 
+//				
+//			} else {
 
+				FileOutputStream fout = new FileOutputStream(addressDbFile);
+				int len = -1;
+				byte[] buffer = new byte[512];
+
+				while ((len = inputStream.read(buffer)) != -1) {
+					fout.write(buffer, 0, len);
+//				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
