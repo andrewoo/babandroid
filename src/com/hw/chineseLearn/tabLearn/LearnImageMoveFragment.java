@@ -409,15 +409,11 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		String[] answerPicArray = lGCharacterPart.getPartAnswer().split(";");
 		for (int i = 0; i < picArray.length; i++) {
 			for (int j = 0; j < answerPicArray.length; j++) {
-				System.out.println("picArray[i]" + picArray[i]);
-				System.out.println("answerPicArray[j]" + answerPicArray[j]);
-				if (Integer.valueOf(picArray[i].trim()) == Integer
-						.valueOf(answerPicArray[j].trim())) {
+				if (picArray[i].equals(answerPicArray[j]) ) {
 					picList.add(picArray[i]);
 				}
 			}
-			if (randomList.indexOf(picArray[i]) == -1
-					&& picList.indexOf(picArray[i]) == -1) {
+			if (!randomList.contains(picArray[i]) && !picList.contains(picArray[i])) {
 				randomList.add(picArray[i]);
 			}
 		}

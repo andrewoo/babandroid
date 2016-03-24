@@ -87,7 +87,7 @@ public class LessonExerciseActivity extends BaseActivity {
 
 	private List<LessonRepeatRegex> regexes;
 	
-	private List<Integer> isFirstList;//第一次出现保存在此集合
+	private List<Integer> isFirstList=new ArrayList<Integer>();//第一次出现保存在此集合
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -198,9 +198,9 @@ public class LessonExerciseActivity extends BaseActivity {
 //		if (wordSelectFragment == null) {
 //			wordSelectFragment = new LearnWordSelectFragment();
 //		}
-		if (wordInputFragment == null) {
-			wordInputFragment = new LearnWordInputFragment();
-		}
+//		if (wordInputFragment == null) {
+//			wordInputFragment = new LearnWordInputFragment();
+//		}
 //		if (imageMoveFragment == null) {
 //			imageMoveFragment = new LearnImageMoveFragment();
 //		}
@@ -698,13 +698,15 @@ public class LessonExerciseActivity extends BaseActivity {
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
 		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
-		System.out.println("lgTable"+lgTable);
+		System.out.println("lgTable--"+lgTable);
 		if(lgTable==0){
 			int randomSubject = lessonRepeatRegex.getRandomSubject();
+			System.out.println("randomSubject1111--"+randomSubject);
 			if(isFirst(lessonRepeatRegex.getLgTableId())){//判断 如果是第一次出现的ID 就从 word010表中查询
 				randomSubject=1;
+				System.out.println("randomSubject2222--"+randomSubject);
 			}
-			switch (4) {
+			switch (randomSubject) {
 			case 1://对应选择图片题  题目中文
 				imageSelectFragment=new LearnImageSelectFragment();
 				baseFragment=imageSelectFragment;
@@ -738,6 +740,11 @@ public class LessonExerciseActivity extends BaseActivity {
 				replaceTo2("wordInputFragment");
 				break;
 			case 5:
+				wordSelectFragment=new LearnWordSelectFragment();
+				baseFragment=wordSelectFragment;
+				Bundle bundle5=new Bundle();
+				bundle5.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
+				wordSelectFragment.setArguments(bundle5);//把题传过去
 				replaceTo2("wordSelectFragment");//题目中文 选项英文
 				break;
 			default:
@@ -776,12 +783,14 @@ public class LessonExerciseActivity extends BaseActivity {
 	 * @return
 	 */
 	private boolean isFirst(int id) {
-		isFirstList=new ArrayList<Integer>();
-		if(!isFirstList.contains(id)){
+		System.out.println("id--"+id);
+		System.out.println("isFirstList--"+isFirstList);
+		if(isFirstList.contains(id)){
+			return false;
+		}else{
 			isFirstList.add(id);
 			return true;
 		}
-		return false;
 	}
 	
 }

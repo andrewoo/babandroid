@@ -2,6 +2,7 @@ package com.hw.chineseLearn.tabLearn;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -86,6 +87,7 @@ public class LearnWordSelectFragment extends BaseFragment implements
 				 LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(Integer.valueOf(splitWordId[i]));
 				 lgWordList.add(lgWord);
 			}
+			 Collections.shuffle(lgWordList);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

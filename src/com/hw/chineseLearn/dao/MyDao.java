@@ -27,15 +27,15 @@ public class MyDao {
 	}
 
 	public static String getAnswer(LessonRepeatRegex lessonRepeatRegex) {
-		if (lessonRepeatRegex.getRandomSubject() == 1) {
+		if (lessonRepeatRegex.getLgTable()==0 && lessonRepeatRegex.getRandomSubject()==1) {
 			try {
 				Dao word010Dao = getDao(LGModel_Word_010.class);
 				LGModel_Word_010 word010 = (LGModel_Word_010) word010Dao
 						.queryBuilder().where()
 						.eq("WordId", lessonRepeatRegex.getLgTableId())
 						.queryForFirst();
-				LGWord lGWord = (LGWord) getDao(LGWord.class).queryForId(
-						word010.getAnswer());
+				System.out.println("word010Dao"+word010Dao);
+				LGWord lGWord = (LGWord) getDao(LGWord.class).queryForId(word010.getAnswer());
 				return lGWord.getTranslations() + "=" + lGWord.getWord() + "/"
 						+ lGWord.getPinyin();
 			} catch (SQLException e) {
