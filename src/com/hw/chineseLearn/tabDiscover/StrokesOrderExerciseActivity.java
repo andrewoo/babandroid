@@ -1,18 +1,17 @@
 package com.hw.chineseLearn.tabDiscover;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +24,8 @@ import com.hw.chineseLearn.db.CharPartDao;
 import com.hw.chineseLearn.db.CharacterDao;
 import com.hw.chineseLearn.model.CharPartBaseModel;
 import com.hw.chineseLearn.model.CharacterBaseModel;
+import com.util.svgandroid.HwAnim;
+import com.util.svgandroid.HwWriting;
 import com.util.svgandroid.SVGParser;
 import com.util.tool.PathView;
 import com.util.tool.UiUtil;
@@ -47,6 +48,7 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 	com.util.tool.PathView pv;
 	// com.util.tool.SVGView pv;
 	private LinearLayout root_view;
+	private Button btn_play, btn_write, btn_visible;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +71,12 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 		init();
 	}
 
-	SVGParser SVGParser;
 	LinearLayout lin_mizige;
 	int screenWidth, screenHeight;
 	Path path;
+	boolean isStartHwViewAnim = true;
+	boolean isStartHwViewWrite = false;
+	ArrayList partStrings, polygonStrings;
 
 	/**
 	 * 初始化
@@ -80,6 +84,15 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 	public void init() {
 		root_view = (LinearLayout) contentView.findViewById(R.id.root_view);
 		lin_mizige = (LinearLayout) contentView.findViewById(R.id.lin_mizige);
+
+		btn_play = (Button) contentView.findViewById(R.id.btn_play);
+		btn_play.setOnClickListener(onClickListener);
+
+		btn_write = (Button) contentView.findViewById(R.id.btn_write);
+		btn_write.setOnClickListener(onClickListener);
+
+		btn_visible = (Button) contentView.findViewById(R.id.btn_visible);
+		btn_visible.setOnClickListener(onClickListener);
 		int mizigeWidth = screenWidth - (UiUtil.dip2px(context, 60));
 		LayoutParams ly = lin_mizige.getLayoutParams();
 		ly.width = mizigeWidth;
@@ -88,37 +101,72 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				title, View.GONE, View.GONE, 0);
 
-		String whereStr = " where CharId = 116 ";
+		String whereStr = " where CharId = 113 ";
 		CharPartList = charPartDao.getCharPartVo(whereStr);
 		CharacterList = characterDao.getCharacterVo(whereStr);
 		Log.d(TAG, "CharPartList.size()" + CharPartList.size());
 		Log.d(TAG, "CharacterList.size()" + CharacterList.size());
-		pv = (PathView) contentView.findViewById(R.id.pathView);
-		String charPathStr="M427.3,316.4c-5.5,28.9-18,50-37.5,63.3c-19.6,13.3-23.1,10.9-10.5-7c12.5-17.9,20.7-43.7,24.6-77.3c3.9-33.6,1.5-56.3-7-68c-8.6-11.7-8.6-17.2,0-16.4c8.6,0.8,17.2,2.7,25.8,5.9c8.6,3.1,21.1,2.7,37.5-1.2c16.4-3.9,28.5-9.4,36.3-16.4c7.8-7,16-8.2,24.6-3.5c8.6,4.7,17.6,9.8,27,15.2c9.4,5.5,7.8,12.5-4.7,21.1c-12.5,8.6-19.2,27-19.9,55.1c-0.8,28.1,5.1,43,17.6,44.5c12.5,1.6,23-0.4,31.6-5.9c8.6-5.5,18.8-3.1,30.5,7c11.7,10.2,9,17.6-8.2,22.3c-17.2,4.7-36.7,5.9-58.6,3.5c-21.9-2.3-33.6-14.4-35.2-36.3c-1.6-21.9-1.6-43,0-63.3c1.5-20.3-1.2-30.8-8.2-31.6c-7-0.8-26.2,2.7-57.4,10.5C435.5,261.3,432.8,287.5,427.3,316.4z";
-//		= CharacterList.get(0).getCharPath();
-//		Log.v(TAG, "" + charPathStr);
-		SVGParser = new SVGParser();
-		// pv.setFillAfter(true);
-		pv.setFill(true);
-		pv.setFillColor(context.getResources().getColor(R.color.mid_grey));
+		pv = (PathView) contentView.findViewById(R.id.pathView_bg);
+		pv.setLayoutParams(ly);
+		String charPathStr = CharacterList.get(0).getCharPath();
+		Log.v(TAG, "" + charPathStr);
+
+		String[] str = charPathStr.split("z");
+		for (int i = 0; i < str.length; i++) {
+			String pathStr = str[i];
+			pathStr = pathStr + "z";
+			Path path = SVGParser.parsePath(pathStr);
+			pv.setPath(path);
+		}
+
+		for (int i = 0; i < CharPartList.size(); i++) {
+			CharPartBaseModel model = CharPartList.get(i);
+			if (model == null) {
+				continue;
+			}
+			String pathStr = model.getPartDirection();
+			Path path = SVGParser.parsePath(pathStr);
+			pv.setDirectionPath(path);
+		}
+
+		partStrings = new ArrayList();
+		Iterator localIterator1 = CharPartList.iterator();
+		while (localIterator1.hasNext()) {
+			CharPartBaseModel localHwCharPart2 = (CharPartBaseModel) localIterator1
+					.next();
+			partStrings.add(localHwCharPart2.PartDirection);
+		}
+		polygonStrings = new ArrayList();
+		Iterator localIterator2 = CharPartList.iterator();
+		while (localIterator2.hasNext()) {
+			CharPartBaseModel localHwCharPart1 = (CharPartBaseModel) localIterator2
+					.next();
+			polygonStrings.add(localHwCharPart1.PartPath);
+		}
+
 		pv.setPercentage(1.0f);
-		pv.getPathAnimator().delay(1000).duration(4000)
-				.interpolator(new BounceInterpolator())
-				.listenerStart(new PathView.AnimatorBuilder.ListenerStart() {
-					@Override
-					public void onAnimationStart() {
-						Log.e("TAG", "start");
-					}
-				}).listenerEnd(new PathView.AnimatorBuilder.ListenerEnd() {
-					@Override
-					public void onAnimationEnd() {
-						Log.e("TAG", "end");
-					}
-				}).start();
+		pv.setAHanzi(charPathStr, partStrings, polygonStrings);
+		pv.setAnimListener(new HwAnim.OnAnimListener() {
+			public void onEnd() {
+				UiUtil.showToast(context, "画完了");
+				// mStrokesReplayBtn.setClickable(true);
+				// mStrokesReplayBtn.setBackgroundResource(2130838298);
+				// StrokesOrder.access$202(StrokesOrder.this, true);
+				// mStrokesWriteBtn.setClickable(true);
+				// if (mEnv.strokesOrderAudioPlayMode == 2)
+				// checkFileReady(mCurrentChar.Pinyin);
+			}
+		});
 
-		path = com.util.svgandroid.SVGParser.parsePath(charPathStr);
-		pv.setPath(path);
-
+		pv.setWritingListener(new HwWriting.OnWritingListener() {
+			public void onEnd() {
+				// mStrokesWriteBtn.setBackgroundResource(2130838302);
+				UiUtil.showToast(context, "写完了");
+			}
+		});
+		isStartHwViewAnim = true;
+		isStartHwViewWrite = false;
+		pv.startHwAnim();
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {
@@ -132,6 +180,34 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 
 				CustomApplication.app
 						.finishActivity(StrokesOrderExerciseActivity.this);
+				break;
+
+			case R.id.btn_play:
+
+				isStartHwViewAnim = true;
+				pv.startHwAnim();
+
+				// StrokesOrder.this.mStrokesOrderView.enableHandwriting();
+				// StrokesOrder.this.mStrokesOrderView.startHwAnim();
+				// StrokesOrder.this.mStrokesReplayBtn.setBackgroundResource(2130838299);
+				// StrokesOrder.this.mStrokesReplayBtn.setClickable(false);
+				// StrokesOrder.this.mStrokesWriteBtn.setClickable(false);
+				// StrokesOrder.this.mStrokesWriteBtn.setBackgroundResource(2130838302);
+				break;
+			case R.id.btn_write:
+				// if (isStartHwViewWrite) {
+				//
+				// }
+				pv.enableHandwriting();
+				break;
+
+			case R.id.btn_visible:
+				if (pv.mBgVisible) {
+					pv.mBgVisible = false;
+				} else {
+					pv.mBgVisible = true;
+				}
+				pv.invalidate();
 				break;
 
 			default:

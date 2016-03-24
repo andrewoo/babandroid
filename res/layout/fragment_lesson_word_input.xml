@@ -65,6 +65,7 @@
                 android:id="@+id/btn_input_method"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:visibility="gone"
                 android:background="@drawable/chatting_setmode_keyboard_btn_normal" />
         </FrameLayout>
     </RelativeLayout>

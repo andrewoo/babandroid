@@ -8,8 +8,8 @@
 
     <LinearLayout
         android:id="@+id/lin_c"
-        android:layout_width="400dp"
-        android:layout_height="500dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_white"
         android:descendantFocusability="afterDescendants"
         android:gravity="center"

@@ -3,10 +3,6 @@ package com.util.tool;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -14,17 +10,21 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Interpolator;
 
 import com.hw.chineseLearn.R;
+import com.util.svgandroid.ArrowCal;
+import com.util.svgandroid.HwAnim;
+import com.util.svgandroid.HwSVGDrawer;
+import com.util.svgandroid.HwWriting;
 
 /**
  * PathView is a View that animates paths.
  */
-public class PathView extends View implements SvgUtils.AnimationStepListener {
+public class PathView extends View {
 	/**
 	 * Logging tag.
 	 */
@@ -33,6 +33,7 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 	 * The paint for the path.
 	 */
 	private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	public Paint mPaint = new Paint(1);
 	/**
 	 * Utils to catch the paths from the svg.
 	 */
@@ -41,6 +42,9 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 	 * All the paths provided to the view. Both from Path and Svg.
 	 */
 	private List<SvgUtils.SvgPath> paths = new ArrayList<SvgUtils.SvgPath>();
+
+	public List<Path> mPartPolygon = new ArrayList<Path>();
+	public boolean mBgVisible = true;
 	/**
 	 * This is a lock before the view is redrawn or resided it must be
 	 * synchronized with this object.
@@ -55,14 +59,6 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 	 * The svg image from the raw directory.
 	 */
 	private int svgResourceId;
-	/**
-	 * Object that builds the animation for the path.
-	 */
-	private AnimatorBuilder animatorBuilder;
-	/**
-	 * Object that builds the animation set for the path.
-	 */
-	private AnimatorSetBuilder animatorSetBuilder;
 	/**
 	 * The progress of the drawing.
 	 */
@@ -96,12 +92,23 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 	 * Will be used as a temporary surface in each onDraw call for more control
 	 * over content are drawing.
 	 */
-	private Bitmap mTempBitmap;
+	public Bitmap mBgCharBmp;
 	/**
-	 * Will be used as a temporary Canvas for mTempBitmap for drawing content on
+	 * Will be used as a temporary Canvas for mBgCharBmp for drawing content on
 	 * it.
 	 */
+
 	private Canvas mTempCanvas;
+
+	private Canvas mFgCharCanvas;
+
+	public Bitmap mFgCharBmp;
+
+	public Bitmap mHwBmp = null;
+
+	protected final int CHAR_BG_COLOR = -3355444;
+	protected final int CHAR_FG_COLOR = -16777216;
+	protected final int DIRECTION_COLOR = -65536;
 
 	/**
 	 * Default constructor.
@@ -137,7 +144,6 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 	 */
 	public PathView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		paint.setStyle(Paint.Style.STROKE);
 		getFromAttributes(context, attrs);
 	}
 
@@ -174,6 +180,10 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 		}
 	}
 
+	public void setBitMapSize(int width, int height) {
+
+	}
+
 	/**
 	 * Set paths to be drawn and animated.
 	 * 
@@ -197,6 +207,7 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 	 */
 	public void setPath(final Path path) {
 		paths.add(new SvgUtils.SvgPath(path, paint));
+		mPartPolygon.add(path);
 		synchronized (mSvgLock) {
 			updatePathsPhaseLocked();
 		}
@@ -211,8 +222,8 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 	 */
 	public void setPercentage(float percentage) {
 		if (percentage < 0.0f || percentage > 1.0f) {
-//			throw new IllegalArgumentException(
-//					"setPercentage not between 0.0f and 1.0f");
+			// throw new IllegalArgumentException(
+			// "setPercentage not between 0.0f and 1.0f");
 			Log.e(LOG_TAG, "setPercentage not between 0.0f and 1.0f");
 		}
 		progress = percentage;
@@ -237,39 +248,185 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 		}
 	}
 
+	/**
+	 * The measure of the path, we can use it later to get segment of it.
+	 */
+	public PathMeasure measure;
+
+	/**
+	 * This refreshes the paths before draw and resize.
+	 */
+	private void updatePathsPhaseLocked1() {
+		int count = mPartPolygon.size();
+		for (int i = 0; i < count; i++) {
+			Path path = mPartPolygon.get(i);
+			path.reset();
+			measure = new PathMeasure(path, false);
+			measure.getSegment(0.0f, measure.getLength() * progress, path, true);
+			// Required only for Android 4.4 and earlier
+			path.rLineTo(0.0f, 0.0f);
+		}
+	}
+
+	public void setAHanzi(String paramString, List<String> paramList1,
+			List<String> paramList2) {
+
+		stopHwAnim();
+//		HwSVGParser localHwSVGParser = new HwSVGParser();
+//		ArrayList localArrayList1 = new ArrayList();
+//		localHwSVGParser.resetString(paramString);
+//		for (;;) {
+//			HwSVGDrawer.HwCmd localHwCmd1 = localHwSVGParser.nextCmd();
+//			if (localHwCmd1 == null) {
+//				break;
+//			}
+//			localArrayList1.add(localHwCmd1);
+//		}
+
+		if (mBgCharBmp != null) {
+			mBgCharBmp.recycle();
+			mBgCharBmp = null;
+		}
+		if (mFgCharBmp != null) {
+			mFgCharBmp.recycle();
+			mFgCharBmp = null;
+		}
+		if (mHwBmp != null) {
+			mHwBmp.recycle();
+			mHwBmp = null;
+		}
+//		for (;;) {
+//			Iterator localIterator1 = localArrayList1.iterator();
+//			while (localIterator1.hasNext()) {
+//				Iterator localIterator4 = ((HwSVGDrawer.HwCmd) localIterator1
+//						.next()).points.iterator();
+//				while (localIterator4.hasNext()) {
+//					HwSVGDrawer.HwPoint localHwPoint2 = (HwSVGDrawer.HwPoint) localIterator4
+//							.next();
+//					localHwPoint2.x = ((float) (localHwPoint2.x * this.mRatio));
+//					localHwPoint2.y = ((float) (localHwPoint2.y * this.mRatio));
+//				}
+//			}
+//			this.mHwBmp.eraseColor(0);
+//			break;
+//		}
+		mBgCharBmp = Bitmap.createBitmap(getLayoutParams().width,
+				getLayoutParams().height, Bitmap.Config.ARGB_8888);
+
+		mFgCharBmp = Bitmap.createBitmap(getLayoutParams().width,
+				getLayoutParams().height, Bitmap.Config.ARGB_8888);
+
+		mHwBmp = Bitmap.createBitmap(getLayoutParams().width,
+				getLayoutParams().height, Bitmap.Config.ARGB_8888);
+		
+		mTempCanvas = new Canvas(mBgCharBmp);
+		mTempCanvas.save();
+		mTempCanvas.scale(mRatio, mRatio);
+		paint.setStyle(Paint.Style.FILL);
+		paint.setColor(CHAR_BG_COLOR);
+		final int count = mPartPolygon.size();
+		for (int i = 0; i < count; i++) {
+			Path path = mPartPolygon.get(i);
+			mTempCanvas.drawPath(path, paint);
+			Log.d(LOG_TAG, "mTempCanvas.drawPath");
+		}
+
+		mFgCharCanvas = new Canvas(mFgCharBmp);
+		mFgCharCanvas.save();
+		mFgCharCanvas.scale(mRatio, mRatio);
+		paint.setColor(CHAR_FG_COLOR);
+		paint.setStyle(Paint.Style.FILL);
+		for (int i = 0; i < count; i++) {
+			Path path = mPartPolygon.get(i);
+			mFgCharCanvas.drawPath(path, paint);
+			Log.d(LOG_TAG, "mFgCharCanvas.drawPath");
+		}
+
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setColor(DIRECTION_COLOR);
+		paint.setStrokeWidth(1.5f);
+		for (int i = 0; i < mPartDirection.size(); i++) {
+			Path arrowPath = mPartDirection.get(i).arrowPath;
+			Path path = mPartDirection.get(i).path;
+			mTempCanvas.drawPath(path, paint);
+			mTempCanvas.drawPath(arrowPath, paint);
+		}
+		
+//		Canvas localCanvas1 = new Canvas(this.mBgCharBmp);
+//		localCanvas1.scale(mRatio, mRatio);
+//		mPaint.setStyle(Paint.Style.FILL);
+//		mPaint.setColor(CHAR_BG_COLOR);
+//		localCanvas1.drawPath(this.mDrawer.drawPath(localArrayList1),
+//				mPaint);
+//		
+//		Canvas localCanvas2 = new Canvas(this.mFgCharBmp);
+//		localCanvas2.scale(mRatio, mRatio);
+//		mPaint.setColor(CHAR_FG_COLOR);
+//		localCanvas2.drawPath(this.mDrawer.drawPath(localArrayList1),
+//				this.mPaint);
+//		this.mPartDirection.clear();
+//		this.mPartPolygon.clear();
+//		HwPolygonParser localHwPolygonParser = new HwPolygonParser(
+//				localHwSVGParser, this.mDrawer);
+//		for (int k = 0; k < paramList1.size(); k++) {
+//			String str = (String) paramList1.get(k);
+//			ArrayList localArrayList2 = new ArrayList();
+//			localHwSVGParser.resetString(str);
+//			for (;;) {
+//				HwSVGDrawer.HwCmd localHwCmd2 = localHwSVGParser.nextCmd();
+//				if (localHwCmd2 == null) {
+//					break;
+//				}
+//				localArrayList2.add(localHwCmd2);
+//			}
+//			Iterator localIterator2 = localArrayList2.iterator();
+//			while (localIterator2.hasNext()) {
+//				Iterator localIterator3 = ((HwSVGDrawer.HwCmd) localIterator2
+//						.next()).points.iterator();
+//				while (localIterator3.hasNext()) {
+//					HwSVGDrawer.HwPoint localHwPoint1 = (HwSVGDrawer.HwPoint) localIterator3
+//							.next();
+//					localHwPoint1.x = ((float) (localHwPoint1.x * this.mRatio));
+//					localHwPoint1.y = ((float) (localHwPoint1.y * this.mRatio));
+//				}
+//			}
+//			PartDirectionPath localPartDirectionPath = new PartDirectionPath();
+//			localPartDirectionPath.path = new Path();
+//			localPartDirectionPath.path.set(this.mDrawer
+//					.drawPath(localArrayList2));
+//			ArrowCal.cal(getContext(), localPartDirectionPath, this.mRatio);
+//			this.mPartDirection.add(localPartDirectionPath);
+//			Path localPath = localHwPolygonParser.parsePolygonStr(
+//					(String) paramList2.get(k), this.mRatio);
+//			this.mPartPolygon.add(localPath);
+//		}
+		invalidate();
+			
+		if (this.mWriting == null) {
+			HwWriting localHwWriting = new HwWriting(this, this.mRatio);
+			this.mWriting = localHwWriting;
+			// setOnTouchListener(this.mWriting);//
+			this.mWriting.setWritingListener(this.mWritingListener);
+		}
+
+		if (this.mAnim == null) {
+			HwAnim localHwAnim = new HwAnim(this, this.mRatio);
+			this.mAnim = localHwAnim;
+			this.mAnim.timeGap = this.timeGap;
+		}
+		this.mAnim.setAnimListener(this.mAnimListener);
+	}
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-
-		if (mTempBitmap == null
-				|| (mTempBitmap != null && (mTempBitmap.getWidth() != canvas
-						.getWidth() || mTempBitmap.getHeight() != canvas
-						.getHeight()))) {
-			mTempBitmap = Bitmap.createBitmap(canvas.getWidth(),
-					canvas.getHeight(), Bitmap.Config.ARGB_8888);
-			mTempCanvas = new Canvas(mTempBitmap);
+		// fillAfter(mTempCanvas);
+		// applySolidColor(mTempBitmap);
+		if (mBgVisible) {
+			canvas.drawBitmap(mBgCharBmp, 0, 0, null);
 		}
-
-		mTempBitmap.eraseColor(0);
-		synchronized (mSvgLock) {
-			mTempCanvas.save();
-			mTempCanvas.translate(getPaddingLeft(), getPaddingTop());
-			fill(mTempCanvas);
-			final int count = paths.size();
-			for (int i = 0; i < count; i++) {
-				final SvgUtils.SvgPath svgPath = paths.get(i);
-				final Path path = svgPath.path;
-				final Paint paint1 = naturalColors ? svgPath.paint : paint;
-				mTempCanvas.drawPath(path, paint1);
-			}
-
-			fillAfter(mTempCanvas);
-
-			mTempCanvas.restore();
-
-			applySolidColor(mTempBitmap);
-
-			canvas.drawBitmap(mTempBitmap, 0, 0, null);
+		if (this.mAnim != null) {
+			this.mAnim.drawAnim(canvas);
 		}
 	}
 
@@ -346,6 +503,7 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 						width = w - getPaddingLeft() - getPaddingRight();
 						height = h - getPaddingTop() - getPaddingBottom();
 						paths = svgUtils.getPathsForViewport(width, height);
+
 						updatePathsPhaseLocked();
 					}
 				}
@@ -433,30 +591,6 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 	}
 
 	/**
-	 * Animator for the paths of the view.
-	 * 
-	 * @return The AnimatorBuilder to build the animation.
-	 */
-	public AnimatorBuilder getPathAnimator() {
-		if (animatorBuilder == null) {
-			animatorBuilder = new AnimatorBuilder(this);
-		}
-		return animatorBuilder;
-	}
-
-	/**
-	 * AnimatorSet for the paths of the view to be animated one after the other.
-	 * 
-	 * @return The AnimatorBuilder to build the animation.
-	 */
-	public AnimatorSetBuilder getSequentialPathAnimator() {
-		if (animatorSetBuilder == null) {
-			animatorSetBuilder = new AnimatorSetBuilder(this);
-		}
-		return animatorSetBuilder;
-	}
-
-	/**
 	 * Get the path color.
 	 * 
 	 * @return The color of the paint.
@@ -513,372 +647,73 @@ public class PathView extends View implements SvgUtils.AnimationStepListener {
 		svgResourceId = svgResource;
 	}
 
-	/**
-	 * Object for building the animation of the path of this view.
-	 */
-	@SuppressLint("NewApi")
-	public static class AnimatorBuilder {
-		/**
-		 * Duration of the animation.
-		 */
-		private int duration = 350;
-		/**
-		 * Interpolator for the time of the animation.
-		 */
-		private Interpolator interpolator;
-		/**
-		 * The delay before the animation.
-		 */
-		private int delay = 0;
-		/**
-		 * ObjectAnimator that constructs the animation.
-		 */
-		private final ObjectAnimator anim;
-		/**
-		 * Listener called before the animation.
-		 */
-		private ListenerStart listenerStart;
-		/**
-		 * Listener after the animation.
-		 */
-		private ListenerEnd animationEnd;
-		/**
-		 * Animation listener.
-		 */
-		private PathViewAnimatorListener pathViewAnimatorListener;
+	public HwWriting mWriting = null;
+	public HwSVGDrawer mDrawer = new HwSVGDrawer();
+	public HwWriting.OnWritingListener mWritingListener;
+	public List<PartDirectionPath> mPartDirection = new ArrayList<PartDirectionPath>();
+	public HwAnim mAnim = null;
+	public HwAnim.OnAnimListener mAnimListener;
+	public int timeGap = 1000;
+	public float mRatio = 1.0f;
 
-		/**
-		 * Default constructor.
-		 * 
-		 * @param pathView
-		 *            The view that must be animated.
-		 */
-		@SuppressLint("NewApi")
-		public AnimatorBuilder(final PathView pathView) {
-			anim = ObjectAnimator.ofFloat(pathView, "percentage", 0.0f, 1.0f);
-		}
+	public void setDirectionPath(Path path) {
+		PartDirectionPath localPartDirectionPath = new PartDirectionPath();
+		localPartDirectionPath.path = new Path();
+		localPartDirectionPath.path.set(path);
+		ArrowCal.cal(getContext(), localPartDirectionPath, this.mRatio);
+		this.mPartDirection.add(localPartDirectionPath);
+	}
 
-		/**
-		 * Set the duration of the animation.
-		 * 
-		 * @param duration
-		 *            - The duration of the animation.
-		 * @return AnimatorBuilder.
-		 */
-		public AnimatorBuilder duration(final int duration) {
-			this.duration = duration;
-			return this;
-		}
-
-		/**
-		 * Set the Interpolator.
-		 * 
-		 * @param interpolator
-		 *            - Interpolator.
-		 * @return AnimatorBuilder.
-		 */
-		public AnimatorBuilder interpolator(final Interpolator interpolator) {
-			this.interpolator = interpolator;
-			return this;
-		}
-
-		/**
-		 * The delay before the animation.
-		 * 
-		 * @param delay
-		 *            - int the delay
-		 * @return AnimatorBuilder.
-		 */
-		public AnimatorBuilder delay(final int delay) {
-			this.delay = delay;
-			return this;
-		}
-
-		/**
-		 * Set a listener before the start of the animation.
-		 * 
-		 * @param listenerStart
-		 *            an interface called before the animation
-		 * @return AnimatorBuilder.
-		 */
-		@SuppressLint("NewApi")
-		public AnimatorBuilder listenerStart(final ListenerStart listenerStart) {
-			this.listenerStart = listenerStart;
-			if (pathViewAnimatorListener == null) {
-				pathViewAnimatorListener = new PathViewAnimatorListener();
-				anim.addListener(pathViewAnimatorListener);
-			}
-			return this;
-		}
-
-		/**
-		 * Set a listener after of the animation.
-		 * 
-		 * @param animationEnd
-		 *            an interface called after the animation
-		 * @return AnimatorBuilder.
-		 */
-		@SuppressLint("NewApi")
-		public AnimatorBuilder listenerEnd(final ListenerEnd animationEnd) {
-			this.animationEnd = animationEnd;
-			if (pathViewAnimatorListener == null) {
-				pathViewAnimatorListener = new PathViewAnimatorListener();
-				anim.addListener(pathViewAnimatorListener);
-			}
-			return this;
-		}
-
-		/**
-		 * Starts the animation.
-		 */
-		@SuppressLint("NewApi")
-		public void start() {
-			anim.setDuration(duration);
-			anim.setInterpolator(interpolator);
-			anim.setStartDelay(delay);
-			anim.start();
-		}
-
-		/**
-		 * Animation listener to be able to provide callbacks for the caller.
-		 */
-		@SuppressLint("NewApi")
-		private class PathViewAnimatorListener implements
-				Animator.AnimatorListener {
-
-			@Override
-			public void onAnimationStart(Animator animation) {
-				if (listenerStart != null)
-					listenerStart.onAnimationStart();
-			}
-
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				if (animationEnd != null)
-					animationEnd.onAnimationEnd();
-			}
-
-			@Override
-			public void onAnimationCancel(Animator animation) {
-
-			}
-
-			@Override
-			public void onAnimationRepeat(Animator animation) {
-
-			}
-		}
-
-		/**
-		 * Called when the animation start.
-		 */
-		public interface ListenerStart {
-			/**
-			 * Called when the path animation start.
-			 */
-			void onAnimationStart();
-		}
-
-		/**
-		 * Called when the animation end.
-		 */
-		public interface ListenerEnd {
-			/**
-			 * Called when the path animation end.
-			 */
-			void onAnimationEnd();
+	public void setAnimListener(HwAnim.OnAnimListener paramOnAnimListener) {
+		this.mAnimListener = paramOnAnimListener;
+		if (this.mAnim != null) {
+			this.mAnim.setAnimListener(this.mAnimListener);
 		}
 	}
 
-	@Override
-	public void onAnimationStep() {
-		invalidate();
+	public void setTimeGap(int paramInt) {
+		this.timeGap = paramInt;
+		if (this.mAnim != null) {
+			this.mAnim.timeGap = paramInt;
+		}
 	}
 
-	/**
-	 * Object for building the sequential animation of the paths of this view.
-	 */
-	public static class AnimatorSetBuilder {
-		/**
-		 * Duration of the animation.
-		 */
-		private int duration = 1000;
-		/**
-		 * Interpolator for the time of the animation.
-		 */
-		private Interpolator interpolator;
-		/**
-		 * The delay before the animation.
-		 */
-		private int delay = 0;
-		/**
-		 * List of ObjectAnimator that constructs the animations of each path.
-		 */
-		private final List<Animator> animators = new ArrayList<Animator>();
-		/**
-		 * Listener called before the animation.
-		 */
-		private AnimatorBuilder.ListenerStart listenerStart;
-		/**
-		 * Listener after the animation.
-		 */
-		private AnimatorBuilder.ListenerEnd animationEnd;
-		/**
-		 * Animation listener.
-		 */
-		private AnimatorSetBuilder.PathViewAnimatorListener pathViewAnimatorListener;
-		/**
-		 * The animator that can animate paths sequentially
-		 */
-		@SuppressLint("NewApi")
-		private AnimatorSet animatorSet = new AnimatorSet();
-		/**
-		 * The list of paths to be animated.
-		 */
-		private List<SvgUtils.SvgPath> paths;
-
-		/**
-		 * Default constructor.
-		 * 
-		 * @param pathView
-		 *            The view that must be animated.
-		 */
-		@SuppressLint("NewApi")
-		public AnimatorSetBuilder(final PathView pathView) {
-			paths = pathView.paths;
-			for (SvgUtils.SvgPath path : paths) {
-				path.setAnimationStepListener(pathView);
-				ObjectAnimator animation = ObjectAnimator.ofFloat(path,
-						"length", 0.0f, path.getLength());
-				animators.add(animation);
-			}
-			animatorSet.playSequentially(animators);
+	public void setWritingListener(
+			HwWriting.OnWritingListener paramOnWritingListener) {
+		this.mWritingListener = paramOnWritingListener;
+		if (this.mWriting != null) {
+			this.mWriting.setWritingListener(this.mWritingListener);
 		}
+	}
 
-		/**
-		 * Sets the duration of the animation. Since the AnimatorSet sets the
-		 * duration for each Animator, we have to divide it by the number of
-		 * paths.
-		 * 
-		 * @param duration
-		 *            - The duration of the animation.
-		 * @return AnimatorSetBuilder.
-		 */
-		public AnimatorSetBuilder duration(final int duration) {
-			this.duration = duration / paths.size();
-			return this;
+	public void startHwAnim() {
+		disableHandwriting();
+		if (this.mAnim != null) {
+			this.mAnim.startHwAnim();
 		}
+	}
 
-		/**
-		 * Set the Interpolator.
-		 * 
-		 * @param interpolator
-		 *            - Interpolator.
-		 * @return AnimatorSetBuilder.
-		 */
-		public AnimatorSetBuilder interpolator(final Interpolator interpolator) {
-			this.interpolator = interpolator;
-			return this;
+	public void stopHwAnim() {
+		if (this.mAnim != null) {
+			this.mAnim.stopHwAnim();
 		}
+	}
 
-		/**
-		 * The delay before the animation.
-		 * 
-		 * @param delay
-		 *            - int the delay
-		 * @return AnimatorSetBuilder.
-		 */
-		public AnimatorSetBuilder delay(final int delay) {
-			this.delay = delay;
-			return this;
+	public void disableHandwriting() {
+		if (this.mWriting != null) {
+			this.mWriting.disableWriting();
 		}
+	}
 
-		/**
-		 * Set a listener before the start of the animation.
-		 * 
-		 * @param listenerStart
-		 *            an interface called before the animation
-		 * @return AnimatorSetBuilder.
-		 */
-		@SuppressLint("NewApi")
-		public AnimatorSetBuilder listenerStart(
-				final AnimatorBuilder.ListenerStart listenerStart) {
-			this.listenerStart = listenerStart;
-			if (pathViewAnimatorListener == null) {
-				pathViewAnimatorListener = new PathViewAnimatorListener();
-				animatorSet.addListener(pathViewAnimatorListener);
-			}
-			return this;
+	public void enableHandwriting() {
+		stopHwAnim();
+		if (this.mWriting != null) {
+			this.mWriting.enableWriting();
 		}
+	}
 
-		/**
-		 * Set a listener after of the animation.
-		 * 
-		 * @param animationEnd
-		 *            an interface called after the animation
-		 * @return AnimatorSetBuilder.
-		 */
-		@SuppressLint("NewApi")
-		public AnimatorSetBuilder listenerEnd(
-				final AnimatorBuilder.ListenerEnd animationEnd) {
-			this.animationEnd = animationEnd;
-			if (pathViewAnimatorListener == null) {
-				pathViewAnimatorListener = new PathViewAnimatorListener();
-				animatorSet.addListener(pathViewAnimatorListener);
-			}
-			return this;
-		}
-
-		/**
-		 * Starts the animation.
-		 */
-		@SuppressLint("NewApi")
-		public void start() {
-			resetAllPaths();
-			animatorSet.cancel();
-			animatorSet.setDuration(duration);
-			animatorSet.setInterpolator(interpolator);
-			animatorSet.setStartDelay(delay);
-			animatorSet.start();
-		}
-
-		/**
-		 * Sets the length of all the paths to 0.
-		 */
-		private void resetAllPaths() {
-			for (SvgUtils.SvgPath path : paths) {
-				path.setLength(0);
-			}
-		}
-
-		/**
-		 * Animation listener to be able to provide callbacks for the caller.
-		 */
-		@SuppressLint("NewApi")
-		private class PathViewAnimatorListener implements
-				Animator.AnimatorListener {
-
-			@Override
-			public void onAnimationStart(Animator animation) {
-				if (listenerStart != null)
-					listenerStart.onAnimationStart();
-			}
-
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				if (animationEnd != null)
-					animationEnd.onAnimationEnd();
-			}
-
-			@Override
-			public void onAnimationCancel(Animator animation) {
-
-			}
-
-			@Override
-			public void onAnimationRepeat(Animator animation) {
-
-			}
-		}
+	public static class PartDirectionPath {
+		public Path arrowPath;
+		public Path path;
 	}
 }

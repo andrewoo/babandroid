@@ -3,12 +3,12 @@ package com.hw.chineseLearn.model;
 import java.io.Serializable;
 
 public class CharPartBaseModel extends BaseObject implements Serializable {
-	private int CharId;//
-	private String PartDirection;//
-	private int PartId;
-	private int PartIndex;//
-	private String PartPath;
-	private int Version;
+	public int CharId;//
+	public String PartDirection;//
+	public int PartId;
+	public int PartIndex;//
+	public String PartPath;
+	public int Version;
 
 	public int getCharId() {
 		return CharId;
