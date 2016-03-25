@@ -86,8 +86,8 @@ public class LessonExerciseActivity extends BaseActivity {
 	private int utilId = 0;
 
 	private List<LessonRepeatRegex> regexes;
-	
-	private List<Integer> isFirstList=new ArrayList<Integer>();//第一次出现保存在此集合
+
+	private List<Integer> isFirstList = new ArrayList<Integer>();// 第一次出现保存在此集合
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,21 +96,21 @@ public class LessonExerciseActivity extends BaseActivity {
 				R.layout.activity_lesson_exercise, null);
 		setContentView(contentView);
 
-		initBudle();//初始化数据
-		
+		initBudle();// 初始化数据
+
 		// for test
-//		if (utilId == 0) {
-//			isCurrentTestRight = true;
-//		} else {
-//			isCurrentTestRight = false;
-//		}
+		// if (utilId == 0) {
+		// isCurrentTestRight = true;
+		// } else {
+		// isCurrentTestRight = false;
+		// }
 		context = this;
 		CustomApplication.app.addActivity(this);
 		init();
 		initMediaPlayer();
 		playRightSound();
 	}
-	
+
 	/**
 	 * 初始化bundle数据
 	 */
@@ -125,17 +125,17 @@ public class LessonExerciseActivity extends BaseActivity {
 						.getSerializable("regexes");
 			}
 		}
-		int randomSubject =0;
-		//给每个Subject随机赋值确定查哪张表
+		int randomSubject = 0;
+		// 给每个Subject随机赋值确定查哪张表
 		for (int i = 0; i < regexes.size(); i++) {
 			int lgTable = regexes.get(i).getLgTable();
-			if(lgTable==0){
-				randomSubject=new Random().nextInt(5)+1;
+			if (lgTable == 0) {
+				randomSubject = new Random().nextInt(5) + 1;
 				regexes.get(i).setRandomSubject(randomSubject);
-			}else if(lgTable==1){
-				randomSubject=new Random().nextInt(5)+1;
+			} else if (lgTable == 1) {
+				randomSubject = new Random().nextInt(5) + 1;
 				regexes.get(i).setRandomSubject(randomSubject);
-			}else if(lgTable==2){
+			} else if (lgTable == 2) {
 				regexes.get(i).setRandomSubject(1);
 			}
 		}
@@ -189,25 +189,6 @@ public class LessonExerciseActivity extends BaseActivity {
 	 * 初始化
 	 */
 	public void init() {
-
-//		if (imageSelectFragment == null) {
-//			imageSelectFragment = new LearnImageSelectFragment();
-//			navigateToNoAnimWithId(imageSelectFragment, R.id.container1);
-//		}
-
-//		if (wordSelectFragment == null) {
-//			wordSelectFragment = new LearnWordSelectFragment();
-//		}
-//		if (wordInputFragment == null) {
-//			wordInputFragment = new LearnWordInputFragment();
-//		}
-//		if (imageMoveFragment == null) {
-//			imageMoveFragment = new LearnImageMoveFragment();
-//		}
-//		if (sentenceMoveFragment == null) {
-//			sentenceMoveFragment = new LearnSentenceMoveFragment();
-//		}
-
 		checkView = LayoutInflater.from(context).inflate(
 				R.layout.layout_learn_exercise_check_dialog, null);
 
@@ -244,7 +225,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		exerciseCount = regexes.size();
 		progressView.clear();
 		lin_lesson_progress.removeAllViews();
-		//加上十几个背景块
+		// 加上十几个背景块
 		for (int i = 0; i < exerciseCount; i++) {
 			ImageView imageView = new ImageView(context);
 			LayoutParams layoutParams = new LayoutParams(
@@ -256,7 +237,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			lin_lesson_progress.addView(imageView);
 			progressView.put(i, imageView);
 		}
-		regexToView(regexes.get(exerciseIndex));//第一次进入时
+		regexToView(regexes.get(exerciseIndex));// 第一次进入时
 	}
 
 	/**
@@ -270,48 +251,48 @@ public class LessonExerciseActivity extends BaseActivity {
 		for (Map.Entry<Integer, ImageView> entry : progressView.entrySet()) {
 			int position = entry.getKey();
 			ImageView imageView = entry.getValue();
-			if (index == position) {
-				imageView.setBackground(context.getResources().getDrawable(
-						drawableId));
 
-				switch (drawableId) {
-				case R.drawable.bg_progress_rigth:
-					score = score + 60;
-					txt_lesson_score.setText("" + score);
-					if (index == exerciseCount - 1) {
-						// UiUtil.showToast(context, "last test");
-					}
-					// playRightSound();
-//					showCheckDialog(true);
-					break;
-				case R.drawable.bg_progress_wrong:
-					score = score - 60;
-					if (score < 0)
-						score = 0;
-					txt_lesson_score.setText("" + score);
+			if (index != position) {
+				continue;
+			}
+			imageView.setBackground(context.getResources().getDrawable(
+					drawableId));
 
-					lin_pander_life.removeView(panderView.get(panderLife - 1));
-					panderLife--;
-					Log.d(TAG, "panderLife:" + panderLife);
+			switch (drawableId) {
+			case R.drawable.bg_progress_rigth:
+				score = score + 60;
+				txt_lesson_score.setText("" + score);
+				if (index == exerciseCount - 1) {
+					// UiUtil.showToast(context, "last test");
+				}
+				// playRightSound();
+				// showCheckDialog(true);
+				break;
+			case R.drawable.bg_progress_wrong:
+				score = score - 60;
+				if (score < 0)
+					score = 0;
+				txt_lesson_score.setText("" + score);
 
-					if (panderLife == 0) {// lose all pander
-						Intent intent = new Intent(LessonExerciseActivity.this,
-								LessonResultActivity.class);
-						intent.putExtra("loseAllPanders", "loseAllPanders");
-						startActivityForResult(intent, 100);
-					} else {
-						// playWrongSound();
-//						showCheckDialog(false);
-					}
-					break;
-				default:
-					break;
+				lin_pander_life.removeView(panderView.get(panderLife - 1));
+				panderLife--;
+				Log.d(TAG, "panderLife:" + panderLife);
 
+				if (panderLife == 0) {// lose all pander
+					Intent intent = new Intent(LessonExerciseActivity.this,
+							LessonResultActivity.class);
+					intent.putExtra("loseAllPanders", "loseAllPanders");
+					startActivityForResult(intent, 100);
+				} else {
+					// playWrongSound();
+					// showCheckDialog(false);
 				}
 				break;
-			} else {
+			default:
+				break;
 
 			}
+			break;
 		}
 	}
 
@@ -327,9 +308,9 @@ public class LessonExerciseActivity extends BaseActivity {
 				if (btn_check.getVisibility() == View.VISIBLE) {
 					btn_check.setVisibility(View.GONE);
 				}
-				isCurrentTestRight=baseFragment.isRight();
+				isCurrentTestRight = baseFragment.isRight();
 				if (isCurrentTestRight) {
-					setProgressViewBg(exerciseIndex,//设置进度快的背景
+					setProgressViewBg(exerciseIndex,// 设置进度快的背景
 							R.drawable.bg_progress_rigth);
 					showCheckDialog(true);
 				} else {
@@ -406,6 +387,7 @@ public class LessonExerciseActivity extends BaseActivity {
 
 	/**
 	 * check的对话框
+	 * 
 	 * @param isRight
 	 */
 	private void showCheckDialog(boolean isRight) {
@@ -415,8 +397,8 @@ public class LessonExerciseActivity extends BaseActivity {
 		ImageView img_is_right = (ImageView) checkView
 				.findViewById(R.id.img_is_right);
 		Button btn_next = (Button) checkView.findViewById(R.id.btn_next);
-		TextView tv_answer= (TextView) checkView.findViewById(R.id.tv_answer);
-		String answer = MyDao.getAnswer(lessonRepeatRegex);//得到答案后赋值
+		TextView tv_answer = (TextView) checkView.findViewById(R.id.tv_answer);
+		String answer = MyDao.getAnswer(lessonRepeatRegex);// 得到答案后赋值
 		tv_answer.setText(answer);
 		rel_op = (RelativeLayout) checkView.findViewById(R.id.rel_op);
 		rel_op.setOnTouchListener(onTouchListener);
@@ -453,8 +435,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			btn_next.setText("Next");
 		}
 		// 题目下标加一
-//		exerciseIndex++;
-//		Log.d(TAG, "题目下标:" + exerciseIndex);
+		// exerciseIndex++;
+		// Log.d(TAG, "题目下标:" + exerciseIndex);
 
 		if (builder == null) {
 			builder = new CustomDialog(this, R.style.my_dialog).create(
@@ -476,66 +458,67 @@ public class LessonExerciseActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				btn_check.setVisibility(View.VISIBLE);
-				//learn表中regex第一位 对应View关系
-				if(exerciseIndex<exerciseCount){
+				// learn表中regex第一位 对应View关系
+				if (exerciseIndex < exerciseCount) {
 					exerciseIndex++;
 					regexToView(regexes.get(exerciseIndex));
 				}
-//				switch (regexes.get(exerciseIndex).getRandomSubject()) {//得到随机数确定查哪张表010--060
-//				case 0:
-//					replaceTo2("wordSelectFragment");
-//					break;
-//				case 1:
-//					replaceTo2("wordInputFragment");
-//					break;
-//				case 2:
-//					replaceTo2("imageSelectFragment");
-//					break;
-//				case 3:
-//					replaceTo2("imageMoveFragment");
-//					break;
-//				case 4:
-//					replaceTo2("sentenceMoveFragment");
-//					break;
-//				//
-//				case 5:
-//				case 6:
-//					replaceTo2("wordSelectFragment");
-//
-//					break;
-//				case 6:
-//					replaceTo2("wordInputFragment");
-//					break;
-//				case 7:
-//					replaceTo2("imageSelectFragment");
-//					break;
-//				case 8:
-//					replaceTo2("imageMoveFragment");
-//					break;
-//				case 9:
-//					replaceTo2("sentenceMoveFragment");
-//					break;
-//				//
-//				case 10:
-//					replaceTo2("wordSelectFragment");
-//
-//					break;
-//				case 11:
-//					replaceTo2("wordInputFragment");
-//					break;
-//				case 12:
-//					replaceTo2("imageSelectFragment");
-//					break;
-//				case 13:
-//					replaceTo2("imageMoveFragment");
-//					break;
-//				case 14:
-//					replaceTo2("sentenceMoveFragment");
-//					break;
-//
-//				default:
-//					break;
-//				}
+				// switch (regexes.get(exerciseIndex).getRandomSubject())
+				// {//得到随机数确定查哪张表010--060
+				// case 0:
+				// replaceTo2("wordSelectFragment");
+				// break;
+				// case 1:
+				// replaceTo2("wordInputFragment");
+				// break;
+				// case 2:
+				// replaceTo2("imageSelectFragment");
+				// break;
+				// case 3:
+				// replaceTo2("imageMoveFragment");
+				// break;
+				// case 4:
+				// replaceTo2("sentenceMoveFragment");
+				// break;
+				// //
+				// case 5:
+				// case 6:
+				// replaceTo2("wordSelectFragment");
+				//
+				// break;
+				// case 6:
+				// replaceTo2("wordInputFragment");
+				// break;
+				// case 7:
+				// replaceTo2("imageSelectFragment");
+				// break;
+				// case 8:
+				// replaceTo2("imageMoveFragment");
+				// break;
+				// case 9:
+				// replaceTo2("sentenceMoveFragment");
+				// break;
+				// //
+				// case 10:
+				// replaceTo2("wordSelectFragment");
+				//
+				// break;
+				// case 11:
+				// replaceTo2("wordInputFragment");
+				// break;
+				// case 12:
+				// replaceTo2("imageSelectFragment");
+				// break;
+				// case 13:
+				// replaceTo2("imageMoveFragment");
+				// break;
+				// case 14:
+				// replaceTo2("sentenceMoveFragment");
+				// break;
+				//
+				// default:
+				// break;
+				// }
 
 				if (exerciseIndex == exerciseCount) {// 最后一道题目
 
@@ -691,66 +674,67 @@ public class LessonExerciseActivity extends BaseActivity {
 		}
 	};
 	private LessonRepeatRegex lessonRepeatRegex;
-	
+
 	/**
 	 * learn表中regex对应表关系
 	 */
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
 		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
-		System.out.println("lgTable--"+lgTable);
-		if(lgTable==0){
+		System.out.println("lgTable--" + lgTable);
+		if (lgTable == 0) {
 			int randomSubject = lessonRepeatRegex.getRandomSubject();
-			System.out.println("randomSubject1111--"+randomSubject);
-			if(isFirst(lessonRepeatRegex.getLgTableId())){//判断 如果是第一次出现的ID 就从 word010表中查询
-				randomSubject=1;
-				System.out.println("randomSubject2222--"+randomSubject);
+			System.out.println("randomSubject1111--" + randomSubject);
+			if (isFirst(lessonRepeatRegex.getLgTableId())) {// 判断 如果是第一次出现的ID 就从
+															// word010表中查询
+				randomSubject = 1;
+				System.out.println("randomSubject2222--" + randomSubject);
 			}
 			switch (randomSubject) {
-			case 1://对应选择图片题  题目中文
-				imageSelectFragment=new LearnImageSelectFragment();
-				baseFragment=imageSelectFragment;
-				Bundle bundle=new Bundle();
+			case 1:// 对应选择图片题 题目中文
+				imageSelectFragment = new LearnImageSelectFragment();
+				baseFragment = imageSelectFragment;
+				Bundle bundle = new Bundle();
 				bundle.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
-				imageSelectFragment.setArguments(bundle);//把题传过去
-				replaceTo2("imageSelectFragment"); 
+				imageSelectFragment.setArguments(bundle);// 把题传过去
+				replaceTo2("imageSelectFragment");
 				break;
-			case 2://单选中问题 无图片
-				wordSelectFragment=new LearnWordSelectFragment();
-				baseFragment=wordSelectFragment;
-				Bundle bundle2=new Bundle();
+			case 2:// 单选中问题 无图片
+				wordSelectFragment = new LearnWordSelectFragment();
+				baseFragment = wordSelectFragment;
+				Bundle bundle2 = new Bundle();
 				bundle2.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
-				wordSelectFragment.setArguments(bundle2);//把题传过去
+				wordSelectFragment.setArguments(bundle2);// 把题传过去
 				replaceTo2("wordSelectFragment");
 				break;
-			case 3://tag英文
-				sentenceMoveFragment=new LearnSentenceMoveFragment();
-				baseFragment=sentenceMoveFragment;
-				Bundle bundle3=new Bundle();
+			case 3:// tag英文
+				sentenceMoveFragment = new LearnSentenceMoveFragment();
+				baseFragment = sentenceMoveFragment;
+				Bundle bundle3 = new Bundle();
 				bundle3.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
-				sentenceMoveFragment.setArguments(bundle3);//把题传过去
+				sentenceMoveFragment.setArguments(bundle3);// 把题传过去
 				replaceTo2("sentenceMoveFragment");
 				break;
-			case 4://单词翻译输入英语
-				wordInputFragment=new LearnWordInputFragment();
-				baseFragment=wordInputFragment;
-				Bundle bundle4=new Bundle();
+			case 4:// 单词翻译输入英语
+				wordInputFragment = new LearnWordInputFragment();
+				baseFragment = wordInputFragment;
+				Bundle bundle4 = new Bundle();
 				bundle4.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
-				wordInputFragment.setArguments(bundle4);//把题传过去
+				wordInputFragment.setArguments(bundle4);// 把题传过去
 				replaceTo2("wordInputFragment");
 				break;
 			case 5:
-				wordSelectFragment=new LearnWordSelectFragment();
-				baseFragment=wordSelectFragment;
-				Bundle bundle5=new Bundle();
+				wordSelectFragment = new LearnWordSelectFragment();
+				baseFragment = wordSelectFragment;
+				Bundle bundle5 = new Bundle();
 				bundle5.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
-				wordSelectFragment.setArguments(bundle5);//把题传过去
-				replaceTo2("wordSelectFragment");//题目中文 选项英文
+				wordSelectFragment.setArguments(bundle5);// 把题传过去
+				replaceTo2("wordSelectFragment");// 题目中文 选项英文
 				break;
 			default:
 				break;
 			}
-		}else if(lgTable==1){
+		} else if (lgTable == 1) {
 			switch (regexes.get(exerciseIndex).getRandomSubject()) {
 			case 1:
 				replaceTo2("wordSelectFragment");
@@ -768,29 +752,30 @@ public class LessonExerciseActivity extends BaseActivity {
 				replaceTo2("imageMoveFragment");
 				break;
 			}
-		}else if(lgTable==2){
-			imageMoveFragment=new LearnImageMoveFragment();
-			baseFragment=imageMoveFragment;
-			Bundle bundle=new Bundle();
+		} else if (lgTable == 2) {
+			imageMoveFragment = new LearnImageMoveFragment();
+			baseFragment = imageMoveFragment;
+			Bundle bundle = new Bundle();
 			bundle.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
-			imageMoveFragment.setArguments(bundle);//把题传过去
+			imageMoveFragment.setArguments(bundle);// 把题传过去
 			replaceTo2("imageMoveFragment");
 		}
 	}
-	
+
 	/**
 	 * 判断随机ID是否是第一次出现
+	 * 
 	 * @return
 	 */
 	private boolean isFirst(int id) {
-		System.out.println("id--"+id);
-		System.out.println("isFirstList--"+isFirstList);
-		if(isFirstList.contains(id)){
+		System.out.println("id--" + id);
+		System.out.println("isFirstList--" + isFirstList);
+		if (isFirstList.contains(id)) {
 			return false;
-		}else{
+		} else {
 			isFirstList.add(id);
 			return true;
 		}
 	}
-	
+
 }
