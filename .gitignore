@@ -1,3 +1,4 @@
 #ignore automatic files:
 classes/*
+bin
 
