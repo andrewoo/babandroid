@@ -5,7 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 
 @DatabaseTable(tableName = "Character")
-public class Character   {
+public class Character   {//11
 	@DatabaseField(columnName = "CEE", id = true)
 	private String CEE;
 	@DatabaseField(columnName = "CEJ")

@@ -14,6 +14,11 @@ public class MyDao {
 
 	private static Dao dao;
 
+	/**
+	 * 传入表对应实体类，获得dao
+	 * @param clazz
+	 * @return
+	 */
 	public static Dao getDao(Class clazz) {
 		 try {
 		 DatabaseHelper helper = DatabaseHelper
