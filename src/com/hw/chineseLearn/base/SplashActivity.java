@@ -174,7 +174,7 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.splash);
 		// copyfile();
-//		FileTools.copyDb("chineselearn.db");
+		FileTools.copyDb("chineselearn.db");
 		iv_bg = (ImageView) findViewById(R.id.iv_bg);
 
 		LayoutParams layoutParams1 = (LayoutParams) iv_bg.getLayoutParams();
