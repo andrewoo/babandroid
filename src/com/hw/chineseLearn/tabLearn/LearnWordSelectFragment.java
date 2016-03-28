@@ -21,6 +21,7 @@ import com.hw.chineseLearn.adapter.LearnWordSelectListAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGModel_Word_020;
+import com.hw.chineseLearn.dao.bean.LGModel_Word_060;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
@@ -30,6 +31,10 @@ import com.util.thread.ThreadWithDialogTask;
  * 句子选择
  * 
  * @author yh
+ */
+/**
+ * @author Administrator
+ *
  */
 @SuppressLint("NewApi")
 public class LearnWordSelectFragment extends BaseFragment implements
@@ -46,8 +51,10 @@ public class LearnWordSelectFragment extends BaseFragment implements
 	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();//testdata
 	ArrayList<LGWord> lgWordList=new ArrayList<LGWord>();
 	private LGModel_Word_020 word_020;
+	private LGModel_Word_060 word_060;
 	private boolean isRight;
 	private int answer;// 此题的答案lgword.getanswer
+	private ArrayList<String> word060List=new ArrayList<String>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,23 +82,53 @@ public class LearnWordSelectFragment extends BaseFragment implements
 	}
 
 	private void initData() {
-		LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments().getSerializable("lessonRepeatRegex");
+		lessonRepeatRegex = (LessonRepeatRegex) getArguments().getSerializable("lessonRepeatRegex");
 		int lgTableId = lessonRepeatRegex.getLgTableId();//查020 得到options 拆分后查LGWord 赋值
+		if(lessonRepeatRegex.getRandomSubject()==6){
+			word060Data(lgTableId);
+		}else{
+			word020Data(lgTableId);
+		}
+		 
+	}
+
+	private void word060Data(int lgTableId) {
+		try {
+			word_060 = (LGModel_Word_060) MyDao.getDao(LGModel_Word_060.class).queryBuilder().where().eq("WordId",lgTableId).queryForFirst();
+			answer = word_060.getAnswer();
+			LGWord lgWord1= (LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
+			question= "___"+lgWord1.getWord().substring(1);
+			String[] splitWord060 = word_060.getOptions().split(";");
+			for (int i = 0; i < splitWord060.length; i++) {
+				String option = splitWord060[i].split("=")[1];
+				option=option.replace("-", "/");
+				System.out.println("++++"+option);
+				word060List.add(option);
+			}
+			Collections.shuffle(word060List);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	private void word020Data(int lgTableId) {
 		try {
 			word_020 = (LGModel_Word_020) MyDao.getDao(LGModel_Word_020.class).queryBuilder().where().eq("WordId",lgTableId).queryForFirst();
 			answer = word_020.getAnswer();
 			LGWord lgWord1= (LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
 			question= "Select"+"\""+lgWord1.getTranslations()+"\"";
 			String[] splitWordId = word_020.getOptions().split(";");
-			 for (int i = 0; i < splitWordId.length; i++) {
-				 LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(Integer.valueOf(splitWordId[i]));
-				 lgWordList.add(lgWord);
+			for (int i = 0; i < splitWordId.length; i++) {
+				LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(Integer.valueOf(splitWordId[i]));
+				lgWordList.add(lgWord);
 			}
-			 Collections.shuffle(lgWordList);
+			Collections.shuffle(lgWordList);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		 
 	}
 
 	@Override
@@ -147,7 +184,11 @@ public class LearnWordSelectFragment extends BaseFragment implements
 		txt_name.setText(question);
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
-		adapter = new LearnWordSelectListAdapter(context, lgWordList);
+		if(lessonRepeatRegex.getRandomSubject()==6){
+			adapter = new LearnWordSelectListAdapter(context, word060List);
+		}else{
+			adapter = new LearnWordSelectListAdapter(context, lgWordList);
+		}
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(onItemclickListener);
 		adapter.notifyDataSetChanged();
@@ -162,15 +203,25 @@ public class LearnWordSelectFragment extends BaseFragment implements
 			adapter.setSelection(position);
 			adapter.notifyDataSetChanged();
 			
-			LGWord lgWord = lgWordList.get(position);
-			if (lgWord.getWordId() == answer) {
-				isRight = true;
+			if(lessonRepeatRegex.getRandomSubject()==6){
+				String string = word060List.get(position);
+				if (string .equals(answer)) {
+					isRight = true;
+				}else{
+					isRight=false;
+				}
 			}else{
-				isRight=false;
+				LGWord lgWord = lgWordList.get(position);
+				if (lgWord.getWordId() == answer) {
+					isRight = true;
+				}else{
+					isRight=false;
+				}
 			}
-
 		}
 	};
+
+	private LessonRepeatRegex lessonRepeatRegex;
 	public boolean isRight() {
 		return isRight;
 	}

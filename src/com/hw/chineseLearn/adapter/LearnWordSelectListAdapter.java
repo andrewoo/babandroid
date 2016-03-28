@@ -15,9 +15,9 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.LGWord;
 
-public class LearnWordSelectListAdapter extends BaseAdapter {
+public class LearnWordSelectListAdapter<T> extends BaseAdapter {
 	private Context context;
-	public ArrayList<LGWord> list;
+	public ArrayList<T> list;
 	private LayoutInflater inflater;
 
 	private int width, height;
@@ -27,7 +27,7 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 	int colorBlack = -1;
 
 	public LearnWordSelectListAdapter(Context context,
-			ArrayList<LGWord> list) {
+			ArrayList<T> list) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
 		this.list = list;
@@ -85,13 +85,19 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		LGWord model = list.get(position);
+		T model = list.get(position);
 		if (model == null) {
 			return convertView;
 		}
-
-		String unitName = model.getWord()+"/"+model.getPinyin();
-		holder.tv_child_char.setText("" + unitName);
+		if(model instanceof LGWord){
+			LGWord model1=(LGWord)model;
+			String unitName = model1.getWord()+"/"+model1.getPinyin();
+			holder.tv_child_char.setText("" + unitName);
+		}else if(model instanceof String){
+			String modelStr=(String) model;
+			holder.tv_child_char.setText(modelStr);
+		}
+		
 
 		if (selectPosition == position) {// 选中
 			convertView.setBackground(resources

@@ -1,6 +1,7 @@
 package com.hw.chineseLearn.tabLearn;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,7 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.util.weight.CustomDialog;
 
@@ -130,7 +132,16 @@ public class LessonExerciseActivity extends BaseActivity {
 		for (int i = 0; i < regexes.size(); i++) {
 			int lgTable = regexes.get(i).getLgTable();
 			if (lgTable == 0) {
-				randomSubject = new Random().nextInt(5) + 1;
+				LGWord lgWord = null;
+				try {
+					lgWord = (LGWord)MyDao.getDao(LGWord.class).queryForId(regexes.get(i).getLgTableId());} catch (SQLException e) {
+				}
+				int length = lgWord.getWord().length();
+				if(length>1){//长度大于一才可以到第6个表
+					randomSubject = new Random().nextInt(6) + 1;
+				}else{
+					randomSubject = new Random().nextInt(5) + 1;
+				}
 				regexes.get(i).setRandomSubject(randomSubject);
 			} else if (lgTable == 1) {
 				randomSubject = new Random().nextInt(5) + 1;
@@ -463,62 +474,6 @@ public class LessonExerciseActivity extends BaseActivity {
 					exerciseIndex++;
 					regexToView(regexes.get(exerciseIndex));
 				}
-				// switch (regexes.get(exerciseIndex).getRandomSubject())
-				// {//得到随机数确定查哪张表010--060
-				// case 0:
-				// replaceTo2("wordSelectFragment");
-				// break;
-				// case 1:
-				// replaceTo2("wordInputFragment");
-				// break;
-				// case 2:
-				// replaceTo2("imageSelectFragment");
-				// break;
-				// case 3:
-				// replaceTo2("imageMoveFragment");
-				// break;
-				// case 4:
-				// replaceTo2("sentenceMoveFragment");
-				// break;
-				// //
-				// case 5:
-				// case 6:
-				// replaceTo2("wordSelectFragment");
-				//
-				// break;
-				// case 6:
-				// replaceTo2("wordInputFragment");
-				// break;
-				// case 7:
-				// replaceTo2("imageSelectFragment");
-				// break;
-				// case 8:
-				// replaceTo2("imageMoveFragment");
-				// break;
-				// case 9:
-				// replaceTo2("sentenceMoveFragment");
-				// break;
-				// //
-				// case 10:
-				// replaceTo2("wordSelectFragment");
-				//
-				// break;
-				// case 11:
-				// replaceTo2("wordInputFragment");
-				// break;
-				// case 12:
-				// replaceTo2("imageSelectFragment");
-				// break;
-				// case 13:
-				// replaceTo2("imageMoveFragment");
-				// break;
-				// case 14:
-				// replaceTo2("sentenceMoveFragment");
-				// break;
-				//
-				// default:
-				// break;
-				// }
 
 				if (exerciseIndex == exerciseCount) {// 最后一道题目
 
@@ -681,14 +636,10 @@ public class LessonExerciseActivity extends BaseActivity {
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
 		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
-		System.out.println("lgTable--" + lgTable);
 		if (lgTable == 0) {
 			int randomSubject = lessonRepeatRegex.getRandomSubject();
-			System.out.println("randomSubject1111--" + randomSubject);
-			if (isFirst(lessonRepeatRegex.getLgTableId())) {// 判断 如果是第一次出现的ID 就从
-															// word010表中查询
+			if (isFirst(lessonRepeatRegex.getLgTableId())) {// 判断 如果是第一次出现的ID 就从word010表中查询
 				randomSubject = 1;
-				System.out.println("randomSubject2222--" + randomSubject);
 			}
 			switch (randomSubject) {
 			case 1:// 对应选择图片题 题目中文
@@ -731,8 +682,13 @@ public class LessonExerciseActivity extends BaseActivity {
 				wordSelectFragment.setArguments(bundle5);// 把题传过去
 				replaceTo2("wordSelectFragment");// 题目中文 选项英文
 				break;
-			default:
-				break;
+			case 6:
+				wordSelectFragment = new LearnWordSelectFragment();
+				baseFragment = wordSelectFragment;
+				Bundle bundle6 = new Bundle();
+				bundle6.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
+				wordSelectFragment.setArguments(bundle6);// 把题传过去
+				replaceTo2("wordSelectFragment");// 题目中文 选项英文
 			}
 		} else if (lgTable == 1) {
 			switch (regexes.get(exerciseIndex).getRandomSubject()) {
