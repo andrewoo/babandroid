@@ -1,21 +1,26 @@
 package com.hw.chineseLearn.db;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
 
-import com.util.tool.AppFinal;
-import com.util.tool.DateUtil;
+import com.hw.chineseLearn.base.CustomApplication;
+import com.j256.ormlite.android.AndroidConnectionSource;
+import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.support.ConnectionSource;
 
-public class SQLConnection extends SQLiteOpenHelper {
-	private static String TAG = "==SQLConnnection==";
+public class DatabaseHelperMy extends OrmLiteSqliteOpenHelper {
+
+	private static DatabaseHelperMy instance;
+
+	public static final String DATABASE_PATH = CustomApplication.app
+			.getFilesDir() + "/Babbel_ub.db";
+
+	private AndroidConnectionSource connectionSource;
+	private static String TAG = "==DatabaseHelper==";
 	public static final int DATABASE_VERSION = 1;// 数据库版本
 
 	public static final String CACHE_DIR_LOG;
@@ -88,16 +93,23 @@ public class SQLConnection extends SQLiteOpenHelper {
 		}
 	}
 
-	public SQLConnection(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	@Override
+	public synchronized SQLiteDatabase getWritableDatabase() {
+		return SQLiteDatabase.openDatabase(DATABASE_PATH, null,
+				SQLiteDatabase.OPEN_READWRITE);
 	}
 
-	public void onCreate(SQLiteDatabase db) {
-		
-		
-//		SQLiteDatabase db = db.openOrCreateDatabase("1", null);
-		
+	public synchronized SQLiteDatabase getReadableDatabase() {
+		return SQLiteDatabase.openDatabase(DATABASE_PATH, null,
+				SQLiteDatabase.OPEN_READONLY);
+	}
 
+	public DatabaseHelperMy(Context context) {
+		super(context, "chineselearn.db", null, 1);
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase arg0, ConnectionSource arg1) {
 		if (isFirstRun) {
 			Log.v(TAG + "--onCreate()", "程序是第一次运行");
 		} else {
@@ -105,16 +117,9 @@ public class SQLConnection extends SQLiteOpenHelper {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite
-	 * .SQLiteDatabase, int, int)
-	 */
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+	public void onUpgrade(SQLiteDatabase db, ConnectionSource arg1,
+			int oldVersion, int newVersion) {
 		Log.d(TAG, "Upgrading database from version " + oldVersion + " to "
 				+ newVersion + ".");
 
@@ -126,6 +131,16 @@ public class SQLConnection extends SQLiteOpenHelper {
 		default:
 			break;
 		}
+	}
+
+	public static synchronized DatabaseHelperMy getHelper(Context context) {
+		if (instance == null) {
+			synchronized (DatabaseHelperMy.class) {
+				if (instance == null)
+					instance = new DatabaseHelperMy(context);
+			}
+		}
+		return instance;
 	}
 
 }

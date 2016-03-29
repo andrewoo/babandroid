@@ -1,5 +1,8 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -18,6 +21,10 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbMyCharacter;
+import com.hw.chineseLearn.dao.bean.TbMySentence;
+import com.hw.chineseLearn.dao.bean.TbMyWord;
 
 /**
  * 章节复习页面
@@ -33,7 +40,7 @@ public class LearnReViewActivity extends BaseActivity implements
 	private ImageButton btn_play_words;
 	private ImageButton btn_play_sentence;
 
-	private TextView tv_characters_count;
+	private TextView tv_character_count;
 	private TextView tv_words_count;
 	private TextView tv_sentence_count;
 
@@ -45,6 +52,10 @@ public class LearnReViewActivity extends BaseActivity implements
 	private int width;
 	private int height;
 	View contentView;
+
+	int characterCount = 0;
+	int wordsCount = 0;
+	int sentenceCount = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +75,7 @@ public class LearnReViewActivity extends BaseActivity implements
 	/**
 	 * 初始化
 	 */
+	@SuppressWarnings("unchecked")
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
@@ -84,16 +96,38 @@ public class LearnReViewActivity extends BaseActivity implements
 		btn_play_characters.setImageDrawable(resources
 				.getDrawable(R.drawable.sentence_play));
 
-		tv_characters_count = (TextView) contentView
+		tv_character_count = (TextView) contentView
 				.findViewById(R.id.tv_characters_count);
 		tv_words_count = (TextView) contentView
 				.findViewById(R.id.tv_words_count);
 		tv_sentence_count = (TextView) contentView
 				.findViewById(R.id.tv_sentence_count);
 
-		tv_characters_count.setText("7");
-		tv_words_count.setText("5");
-		tv_sentence_count.setText("17");
+		tv_character_count.setText("0");
+		tv_words_count.setText("0");
+		tv_sentence_count.setText("0");
+
+		try {
+			ArrayList<TbMyCharacter> tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao
+					.getDaoMy(TbMyCharacter.class).queryForAll();
+
+			ArrayList<TbMyWord> tbMyWordList = (ArrayList<TbMyWord>) MyDao
+					.getDaoMy(TbMyWord.class).queryForAll();
+
+			ArrayList<TbMySentence> tbMySentenceList = (ArrayList<TbMySentence>) MyDao
+					.getDaoMy(TbMySentence.class).queryForAll();
+
+			characterCount = tbMyCharacterList.size();
+			wordsCount = tbMyWordList.size();
+			sentenceCount = tbMySentenceList.size();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		tv_character_count.setText("" + characterCount);
+		tv_words_count.setText("" + wordsCount);
+		tv_sentence_count.setText("" + sentenceCount);
 
 		lin_review_characters = (LinearLayout) contentView
 				.findViewById(R.id.lin_review_characters);
