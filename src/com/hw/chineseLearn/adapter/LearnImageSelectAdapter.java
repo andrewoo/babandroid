@@ -1,6 +1,5 @@
 package com.hw.chineseLearn.adapter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,11 +7,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,15 +17,14 @@ import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.dao.bean.LGWord;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.hw.chineseLearn.dao.bean.LGModelWord;
+import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.util.tool.BitmapLoader;
 
 public class LearnImageSelectAdapter extends BaseAdapter {
 	
 	private static final String ASSETS_LGWORD_PATH ="data/lgword/";
 	private Context context;
-	public ArrayList<LGWord> list;
 	private LayoutInflater inflater;
 
 	private int width, height;
@@ -36,13 +32,15 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 	private Resources resources = null;
 	int colorWhite = -1;
 	int colorBlack = -1;
-	
+	private LGModelWord modelWord;
+	private List<SubLGModel> subLGModelList;	
 
 	public LearnImageSelectAdapter(Context context,
-			List<LGWord> list) {
+			LGModelWord modelWord) {
 		this.context = context;
+		this.modelWord = modelWord;
+		subLGModelList = modelWord.getSubLGModelList();
 		this.inflater = LayoutInflater.from(context);
-		this.list = (ArrayList<LGWord>) list;
 		resources = context.getResources();
 		colorWhite = resources.getColor(R.color.white);
 		colorBlack = resources.getColor(R.color.black);
@@ -52,14 +50,14 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
-		return list == null ? 0 : list.size();
+		
+		return subLGModelList == null ? 0 : subLGModelList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return list.get(position);
+		return null;
 	}
 
 	@Override
@@ -100,14 +98,15 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 		}
 		// convertView.setLayoutParams(new LinearLayout.LayoutParams(
 		// LayoutParams.WRAP_CONTENT, convertView.getWidth() / 3 * 4));
-		LGWord model = list.get(position);
-		if (model == null) {
+		if (subLGModelList == null) {
 			return convertView;
 		}
 
-		String unitName = model.getWord()+"/"+model.getPinyin();
-		String imageName = model.getMainPic();
-		holder.txt_word_name.setText("" + unitName);
+//		String unitName = model.getWord()+"/"+model.getPinyin();
+//		String imageName = model.getMainPic();
+		String imageName = subLGModelList.get(position).getImageName();
+		String option = subLGModelList.get(position).getOption();
+		holder.txt_word_name.setText("" + option);
 		Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGWORD_PATH+imageName);
 		holder.iv_img.setImageBitmap(bitmap);
 //		holder.iv_img.setImageResource(resources.getIdentifier(imageName,

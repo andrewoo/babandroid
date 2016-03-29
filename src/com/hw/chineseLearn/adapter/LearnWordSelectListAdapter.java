@@ -13,11 +13,13 @@ import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.bean.LGModelWord;
+import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.hw.chineseLearn.dao.bean.LGWord;
 
 public class LearnWordSelectListAdapter extends BaseAdapter {
 	private Context context;
-	public ArrayList<LGWord> list;
+	public LGModelWord lgModelWord;
 	private LayoutInflater inflater;
 
 	private int width, height;
@@ -27,10 +29,10 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 	int colorBlack = -1;
 
 	public LearnWordSelectListAdapter(Context context,
-			ArrayList<LGWord> list) {
+			LGModelWord lgModelWord) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
-		this.list = list;
+		this.lgModelWord = lgModelWord;
 		resources = context.getResources();
 		colorWhite = resources.getColor(R.color.white);
 		colorBlack = resources.getColor(R.color.black);
@@ -41,13 +43,13 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return list == null ? 0 : list.size();
+		return lgModelWord.getSubLGModelList() == null ? 0 : lgModelWord.getSubLGModelList().size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return list.get(position);
+		return null;
 	}
 
 	@Override
@@ -85,13 +87,12 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		LGWord model = list.get(position);
-		if (model == null) {
+		if (lgModelWord.getOptions() == null) {
 			return convertView;
 		}
-
-		String unitName = model.getWord()+"/"+model.getPinyin();
-		holder.tv_child_char.setText("" + unitName);
+		
+		SubLGModel subLGModel = lgModelWord.getSubLGModelList().get(position);
+		holder.tv_child_char.setText("" + subLGModel.getOption());
 
 		if (selectPosition == position) {// 选中
 			convertView.setBackground(resources

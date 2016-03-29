@@ -13,7 +13,7 @@ public class LGModel_Word_060 implements Serializable {
 	@DatabaseField(columnName = "Stem")
 	private int Stem;
 	@DatabaseField(columnName = "Answer")
-	private String Answer;
+	private int Answer;
 	@DatabaseField(columnName = "Options")
 	private String Options;
 	@DatabaseField(columnName = "TOptions")
@@ -63,11 +63,11 @@ public class LGModel_Word_060 implements Serializable {
 		WordId = wordId;
 	}
 
-	public String getAnswer() {
+	public Integer getAnswer() {
 		return Answer;
 	}
 
-	public void setAnswer(String answer) {
+	public void setAnswer(Integer answer) {
 		Answer = answer;
 	}
 

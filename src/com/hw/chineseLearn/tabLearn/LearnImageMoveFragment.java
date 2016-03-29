@@ -417,8 +417,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				randomList.add(picArray[i]);
 			}
 		}
-		System.out.println("picList" + picList);
-		System.out.println("randomList" + randomList);
 		if (picList.size() < 5) {
 			Collections.shuffle(randomList);
 			int x = 5 - picList.size();
@@ -426,7 +424,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				picList.add(randomList.get(i));
 			}
 		}
-		System.out.println("picList2222" + picList);
 		return picList;
 	}
 
