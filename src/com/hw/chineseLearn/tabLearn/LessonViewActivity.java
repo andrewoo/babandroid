@@ -88,7 +88,7 @@ public class LessonViewActivity extends BaseActivity implements
 	 * 
 	 */
 	private List<LessonRepeatRegex> getRepeatRegexBeanList() {
-		Lesson lesson = lessonList.get(Integer.valueOf(mUnit.getLessonList()
+		lesson = lessonList.get(Integer.valueOf(mUnit.getLessonList()
 				.split(";")[selection]) - 1);
 		String[] questions = lesson.getRepeatRegex().split("#");
 		List<LessonRepeatRegex> regexes = new ArrayList<LessonRepeatRegex>();
@@ -323,6 +323,7 @@ public class LessonViewActivity extends BaseActivity implements
 			// }
 		}
 	};
+	private Lesson lesson;
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View convertView,
@@ -355,6 +356,7 @@ public class LessonViewActivity extends BaseActivity implements
 						LessonExerciseActivity.class);
 				intent.putExtra("utilId", position);
 				intent.putExtra("regexes", regexes);
+				intent.putExtra("LessonId", lesson.getLessonId());
 				startActivityForResult(intent, 0);
 				Log.d("GalleryAdapter", "utilId:" + position);
 			}
@@ -368,6 +370,7 @@ public class LessonViewActivity extends BaseActivity implements
 						LessonExerciseActivity.class);
 				intent.putExtra("utilId", position);
 				intent.putExtra("regexes", regexes);
+				intent.putExtra("LessonId", lesson.getLessonId());
 				startActivityForResult(intent, 0);
 				Log.d("GalleryAdapter", "utilId:" + position);
 			}

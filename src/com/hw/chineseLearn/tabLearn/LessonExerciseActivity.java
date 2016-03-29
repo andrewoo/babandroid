@@ -99,6 +99,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	private int utilId = 0;
 
 	private List<LessonRepeatRegex> regexes;
+	private int lessonId;
 
 	private List<Integer> isFirstList = new ArrayList<Integer>();// 第一次出现保存在此集合
 
@@ -129,6 +130,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			if (bundle.containsKey("regexes")) {
 				regexes = (List<LessonRepeatRegex>) bundle
 						.getSerializable("regexes");
+			}
+			if (bundle.containsKey("LessonId")) {
+				lessonId = bundle.getInt("LessonId");
 			}
 		}
 		int randomSubject = 0;
@@ -770,6 +774,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			LGSentence lgSentence = (LGSentence) MyDao.getDao(LGSentence.class)
 					.queryForId(lgTableId);
 			modelWord.setSentenceId(lgTableId);
+			modelWord.setLessonId(lessonId);//拿到lessonId
 			modelWord.setTitle(lgSentence.getSentence());
 			modelWord.setAnswer(sentence010.getAnswer());
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
@@ -811,6 +816,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setWordId(lgTableId);// 拿到wordid
 			int answer = word_060.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
+			modelWord.setLessonId(lessonId);//拿到lessonId
 			List<SubLGModel> subLGModelList2 = modelWord.getSubLGModelList();
 			for (SubLGModel subLGModel : subLGModelList2) {
 				if (subLGModel.getWordId() == answer) {
@@ -857,6 +863,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setWordId(lgTableId);
 			int answer = word_020.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
+			modelWord.setLessonId(lessonId);//拿到lessonId
 			LGWord lgWordAnswer = (LGWord) MyDao.getDao(LGWord.class)
 					.queryForId(answer);
 			String left = lgWordAnswer.getTranslations();
@@ -907,7 +914,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			String title = lgWord.getTranslations();
 			modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title
-
+			modelWord.setLessonId(lessonId);//拿到lessonId
 			int answer = Word_010.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
 			LGWord lgWordAnswer = (LGWord) MyDao.getDao(LGWord.class)
