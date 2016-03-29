@@ -116,7 +116,7 @@ public class SplashActivity extends BaseActivity {
 				SHAREDPREFERENCES_NAME, MODE_PRIVATE);
 
 		this.isFirstIn = preferences.getBoolean("isFirstIn", true);
-		
+
 		FileTools.copyDb("chineselearn.db");
 		if (!this.isFirstIn) {
 			this.mHandler.sendEmptyMessageDelayed(GO_HOME, SPLASH_DELAY_MILLIS);
@@ -175,6 +175,7 @@ public class SplashActivity extends BaseActivity {
 		this.setContentView(R.layout.splash);
 		// copyfile();
 		FileTools.copyDb("chineselearn.db");
+		FileTools.copyDb("Babbel_ub.db");
 		iv_bg = (ImageView) findViewById(R.id.iv_bg);
 
 		LayoutParams layoutParams1 = (LayoutParams) iv_bg.getLayoutParams();
@@ -206,7 +207,6 @@ public class SplashActivity extends BaseActivity {
 				SplashActivity.this.initDataAndStartMain();
 			}
 		}, 1);
-		
 
 	}
 
