@@ -1,8 +1,6 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -20,12 +18,9 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnImageSelectAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
-import com.hw.chineseLearn.dao.MyDao;
-import com.hw.chineseLearn.dao.bean.LGModel_Word_010;
+import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGWord;
-import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
-import com.j256.ormlite.stmt.Where;
 import com.util.thread.ThreadWithDialogTask;
 
 /**
@@ -47,6 +42,7 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	TextView txt_name;
 	String question = "\"color\"";
 	private List<LGWord> lgWordList = new ArrayList<LGWord>();
+	private LGModelWord modelWord;//存放当前题
 
 	private int answer;// 此题的答案lgword.getanswer
 	private boolean isRight;
@@ -89,32 +85,34 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	 * 得到数据库中数据
 	 */
 	private void initDBdata() {
-		LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments()
-				.getSerializable("lessonRepeatRegex");
+		modelWord = (LGModelWord) getArguments()
+				.getSerializable("modelWorld");
+		String title = modelWord.getTitle();
+		question=title;
 		// 根据lessonRepeatRegex.getId查询LGword得到Translations
-		try {
-			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
-					lessonRepeatRegex.getLgTableId());
-			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao
-					.getDao(LGModel_Word_010.class).queryBuilder().where()
-					.eq("WordId", lgWord.getWordId()).queryForFirst();
-			String imageOptions = Word_010.getImageOptions();
-			answer = Word_010.getAnswer();
-			String[] splitFenHao = imageOptions.split(";");// 得到4个选项
-			for (int i = 0; i < splitFenHao.length; i++) {
-				LGWord lGWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
-						splitFenHao[i]);
-				String mainPicName = lGWord.getWordId() + "-"
-						+ lGWord.getMainPic();
-				lGWord.setMainPic(mainPicName);// 把数据库名字和文件中图片名字对应
-				lgWordList.add(lGWord);
-			}
-			Collections.shuffle(lgWordList);//打乱
-			question = lgWord.getTranslations();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
+//					lessonRepeatRegex.getLgTableId());
+//			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao
+//					.getDao(LGModel_Word_010.class).queryBuilder().where()
+//					.eq("WordId", lgWord.getWordId()).queryForFirst();
+//			String imageOptions = Word_010.getImageOptions();
+//			answer = Word_010.getAnswer();
+//			String[] splitFenHao = imageOptions.split(";");// 得到4个选项
+//			for (int i = 0; i < splitFenHao.length; i++) {
+//				LGWord lGWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
+//						splitFenHao[i]);
+//				String mainPicName = lGWord.getWordId() + "-"
+//						+ lGWord.getMainPic();
+//				lGWord.setMainPic(mainPicName);// 把数据库名字和文件中图片名字对应
+//				lgWordList.add(lGWord);
+//			}
+//			Collections.shuffle(lgWordList);//打乱
+//			question = lgWord.getTranslations();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
@@ -167,15 +165,15 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	/**
 	 * 初始化
 	 */
-	public void init() {
+	public void init() { 
 		// TODO Auto-generated method stub
 		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
-		txt_name.setText("Select " + question);
+		txt_name.setText(question);
 
 		gv_image = (GridView) contentView.findViewById(R.id.gv_image);
 
 		learnImageSelectAdapter = new LearnImageSelectAdapter(context,
-				lgWordList);
+				modelWord);
 		gv_image.setAdapter(learnImageSelectAdapter);
 		gv_image.setOnItemClickListener(itemClickListener);
 		learnImageSelectAdapter.notifyDataSetChanged();
@@ -189,8 +187,9 @@ public class LearnImageSelectFragment extends BaseFragment implements
 				long arg3) {
 			// TODO Auto-generated method stub
 			learnImageSelectAdapter.setSelection(position);
-			LGWord lgWord = lgWordList.get(position);
-			if (lgWord.getWordId() == answer) {
+			Integer answer = modelWord.getAnswer();
+			int wordId = modelWord.getSubLGModelList().get(position).getWordId();
+			if (wordId == answer) {
 				isRight = true;
 			}else{
 				isRight=false;

@@ -13,11 +13,13 @@ import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.bean.LGModelWord;
+import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.hw.chineseLearn.dao.bean.LGWord;
 
-public class LearnWordSelectListAdapter<T> extends BaseAdapter {
+public class LearnWordSelectListAdapter extends BaseAdapter {
 	private Context context;
-	public ArrayList<T> list;
+	public LGModelWord lgModelWord;
 	private LayoutInflater inflater;
 
 	private int width, height;
@@ -27,10 +29,10 @@ public class LearnWordSelectListAdapter<T> extends BaseAdapter {
 	int colorBlack = -1;
 
 	public LearnWordSelectListAdapter(Context context,
-			ArrayList<T> list) {
+			LGModelWord lgModelWord) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
-		this.list = list;
+		this.lgModelWord = lgModelWord;
 		resources = context.getResources();
 		colorWhite = resources.getColor(R.color.white);
 		colorBlack = resources.getColor(R.color.black);
@@ -41,13 +43,13 @@ public class LearnWordSelectListAdapter<T> extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return list == null ? 0 : list.size();
+		return lgModelWord.getSubLGModelList() == null ? 0 : lgModelWord.getSubLGModelList().size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return list.get(position);
+		return null;
 	}
 
 	@Override
@@ -85,19 +87,12 @@ public class LearnWordSelectListAdapter<T> extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		T model = list.get(position);
-		if (model == null) {
+		if (lgModelWord.getOptions() == null) {
 			return convertView;
 		}
-		if(model instanceof LGWord){
-			LGWord model1=(LGWord)model;
-			String unitName = model1.getWord()+"/"+model1.getPinyin();
-			holder.tv_child_char.setText("" + unitName);
-		}else if(model instanceof String){
-			String modelStr=(String) model;
-			holder.tv_child_char.setText(modelStr);
-		}
 		
+		SubLGModel subLGModel = lgModelWord.getSubLGModelList().get(position);
+		holder.tv_child_char.setText("" + subLGModel.getOption());
 
 		if (selectPosition == position) {// 选中
 			convertView.setBackground(resources
