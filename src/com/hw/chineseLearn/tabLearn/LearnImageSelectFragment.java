@@ -37,12 +37,11 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	public static LearnImageSelectFragment fragment;
 	Context context;
 	LearnImageSelectAdapter learnImageSelectAdapter;
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
 	GridView gv_image;
 	TextView txt_name;
 	String question = "\"color\"";
 	private List<LGWord> lgWordList = new ArrayList<LGWord>();
-	private LGModelWord modelWord;//存放当前题
+	private LGModelWord modelWord;// 存放当前题
 
 	private int answer;// 此题的答案lgword.getanswer
 	private boolean isRight;
@@ -54,65 +53,15 @@ public class LearnImageSelectFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initDBdata();// 初始化数据库数据
-
-		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-		modelBase1.setIconResSuffix("lu1_1_1");
-		modelBase1.setUnitName("Basics1");
-		modelBase1.setLessonList("1;");
-		listBase.add(modelBase1);
-
-		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
-		modelBase2.setIconResSuffix("lu0_1_2");
-		modelBase2.setUnitName("Basics2");
-		modelBase2.setLessonList("1;2;3;4");
-		listBase.add(modelBase2);
-
-		LearnUnitBaseModel modelBase3 = new LearnUnitBaseModel();
-		modelBase3.setIconResSuffix("lu0_1_3");
-		modelBase3.setUnitName("Basics3");
-		modelBase3.setLessonList("1;2;3");
-		listBase.add(modelBase3);
-
-		LearnUnitBaseModel modelBase4 = new LearnUnitBaseModel();
-		modelBase4.setIconResSuffix("lu0_1_4");
-		modelBase4.setUnitName("Color");
-		modelBase4.setLessonList("1;2;3");
-		listBase.add(modelBase4);
-
 	}
 
 	/**
 	 * 得到数据库中数据
 	 */
 	private void initDBdata() {
-		modelWord = (LGModelWord) getArguments()
-				.getSerializable("modelWorld");
+		modelWord = (LGModelWord) getArguments().getSerializable("modelWorld");
 		String title = modelWord.getTitle();
-		question=title;
-		// 根据lessonRepeatRegex.getId查询LGword得到Translations
-//		try {
-//			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
-//					lessonRepeatRegex.getLgTableId());
-//			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao
-//					.getDao(LGModel_Word_010.class).queryBuilder().where()
-//					.eq("WordId", lgWord.getWordId()).queryForFirst();
-//			String imageOptions = Word_010.getImageOptions();
-//			answer = Word_010.getAnswer();
-//			String[] splitFenHao = imageOptions.split(";");// 得到4个选项
-//			for (int i = 0; i < splitFenHao.length; i++) {
-//				LGWord lGWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
-//						splitFenHao[i]);
-//				String mainPicName = lGWord.getWordId() + "-"
-//						+ lGWord.getMainPic();
-//				lGWord.setMainPic(mainPicName);// 把数据库名字和文件中图片名字对应
-//				lgWordList.add(lGWord);
-//			}
-//			Collections.shuffle(lgWordList);//打乱
-//			question = lgWord.getTranslations();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		question = title;
 	}
 
 	@Override
@@ -165,7 +114,7 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	/**
 	 * 初始化
 	 */
-	public void init() { 
+	public void init() {
 		// TODO Auto-generated method stub
 		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
 		txt_name.setText(question);
@@ -188,16 +137,14 @@ public class LearnImageSelectFragment extends BaseFragment implements
 			// TODO Auto-generated method stub
 			learnImageSelectAdapter.setSelection(position);
 			Integer answer = modelWord.getAnswer();
-			int wordId = modelWord.getSubLGModelList().get(position).getWordId();
+			int wordId = modelWord.getSubLGModelList().get(position)
+					.getWordId();
 			if (wordId == answer) {
 				isRight = true;
-			}else{
-				isRight=false;
+			} else {
+				isRight = false;
 			}
 			learnImageSelectAdapter.notifyDataSetChanged();
-			LearnUnitBaseModel learnUnitBaseModel = listBase.get(position);
-			if (learnUnitBaseModel != null) {
-			}
 		}
 	};
 
