@@ -16,22 +16,74 @@ public class LGModelWord implements Serializable {
 	private String title;//所有题的题目
 	private List<SubLGModel> subLGModelList=new ArrayList<SubLGModel>();//选项类 集合
 	private int answer;
-	private int wordId;
 	private String answerText;
 	
+	/////以后用到字段
+	
+	private String slowVoicePath;//慢速语音 已隐藏
+	private String voicePath;//语音路径
+	private List<String> answerList;//答案集合 对应tag
+	private int SentenceId;
+	private int WordId;
+	private int CharId;
+	private int LessonId;
+	private int UnitId;
 	
 	
+	
+	public String getSlowVoicePath() {
+		return slowVoicePath;
+	}
+	public void setSlowVoicePath(String slowVoicePath) {
+		this.slowVoicePath = slowVoicePath;
+	}
+	public String getVoicePath() {
+		return voicePath;
+	}
+	public void setVoicePath(String voicePath) {
+		this.voicePath = voicePath;
+	}
+	public List<String> getAnswerList() {
+		return answerList;
+	}
+	public void setAnswerList(List<String> answerList) {
+		this.answerList = answerList;
+	}
+	public int getSentenceId() {
+		return SentenceId;
+	}
+	public void setSentenceId(int sentenceId) {
+		SentenceId = sentenceId;
+	}
 	public int getWordId() {
-		return wordId;
+		return WordId;
+	}
+	public void setWordId(int wordId) {
+		WordId = wordId;
+	}
+	public int getCharId() {
+		return CharId;
+	}
+	public void setCharId(int charId) {
+		CharId = charId;
+	}
+	public int getLessonId() {
+		return LessonId;
+	}
+	public void setLessonId(int lessonId) {
+		LessonId = lessonId;
+	}
+	public int getUnitId() {
+		return UnitId;
+	}
+	public void setUnitId(int unitId) {
+		UnitId = unitId;
 	}
 	public String getAnswerText() {
 		return answerText;
 	}
 	public void setAnswerText(String answerText) {
 		this.answerText = answerText;
-	}
-	public void setWordId(int wordId) {
-		this.wordId = wordId;
 	}
 	public List<SubLGModel> getSubLGModelList() {
 		return subLGModelList;
@@ -63,6 +115,11 @@ public class LGModelWord implements Serializable {
 		private String imageName;
 		private String option;
 		private int wordId;
+		
+		//////以后用到字段
+		private List<String> voicePath;
+		
+		
 		public String getImageName() {
 			return imageName;
 		}
