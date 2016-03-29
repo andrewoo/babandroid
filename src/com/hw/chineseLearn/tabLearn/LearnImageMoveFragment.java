@@ -429,8 +429,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 	@Override
 	public boolean isRight() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	private String getTitle(LGCharacter lGCharacterPart) {

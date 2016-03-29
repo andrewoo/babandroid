@@ -56,71 +56,12 @@ public class LearnWordSelectFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initData();
-
-		for (int i = 0; i < 4; i++) {
-			LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-			if (i == 0) {
-				modelBase1.setUnitName("I am a man.");
-			} else if (i == 1) {
-				modelBase1.setUnitName("I am a woman.");
-			} else if (i == 2) {
-				modelBase1.setUnitName("He is a man.");
-			} else if (i == 3) {
-				modelBase1.setUnitName("She is a girl.");
-			}
-
-			listBase.add(modelBase1);
-		}
-
 	}
 
 	private void initData() {
 
 		modelWorld = (LGModelWord) getArguments().getSerializable("modelWorld");
 
-	}
-
-	// private void word060Data(int lgTableId) {
-	// try {
-	// word_060 = (LGModel_Word_060)
-	// MyDao.getDao(LGModel_Word_060.class).queryBuilder().where().eq("WordId",lgTableId).queryForFirst();
-	// answer = word_060.getAnswer();
-	// LGWord lgWord1= (LGWord)
-	// MyDao.getDao(LGWord.class).queryForId(lgTableId);
-	// question= "___"+lgWord1.getWord().substring(1);
-	// String[] splitWord060 = word_060.getOptions().split(";");
-	// for (int i = 0; i < splitWord060.length; i++) {
-	// String option = splitWord060[i].split("=")[1];
-	// option=option.replace("-", "/");
-	// word060List.add(option);
-	// }
-	// Collections.shuffle(word060List);
-	//
-	// } catch (SQLException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	//
-	// }
-
-	private void word020Data(int lgTableId) {
-		// try {
-		// word_020 = (LGModel_Word_020)
-		// MyDao.getDao(LGModel_Word_020.class).queryBuilder().where().eq("WordId",lgTableId).queryForFirst();
-		// answer = word_020.getAnswer();
-		// LGWord lgWord1= (LGWord)
-		// MyDao.getDao(LGWord.class).queryForId(lgTableId);
-		// question= "Select"+"\""+lgWord1.getTranslations()+"\"";
-		// String[] splitWordId = word_020.getOptions().split(";");
-		// for (int i = 0; i < splitWordId.length; i++) {
-		// LGWord lgWord = (LGWord)
-		// MyDao.getDao(LGWord.class).queryForId(Integer.valueOf(splitWordId[i]));
-		// lgWordList.add(lgWord);
-		// }
-		// Collections.shuffle(lgWordList);
-		// } catch (SQLException e) {
-		// e.printStackTrace();
-		// }
 	}
 
 	@Override

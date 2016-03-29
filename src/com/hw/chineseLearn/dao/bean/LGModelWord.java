@@ -15,14 +15,20 @@ public class LGModelWord implements Serializable {
 	
 	private String title;//所有题的题目
 	private List<SubLGModel> subLGModelList=new ArrayList<SubLGModel>();//选项类 集合
-	private List<String> options=new ArrayList<String>();//选项 
 	private int answer;
 	private int wordId;
+	private String answerText;
 	
 	
 	
 	public int getWordId() {
 		return wordId;
+	}
+	public String getAnswerText() {
+		return answerText;
+	}
+	public void setAnswerText(String answerText) {
+		this.answerText = answerText;
 	}
 	public void setWordId(int wordId) {
 		this.wordId = wordId;
@@ -38,12 +44,6 @@ public class LGModelWord implements Serializable {
 	}
 	public void setTitle(String title) {
 		this.title = title;
-	}
-	public List<String> getOptions() {
-		return options;
-	}
-	public void setOptions(List<String> options) {
-		this.options = options;
 	}
 	public int getAnswer() {
 		return answer;

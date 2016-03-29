@@ -6,93 +6,58 @@ import com.j256.ormlite.field.DatabaseField;
 
 public class LGSentence implements Serializable {
 
-	// LessonId INT PRIMARY KEY,
-	// LessonName NVARCHAR( 3500 ) NOT NULL,
-	// Description NVARCHAR( 3500 ) NOT NULL,
-	// TDescription NVARCHAR( 3500 ) NOT NULL,
-	// WordList NVARCHAR( 3500 ) NOT NULL,
-	// SentenceList NVARCHAR( 3500 ) NOT NULL,
-	// CharacterList NVARCHAR( 3500 ),
-	// RepeatRegex NVARCHAR( 3500 ) NOT NULL,
-	// NormalRegex NVARCHAR( 3500 ) NOT NULL,
-	// LevelId INT NOT NULL,
-	// UnitId INT NOT NULL,
-	// SortIndex INT NOT NULL,
-	// Version LONG NOT NULL,
-	// DataUId NVARCHAR( 64 ) NOT NULL
+	@DatabaseField(columnName = "SentenceId", id = true)
+	private int SentenceId;
 
-	@DatabaseField(columnName = "LessonId", id = true)
-	private int LessonId;
+	@DatabaseField(columnName = "Sentence")
+	private String Sentence;
 
-	@DatabaseField(columnName = "LessonName")
-	private String LessonName;
-
-	@DatabaseField(columnName = "Description")
-	private String Description;
-
-	@DatabaseField(columnName = "TDescription")
-	private String TDescription;
+	@DatabaseField(columnName = "TSentence")
+	private String TSentence;
 
 	@DatabaseField(columnName = "WordList")
 	private String WordList;
 
-	@DatabaseField(columnName = "SentenceList")
-	private String SentenceList;
+	@DatabaseField(columnName = "Translations")
+	private String Translations;
 
-	@DatabaseField(columnName = "CharacterList")
-	private String CharacterList;
+	@DatabaseField(columnName = "Audio")
+	private String Audio;
 
-	@DatabaseField(columnName = "RepeatRegex")
-	private String RepeatRegex;
+	@DatabaseField(columnName = "DirCode")
+	private String DirCode;
 
-	@DatabaseField(columnName = "NormalRegex")
-	private String NormalRegex;
-
-	@DatabaseField(columnName = "LevelId")
-	private int LevelId;
-
-	@DatabaseField(columnName = "UnitId")
-	private int UnitId;
-
-	@DatabaseField(columnName = "SortIndex")
-	private int SortIndex;
+	@DatabaseField(columnName = "Lessons")
+	private String Lessons;
 
 	@DatabaseField(columnName = "Version")
-	private Long Version;
+	private int Version;
 
 	@DatabaseField(columnName = "DataUId")
-	private String DataUId;
+	private int DataUId;
 
-	public int getLessonId() {
-		return LessonId;
+	public int getSentenceId() {
+		return SentenceId;
 	}
 
-	public void setLessonId(int lessonId) {
-		LessonId = lessonId;
+	public void setSentenceId(int sentenceId) {
+		SentenceId = sentenceId;
 	}
 
-	public String getLessonName() {
-		return LessonName;
+	public String getSentence() {
+		return Sentence;
 	}
 
-	public void setLessonName(String lessonName) {
-		LessonName = lessonName;
+	public void setSentence(String sentence) {
+		Sentence = sentence;
 	}
 
-	public String getDescription() {
-		return Description;
+	public String getTSentence() {
+		return TSentence;
 	}
 
-	public void setDescription(String description) {
-		Description = description;
-	}
-
-	public String getTDescription() {
-		return TDescription;
-	}
-
-	public void setTDescription(String tDescription) {
-		TDescription = tDescription;
+	public void setTSentence(String tSentence) {
+		TSentence = tSentence;
 	}
 
 	public String getWordList() {
@@ -103,79 +68,53 @@ public class LGSentence implements Serializable {
 		WordList = wordList;
 	}
 
-	public String getSentenceList() {
-		return SentenceList;
+	public String getTranslations() {
+		return Translations;
 	}
 
-	public void setSentenceList(String sentenceList) {
-		SentenceList = sentenceList;
+	public void setTranslations(String translations) {
+		Translations = translations;
 	}
 
-	public String getCharacterList() {
-		return CharacterList;
+	public String getAudio() {
+		return Audio;
 	}
 
-	public void setCharacterList(String characterList) {
-		CharacterList = characterList;
+	public void setAudio(String audio) {
+		Audio = audio;
 	}
 
-	public String getRepeatRegex() {
-		return RepeatRegex;
+	public String getDirCode() {
+		return DirCode;
 	}
 
-	public void setRepeatRegex(String repeatRegex) {
-		RepeatRegex = repeatRegex;
+	public void setDirCode(String dirCode) {
+		DirCode = dirCode;
 	}
 
-	public String getNormalRegex() {
-		return NormalRegex;
+	public String getLessons() {
+		return Lessons;
 	}
 
-	public void setNormalRegex(String normalRegex) {
-		NormalRegex = normalRegex;
+	public void setLessons(String lessons) {
+		Lessons = lessons;
 	}
 
-	public int getLevelId() {
-		return LevelId;
-	}
-
-	public void setLevelId(int levelId) {
-		LevelId = levelId;
-	}
-
-	public int getUnitId() {
-		return UnitId;
-	}
-
-	public void setUnitId(int unitId) {
-		UnitId = unitId;
-	}
-
-	public int getSortIndex() {
-		return SortIndex;
-	}
-
-	public void setSortIndex(int sortIndex) {
-		SortIndex = sortIndex;
-	}
-
-	public Long getVersion() {
+	public int getVersion() {
 		return Version;
 	}
 
-	public void setVersion(Long version) {
+	public void setVersion(int version) {
 		Version = version;
 	}
 
-	public String getDataUId() {
+	public int getDataUId() {
 		return DataUId;
 	}
 
-	public void setDataUId(String dataUId) {
+	public void setDataUId(int dataUId) {
 		DataUId = dataUId;
 	}
-	
-	
-	
 
+	
 }

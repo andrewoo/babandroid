@@ -23,7 +23,15 @@ public class LGModel_Sentence_010 implements Serializable {
 	private String Options;
 
 	@DatabaseField(columnName = "Answer")
-	private String Answer;
+	private int Answer;
+
+	public int getAnswer() {
+		return Answer;
+	}
+
+	public void setAnswer(int answer) {
+		Answer = answer;
+	}
 
 	@DatabaseField(columnName = "Version")
 	private Long Version;
@@ -55,13 +63,6 @@ public class LGModel_Sentence_010 implements Serializable {
 		Options = options;
 	}
 
-	public String getAnswer() {
-		return Answer;
-	}
-
-	public void setAnswer(String answer) {
-		Answer = answer;
-	}
 
 	public Long getVersion() {
 		return Version;

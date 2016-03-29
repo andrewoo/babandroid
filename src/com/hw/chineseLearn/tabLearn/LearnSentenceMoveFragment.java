@@ -659,7 +659,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	 */
 	@Override
 	public boolean isRight() {
-		return false;
+		return true;
 	}
 
 }

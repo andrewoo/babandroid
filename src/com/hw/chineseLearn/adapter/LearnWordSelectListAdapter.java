@@ -87,7 +87,7 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		if (lgModelWord.getOptions() == null) {
+		if (lgModelWord.getSubLGModelList() == null) {
 			return convertView;
 		}
 		
