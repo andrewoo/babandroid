@@ -49,6 +49,8 @@ import com.hw.chineseLearn.dao.bean.LGModel_Word_060;
 import com.hw.chineseLearn.dao.bean.LGSentence;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
+import com.hw.chineseLearn.dao.bean.TbMyCharacter;
+import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.util.weight.CustomDialog;
 
 /**
@@ -201,6 +203,11 @@ public class LessonExerciseActivity extends BaseActivity {
 	private boolean isCurrentTestRight;
 
 	/**
+	 * 0错误，1正确
+	 */
+	int status = 0;
+
+	/**
 	 * 初始化
 	 */
 	public void init() {
@@ -333,6 +340,43 @@ public class LessonExerciseActivity extends BaseActivity {
 							R.drawable.bg_progress_wrong);
 					showCheckDialog(false);
 				}
+
+				if (modelWord.getCharId() != 0) {
+					int charId = modelWord.getCharId();
+					int lessonId = modelWord.getLessonId();
+
+					TbMyCharacter tbMyCharacter = new TbMyCharacter();
+					tbMyCharacter.setCharId(charId);
+					tbMyCharacter.setLessonId(lessonId);
+					tbMyCharacter.setStatus(status);
+
+					try {
+						MyDao.getDao(TbMyCharacter.class).update(tbMyCharacter);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (modelWord.getSentenceId() != 0) {
+					int sentenceId = modelWord.getSentenceId();
+					int lessonId = modelWord.getLessonId();
+
+					TbMySentence tbMySentence = new TbMySentence();
+					tbMySentence.setSentenceId(sentenceId);
+					tbMySentence.setLessonId(lessonId);
+					tbMySentence.setStatus(status);
+
+					try {
+						MyDao.getDao(TbMySentence.class).update(tbMySentence);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (modelWord.getWordId() != 0) {
+
+				}
+
 				break;
 
 			default:
@@ -407,6 +451,10 @@ public class LessonExerciseActivity extends BaseActivity {
 	 */
 	private void showCheckDialog(boolean isRight) {
 
+		if (isRight) {
+			status = 1;
+		}
+		status = 0;
 		Button btn_report_bug = (Button) checkView
 				.findViewById(R.id.btn_report_bug);
 		ImageView img_is_right = (ImageView) checkView
@@ -539,7 +587,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
 		switch (resultCode) {
 		case 0:// redo
-			// init();
+				// init();
 			exerciseIndex = 0;
 			regexToView(regexes.get(exerciseIndex));// 重新循环 还是会崩
 			break;
@@ -759,9 +807,8 @@ public class LessonExerciseActivity extends BaseActivity {
 		try {
 			LGModel_Word_060 word_060 = (LGModel_Word_060) MyDao
 					.getDao(LGModel_Word_060.class).queryBuilder().where()
-					.eq("WordId", lgTableId)
-					.queryForFirst();
-			modelWord.setWordId(lgTableId);//拿到wordid
+					.eq("WordId", lgTableId).queryForFirst();
+			modelWord.setWordId(lgTableId);// 拿到wordid
 			int answer = word_060.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
 			List<SubLGModel> subLGModelList2 = modelWord.getSubLGModelList();
@@ -806,8 +853,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		try {
 			LGModel_Word_020 word_020 = (LGModel_Word_020) MyDao
 					.getDao(LGModel_Word_020.class).queryBuilder().where()
-					.eq("WordId", lgTableId)
-					.queryForFirst();
+					.eq("WordId", lgTableId).queryForFirst();
 			modelWord.setWordId(lgTableId);
 			int answer = word_020.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
@@ -852,12 +898,13 @@ public class LessonExerciseActivity extends BaseActivity {
 		modelWord = new LGModelWord();// 中转每道题
 		int lgTableId = lessonRepeatRegex.getLgTableId();
 		try {
-			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
+			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
+					lgTableId);
 			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao
 					.getDao(LGModel_Word_010.class).queryBuilder().where()
 					.eq("WordId", lgWord.getWordId()).queryForFirst();
 
-			modelWord.setWordId(lgTableId);//拿到wordId
+			modelWord.setWordId(lgTableId);// 拿到wordId
 			String title = lgWord.getTranslations();
 			modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title
 
