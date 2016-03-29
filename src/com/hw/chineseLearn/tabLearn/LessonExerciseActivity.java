@@ -539,9 +539,9 @@ public class LessonExerciseActivity extends BaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
 		switch (resultCode) {
 		case 0:// redo
-//			init();
-			exerciseIndex=0;
-			regexToView(regexes.get(exerciseIndex));//重新循环 还是会崩
+			// init();
+			exerciseIndex = 0;
+			regexToView(regexes.get(exerciseIndex));// 重新循环 还是会崩
 			break;
 		case 1:// continue
 			setResult(1);
@@ -681,7 +681,7 @@ public class LessonExerciseActivity extends BaseActivity {
 				replaceTo2("wordSelectFragment");// 题目中文 选项英文
 			}
 		} else if (lgTable == 1) {
-//			regexes.get(exerciseIndex).getRandomSubject()
+			int randomSubject = regexes.get(exerciseIndex).getRandomSubject();
 			switch (1) {
 			case 1:
 				parseSentenseData1(lessonRepeatRegex);
@@ -711,30 +711,34 @@ public class LessonExerciseActivity extends BaseActivity {
 	}
 
 	private void parseSentenseData1(LessonRepeatRegex lessonRepeatRegex) {
-		//lessonRepeatRegex.getid 查询sentence010表id得到选项和答案 
-		//查询lgsentence表得到title
+		// lessonRepeatRegex.getid 查询sentence010表id得到选项和答案
+		// 查询lgsentence表得到title
 		modelWord = new LGModelWord();
 		try {
 			int lgTableId = lessonRepeatRegex.getLgTableId();
-			LGModel_Sentence_010 sentence010=(LGModel_Sentence_010) MyDao.getDao(LGModel_Sentence_010.class).queryBuilder().where().eq("SentenceId", lgTableId).queryForFirst();
-			LGSentence lgSentence = (LGSentence) MyDao.getDao(LGSentence.class).queryForId(lgTableId);
+			LGModel_Sentence_010 sentence010 = (LGModel_Sentence_010) MyDao
+					.getDao(LGModel_Sentence_010.class).queryBuilder().where()
+					.eq("SentenceId", lgTableId).queryForFirst();
+			LGSentence lgSentence = (LGSentence) MyDao.getDao(LGSentence.class)
+					.queryForId(lgTableId);
+			modelWord.setSentenceId(lgTableId);
 			modelWord.setTitle(lgSentence.getSentence());
 			modelWord.setAnswer(sentence010.getAnswer());
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			int answer = sentence010.getAnswer();
-			 String[] options = sentence010.getOptions().split(";");
-			 for (int i = 0; i < options.length; i++) {
-				 String[] option = options[i].split("=");
-				 SubLGModel subLGModel = modelWord.new SubLGModel();
-				 Integer id = Integer.valueOf(option[0]);
-				 subLGModel.setWordId(id);
-				 subLGModel.setOption(option[1]);//拿到每个选项
-				 if(id==answer){
-					 modelWord.setAnswerText(option[1]);//拿到答案文本
-				 }
-				 subLGModelList.add(subLGModel);
+			String[] options = sentence010.getOptions().split(";");
+			for (int i = 0; i < options.length; i++) {
+				String[] option = options[i].split("=");
+				SubLGModel subLGModel = modelWord.new SubLGModel();
+				Integer id = Integer.valueOf(option[0]);
+				subLGModel.setWordId(id);
+				subLGModel.setOption(option[1]);// 拿到每个选项
+				if (id == answer) {
+					modelWord.setAnswerText(option[1]);// 拿到答案文本
+				}
+				subLGModelList.add(subLGModel);
 			}
-			 Collections.shuffle(subLGModelList);
+			Collections.shuffle(subLGModelList);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -751,11 +755,13 @@ public class LessonExerciseActivity extends BaseActivity {
 	 */
 	private void parseSetData6(LessonRepeatRegex lessonRepeatRegex) {
 		modelWord = new LGModelWord();
+		int lgTableId = lessonRepeatRegex.getLgTableId();
 		try {
 			LGModel_Word_060 word_060 = (LGModel_Word_060) MyDao
 					.getDao(LGModel_Word_060.class).queryBuilder().where()
-					.eq("WordId", lessonRepeatRegex.getLgTableId())
+					.eq("WordId", lgTableId)
 					.queryForFirst();
+			modelWord.setWordId(lgTableId);//拿到wordid
 			int answer = word_060.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
 			List<SubLGModel> subLGModelList2 = modelWord.getSubLGModelList();
@@ -766,16 +772,16 @@ public class LessonExerciseActivity extends BaseActivity {
 			}
 			LGWord lgWord1 = (LGWord) MyDao.getDao(LGWord.class).queryForId(
 					lessonRepeatRegex.getLgTableId());
-			question = "_____" + lgWord1.getWord().substring(1);
+			question = "_____ " + lgWord1.getWord().substring(1);
 			modelWord.setTitle(question);// 拿到title
 			String[] splitWordId = word_060.getOptions().split(";");
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			for (int i = 0; i < splitWordId.length; i++) {
-				SubLGModel subLGModel=modelWord.new SubLGModel();
+				SubLGModel subLGModel = modelWord.new SubLGModel();
 				String[] option = splitWordId[i].split("=");
 				int id = Integer.valueOf(option[0]);
 				subLGModel.setWordId(id);// 拿到判断对错使用的ID
-				subLGModel.setOption(option[1]);// 拿到选项
+				subLGModel.setOption(option[1].replace("-", "/"));// 拿到选项
 				subLGModelList.add(subLGModel);// 拿到4个选项
 			}
 			Collections.shuffle(subLGModelList);
@@ -796,11 +802,13 @@ public class LessonExerciseActivity extends BaseActivity {
 	 */
 	private void parseSetData2(LessonRepeatRegex lessonRepeatRegex) {
 		modelWord = new LGModelWord();// 中转每道题
+		int lgTableId = lessonRepeatRegex.getLgTableId();
 		try {
 			LGModel_Word_020 word_020 = (LGModel_Word_020) MyDao
 					.getDao(LGModel_Word_020.class).queryBuilder().where()
-					.eq("WordId", lessonRepeatRegex.getLgTableId())
+					.eq("WordId", lgTableId)
 					.queryForFirst();
+			modelWord.setWordId(lgTableId);
 			int answer = word_020.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
 			LGWord lgWordAnswer = (LGWord) MyDao.getDao(LGWord.class)
@@ -842,13 +850,14 @@ public class LessonExerciseActivity extends BaseActivity {
 	 */
 	private void parseSetData1(LessonRepeatRegex lessonRepeatRegex) {
 		modelWord = new LGModelWord();// 中转每道题
+		int lgTableId = lessonRepeatRegex.getLgTableId();
 		try {
-			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
-					lessonRepeatRegex.getLgTableId());
+			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
 			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao
 					.getDao(LGModel_Word_010.class).queryBuilder().where()
 					.eq("WordId", lgWord.getWordId()).queryForFirst();
 
+			modelWord.setWordId(lgTableId);//拿到wordId
 			String title = lgWord.getTranslations();
 			modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title
 
