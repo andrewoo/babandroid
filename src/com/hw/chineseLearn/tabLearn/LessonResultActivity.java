@@ -61,15 +61,9 @@ public class LessonResultActivity extends BaseActivity {
 	private int secondCount;
 	private int score;
 	private int exerciseCount;
-
-	private ImageView tv_lose_all;
-	private ImageView img_lose_all;
-
-	int characterCount = 0;
-	int wordsCount = 0;
-	int sentenceCount = 0;
-
-	int rightCount, wrongCount;
+	private ImageView tv_lose_all, img_lose_all;
+	int characterCount = 0, wordsCount = 0, sentenceCount = 0;
+	int rightCount = 0, wrongCount = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +82,12 @@ public class LessonResultActivity extends BaseActivity {
 			}
 			if (bundle.containsKey("exerciseCount")) {
 				exerciseCount = bundle.getInt("exerciseCount");
+			}
+			if (bundle.containsKey("rightCount")) {
+				rightCount = bundle.getInt("rightCount");
+			}
+			if (bundle.containsKey("wrongCount")) {
+				rightCount = bundle.getInt("wrongCount");
 			}
 
 		}
@@ -181,49 +181,6 @@ public class LessonResultActivity extends BaseActivity {
 				wordsCount = tbMyWordList.size();
 				sentenceCount = tbMySentenceList.size();
 
-				if (characterCount > 0) {
-					for (int i = 0; i < characterCount; i++) {
-						TbMyCharacter model = tbMyCharacterList.get(i);
-						if (model == null) {
-							continue;
-						}
-						int status = model.getStatus();
-						if (status == 0) {
-							wrongCount++;
-						} else {
-							rightCount++;
-						}
-					}
-				}
-				if (wordsCount > 0) {
-					for (int i = 0; i < wordsCount; i++) {
-						TbMyWord model = tbMyWordList.get(i);
-						if (model == null) {
-							continue;
-						}
-						int status = model.getStatus();
-						if (status == 0) {
-							wrongCount++;
-						} else {
-							rightCount++;
-						}
-					}
-				}
-
-				if (sentenceCount > 0) {
-					for (int i = 0; i < sentenceCount; i++) {
-						TbMySentence model = tbMySentenceList.get(i);
-						if (model == null) {
-							continue;
-						}
-						int status = model.getStatus();
-						if (status == 0) {
-							wrongCount++;
-						} else {
-							rightCount++;
-						}
-					}
-				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

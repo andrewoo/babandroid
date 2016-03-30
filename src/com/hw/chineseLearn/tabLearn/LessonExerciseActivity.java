@@ -242,6 +242,16 @@ public class LessonExerciseActivity extends BaseActivity {
 	int status = 0;
 
 	/**
+	 * 正确的个数
+	 */
+	int rightCount = 0;
+
+	/**
+	 * 错误个数
+	 */
+	int wrongCount = 0;
+
+	/**
 	 * 初始化
 	 */
 	public void init() {
@@ -539,9 +549,11 @@ public class LessonExerciseActivity extends BaseActivity {
 
 		if (isRight) {
 			status = 1;
+			rightCount++;
 		} else {
 			status = 0;
 		}
+
 		Button btn_report_bug = (Button) checkView
 				.findViewById(R.id.btn_report_bug);
 		ImageView img_is_right = (ImageView) checkView
@@ -611,9 +623,11 @@ public class LessonExerciseActivity extends BaseActivity {
 					Intent intent = new Intent(LessonExerciseActivity.this,
 							LessonResultActivity.class);
 					intent.putExtra("loseAllPanders", "");
-					intent.putExtra("secondCount", secondCount);
-					intent.putExtra("score", score);
-					intent.putExtra("exerciseCount", exerciseCount);
+					intent.putExtra("secondCount", secondCount);// 用时秒数
+					intent.putExtra("score", score);// 得分
+					intent.putExtra("exerciseCount", exerciseCount);// 总练习题目数
+					intent.putExtra("rightCount", rightCount);// 正确个数
+					intent.putExtra("wrongCount", wrongCount);// 错误个数
 
 					startActivityForResult(intent, 100);
 					if (timer != null) {
@@ -820,7 +834,6 @@ public class LessonExerciseActivity extends BaseActivity {
 				//查询030得到answer 
 				
 //				MyDao.getDao(LGWord.class)
-
 				wordInputFragment = new LearnWordInputFragment();
 				baseFragment = wordInputFragment;
 				Bundle bundle4 = new Bundle();
@@ -868,29 +881,32 @@ public class LessonExerciseActivity extends BaseActivity {
 	}
 
 	private void parseSetData3(LessonRepeatRegex lessonRepeatRegex) {
-		//查询lgword表title= word+/+pinyin set过去id
-		//查询030表得到options 以;号分割 得到String answer 
+		// 查询lgword表title= word+/+pinyin set过去id
+		// 查询030表得到options 以;号分割 得到String answer
 		modelWord = new LGModelWord();
 		int lgTableId = lessonRepeatRegex.getLgTableId();
 		try {
-			LGWord lgWord=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
-			String title=lgWord.getWord()+"/"+lgWord.getPinyin();
-			modelWord.setTitle(title);//拿到标题
-			modelWord.setWordId(lgTableId);//拿到wordid
+			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
+					lgTableId);
+			String title = lgWord.getWord() + "/" + lgWord.getPinyin();
+			modelWord.setTitle(title);// 拿到标题
+			modelWord.setWordId(lgTableId);// 拿到wordid
 			List<String> answerList = modelWord.getAnswerList();
-			LGModel_Word_030 word030=(LGModel_Word_030) MyDao.getDao(LGModel_Word_030.class).queryBuilder().where().eq("WordId", lgTableId).queryForFirst();
-			 String[] splitAnswer = word030.getAnswer().split("!@@@!");
-			 for (int i = 0; i < splitAnswer.length; i++) {
-				 answerList.add(UiUtil.StringFilter(splitAnswer[i]));//加入答案
+			LGModel_Word_030 word030 = (LGModel_Word_030) MyDao
+					.getDao(LGModel_Word_030.class).queryBuilder().where()
+					.eq("WordId", lgTableId).queryForFirst();
+			String[] splitAnswer = word030.getAnswer().split("!@@@!");
+			for (int i = 0; i < splitAnswer.length; i++) {
+				answerList.add(UiUtil.StringFilter(splitAnswer[i]));// 加入答案
 			}
 			modelWord.setAnswerList(answerList);
-//			modelWord.setAnswerText(answer);//拿到答案
+			// modelWord.setAnswerText(answer);//拿到答案
 			String[] split = word030.getOptions().split(";");
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
-			for (int i = 0; i < split.length; i++) { 
-				 SubLGModel subLGModel = modelWord.new SubLGModel();
-				 subLGModel.setOption(split[i]);//拿到选项
-				 subLGModelList.add(subLGModel);
+			for (int i = 0; i < split.length; i++) {
+				SubLGModel subLGModel = modelWord.new SubLGModel();
+				subLGModel.setOption(split[i]);// 拿到选项
+				subLGModelList.add(subLGModel);
 			}
 			Collections.shuffle(subLGModelList);
 		} catch (SQLException e) {
