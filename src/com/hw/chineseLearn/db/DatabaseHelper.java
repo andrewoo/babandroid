@@ -16,8 +16,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 	private static DatabaseHelper instance;
 	
 	public static final String DATABASE_PATH = CustomApplication.app.getFilesDir() + "/chineselearn.db";
-	
-	 private AndroidConnectionSource connectionSource;
 
     @Override
     public synchronized SQLiteDatabase getWritableDatabase() {

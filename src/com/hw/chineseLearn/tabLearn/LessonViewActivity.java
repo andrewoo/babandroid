@@ -88,8 +88,12 @@ public class LessonViewActivity extends BaseActivity implements
 	 * 
 	 */
 	private List<LessonRepeatRegex> getRepeatRegexBeanList() {
-		lesson = lessonList.get(Integer.valueOf(mUnit.getLessonList()
-				.split(";")[selection]) - 1);
+		try {
+			lesson=(Lesson) MyDao.getDao(Lesson.class).queryForId(mUnit.getLessonList().split(";")[selection]);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String[] questions = lesson.getRepeatRegex().split("#");
 		List<LessonRepeatRegex> regexes = new ArrayList<LessonRepeatRegex>();
 		List<LessonRepeatRegex> subRegexes = new ArrayList<LessonRepeatRegex>();
@@ -98,8 +102,7 @@ public class LessonViewActivity extends BaseActivity implements
 			String[] splitFenHao = questions[i].split(";");
 			if (splitFenHao[0].indexOf("-") != -1) {
 				String[] splitLgTableId = splitFenHao[0].split("-");
-				for (int j = 0; j < Integer
-						.valueOf(splitFenHao[splitFenHao.length - 1]); j++) {
+				for (int j = 0; j < Integer.valueOf(splitFenHao[splitFenHao.length - 1]); j++) {
 					if (j == 0) {
 						regex.setLgTable(Integer.valueOf(splitLgTableId[j]
 								.split(":")[0]));
