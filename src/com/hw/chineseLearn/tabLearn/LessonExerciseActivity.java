@@ -832,8 +832,16 @@ public class LessonExerciseActivity extends BaseActivity {
 			case 4:// 单词翻译输入英语 
 				//先查询拿到wordid 查询 LGWORD 得到title
 				//查询030得到answer 
-				
-//				MyDao.getDao(LGWord.class)
+				modelWord = new LGModelWord();
+				int lgTableId = lessonRepeatRegex.getLgTableId();
+				try {
+					LGWord lgWord=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
+					String title=lgWord.getWord()+"/"+lgWord.getPinyin();
+					modelWord.setTitle(title);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				wordInputFragment = new LearnWordInputFragment();
 				baseFragment = wordInputFragment;
 				Bundle bundle4 = new Bundle();

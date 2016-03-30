@@ -112,7 +112,6 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	}
 
 	private void initData() {
-		
 		modelWord = (LGModelWord) getArguments().getSerializable("modelWord");
 		title = modelWord.getTitle();//得到title
 		subLGModelList = modelWord.getSubLGModelList();
