@@ -1,6 +1,5 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,13 +25,8 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
-import com.hw.chineseLearn.dao.bean.LGModel_Word_030;
-import com.hw.chineseLearn.dao.bean.LGWord;
-import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
-import com.j256.ormlite.stmt.Where;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.UiUtil;
 
@@ -83,7 +77,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	// 手指按下时记录的左边值
 	float downX, downY;
 	float upX, upY;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -103,19 +97,19 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		rlRoot = (RelativeLayout) contentView.findViewById(R.id.rl_root);
 		lin_play_and_text = (LinearLayout) contentView
 				.findViewById(R.id.lin_play_and_text);
-//		lin_play_and_text.setVisibility(View.GONE);
+		// lin_play_and_text.setVisibility(View.GONE);
 		lin_line = (LinearLayout) contentView.findViewById(R.id.lin_line);
-		txt_name=(TextView) contentView.findViewById(R.id.txt_name);
-		txt_name.setText(title);//设置title
+		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
+		txt_name.setText(title);
 		initBottomViews();
 		initBottomGreyViews();
 	}
 
 	private void initData() {
 		modelWord = (LGModelWord) getArguments().getSerializable("modelWord");
-		title = modelWord.getTitle();//得到title
+		title = modelWord.getTitle();// 得到title
 		subLGModelList = modelWord.getSubLGModelList();
-		
+
 	}
 
 	@Override
@@ -176,7 +170,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	int viewLeftRightPadding = 20;
 	int viewTopBottomPadding = 10;
 
-//	private String[] textSplits;
+	private String[] textSplits;
 
 	private String title;
 
@@ -184,9 +178,10 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 	private LGModelWord modelWord;
 
+
 	private void initBottomViews() {
 
-		for (int i = 0; i < subLGModelList.size(); i++) {
+		for (int i = 0; i < textSplits.length; i++) {
 
 			final TextView textView = new TextView(context);
 			LinearLayout.LayoutParams ly = new LinearLayout.LayoutParams(
@@ -194,7 +189,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			textView.setLayoutParams(ly);
 			textView.setPadding(viewLeftRightPadding, viewTopBottomPadding,
 					viewLeftRightPadding, viewTopBottomPadding);
-			String word = subLGModelList.get(i).getOption();
+			String word = textSplits[i];
 			textView.setText("" + word);
 			textView.setBackground(context.getResources().getDrawable(
 					R.drawable.bg_white_to_blue));
@@ -656,13 +651,13 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	 */
 	@Override
 	public boolean isRight() {
-		
+
 		String topViewStrings = getTopViewStrings();
 		String stringFilter = UiUtil.StringFilter(topViewStrings);
 		List<String> answerList = modelWord.getAnswerList();
-		
+
 		for (int i = 0; i < answerList.size(); i++) {
-			if(answerList.get(i).equals(stringFilter)){
+			if (answerList.get(i).equals(stringFilter)) {
 				return true;
 			}
 		}
