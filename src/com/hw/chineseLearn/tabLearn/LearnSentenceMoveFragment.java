@@ -181,7 +181,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 	private void initBottomViews() {
 
-		for (int i = 0; i < textSplits.length; i++) {
+		for (int i = 0; i < subLGModelList.size(); i++) {
 
 			final TextView textView = new TextView(context);
 			LinearLayout.LayoutParams ly = new LinearLayout.LayoutParams(
@@ -189,7 +189,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			textView.setLayoutParams(ly);
 			textView.setPadding(viewLeftRightPadding, viewTopBottomPadding,
 					viewLeftRightPadding, viewTopBottomPadding);
-			String word = textSplits[i];
+			String word = subLGModelList.get(i).getOption();
 			textView.setText("" + word);
 			textView.setBackground(context.getResources().getDrawable(
 					R.drawable.bg_white_to_blue));
