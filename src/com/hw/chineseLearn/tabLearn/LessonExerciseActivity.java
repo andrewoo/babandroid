@@ -388,16 +388,16 @@ public class LessonExerciseActivity extends BaseActivity {
 					tbMyCharacter.setCharId(charId);
 					tbMyCharacter.setLessonId(lessonId);
 					tbMyCharacter.setStatus(status);
-					int a = 0;
+					int c = 0;
 					try {
-						a = MyDao.getDaoMy(TbMyCharacter.class).create(
+						c = MyDao.getDaoMy(TbMyCharacter.class).create(
 								tbMyCharacter);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
-					Log.d(TAG, "a:" + a);
+					Log.d(TAG, "c:" + c);
 				}
 				if (modelWord.getSentenceId() != 0) {
 					int sentenceId = modelWord.getSentenceId();
@@ -405,15 +405,15 @@ public class LessonExerciseActivity extends BaseActivity {
 					tbMySentence.setSentenceId(sentenceId);
 					tbMySentence.setLessonId(lessonId);
 					tbMySentence.setStatus(status);
-					int b = 0;
+					int s = 0;
 					try {
-						b = MyDao.getDaoMy(TbMySentence.class).create(
+						s = MyDao.getDaoMy(TbMySentence.class).create(
 								tbMySentence);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					Log.d(TAG, "b:" + b);
+					Log.d(TAG, "s:" + s);
 				}
 				if (modelWord.getWordId() != 0) {
 					int wordId = modelWord.getWordId();
@@ -421,14 +421,14 @@ public class LessonExerciseActivity extends BaseActivity {
 					tbMyWord.setWordId(wordId);
 					tbMyWord.setLessonId(lessonId);
 					tbMyWord.setStatus(status);
-					int c = 0;
+					int w = 0;
 					try {
-						c = MyDao.getDaoMy(TbMyWord.class).create(tbMyWord);
+						w = MyDao.getDaoMy(TbMyWord.class).create(tbMyWord);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					Log.d(TAG, "c:" + c);
+					Log.d(TAG, "w:" + w);
 				}
 
 				break;
