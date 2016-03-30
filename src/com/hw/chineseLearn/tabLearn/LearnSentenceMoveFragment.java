@@ -669,14 +669,13 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		
 		String topViewStrings = getTopViewStrings();
 		String stringFilter = UiUtil.StringFilter(topViewStrings);
-		System.out.println("1111111111"+topViewStrings);
-		System.out.println("2222222222"+modelWord.getAnswerList());
+		List<String> answerList = modelWord.getAnswerList();
 		
-		if(modelWord.getAnswerList().contains(topViewStrings)/* || modelWord.getAnswerText().equals(topViewStrings)*/){
-			return true;
-		}else{
-			return false;
+		for (int i = 0; i < answerList.size(); i++) {
+			if(answerList.get(i).equals(stringFilter)){
+				return true;
+			}
 		}
+		return false;
 	}
-
 }
