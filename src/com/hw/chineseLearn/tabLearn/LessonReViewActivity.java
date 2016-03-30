@@ -1,9 +1,13 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +20,10 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbMyCharacter;
+import com.hw.chineseLearn.dao.bean.TbMySentence;
+import com.hw.chineseLearn.dao.bean.TbMyWord;
 
 /**
  * 课程复习页面
@@ -58,6 +66,7 @@ public class LessonReViewActivity extends BaseActivity {
 	/**
 	 * 初始化
 	 */
+	@SuppressWarnings("unchecked")
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,

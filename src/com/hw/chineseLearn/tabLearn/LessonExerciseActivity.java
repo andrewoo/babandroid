@@ -53,6 +53,7 @@ import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
+import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.util.weight.CustomDialog;
 
 /**
@@ -326,6 +327,7 @@ public class LessonExerciseActivity extends BaseActivity {
 
 	OnClickListener onClickListener = new OnClickListener() {
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
@@ -349,38 +351,51 @@ public class LessonExerciseActivity extends BaseActivity {
 
 				if (modelWord.getCharId() != 0) {
 					int charId = modelWord.getCharId();
-					int lessonId = modelWord.getLessonId();
-
 					TbMyCharacter tbMyCharacter = new TbMyCharacter();
 					tbMyCharacter.setCharId(charId);
 					tbMyCharacter.setLessonId(lessonId);
 					tbMyCharacter.setStatus(status);
-
+					int a = 0;
 					try {
-						MyDao.getDao(TbMyCharacter.class).update(tbMyCharacter);
+						a = MyDao.getDaoMy(TbMyCharacter.class).create(
+								tbMyCharacter);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+
+					Log.d(TAG, "a:" + a);
 				}
 				if (modelWord.getSentenceId() != 0) {
 					int sentenceId = modelWord.getSentenceId();
-					int lessonId = modelWord.getLessonId();
-
 					TbMySentence tbMySentence = new TbMySentence();
 					tbMySentence.setSentenceId(sentenceId);
 					tbMySentence.setLessonId(lessonId);
 					tbMySentence.setStatus(status);
-
+					int b = 0;
 					try {
-						MyDao.getDao(TbMySentence.class).update(tbMySentence);
+						b = MyDao.getDaoMy(TbMySentence.class).create(
+								tbMySentence);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					Log.d(TAG, "b:" + b);
 				}
 				if (modelWord.getWordId() != 0) {
-
+					int wordId = modelWord.getWordId();
+					TbMyWord tbMyWord = new TbMyWord();
+					tbMyWord.setWordId(wordId);
+					tbMyWord.setLessonId(lessonId);
+					tbMyWord.setStatus(status);
+					int c = 0;
+					try {
+						c = MyDao.getDaoMy(TbMyWord.class).create(tbMyWord);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					Log.d(TAG, "c:" + c);
 				}
 
 				break;
@@ -842,7 +857,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			LGSentence lgSentence = (LGSentence) MyDao.getDao(LGSentence.class)
 					.queryForId(lgTableId);
 			modelWord.setSentenceId(lgTableId);
-			modelWord.setLessonId(lessonId);//拿到lessonId
+			modelWord.setLessonId(lessonId);// 拿到lessonId
 			modelWord.setTitle(lgSentence.getSentence());
 			modelWord.setAnswer(sentence010.getAnswer());
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
@@ -932,7 +947,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setWordId(lgTableId);
 			int answer = word_020.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
-			modelWord.setLessonId(lessonId);//拿到lessonId
+			modelWord.setLessonId(lessonId);// 拿到lessonId
 			LGWord lgWordAnswer = (LGWord) MyDao.getDao(LGWord.class)
 					.queryForId(answer);
 			String left = lgWordAnswer.getTranslations();
@@ -983,7 +998,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			String title = lgWord.getTranslations();
 			modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title
-			modelWord.setLessonId(lessonId);//拿到lessonId
+			modelWord.setLessonId(lessonId);// 拿到lessonId
 			int answer = Word_010.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
 			LGWord lgWordAnswer = (LGWord) MyDao.getDao(LGWord.class)
