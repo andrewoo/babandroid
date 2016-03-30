@@ -117,15 +117,6 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		title = modelWord.getTitle();//得到title
 		subLGModelList = modelWord.getSubLGModelList();
 		
-//		try {
-//			LGWord word=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
-//			LGModel_Word_030 word3=(LGModel_Word_030) MyDao.getDao(LGModel_Word_030.class).queryBuilder().where().eq("WordId", lgTableId).queryForFirst();
-//			textSplits = word3.getOptions().split(";");
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
 	}
 
 	@Override
