@@ -838,6 +838,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					LGWord lgWord=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
 					String title=lgWord.getWord()+"/"+lgWord.getPinyin();
 					modelWord.setTitle(title);
+//					MyDao.getDao(LGModel_Word_040.class)
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
