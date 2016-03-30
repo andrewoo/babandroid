@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -104,6 +106,9 @@ public class LessonExerciseActivity extends BaseActivity {
 
 	private List<Integer> isFirstList = new ArrayList<Integer>();// 第一次出现保存在此集合
 
+	private Timer timer = new Timer();
+	private int secondCount = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,6 +122,27 @@ public class LessonExerciseActivity extends BaseActivity {
 		init();
 		initMediaPlayer();
 		playRightSound();
+	}
+
+	TimerTask task = new TimerTask() {
+		@Override
+		public void run() {
+
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					secondCount++;
+					Log.d(TAG, "secondCount:" + secondCount);
+				}
+			});
+		}
+	};
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		timer.schedule(task, 0, 1000);
 	}
 
 	/**
@@ -310,6 +336,13 @@ public class LessonExerciseActivity extends BaseActivity {
 							LessonResultActivity.class);
 					intent.putExtra("loseAllPanders", "loseAllPanders");
 					startActivityForResult(intent, 100);
+					if (timer != null) {
+						timer.cancel();
+					}
+					if (task != null) {
+						task.cancel();
+					}
+
 				} else {
 					// playWrongSound();
 					// showCheckDialog(false);
@@ -548,7 +581,17 @@ public class LessonExerciseActivity extends BaseActivity {
 					Intent intent = new Intent(LessonExerciseActivity.this,
 							LessonResultActivity.class);
 					intent.putExtra("loseAllPanders", "");
+					intent.putExtra("secondCount", secondCount);
+					intent.putExtra("score", score);
 					startActivityForResult(intent, 100);
+					if (timer != null) {
+						timer.cancel();
+						timer = null;
+					}
+					if (task != null) {
+						task.cancel();
+						task = null;
+					}
 				}
 
 				builder.dismiss();
@@ -601,6 +644,14 @@ public class LessonExerciseActivity extends BaseActivity {
 			}
 		}
 		isFirstList.clear();
+		if (timer != null) {
+			timer.cancel();
+			timer = null;
+		}
+		if (task != null) {
+			task.cancel();
+			task = null;
+		}
 	};
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
