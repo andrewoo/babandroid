@@ -1,7 +1,7 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
@@ -25,11 +25,8 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.dao.MyDao;
-import com.hw.chineseLearn.dao.bean.LGModel_Word_030;
-import com.hw.chineseLearn.dao.bean.LGWord;
-import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
-import com.j256.ormlite.stmt.Where;
+import com.hw.chineseLearn.dao.bean.LGModelWord;
+import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.UiUtil;
 
@@ -80,7 +77,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	// 手指按下时记录的左边值
 	float downX, downY;
 	float upX, upY;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -100,29 +97,20 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		rlRoot = (RelativeLayout) contentView.findViewById(R.id.rl_root);
 		lin_play_and_text = (LinearLayout) contentView
 				.findViewById(R.id.lin_play_and_text);
-//		lin_play_and_text.setVisibility(View.GONE);
+		// lin_play_and_text.setVisibility(View.GONE);
 		lin_line = (LinearLayout) contentView.findViewById(R.id.lin_line);
-		txt_name=(TextView) contentView.findViewById(R.id.txt_name);
+		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
 		txt_name.setText(title);
 		initBottomViews();
 		initBottomGreyViews();
 	}
 
 	private void initData() {
-		
-		LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments().getSerializable("lessonRepeatRegex");
-		//根据lgid查询lgword表得到 word和pinyin，设置给title 查询030表得到options切割后设置给text块
-		int lgTableId = lessonRepeatRegex.getLgTableId();
-		try {
-			LGWord word=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
-			title = word.getWord()+"/"+word.getPinyin();
-			LGModel_Word_030 word3=(LGModel_Word_030) MyDao.getDao(LGModel_Word_030.class).queryBuilder().where().eq("WordId", lgTableId).queryForFirst();
-			textSplits = word3.getOptions().split(";");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
+		modelWord = (LGModelWord) getArguments().getSerializable("modelWord");
+		title = modelWord.getTitle();// 得到title
+		subLGModelList = modelWord.getSubLGModelList();
+
 	}
 
 	@Override
@@ -186,6 +174,11 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	private String[] textSplits;
 
 	private String title;
+
+	private List<SubLGModel> subLGModelList;
+
+	private LGModelWord modelWord;
+
 
 	private void initBottomViews() {
 
@@ -659,7 +652,16 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	 */
 	@Override
 	public boolean isRight() {
-		return true;
-	}
 
+		String topViewStrings = getTopViewStrings();
+		String stringFilter = UiUtil.StringFilter(topViewStrings);
+		List<String> answerList = modelWord.getAnswerList();
+
+		for (int i = 0; i < answerList.size(); i++) {
+			if (answerList.get(i).equals(stringFilter)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

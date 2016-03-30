@@ -829,10 +829,11 @@ public class LessonExerciseActivity extends BaseActivity {
 				parseSetData3(lessonRepeatRegex);
 				replaceTo2("sentenceMoveFragment");
 				break;
-			case 4:// 单词翻译输入英语
-					// 先查询拿到wordid 查询 LGWORD 得到title
-					// 查询030得到answer
-
+			case 4:// 单词翻译输入英语 
+				//先查询拿到wordid 查询 LGWORD 得到title
+				//查询030得到answer 
+				
+//				MyDao.getDao(LGWord.class)
 				wordInputFragment = new LearnWordInputFragment();
 				baseFragment = wordInputFragment;
 				Bundle bundle4 = new Bundle();
