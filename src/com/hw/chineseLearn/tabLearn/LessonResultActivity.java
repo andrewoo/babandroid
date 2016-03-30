@@ -1,5 +1,8 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -15,6 +18,11 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbMyCharacter;
+import com.hw.chineseLearn.dao.bean.TbMySentence;
+import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.util.tool.DateUtil;
 import com.util.weight.RoundProgressBar;
 
 /**
@@ -32,21 +40,36 @@ public class LessonResultActivity extends BaseActivity {
 	View contentView;
 
 	private RoundProgressBar mRoundProgressBar;
+	private TextView tv_score;
 	private RelativeLayout rel_1_2_1;
 	private TextView tv_right_count;
 	private RelativeLayout rel_1_2_2;
 	private TextView tv_wrong_count;
 
 	private TextView tv_time_count;
+	/**
+	 * 正确率
+	 */
 	private TextView tv_accuracy_percent;
+	private double accuracy = 0.00d;
+	private TextView tv_result;
 
 	private TextView btn_redo;
 	private TextView btn_continue;
 	private int progress = 0;
 	private String loseAllPanders = "";
+	private int secondCount;
+	private int score;
+	private int exerciseCount;
 
 	private ImageView tv_lose_all;
 	private ImageView img_lose_all;
+
+	int characterCount = 0;
+	int wordsCount = 0;
+	int sentenceCount = 0;
+
+	int rightCount, wrongCount;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +80,16 @@ public class LessonResultActivity extends BaseActivity {
 			if (bundle.containsKey("loseAllPanders")) {
 				loseAllPanders = bundle.getString("loseAllPanders");
 			}
+			if (bundle.containsKey("secondCount")) {
+				secondCount = bundle.getInt("secondCount");
+			}
+			if (bundle.containsKey("score")) {
+				score = bundle.getInt("score");
+			}
+			if (bundle.containsKey("exerciseCount")) {
+				exerciseCount = bundle.getInt("exerciseCount");
+			}
+
 		}
 
 		if ("".equals(loseAllPanders)) {
@@ -81,6 +114,7 @@ public class LessonResultActivity extends BaseActivity {
 	/**
 	 * 初始化
 	 */
+	@SuppressWarnings("unchecked")
 	public void init() {
 		LayoutParams lp = new LayoutParams(width, height);
 
@@ -89,6 +123,9 @@ public class LessonResultActivity extends BaseActivity {
 			mRoundProgressBar = (RoundProgressBar) findViewById(R.id.roundProgressBar);
 
 			mRoundProgressBar.setLayoutParams(lp);
+
+			tv_score = (TextView) contentView.findViewById(R.id.tv_score);
+			tv_score.setText("" + score);
 
 			rel_1_2_1 = (RelativeLayout) contentView
 					.findViewById(R.id.rel_1_2_right);
@@ -103,6 +140,9 @@ public class LessonResultActivity extends BaseActivity {
 
 			tv_time_count = (TextView) contentView
 					.findViewById(R.id.tv_time_count);
+
+			tv_time_count.setText(DateUtil.getStringfromInt(secondCount));
+
 			tv_accuracy_percent = (TextView) contentView
 					.findViewById(R.id.tv_accuracy_percent);
 
@@ -123,6 +163,79 @@ public class LessonResultActivity extends BaseActivity {
 
 				}
 			}).start();
+			tv_result = (TextView) contentView.findViewById(R.id.tv_result);
+			tv_result.setText("Congratulations!You defeated " + 97
+					+ "%babbelApp learns!");
+
+			try {
+				ArrayList<TbMyCharacter> tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao
+						.getDaoMy(TbMyCharacter.class).queryForAll();
+
+				ArrayList<TbMyWord> tbMyWordList = (ArrayList<TbMyWord>) MyDao
+						.getDaoMy(TbMyWord.class).queryForAll();
+
+				ArrayList<TbMySentence> tbMySentenceList = (ArrayList<TbMySentence>) MyDao
+						.getDaoMy(TbMySentence.class).queryForAll();
+
+				characterCount = tbMyCharacterList.size();
+				wordsCount = tbMyWordList.size();
+				sentenceCount = tbMySentenceList.size();
+
+				if (characterCount > 0) {
+					for (int i = 0; i < characterCount; i++) {
+						TbMyCharacter model = tbMyCharacterList.get(i);
+						if (model == null) {
+							continue;
+						}
+						int status = model.getStatus();
+						if (status == 0) {
+							wrongCount++;
+						} else {
+							rightCount++;
+						}
+					}
+				}
+				if (wordsCount > 0) {
+					for (int i = 0; i < wordsCount; i++) {
+						TbMyWord model = tbMyWordList.get(i);
+						if (model == null) {
+							continue;
+						}
+						int status = model.getStatus();
+						if (status == 0) {
+							wrongCount++;
+						} else {
+							rightCount++;
+						}
+					}
+				}
+
+				if (sentenceCount > 0) {
+					for (int i = 0; i < sentenceCount; i++) {
+						TbMySentence model = tbMySentenceList.get(i);
+						if (model == null) {
+							continue;
+						}
+						int status = model.getStatus();
+						if (status == 0) {
+							wrongCount++;
+						} else {
+							rightCount++;
+						}
+					}
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				tv_right_count.setText("" + rightCount);
+				tv_wrong_count.setText("" + wrongCount);
+				if (rightCount != 0) {
+
+					accuracy = (double) (exerciseCount / rightCount);
+				}
+				tv_accuracy_percent.setText("" + accuracy + "%");
+			}
 
 		} else {
 			tv_lose_all = (ImageView) findViewById(R.id.tv_lose_all);
