@@ -51,6 +51,7 @@ public class LessonResultActivity extends BaseActivity {
 	 * 正确率
 	 */
 	private TextView tv_accuracy_percent;
+	private double accuracy = 0.00d;
 	private TextView tv_result;
 
 	private TextView btn_redo;
@@ -159,7 +160,7 @@ public class LessonResultActivity extends BaseActivity {
 			}).start();
 			tv_result = (TextView) contentView.findViewById(R.id.tv_result);
 			tv_result.setText("Congratulations!You defeated " + 97
-					+ "%ChineseSkill learns!");
+					+ "%babbelApp learns!");
 
 			try {
 				ArrayList<TbMyCharacter> tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao
@@ -224,7 +225,9 @@ public class LessonResultActivity extends BaseActivity {
 			} finally {
 				tv_right_count.setText("" + rightCount);
 				tv_wrong_count.setText("" + wrongCount);
-
+				accuracy = (characterCount + wordsCount + sentenceCount)
+						/ rightCount;
+				tv_accuracy_percent.setText("" + accuracy + "%");
 			}
 
 		} else {

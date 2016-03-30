@@ -505,8 +505,9 @@ public class LessonExerciseActivity extends BaseActivity {
 
 		if (isRight) {
 			status = 1;
+		} else {
+			status = 0;
 		}
-		status = 0;
 		Button btn_report_bug = (Button) checkView
 				.findViewById(R.id.btn_report_bug);
 		ImageView img_is_right = (ImageView) checkView
