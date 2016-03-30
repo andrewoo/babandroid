@@ -60,6 +60,7 @@ public class LessonResultActivity extends BaseActivity {
 	private String loseAllPanders = "";
 	private int secondCount;
 	private int score;
+	private int exerciseCount;
 
 	private ImageView tv_lose_all;
 	private ImageView img_lose_all;
@@ -85,6 +86,10 @@ public class LessonResultActivity extends BaseActivity {
 			if (bundle.containsKey("score")) {
 				score = bundle.getInt("score");
 			}
+			if (bundle.containsKey("exerciseCount")) {
+				exerciseCount = bundle.getInt("exerciseCount");
+			}
+
 		}
 
 		if ("".equals(loseAllPanders)) {
@@ -227,7 +232,7 @@ public class LessonResultActivity extends BaseActivity {
 				tv_wrong_count.setText("" + wrongCount);
 				if (rightCount != 0) {
 
-					accuracy = (double) ((characterCount + wordsCount + sentenceCount) / rightCount);
+					accuracy = (double) (exerciseCount / rightCount);
 				}
 				tv_accuracy_percent.setText("" + accuracy + "%");
 			}
