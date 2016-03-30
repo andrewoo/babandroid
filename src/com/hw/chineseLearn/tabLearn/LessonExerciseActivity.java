@@ -54,6 +54,7 @@ import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
 
 /**
@@ -727,40 +728,12 @@ public class LessonExerciseActivity extends BaseActivity {
 				replaceTo2("wordSelectFragment");
 				break;
 			case 3:// tag英文
-				//查询lgword表title= word+/+pinyin set过去id
-				//查询030表得到options 以;号分割 得到String answer 
-				modelWord = new LGModelWord();
-				int lgTableId = lessonRepeatRegex.getLgTableId();
-				try {
-					LGWord lgWord=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
-					String title=lgWord.getWord()+"/"+lgWord.getPinyin();
-					modelWord.setTitle(title);//拿到标题
-					modelWord.setWordId(lgTableId);//拿到wordid
-					Map map=new HashMap<String, Integer>();
-					map.put("WordId", lgTableId);
-					LGModel_Word_030 word030=(LGModel_Word_030) MyDao.getDao(LGModel_Word_030.class).queryForFieldValues(map);
-					String answer = word030.getAnswer();
-					modelWord.setAnswerText(answer);
-					String[] split = word030.getOptions().split(";");
-					List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
-					for (int i = 0; i < split.length; i++) {
-						 SubLGModel subLGModel = modelWord.new SubLGModel();
-						 subLGModel.setOption(split[i]);//拿到选项
-						 subLGModelList.add(subLGModel);
-					}
-					Collections.shuffle(subLGModelList);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				sentenceMoveFragment = new LearnSentenceMoveFragment();
-				baseFragment = sentenceMoveFragment;
-				Bundle bundle3 = new Bundle();
-				bundle3.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
-				sentenceMoveFragment.setArguments(bundle3);// 把题传过去
+				parseSetData3(lessonRepeatRegex);
 				replaceTo2("sentenceMoveFragment");
 				break;
 			case 4:// 单词翻译输入英语 
+				//先查询拿到wordid 查询 LGWORD 得到title
+				//查询030得到answer
 				wordInputFragment = new LearnWordInputFragment();
 				baseFragment = wordInputFragment;
 				Bundle bundle4 = new Bundle();
@@ -805,6 +778,43 @@ public class LessonExerciseActivity extends BaseActivity {
 			imageMoveFragment.setArguments(bundle);// 把题传过去
 			replaceTo2("imageMoveFragment");
 		}
+	}
+
+	private void parseSetData3(LessonRepeatRegex lessonRepeatRegex) {
+		//查询lgword表title= word+/+pinyin set过去id
+		//查询030表得到options 以;号分割 得到String answer 
+		modelWord = new LGModelWord();
+		int lgTableId = lessonRepeatRegex.getLgTableId();
+		try {
+			LGWord lgWord=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
+			String title=lgWord.getWord()+"/"+lgWord.getPinyin();
+			modelWord.setTitle(title);//拿到标题
+			modelWord.setWordId(lgTableId);//拿到wordid
+			List<String> answerList = modelWord.getAnswerList();
+			LGModel_Word_030 word030=(LGModel_Word_030) MyDao.getDao(LGModel_Word_030.class).queryBuilder().where().eq("WordId", lgTableId).queryForFirst();
+			 String[] splitAnswer = word030.getAnswer().split("!@@@!");
+			 for (int i = 0; i < splitAnswer.length; i++) {
+				 answerList.add(UiUtil.StringFilter(splitAnswer[i]));//加入答案
+			}
+			modelWord.setAnswerList(answerList);
+//			modelWord.setAnswerText(answer);//拿到答案
+			String[] split = word030.getOptions().split(";");
+			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
+			for (int i = 0; i < split.length; i++) { 
+				 SubLGModel subLGModel = modelWord.new SubLGModel();
+				 subLGModel.setOption(split[i]);//拿到选项
+				 subLGModelList.add(subLGModel);
+			}
+			Collections.shuffle(subLGModelList);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sentenceMoveFragment = new LearnSentenceMoveFragment();
+		baseFragment = sentenceMoveFragment;
+		Bundle bundle3 = new Bundle();
+		bundle3.putSerializable("modelWord", modelWord);
+		sentenceMoveFragment.setArguments(bundle3);// 把题传过去
 	}
 
 	private void parseSentenseData3(LessonRepeatRegex lessonRepeatRegex) {

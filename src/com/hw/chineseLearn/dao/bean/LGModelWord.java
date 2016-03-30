@@ -3,7 +3,6 @@ package com.hw.chineseLearn.dao.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -22,7 +21,7 @@ public class LGModelWord implements Serializable {
 	
 	private String slowVoicePath;//慢速语音 已隐藏
 	private String voicePath;//语音路径
-	private List<String> answerList;//答案集合 对应tag
+	private List<String> answerList=new ArrayList<String>();//答案集合 对应tag
 	private int SentenceId;
 	private int WordId;
 	private int CharId;

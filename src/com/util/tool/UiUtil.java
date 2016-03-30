@@ -526,4 +526,20 @@ public class UiUtil {
 		final float scale = context.getResources().getDisplayMetrics().density;
 		return (int) (pxValue / scale + 0.5f);
 	}
+
+	/**
+	 * 清楚掉所有特殊字符
+	 * @param str
+	 * @return
+	 */
+	public static String StringFilter(String str){
+		// 只允许字母和数字
+		// String regEx = "[^a-zA-Z0-9]";
+		// 清除掉所有特殊字符
+		String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+		Pattern p = Pattern.compile(regEx);
+		Matcher m = p.matcher(str);
+		return m.replaceAll("").trim();
+	}
+
 }
