@@ -87,7 +87,7 @@ public class LessonResultActivity extends BaseActivity {
 				rightCount = bundle.getInt("rightCount");
 			}
 			if (bundle.containsKey("wrongCount")) {
-				rightCount = bundle.getInt("wrongCount");
+				wrongCount = bundle.getInt("wrongCount");
 			}
 
 		}

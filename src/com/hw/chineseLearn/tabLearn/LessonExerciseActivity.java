@@ -552,6 +552,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			rightCount++;
 		} else {
 			status = 0;
+			wrongCount++;
 		}
 
 		Button btn_report_bug = (Button) checkView
@@ -829,14 +830,15 @@ public class LessonExerciseActivity extends BaseActivity {
 				parseSetData3(lessonRepeatRegex);
 				replaceTo2("sentenceMoveFragment");
 				break;
-			case 4:// 单词翻译输入英语 
-				//先查询拿到wordid 查询 LGWORD 得到title
-				//查询030得到answer 
+			case 4:// 单词翻译输入英语
+					// 先查询拿到wordid 查询 LGWORD 得到title
+					// 查询030得到answer
 				modelWord = new LGModelWord();
 				int lgTableId = lessonRepeatRegex.getLgTableId();
 				try {
-					LGWord lgWord=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
-					String title=lgWord.getWord()+"/"+lgWord.getPinyin();
+					LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class)
+							.queryForId(lgTableId);
+					String title = lgWord.getWord() + "/" + lgWord.getPinyin();
 					modelWord.setTitle(title);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
