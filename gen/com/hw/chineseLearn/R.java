@@ -2104,7 +2104,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int btn_ok=0x7f0600a5;
         public static final int btn_play=0x7f0600bf;
         public static final int btn_play_characters=0x7f06003b;
-        public static final int btn_play_normal=0x7f060122;
+        public static final int btn_play_normal=0x7f060121;
         public static final int btn_play_sentence=0x7f060041;
         public static final int btn_play_slow=0x7f060125;
         public static final int btn_play_words=0x7f06003e;
@@ -2355,7 +2355,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int lin_op=0x7f060199;
         public static final int lin_pander_life=0x7f060048;
         public static final int lin_personal_info=0x7f060128;
-        public static final int lin_play_and_text=0x7f060121;
+        public static final int lin_play_and_text=0x7f060120;
         public static final int lin_pop_dismess=0x7f060145;
         public static final int lin_review_characters=0x7f06003c;
         public static final int lin_review_sentence=0x7f060042;
@@ -2457,7 +2457,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int rg_chinese_display=0x7f06012f;
         public static final int rg_style=0x7f0600c5;
         public static final int right=0x7f06000d;
-        public static final int rl_root=0x7f060120;
+        public static final int rl_root=0x7f060122;
         public static final int root_view=0x7f0600b9;
         public static final int round=0x7f060001;
         public static final int roundProgressBar=0x7f060050;

@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="afterDescendants" >
@@ -26,43 +25,50 @@
             android:textSize="@dimen/text_s18" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/lin_line"
+    <RelativeLayout
+        android:id="@+id/rl_root"
         android:layout_width="match_parent"
-        android:layout_height="152dp"
+        android:layout_height="match_parent"
         android:layout_below="@+id/lin_play_and_text"
-        android:orientation="vertical" >
+        android:descendantFocusability="afterDescendants" >
 
-        <View
-            android:id="@+id/area_view"
+        <LinearLayout
+            android:id="@+id/lin_line"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="152dp"
+            android:orientation="vertical" >
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/min_grey" />
+            <View
+                android:id="@+id/area_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/min_grey" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/min_grey" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/min_grey" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/min_grey" />
-    </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/min_grey" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
