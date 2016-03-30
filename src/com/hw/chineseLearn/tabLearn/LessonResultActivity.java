@@ -225,7 +225,10 @@ public class LessonResultActivity extends BaseActivity {
 			} finally {
 				tv_right_count.setText("" + rightCount);
 				tv_wrong_count.setText("" + wrongCount);
-//				accuracy = (double) ((characterCount + wordsCount + sentenceCount) / rightCount);
+				if (rightCount != 0) {
+
+					accuracy = (double) ((characterCount + wordsCount + sentenceCount) / rightCount);
+				}
 				tv_accuracy_percent.setText("" + accuracy + "%");
 			}
 
