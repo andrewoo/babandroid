@@ -1,5 +1,8 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -7,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -21,6 +25,10 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbMyCharacter;
+import com.hw.chineseLearn.dao.bean.TbMySentence;
+import com.hw.chineseLearn.dao.bean.TbMyWord;
 
 /**
  * FlashCard页面
@@ -36,6 +44,13 @@ public class LessonFlashCardActivity extends BaseActivity {
 	private int width;
 	private int height;
 	View contentView;
+	int characterCount = 0;
+	int wordsCount = 0;
+	int sentenceCount = 0;
+
+	private TextView tv_character_count;
+	private TextView tv_words_count;
+	private TextView tv_sentence_count;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +61,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 		context = this;
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
+		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 4;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
 		resources = context.getResources();
 		init();
@@ -55,12 +70,17 @@ public class LessonFlashCardActivity extends BaseActivity {
 	/**
 	 * 初始化
 	 */
+	@SuppressWarnings("unchecked")
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"FlashCard", View.GONE, View.GONE, 0);
 
 		btn_go = (Button) contentView.findViewById(R.id.btn_go);
+		LayoutParams py = btn_go.getLayoutParams();
+		py.width = width;
+		py.height = width;
+		btn_go.setLayoutParams(py);
 		btn_go.setOnClickListener(onClickListener);
 
 		new Thread() {
@@ -80,6 +100,37 @@ public class LessonFlashCardActivity extends BaseActivity {
 				}
 			};
 		}.start();
+		tv_character_count = (TextView) contentView
+				.findViewById(R.id.tv_character_count);
+		tv_words_count = (TextView) contentView
+				.findViewById(R.id.tv_words_count);
+		tv_sentence_count = (TextView) contentView
+				.findViewById(R.id.tv_sentence_count);
+
+		tv_character_count.setText("0");
+		tv_words_count.setText("0");
+		tv_sentence_count.setText("0");
+		try {
+			ArrayList<TbMyCharacter> tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao
+					.getDaoMy(TbMyCharacter.class).queryForAll();
+
+			ArrayList<TbMyWord> tbMyWordList = (ArrayList<TbMyWord>) MyDao
+					.getDaoMy(TbMyWord.class).queryForAll();
+
+			ArrayList<TbMySentence> tbMySentenceList = (ArrayList<TbMySentence>) MyDao
+					.getDaoMy(TbMySentence.class).queryForAll();
+
+			characterCount = tbMyCharacterList.size();
+			wordsCount = tbMyWordList.size();
+			sentenceCount = tbMySentenceList.size();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		tv_character_count.setText("" + characterCount);
+		tv_words_count.setText("" + wordsCount);
+		tv_sentence_count.setText("" + sentenceCount);
 
 	}
 
@@ -149,7 +200,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 			case R.id.btn_go:
 
 				startActivity(new Intent(LessonFlashCardActivity.this,
-						LessonExerciseActivity.class));
+						LessonFlashCardOpActivity.class));
 				break;
 
 			default:
@@ -163,11 +214,11 @@ public class LessonFlashCardActivity extends BaseActivity {
 	 */
 	private void playHeartbeatAnimation() {
 		AnimationSet animationSet = new AnimationSet(true);
-		animationSet.addAnimation(new ScaleAnimation(1.0f, 1.8f, 1.0f, 1.8f,
+		animationSet.addAnimation(new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f));
 		animationSet.addAnimation(new AlphaAnimation(1.0f, 0.4f));
-		animationSet.setDuration(200);
+		animationSet.setDuration(1000);
 		animationSet.setInterpolator(new AccelerateInterpolator());
 		animationSet.setFillAfter(true);
 		animationSet.setAnimationListener(new AnimationListener() {
@@ -183,11 +234,11 @@ public class LessonFlashCardActivity extends BaseActivity {
 			public void onAnimationEnd(Animation animation) {
 
 				AnimationSet animationSet = new AnimationSet(true);
-				animationSet.addAnimation(new ScaleAnimation(1.8f, 1.0f, 1.8f,
+				animationSet.addAnimation(new ScaleAnimation(1.1f, 1.0f, 1.1f,
 						1.0f, Animation.RELATIVE_TO_SELF, 0.5f,
 						Animation.RELATIVE_TO_SELF, 0.5f));
 				animationSet.addAnimation(new AlphaAnimation(0.4f, 1.0f));
-				animationSet.setDuration(600);
+				animationSet.setDuration(2000);
 				animationSet.setInterpolator(new DecelerateInterpolator());
 				animationSet.setFillAfter(false);
 				// 实现心跳的View
