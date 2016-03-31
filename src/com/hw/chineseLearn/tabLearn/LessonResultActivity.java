@@ -92,6 +92,7 @@ public class LessonResultActivity extends BaseActivity {
 			}
 			if (exerciseCount != 0) {
 				progressCount = ((float) rightCount / (float) exerciseCount) * 100;
+				progressCount = (float) (Math.round(progressCount * 100)) / 100;// 保留小数点后两位
 			}
 
 		}
@@ -128,7 +129,7 @@ public class LessonResultActivity extends BaseActivity {
 			mRoundProgressBar.setLayoutParams(lp);
 			mRoundProgressBar.setMax(progressCount);
 			progressAdd = progressCount / 100;
-
+			mRoundProgressBar.setAccurally(progressAdd);
 			tv_score = (TextView) contentView.findViewById(R.id.tv_score);
 			tv_score.setText("" + score);
 
@@ -168,7 +169,6 @@ public class LessonResultActivity extends BaseActivity {
 				}
 			}).start();
 
-			progressCount = (float) (Math.round(progressCount * 100)) / 100;// 保留小数点后两位
 			tv_result = (TextView) contentView.findViewById(R.id.tv_result);
 			tv_result.setText("Congratulations!You defeated " + progressCount
 					+ "%babbelApp learns!");
