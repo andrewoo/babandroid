@@ -1,26 +1,33 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.provider.Telephony.Sms.Conversations;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.ReviewListAdapter;
+import com.hw.chineseLearn.adapter.ReviewCharListAdapter;
+import com.hw.chineseLearn.adapter.ReviewWordListAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGCharacter;
+import com.hw.chineseLearn.dao.bean.LGWord;
+import com.hw.chineseLearn.dao.bean.TbMyCharacter;
+import com.hw.chineseLearn.dao.bean.TbMySentence;
+import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
 /**
@@ -37,8 +44,9 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	private int width;
 	private int height;
 	View contentView;
-	ReviewListAdapter reviewListAdapter;
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
+	ReviewCharListAdapter reviewListAdapter;
+	ArrayList<LGCharacter> listBase = new ArrayList<LGCharacter>();
+	ArrayList<TbMyCharacter> tbMyCharList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	/**
 	 * 初始化
 	 */
+	@SuppressWarnings("unchecked")
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
@@ -66,12 +75,32 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
 
-		for (int i = 0; i < 15; i++) {
-			LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-			modelBase1.setUnitName("孩/hai");
-			listBase.add(modelBase1);
+		try {
+			tbMyCharList = (ArrayList<TbMyCharacter>) MyDao.getDaoMy(
+					TbMyCharacter.class).queryForAll();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		reviewListAdapter = new ReviewListAdapter(context, listBase);
+
+		for (int i = 0; i < tbMyCharList.size(); i++) {
+			TbMyCharacter model = tbMyCharList.get(i);
+			if (model == null) {
+				continue;
+			}
+			int charId = model.getCharId();
+			try {
+				LGCharacter lGCharacter = (LGCharacter) MyDao.getDao(
+						LGCharacter.class).queryForId(charId);
+				listBase.add(lGCharacter);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		reviewListAdapter = new ReviewCharListAdapter(context, listBase);
 		listView.setAdapter(reviewListAdapter);
 		listView.setOnItemClickListener(onItemclickListener);
 		reviewListAdapter.notifyDataSetChanged();

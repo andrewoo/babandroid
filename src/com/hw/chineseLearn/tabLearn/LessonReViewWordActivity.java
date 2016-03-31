@@ -1,5 +1,6 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -18,9 +19,14 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.ReviewListAdapter;
+import com.hw.chineseLearn.adapter.ReviewWordListAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGWord;
+import com.hw.chineseLearn.dao.bean.TbMyCharacter;
+import com.hw.chineseLearn.dao.bean.TbMySentence;
+import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
 /**
@@ -33,12 +39,14 @@ public class LessonReViewWordActivity extends BaseActivity {
 	private String TAG = "==LessonReViewWordActivity==";
 	public Context context;
 	private ListView listView;
+	private TextView tv_translations;
 	private Resources resources;
 	private int width;
 	private int height;
 	View contentView;
-	ReviewListAdapter reviewListAdapter;
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
+	ReviewWordListAdapter reviewListAdapter;
+	ArrayList<LGWord> listBase = new ArrayList<LGWord>();
+	ArrayList<TbMyWord> tbMyWordList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,24 +66,45 @@ public class LessonReViewWordActivity extends BaseActivity {
 	/**
 	 * 初始化
 	 */
+	@SuppressWarnings("unchecked")
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Word Review", View.GONE, View.VISIBLE,
-				R.drawable.revie_pen);
+				"Word Review", View.GONE, View.VISIBLE, R.drawable.revie_pen);
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
+		tv_translations = (TextView) contentView
+				.findViewById(R.id.tv_translations);
+		try {
+			tbMyWordList = (ArrayList<TbMyWord>) MyDao.getDaoMy(TbMyWord.class)
+					.queryForAll();
 
-		for (int i = 0; i < 15; i++) {
-			LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-			modelBase1.setUnitName("孩/hai");
-			listBase.add(modelBase1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		reviewListAdapter = new ReviewListAdapter(context, listBase);
+
+		for (int i = 0; i < tbMyWordList.size(); i++) {
+			TbMyWord model = tbMyWordList.get(i);
+			if (model == null) {
+				continue;
+			}
+			int wordId = model.getWordId();
+			try {
+				LGWord lGWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
+						wordId);
+				listBase.add(lGWord);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		reviewListAdapter = new ReviewWordListAdapter(context, listBase);
 		listView.setAdapter(reviewListAdapter);
 		listView.setOnItemClickListener(onItemclickListener);
 		reviewListAdapter.notifyDataSetChanged();
-
+		setTranslations(0);
 	}
 
 	/**
@@ -156,7 +185,18 @@ public class LessonReViewWordActivity extends BaseActivity {
 
 			reviewListAdapter.setSelection(position);
 			reviewListAdapter.notifyDataSetChanged();
-
+			setTranslations(position);
 		}
 	};
+
+	/**
+	 * @param position
+	 */
+	private void setTranslations(int position) {
+		LGWord model = listBase.get(position);
+		if (model != null) {
+			String translations = model.getTranslations();
+			tv_translations.setText(translations);
+		}
+	}
 }

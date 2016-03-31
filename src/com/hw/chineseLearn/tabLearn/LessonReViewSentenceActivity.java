@@ -1,27 +1,29 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.provider.Telephony.Sms.Conversations;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.ReviewListAdapter;
+import com.hw.chineseLearn.adapter.ReviewSentenceListAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGSentence;
+import com.hw.chineseLearn.dao.bean.TbMySentence;
 
 /**
  * 课程复习-偏旁部首-页面
@@ -37,9 +39,9 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 	private int width;
 	private int height;
 	View contentView;
-	ReviewListAdapter reviewListAdapter;
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
-
+	ReviewSentenceListAdapter reviewListAdapter;
+	ArrayList<LGSentence> listBase = new ArrayList<LGSentence>();
+	ArrayList<TbMySentence> tbMySentenceList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,6 +60,7 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 	/**
 	 * 初始化
 	 */
+	@SuppressWarnings("unchecked")
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
@@ -66,13 +69,32 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
 
-		for (int i = 0; i < 15; i++) {
-			LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-			modelBase1.setUnitName("我是男孩");
-			listBase.add(modelBase1);
+		try {
+			tbMySentenceList = (ArrayList<TbMySentence>) MyDao.getDaoMy(
+					TbMySentence.class).queryForAll();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < tbMySentenceList.size(); i++) {
+			TbMySentence model = tbMySentenceList.get(i);
+			if (model == null) {
+				continue;
+			}
+			int sentenceId = model.getSentenceId();
+			try {
+				LGSentence lGSentence = (LGSentence) MyDao.getDao(
+						LGSentence.class).queryForId(sentenceId);
+				listBase.add(lGSentence);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if (reviewListAdapter == null) {
-			reviewListAdapter = new ReviewListAdapter(context, listBase);
+			reviewListAdapter = new ReviewSentenceListAdapter(context, listBase);
 			listView.setAdapter(reviewListAdapter);
 			reviewListAdapter.notifyDataSetChanged();
 		}

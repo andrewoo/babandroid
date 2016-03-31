@@ -1,28 +1,25 @@
 package com.hw.chineseLearn.adapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
-public class ReviewListAdapter extends BaseAdapter {
+public class ReviewWordListAdapter extends BaseAdapter {
 	private Context context;
-	public ArrayList<LearnUnitBaseModel> list;
+	public ArrayList<LGWord> list;
 	private LayoutInflater inflater;
 
 	private int width, height;
@@ -31,7 +28,7 @@ public class ReviewListAdapter extends BaseAdapter {
 	int colorWhite = -1;
 	int colorBlack = -1;
 
-	public ReviewListAdapter(Context context, ArrayList<LearnUnitBaseModel> list) {
+	public ReviewWordListAdapter(Context context, ArrayList<LGWord> list) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
 		this.list = list;
@@ -74,28 +71,32 @@ public class ReviewListAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.layout_review_list_item,
 					null);
 
+			holder.lin_half = (LinearLayout)convertView.findViewById(R.id.lin_half);
 			holder.tv_child_no = (TextView) convertView
 					.findViewById(R.id.tv_child_no);
 			holder.tv_child_char = (TextView) convertView
 					.findViewById(R.id.tv_child_char);
 			holder.tv_child_pinyin = (TextView) convertView
 					.findViewById(R.id.tv_child_pinyin);
-			holder.tv_child_en = (TextView) convertView
-					.findViewById(R.id.tv_child_en);
+			holder.tv_child_translations = (TextView) convertView
+					.findViewById(R.id.tv_child_translations);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		LearnUnitBaseModel model = list.get(position);
+		LGWord model = list.get(position);
 		if (model == null) {
 			return convertView;
 		}
 
-		String unitName = model.getUnitName();
+		String word = model.getWord();
+		String pinyin = model.getPinyin();
+		String translations = model.getTranslations();
 
-		holder.tv_child_char.setText("" + unitName);
 		holder.tv_child_no.setText("" + (position + 1));
-
+		holder.tv_child_char.setText("" + word);
+		holder.tv_child_pinyin.setText("/" + pinyin);
+		holder.tv_child_translations.setText("" + translations);
 		if (selectPosition == position) {// 选中
 			convertView.setBackground(resources
 					.getDrawable(R.drawable.btn_grey_no_corners));
@@ -113,9 +114,10 @@ public class ReviewListAdapter extends BaseAdapter {
 
 	public class ViewHolder {
 
+		public LinearLayout lin_half;
 		public TextView tv_child_no;
 		public TextView tv_child_char;
 		public TextView tv_child_pinyin;
-		public TextView tv_child_en;
+		public TextView tv_child_translations;
 	}
 }
