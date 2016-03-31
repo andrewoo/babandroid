@@ -21,15 +21,6 @@ public class LGModel_Sentence_020 implements Serializable {
 	@DatabaseField(columnName = "SentenceId")
 	private int SentenceId;
 	
-	@DatabaseField(columnName = "Stem")
-	private String Stem;
-	
-	@DatabaseField(columnName = "Options")
-	private String Options;
-	
-	@DatabaseField(columnName = "TOptions")
-	private String TOptions;
-	
 	@DatabaseField(columnName = "Answer")
 	private String Answer;
 
@@ -79,4 +70,6 @@ public class LGModel_Sentence_020 implements Serializable {
 		DataUId = dataUId;
 	}
 
+	
+	
 }

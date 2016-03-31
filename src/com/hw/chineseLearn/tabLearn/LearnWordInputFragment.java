@@ -24,10 +24,12 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnUnitAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGModel_Word_040;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.UiUtil;
 
 /**
  * 文字输入视图模版
@@ -62,28 +64,38 @@ public class LearnWordInputFragment extends BaseFragment implements
 	}
 
 	private void initData() {
-		LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments().getSerializable("lessonRepeatRegex");
-		//根据lgid查询，lgword,lgword040表, lgword表 wrod pinyin,lgword040 得到answer 切割后为答案
-		//check得到输入框内容 如果为上边之一及正确
-		int lgTableId = lessonRepeatRegex.getLgTableId();
-		try {
-			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
-			title = lgWord.getWord()+"/"+lgWord.getPinyin();
-			Map<String, Integer> wordIdMap=new HashMap<String, Integer>();
-			wordIdMap.put("WordId", lgTableId);
-			LGModel_Word_040 word040 = (LGModel_Word_040) MyDao.getDao(LGModel_Word_040.class).queryForFieldValues(wordIdMap).get(0);
-			System.out.println("word040"+word040);
-			String answer = word040.getAnswers();
-			 if(answer.indexOf("!@@@!")!=-1){
-				 String[] splitAnswer = answer.split("!@@@!");
-				 for (int i = 0; i < splitAnswer.length; i++) {
-					 answerList.add(splitAnswer[i]);
-				}
-			 }
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Bundle bundle = getArguments(); 
+		if(bundle!=null){
+			if(bundle.containsKey("modelWord")){
+				LGModelWord modelWord=(LGModelWord) bundle.getSerializable("modelWord");
+				title = modelWord.getTitle();//得到title
+				answerList = modelWord.getAnswerList();//得到答案集合
+			}
 		}
+		
+		
+//		LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments().getSerializable("lessonRepeatRegex");
+//		//根据lgid查询，lgword,lgword040表, lgword表 wrod pinyin,lgword040 得到answer 切割后为答案
+//		//check得到输入框内容 如果为上边之一及正确
+//		int lgTableId = lessonRepeatRegex.getLgTableId();
+//		try {
+//			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
+//			title = lgWord.getWord()+"/"+lgWord.getPinyin();
+//			Map<String, Integer> wordIdMap=new HashMap<String, Integer>();
+//			wordIdMap.put("WordId", lgTableId);
+//			LGModel_Word_040 word040 = (LGModel_Word_040) MyDao.getDao(LGModel_Word_040.class).queryForFieldValues(wordIdMap).get(0);
+//			System.out.println("word040"+word040);
+//			String answer = word040.getAnswers();
+//			 if(answer.indexOf("!@@@!")!=-1){
+//				 String[] splitAnswer = answer.split("!@@@!");
+//				 for (int i = 0; i < splitAnswer.length; i++) {
+//					 answerList.add(splitAnswer[i]);
+//				}
+//			 }
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
@@ -161,8 +173,14 @@ public class LearnWordInputFragment extends BaseFragment implements
 	@Override
 	public boolean isRight() {
 		
-		if(answerList.contains(answerChanged)){
-			return true;
+		String stringFilter = UiUtil.StringFilter(answerChanged);
+		System.out.println("333333"+answerList.size());
+		System.out.println("333333"+stringFilter);
+		for (int i = 0; i < answerList.size(); i++) {
+			System.out.println("444444"+answerList.get(i));
+			if(answerList.get(i).equals(stringFilter)){
+				return true;
+			}
 		}
 		return false;
 	}

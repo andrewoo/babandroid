@@ -30,6 +30,16 @@ public class LGModelWord implements Serializable {
 	
 	
 	
+	@Override
+	public String toString() {
+		return "LGModelWord [title=" + title + ", subLGModelList="
+				+ subLGModelList + ", answer=" + answer + ", answerText="
+				+ answerText + ", slowVoicePath=" + slowVoicePath
+				+ ", voicePath=" + voicePath + ", answerList=" + answerList
+				+ ", SentenceId=" + SentenceId + ", WordId=" + WordId
+				+ ", CharId=" + CharId + ", LessonId=" + LessonId + ", UnitId="
+				+ UnitId + "]";
+	}
 	public String getSlowVoicePath() {
 		return slowVoicePath;
 	}
@@ -136,6 +146,11 @@ public class LGModelWord implements Serializable {
 		}
 		public void setWordId(int wordId) {
 			this.wordId = wordId;
+		}
+		@Override
+		public String toString() {
+			return "SubLGModel [imageName=" + imageName + ", option=" + option
+					+ ", wordId=" + wordId + ", voicePath=" + voicePath + "]";
 		}
 		
 	}

@@ -537,9 +537,14 @@ public class UiUtil {
 		// String regEx = "[^a-zA-Z0-9]";
 		// 清除掉所有特殊字符
 		String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-		Pattern p = Pattern.compile(regEx);
-		Matcher m = p.matcher(str);
-		return m.replaceAll("").trim();
+		if(str!=null){
+			str = str.replace(" ", "");
+			Pattern p = Pattern.compile(regEx);
+			Matcher m = p.matcher(str);
+			return m.replaceAll("").trim().toLowerCase();
+		}else{
+			return "";
+		}
 	}
 
 }

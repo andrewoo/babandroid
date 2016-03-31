@@ -29,6 +29,8 @@ import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.LGCharacterPart;
+import com.hw.chineseLearn.dao.bean.LGModelWord;
+import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.BitmapLoader;
@@ -57,7 +59,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	int mizigeY;
 	private List<String> picList = new ArrayList<String>();
 	private List<String> randomList = new ArrayList<String>();
-	private List<String> partPicNameList = new ArrayList<String>();
+//	private List<String> partPicNameList = new ArrayList<String>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,28 +85,39 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				R.layout.fragment_lesson_image_move, null);
 		task = new ThreadWithDialogTask();
 		tv_word=(TextView) contentView.findViewById(R.id.tv_word);
-		tv_word.setText(title);
+		tv_word.setText(title);//拿到title
 		rel_root = (RelativeLayout) contentView.findViewById(R.id.rel_root);
 		rel_top = (RelativeLayout) contentView.findViewById(R.id.rel_top);
 	}
 
 	private void initData() {
-
-		try {
-			LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments()
-					.getSerializable("lessonRepeatRegex");
-			List<String> characPicList = getCharacPicList(lessonRepeatRegex);// 得到需要显示的5张图片集合
-			for (int i = 0; i < characPicList.size(); i++) {
-				LGCharacterPart lgCharacterPart = (LGCharacterPart) MyDao
-						.getDao(LGCharacterPart.class).queryForId(
-								Integer.valueOf(characPicList.get(i)));
-				String picName = lgCharacterPart.getPartName();
-				partPicNameList.add(picName);
+		
+		Bundle bundle = getArguments();
+		if(bundle!=null){
+			if(bundle.containsKey("modelWord")){
+				LGModelWord modelWord=(LGModelWord) bundle.getSerializable("modelWord");
+				title = modelWord.getTitle();
+				subLGModelList=null;
+				subLGModelList = modelWord.getSubLGModelList();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		
+
+//		try {
+////			LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments()
+////					.getSerializable("lessonRepeatRegex");
+////			List<String> characPicList = getCharacPicList(lessonRepeatRegex);// 得到需要显示的5张图片集合
+//			for (int i = 0; i < characPicList.size(); i++) {
+//				LGCharacterPart lgCharacterPart = (LGCharacterPart) MyDao
+//						.getDao(LGCharacterPart.class).queryForId(
+//								Integer.valueOf(characPicList.get(i)));
+//				String picName = lgCharacterPart.getPartName();
+//				partPicNameList.add(picName);
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
@@ -130,7 +143,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		int x = 0;
 		int y = dip2px(context, 65);// topView y坐标的初始位置
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < subLGModelList.size(); i++) {
 
 			ImageView imageView = new ImageView(context);
 			RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
@@ -194,7 +207,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		int x = 0;
 		int y = dip2px(context, 65);// topView y坐标的初始位置
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < subLGModelList.size(); i++) {
 
 			ImageView imageView = new ImageView(context);
 			RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
@@ -207,7 +220,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			imageView.setOnTouchListener(this);
 			// imageView.setImageResource(context.getResources().getIdentifier(
 			// "pp_" + (19 + i), "drawable", context.getPackageName()));
-			String imageName = partPicNameList.get(i);
+			String imageName = subLGModelList.get(i).getImageName();
 			Bitmap bitmap = BitmapLoader
 					.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
 							+ imageName);
@@ -321,6 +334,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	// Sacle动画 - 渐变尺寸缩放
 	private Animation scaleAnimation = null;
 	private String title;
+	private List<SubLGModel> subLGModelList;
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
@@ -398,43 +412,38 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	 * @return
 	 * @throws SQLException
 	 */
-	private List<String> getCharacPicList(LessonRepeatRegex lessonRepeatRegex)
-			throws SQLException {
-
-		int lgTableId = lessonRepeatRegex.getLgTableId();
-		LGCharacter lGCharacterPart = (LGCharacter) MyDao.getDao(
-				LGCharacter.class).queryForId(lgTableId);
-		title = getTitle(lGCharacterPart);
-		String[] picArray = lGCharacterPart.getPartOptions().split(";");
-		String[] answerPicArray = lGCharacterPart.getPartAnswer().split(";");
-		for (int i = 0; i < picArray.length; i++) {
-			for (int j = 0; j < answerPicArray.length; j++) {
-				if (picArray[i].equals(answerPicArray[j]) ) {
-					picList.add(picArray[i]);
-				}
-			}
-			if (!randomList.contains(picArray[i]) && !picList.contains(picArray[i])) {
-				randomList.add(picArray[i]);
-			}
-		}
-		if (picList.size() < 5) {
-			Collections.shuffle(randomList);
-			int x = 5 - picList.size();
-			for (int i = 0; i < x; i++) {
-				picList.add(randomList.get(i));
-			}
-		}
-		return picList;
-	}
+//	private List<String> getCharacPicList(LessonRepeatRegex lessonRepeatRegex)
+//			throws SQLException {
+//
+//		int lgTableId = lessonRepeatRegex.getLgTableId();
+//		LGCharacter lGCharacterPart = (LGCharacter) MyDao.getDao(
+//				LGCharacter.class).queryForId(lgTableId);
+//		title = getTitle(lGCharacterPart);
+//		String[] picArray = lGCharacterPart.getPartOptions().split(";");
+//		String[] answerPicArray = lGCharacterPart.getPartAnswer().split(";");
+//		for (int i = 0; i < picArray.length; i++) {
+//			for (int j = 0; j < answerPicArray.length; j++) {
+//				if (picArray[i].equals(answerPicArray[j]) ) {
+//					picList.add(picArray[i]);
+//				}
+//			}
+//			if (!randomList.contains(picArray[i]) && !picList.contains(picArray[i])) {
+//				randomList.add(picArray[i]);
+//			}
+//		}
+//		if (picList.size() < 5) {
+//			Collections.shuffle(randomList);
+//			int x = 5 - picList.size();
+//			for (int i = 0; i < x; i++) {
+//				picList.add(randomList.get(i));
+//			}
+//		}
+//		return picList;
+//	}
 
 	@Override
 	public boolean isRight() {
 		return true;
 	}
 
-	private String getTitle(LGCharacter lGCharacterPart) {
-		String pinyin = lGCharacterPart.getPinyin();
-		String replace = lGCharacterPart.getTranslation().replace(";", "/");
-		return "["+pinyin+"]"+replace;
-	}
 }
