@@ -1,5 +1,6 @@
 package com.hw.chineseLearn.adapter;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +99,7 @@ public class GalleryAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return 2;
+		return null;
 	}
 
 	@Override
@@ -180,12 +181,21 @@ public class GalleryAdapter extends BaseAdapter {
 		
 		//设置description 属性文本
 		String[] spitList = unit.getLessonList().split(";");
-		Integer splitLessonList = Integer.valueOf(spitList[position]);
-		if(splitLessonList>=1){
-			Lesson lesson = lessonList.get(splitLessonList-1);
-			String description = lesson.getDescription();
-			holder.tv_description.setText(description);
+		Integer lessonId = Integer.valueOf(spitList[position]);
+		Lesson lesson = null;
+		try {
+			lesson = (Lesson) MyDao.getDao(Lesson.class).queryForId(lessonId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+			String description = lesson.getDescription();
+			String[] split = description.split("!@@@!");
+			String desc = "";
+			for (int i = 0; i < split.length; i++) {
+				desc+=split[i]+"\n";
+			}
+			holder.tv_description.setText(desc);
 		holder.tv_no.setText((position+1)+"of"+unit.getLessonList().split(";").length);//1 of 2
 
 		return convertView;

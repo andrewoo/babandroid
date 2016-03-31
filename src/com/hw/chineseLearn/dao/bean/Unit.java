@@ -114,7 +114,7 @@ public class Unit  implements Comparable,Serializable {
 	public int compareTo(Object obj) {
 		
 		Unit unit=(Unit) obj;
-		
+		//按IconResSuffix列排序
 		if(spitIconName(this.IconResSuffix)<spitIconName(unit.getIconResSuffix())){
 			return -1;
 		}else if(spitIconName(this.IconResSuffix)>spitIconName(unit.getIconResSuffix())){

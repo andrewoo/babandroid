@@ -68,7 +68,12 @@ public class LessonViewActivity extends BaseActivity implements
 				R.layout.activity_lesson_view, null);
 		setContentView(contentView);
 		context = this;
-		mUnit = (Unit) getIntent().getSerializableExtra("unit");
+		Bundle bundle = getIntent().getExtras();
+		if(bundle!=null){
+			if(bundle.containsKey("unit")){
+				mUnit = (Unit) bundle.getSerializable("unit");
+			}
+		}
 		queryLesson();// 查询lesson表
 		queryTbLesson();// 查询tbLesson得到状态List
 		init();// 初始化gallery和动画

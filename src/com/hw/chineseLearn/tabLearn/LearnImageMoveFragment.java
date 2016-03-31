@@ -101,23 +101,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				subLGModelList = modelWord.getSubLGModelList();
 			}
 		}
-		
-
-//		try {
-////			LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments()
-////					.getSerializable("lessonRepeatRegex");
-////			List<String> characPicList = getCharacPicList(lessonRepeatRegex);// 得到需要显示的5张图片集合
-//			for (int i = 0; i < characPicList.size(); i++) {
-//				LGCharacterPart lgCharacterPart = (LGCharacterPart) MyDao
-//						.getDao(LGCharacterPart.class).queryForId(
-//								Integer.valueOf(characPicList.get(i)));
-//				String picName = lgCharacterPart.getPartName();
-//				partPicNameList.add(picName);
-//			}
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 	@Override
@@ -404,42 +387,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			break;
 		}
 	}
-
-	/**
-	 * 随机取出需要的5张部首图片
-	 * 
-	 * @param lessonRepeatRegex
-	 * @return
-	 * @throws SQLException
-	 */
-//	private List<String> getCharacPicList(LessonRepeatRegex lessonRepeatRegex)
-//			throws SQLException {
-//
-//		int lgTableId = lessonRepeatRegex.getLgTableId();
-//		LGCharacter lGCharacterPart = (LGCharacter) MyDao.getDao(
-//				LGCharacter.class).queryForId(lgTableId);
-//		title = getTitle(lGCharacterPart);
-//		String[] picArray = lGCharacterPart.getPartOptions().split(";");
-//		String[] answerPicArray = lGCharacterPart.getPartAnswer().split(";");
-//		for (int i = 0; i < picArray.length; i++) {
-//			for (int j = 0; j < answerPicArray.length; j++) {
-//				if (picArray[i].equals(answerPicArray[j]) ) {
-//					picList.add(picArray[i]);
-//				}
-//			}
-//			if (!randomList.contains(picArray[i]) && !picList.contains(picArray[i])) {
-//				randomList.add(picArray[i]);
-//			}
-//		}
-//		if (picList.size() < 5) {
-//			Collections.shuffle(randomList);
-//			int x = 5 - picList.size();
-//			for (int i = 0; i < x; i++) {
-//				picList.add(randomList.get(i));
-//			}
-//		}
-//		return picList;
-//	}
 
 	@Override
 	public boolean isRight() {

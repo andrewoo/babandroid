@@ -105,7 +105,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 	CustomDialog builder;
 	private int utilId = 0;
 
-	private List<LessonRepeatRegex> regexes;
+	private List<LessonRepeatRegex> regexes = new ArrayList<LessonRepeatRegex>();;
 	private int lessonId;
 
 	/**
@@ -152,25 +152,15 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 	private void initBudle() {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-			if (bundle.containsKey("utilId")) {
-				utilId = bundle.getInt("utilId");
-			}
 
 			if (bundle.containsKey("lgTable")) {
 				lgTable = bundle.getInt("lgTable");
 			}
-			if (bundle.containsKey("regexes")) {
-				regexes = (List<LessonRepeatRegex>) bundle
-						.getSerializable("regexes");
-			}
-			if (bundle.containsKey("LessonId")) {
-				lessonId = bundle.getInt("LessonId");
-			}
 		}
-
+		regexes.clear();
 		if (lgTable == 0) {// word
 			try {
-				// 数据集合
+				// 数据集合 wordid
 				tbMyWordList = (ArrayList<TbMyWord>) MyDao.getDaoMy(
 						TbMyWord.class).queryForAll();
 
@@ -178,13 +168,16 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			for (int i = 0; i < tbMyWordList.size(); i++) {
 				TbMyWord model = tbMyWordList.get(i);
+				
 				if (model == null) {
 					continue;
 				}
+				LessonRepeatRegex lessonRepeatRegex = new LessonRepeatRegex();
 				int wordId = model.getWordId();
+				lessonId = model.getLessonId();
+				
 				try {
 					LGWord lGWord = (LGWord) MyDao.getDao(LGWord.class)
 							.queryForId(wordId);
@@ -193,6 +186,12 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				Integer random = getRandom(wordId);
+				lessonRepeatRegex.setLgTable(0);
+				lessonRepeatRegex.setLgTableId(wordId);
+				lessonRepeatRegex.setRandomSubject(random);
+				regexes.add(lessonRepeatRegex);
+
 			}
 		} else if (lgTable == 1) {// sentence
 			try {
@@ -248,30 +247,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 		}
 
 		int randomSubject = 0;
-		// 给每个Subject随机赋值确定查哪张表
-		for (int i = 0; i < regexes.size(); i++) {
-			int lgTable = regexes.get(i).getLgTable();
-			if (lgTable == 0) {
-				LGWord lgWord = null;
-				try {
-					lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
-							regexes.get(i).getLgTableId());
-				} catch (SQLException e) {
-				}
-				int length = lgWord.getWord().length();
-				if (length > 1) {// 长度大于一才可以到第6个表
-					randomSubject = new Random().nextInt(6) + 1;
-				} else {
-					randomSubject = new Random().nextInt(5) + 1;
-				}
-				regexes.get(i).setRandomSubject(randomSubject);
-			} else if (lgTable == 1) {
-				randomSubject = new Random().nextInt(5) + 1;
-				regexes.get(i).setRandomSubject(randomSubject);
-			} else if (lgTable == 2) {
-				regexes.get(i).setRandomSubject(1);
-			}
-		}
+
 	}
 
 	MediaPlayer mediaPlayer = null;
@@ -1400,6 +1376,29 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			isFirstList.add(id);
 			return true;
 		}
+	}
+
+	private Integer getRandom(int id) {
+		// 给每个Subject随机赋值确定查哪张表
+		int randomSubject=-1;
+		if (lgTable == 0) {
+			LGWord lgWord = null;
+			try {
+				lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(id);
+			} catch (SQLException e) {
+			}
+			int length = lgWord.getWord().length();
+			if (length > 1) {// 长度大于一才可以到第6个表
+				randomSubject = new Random().nextInt(6) + 1;
+			} else {
+				randomSubject = new Random().nextInt(5) + 1;
+			}
+		} else if (lgTable == 1) {
+			randomSubject = new Random().nextInt(5) + 1;
+		} else if (lgTable == 2) {
+			randomSubject=1;
+		}
+		return randomSubject;
 	}
 
 }

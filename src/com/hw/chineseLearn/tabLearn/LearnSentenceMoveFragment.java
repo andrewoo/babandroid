@@ -94,7 +94,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		contentView = LayoutInflater.from(context).inflate(
 				R.layout.fragment_lesson_sentence_move, null);
 		task = new ThreadWithDialogTask();
-		rlRoot = (RelativeLayout) contentView.findViewById(R.id.rl_root);
+		rlRoot = (RelativeLayout) contentView.findViewById(R.id.rl_root); 
 		lin_play_and_text = (LinearLayout) contentView
 				.findViewById(R.id.lin_play_and_text);
 		// lin_play_and_text.setVisibility(View.GONE);
