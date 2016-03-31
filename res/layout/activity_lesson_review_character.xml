@@ -44,18 +44,17 @@
         android:paddingRight="10dp"
         android:paddingTop="30dp" >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical" >
+            android:layout_weight="1" >
 
             <ImageView
                 android:id="@+id/iv_mizige"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:background="@drawable/mizige" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,13 +63,28 @@
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/tv_pinyin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:paddingLeft="25dp"
-                android:text="child;kid"
+                android:gravity="center"
+                android:text="child"
+                android:textColor="@color/deep_grey"
+                android:textSize="@dimen/text_s24"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_translation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:text=""
                 android:textColor="@color/mid_grey"
-                android:textSize="@dimen/text_s14" />
+                android:textSize="@dimen/text_s10" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,7 +108,6 @@
                     android:background="@drawable/recorder_animate_bg"
                     android:padding="5dp"
                     android:src="@drawable/loop_play" />
-
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

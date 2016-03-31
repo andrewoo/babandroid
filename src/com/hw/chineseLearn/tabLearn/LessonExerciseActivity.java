@@ -856,7 +856,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
 		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
-		if (lgTable == 0) {
+		if (lgTable == 0) {//word
 			int randomSubject = lessonRepeatRegex.getRandomSubject();
 			if (isFirst(lessonRepeatRegex.getLgTableId())) {// 判断 如果是第一次出现的ID
 															// 就从word010表中查询
@@ -892,7 +892,7 @@ public class LessonExerciseActivity extends BaseActivity {
 				parseSetData6(lessonRepeatRegex);
 				replaceTo2("wordSelectFragment");// 题目中文 选项英文
 			}
-		} else if (lgTable == 1) {
+		} else if (lgTable == 1) {//sentence
 			int randomSubject = regexes.get(exerciseIndex).getRandomSubject();
 			switch (randomSubject) {
 			case 1:

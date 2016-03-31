@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,7 +36,7 @@ public class ReviewWordListAdapter extends BaseAdapter {
 		resources = context.getResources();
 		colorWhite = resources.getColor(R.color.white);
 		colorBlack = resources.getColor(R.color.black);
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
+		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 4;
 		height = CustomApplication.app.displayMetrics.heightPixels / 3 * 4;
 	}
 
@@ -71,7 +72,8 @@ public class ReviewWordListAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.layout_review_list_item,
 					null);
 
-			holder.lin_half = (LinearLayout)convertView.findViewById(R.id.lin_half);
+			holder.lin_half = (LinearLayout) convertView
+					.findViewById(R.id.lin_half);
 			holder.tv_child_no = (TextView) convertView
 					.findViewById(R.id.tv_child_no);
 			holder.tv_child_char = (TextView) convertView
@@ -84,6 +86,12 @@ public class ReviewWordListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+
+		LayoutParams layoutParams1 = (LayoutParams) holder.lin_half
+				.getLayoutParams();
+		layoutParams1.width = width;
+		holder.lin_half.setLayoutParams(layoutParams1);
+
 		LGWord model = list.get(position);
 		if (model == null) {
 			return convertView;

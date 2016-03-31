@@ -121,7 +121,6 @@ public class RoundProgressBar extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-
 		/**
 		 * 画最外层的大圆环
 		 */

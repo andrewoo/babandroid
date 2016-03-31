@@ -8,7 +8,9 @@ import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -69,7 +71,8 @@ public class ReviewCharListAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			convertView = inflater.inflate(R.layout.layout_review_list_item,
 					null);
-
+			holder.lin_half = (LinearLayout) convertView
+					.findViewById(R.id.lin_half);
 			holder.tv_child_no = (TextView) convertView
 					.findViewById(R.id.tv_child_no);
 			holder.tv_child_char = (TextView) convertView
@@ -86,15 +89,19 @@ public class ReviewCharListAdapter extends BaseAdapter {
 		if (model == null) {
 			return convertView;
 		}
+		LayoutParams layoutParams1 = (LayoutParams) holder.lin_half
+				.getLayoutParams();
+		layoutParams1.width = width;
+		holder.lin_half.setLayoutParams(layoutParams1);
+		
+		String word = model.getCharacter();
+		String pinyin = model.getPinyin();
+		String translations = model.getTranslation();
 
-		// String word = model.getWord();
-		// String pinyin = model.getPinyin();
-		// String translations = model.getTranslations();
-		//
-		// holder.tv_child_no.setText("" + (position + 1));
-		// holder.tv_child_char.setText("" + word);
-		// holder.tv_child_pinyin.setText("/" + pinyin);
-		// holder.tv_child_translations.setText("" + translations);
+		holder.tv_child_no.setText("" + (position + 1));
+		holder.tv_child_char.setText("" + word);
+		holder.tv_child_pinyin.setText("/" + pinyin);
+		holder.tv_child_translations.setText("" + translations);
 		if (selectPosition == position) {// 选中
 			convertView.setBackground(resources
 					.getDrawable(R.drawable.btn_grey_no_corners));
@@ -111,7 +118,7 @@ public class ReviewCharListAdapter extends BaseAdapter {
 	}
 
 	public class ViewHolder {
-
+		public LinearLayout lin_half;
 		public TextView tv_child_no;
 		public TextView tv_child_char;
 		public TextView tv_child_pinyin;

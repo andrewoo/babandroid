@@ -42,6 +42,9 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 	ReviewSentenceListAdapter reviewListAdapter;
 	ArrayList<LGSentence> listBase = new ArrayList<LGSentence>();
 	ArrayList<TbMySentence> tbMySentenceList;
+
+	private TextView tv_pinyin, tv_sentence, tv_translation;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,6 +69,10 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Sentence Review", View.GONE, View.VISIBLE,
 				R.drawable.revie_pen);
+		tv_pinyin = (TextView) contentView.findViewById(R.id.tv_pinyin);
+		tv_sentence = (TextView) contentView.findViewById(R.id.tv_sentence);
+		tv_translation = (TextView) contentView
+				.findViewById(R.id.tv_translation);
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
 
@@ -97,6 +104,7 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 			reviewListAdapter = new ReviewSentenceListAdapter(context, listBase);
 			listView.setAdapter(reviewListAdapter);
 			reviewListAdapter.notifyDataSetChanged();
+			setTranslations(0);
 		}
 		listView.setOnItemClickListener(onItemclickListener);
 	}
@@ -161,8 +169,10 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 				break;
 
 			case R.id.iv_title_right://
-				startActivity(new Intent(LessonReViewSentenceActivity.this,
-						LessonFlashCardActivity.class));
+				Intent intent = new Intent(LessonReViewSentenceActivity.this,
+						LessonReviewExerciseActivity.class);
+				intent.putExtra("lgTable", 1);
+				startActivity(intent);
 				break;
 
 			default:
@@ -179,7 +189,22 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 
 			reviewListAdapter.setSelection(position);
 			reviewListAdapter.notifyDataSetChanged();
-
+			setTranslations(position);
 		}
 	};
+
+	/**
+	 * @param position
+	 */
+	private void setTranslations(int position) {
+		LGSentence model = listBase.get(position);
+		if (model != null) {
+			// tv_pinyin
+			String sentence = model.getSentence();
+			tv_sentence.setText(sentence);
+			String translations = model.getTranslations();
+			tv_translation.setText(translations);
+
+		}
+	}
 }
