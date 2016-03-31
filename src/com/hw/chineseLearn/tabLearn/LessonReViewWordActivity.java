@@ -167,8 +167,11 @@ public class LessonReViewWordActivity extends BaseActivity {
 				break;
 
 			case R.id.iv_title_right://
-				startActivity(new Intent(LessonReViewWordActivity.this,
-						LessonFlashCardActivity.class));
+				Intent intent = new Intent(LessonReViewWordActivity.this,
+						LessonReviewExerciseActivity.class);
+				intent.putExtra("lgTable", 0);
+				startActivity(intent);
+
 				break;
 
 			default:

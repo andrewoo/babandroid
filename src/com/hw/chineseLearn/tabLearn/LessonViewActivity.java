@@ -87,6 +87,7 @@ public class LessonViewActivity extends BaseActivity implements
 	 * @return
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	private List<LessonRepeatRegex> getRepeatRegexBeanList() {
 		try {
 			lesson=(Lesson) MyDao.getDao(Lesson.class).queryForId(mUnit.getLessonList().split(";")[selection]);

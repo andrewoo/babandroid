@@ -67,17 +67,16 @@ public class ReviewSentenceListAdapter extends BaseAdapter {
 		ViewHolder holder = null;
 		if (convertView == null) {
 			holder = new ViewHolder();
-			convertView = inflater.inflate(R.layout.layout_review_list_item,
-					null);
+			convertView = inflater.inflate(
+					R.layout.layout_review_sentence_list_item, null);
 
 			holder.tv_child_no = (TextView) convertView
 					.findViewById(R.id.tv_child_no);
-			holder.tv_child_char = (TextView) convertView
-					.findViewById(R.id.tv_child_char);
-			holder.tv_child_pinyin = (TextView) convertView
-					.findViewById(R.id.tv_child_pinyin);
 			holder.tv_child_translations = (TextView) convertView
 					.findViewById(R.id.tv_child_translations);
+			holder.tv_child_sentence = (TextView) convertView
+					.findViewById(R.id.tv_child_sentence);
+
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -87,14 +86,12 @@ public class ReviewSentenceListAdapter extends BaseAdapter {
 			return convertView;
 		}
 
-		// String word = model.getWord();
-		// String pinyin = model.getPinyin();
-		// String translations = model.getTranslations();
-		//
-		// holder.tv_child_no.setText("" + (position + 1));
-		// holder.tv_child_char.setText("" + word);
-		// holder.tv_child_pinyin.setText("/" + pinyin);
-		// holder.tv_child_translations.setText("" + translations);
+		String sentence = model.getSentence();
+		String translations = model.getTranslations();
+
+		holder.tv_child_no.setText("" + (position + 1));
+		holder.tv_child_translations.setText(translations);
+		holder.tv_child_sentence.setText(sentence);
 		if (selectPosition == position) {// 选中
 			convertView.setBackground(resources
 					.getDrawable(R.drawable.btn_grey_no_corners));
@@ -113,8 +110,7 @@ public class ReviewSentenceListAdapter extends BaseAdapter {
 	public class ViewHolder {
 
 		public TextView tv_child_no;
-		public TextView tv_child_char;
-		public TextView tv_child_pinyin;
+		public TextView tv_child_sentence;
 		public TextView tv_child_translations;
 	}
 }

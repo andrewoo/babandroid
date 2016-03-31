@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -29,6 +32,8 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.util.tool.BitmapLoader;
+import com.util.tool.UiUtil;
 
 /**
  * 课程复习-偏旁部首-页面
@@ -41,9 +46,14 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	public Context context;
 	private ListView listView;
 	private Resources resources;
-	private int width;
-	private int height;
+	private int mizigeWidth;
+	private int mizigeHeight;
 	View contentView;
+	private ImageView iv_mizige;
+	private TextView tv_pinyin;
+	private TextView tv_translation;
+	private ImageView img_record, img_loop;
+
 	ReviewCharListAdapter reviewListAdapter;
 	ArrayList<LGCharacter> listBase = new ArrayList<LGCharacter>();
 	ArrayList<TbMyCharacter> tbMyCharList;
@@ -57,8 +67,9 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		context = this;
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
-		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
+		mizigeWidth = (CustomApplication.app.displayMetrics.widthPixels / 10 * 5)
+				- UiUtil.dip2px(getApplicationContext(), 20);// padding =20dp
+		mizigeHeight = mizigeWidth;
 		resources = context.getResources();
 		init();
 	}
@@ -72,6 +83,18 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Character Review", View.GONE, View.VISIBLE,
 				R.drawable.revie_pen);
+
+		iv_mizige = (ImageView) contentView.findViewById(R.id.iv_mizige);
+		tv_pinyin = (TextView) contentView.findViewById(R.id.tv_pinyin);
+		tv_translation = (TextView) contentView
+				.findViewById(R.id.tv_translation);
+		img_record = (ImageView) contentView.findViewById(R.id.img_record);
+		img_loop = (ImageView) contentView.findViewById(R.id.img_loop);
+
+		LayoutParams layoutParams1 = (LayoutParams) iv_mizige.getLayoutParams();
+		layoutParams1.width = mizigeWidth;
+		layoutParams1.height = mizigeWidth;
+		iv_mizige.setLayoutParams(layoutParams1);
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
 
@@ -104,7 +127,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		listView.setAdapter(reviewListAdapter);
 		listView.setOnItemClickListener(onItemclickListener);
 		reviewListAdapter.notifyDataSetChanged();
-
+		setPartAnswer(0);
 	}
 
 	/**
@@ -167,8 +190,10 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 				break;
 
 			case R.id.iv_title_right://
-				startActivity(new Intent(LessonReViewCharacterActivity.this,
-						LessonFlashCardActivity.class));
+				Intent intent = new Intent(LessonReViewCharacterActivity.this,
+						LessonReviewExerciseActivity.class);
+				intent.putExtra("lgTable", 2);
+				startActivity(intent);
 				break;
 
 			default:
@@ -185,7 +210,39 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 
 			reviewListAdapter.setSelection(position);
 			reviewListAdapter.notifyDataSetChanged();
-
+			setPartAnswer(position);
 		}
 	};
+
+	/**
+	 * @param position
+	 */
+	private void setPartAnswer(int position) {
+		LGCharacter model = listBase.get(position);
+		if (model != null) {
+			String partAnswer = model.getPartAnswer();
+			Log.d(TAG, "partAnswer:" + partAnswer);
+			// 772;773;
+			String pngs[] = partAnswer.split(";");
+
+			for (int i = 0; i < pngs.length; i++) {
+
+				String picName = pngs[i];
+
+				if ("".equals(picName))
+					continue;
+
+				picName = "pp-" + picName;
+
+				Bitmap imageFromAssetsFile = BitmapLoader
+						.getImageFromAssetsFile(picName);
+				iv_mizige.setImageBitmap(imageFromAssetsFile);
+			}
+			String pinyin = model.getPinyin();
+			tv_pinyin.setText(pinyin);
+
+			String translation = model.getTranslation();
+			tv_translation.setText(translation);
+		}
+	}
 }
