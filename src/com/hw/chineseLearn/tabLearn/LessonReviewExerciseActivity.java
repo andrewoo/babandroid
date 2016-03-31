@@ -77,6 +77,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 	private LinearLayout lin_pander_life;
 	private TextView txt_lesson_score;
 	private LinearLayout lin_lesson_progress;
+	private LinearLayout lin_lesson_score;
 	private Button btn_check;
 	View contentView;
 	List<SubLGModel> subLGModeList;
@@ -170,24 +171,16 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			}
 			for (int i = 0; i < tbMyWordList.size(); i++) {
 				TbMyWord model = tbMyWordList.get(i);
-				
+
 				if (model == null) {
 					continue;
 				}
 				LessonRepeatRegex lessonRepeatRegex = new LessonRepeatRegex();
 				int wordId = model.getWordId();
 				lessonId = model.getLessonId();
-				
-				try {
-					LGWord lGWord = (LGWord) MyDao.getDao(LGWord.class)
-							.queryForId(wordId);
 
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				Integer random = getRandom(wordId);
-				lessonRepeatRegex.setLgTable(0);
+				lessonRepeatRegex.setLgTable(lgTable);
 				lessonRepeatRegex.setLgTableId(wordId);
 				lessonRepeatRegex.setRandomSubject(random);
 				regexes.add(lessonRepeatRegex);
@@ -208,15 +201,16 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 				if (model == null) {
 					continue;
 				}
+				LessonRepeatRegex lessonRepeatRegex = new LessonRepeatRegex();
 				int sentenceId = model.getSentenceId();
-				try {
-					LGSentence lGSentence = (LGSentence) MyDao.getDao(
-							LGSentence.class).queryForId(sentenceId);
+				lessonId = model.getLessonId();
 
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Integer random = getRandom(sentenceId);
+				lessonRepeatRegex.setLgTable(lgTable);
+				lessonRepeatRegex.setLgTableId(sentenceId);
+				lessonRepeatRegex.setRandomSubject(random);
+				regexes.add(lessonRepeatRegex);
+
 			}
 
 		} else if (lgTable == 2) {// character
@@ -234,20 +228,17 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 				if (model == null) {
 					continue;
 				}
+				LessonRepeatRegex lessonRepeatRegex = new LessonRepeatRegex();
 				int charId = model.getCharId();
-				try {
-					LGCharacter lGCharacter = (LGCharacter) MyDao.getDao(
-							LGCharacter.class).queryForId(charId);
+				lessonId = model.getLessonId();
 
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Integer random = getRandom(charId);
+				lessonRepeatRegex.setLgTable(lgTable);
+				lessonRepeatRegex.setLgTableId(charId);
+				lessonRepeatRegex.setRandomSubject(random);
+				regexes.add(lessonRepeatRegex);
 			}
 		}
-
-		int randomSubject = 0;
-
 	}
 
 	MediaPlayer mediaPlayer = null;
@@ -322,7 +313,8 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 		lin_pander_life = (LinearLayout) findViewById(R.id.lin_pander_life);
 		txt_lesson_score = (TextView) findViewById(R.id.txt_lesson_score);
 		lin_lesson_progress = (LinearLayout) findViewById(R.id.lin_lesson_progress);
-
+		lin_lesson_score = (LinearLayout) findViewById(R.id.lin_lesson_score);
+		lin_lesson_score.setVisibility(View.GONE);
 		score = 0;
 		txt_lesson_score.setText("" + score);
 		exerciseIndex = 0;// 第一道题
@@ -343,7 +335,12 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			lin_lesson_progress.addView(imageView);
 			progressView.put(i, imageView);
 		}
-		regexToView(regexes.get(exerciseIndex));// 第一次进入时
+		if (regexes.size() != 0) {
+			regexToView(regexes.get(exerciseIndex));// 第一次进入时
+		} else {
+			Log.e(TAG, "regexes.size() == 0");
+		}
+
 	}
 
 	/**
@@ -375,10 +372,6 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 				// showCheckDialog(true);
 				break;
 			case R.drawable.bg_progress_wrong:
-				score = score - 60;
-				if (score < 0)
-					score = 0;
-				txt_lesson_score.setText("" + score);
 				break;
 			default:
 				break;
@@ -642,20 +635,24 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 
 					Intent intent = new Intent(
 							LessonReviewExerciseActivity.this,
-							LessonResultActivity.class);
+							LessonReviewResultActivity.class);
 					intent.putExtra("loseAllPanders", "");
 					intent.putExtra("secondCount", secondCount);// 用时秒数
 					intent.putExtra("score", score);// 得分
 					intent.putExtra("exerciseCount", exerciseCount);// 总练习题目数
 					intent.putExtra("rightCount", rightCount);// 正确个数
 					intent.putExtra("wrongCount", wrongCount);// 错误个数
-
 					startActivityForResult(intent, 100);
 				}
 				// learn表中regex第一位 对应View关系
 				if (exerciseIndex < exerciseCount - 1) {
 					exerciseIndex++;
-					regexToView(regexes.get(exerciseIndex));
+					if (regexes.size() != 0) {
+						regexToView(regexes.get(exerciseIndex));
+					} else {
+						Log.e(TAG, "regexes.size()==0");
+					}
+
 				}
 
 				builder.dismiss();
@@ -1380,7 +1377,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 
 	private Integer getRandom(int id) {
 		// 给每个Subject随机赋值确定查哪张表
-		int randomSubject=-1;
+		int randomSubject = -1;
 		if (lgTable == 0) {
 			LGWord lgWord = null;
 			try {
@@ -1396,7 +1393,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 		} else if (lgTable == 1) {
 			randomSubject = new Random().nextInt(5) + 1;
 		} else if (lgTable == 2) {
-			randomSubject=1;
+			randomSubject = 1;
 		}
 		return randomSubject;
 	}
