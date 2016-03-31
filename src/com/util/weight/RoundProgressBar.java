@@ -1,5 +1,6 @@
 package com.util.weight;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -69,7 +70,7 @@ public class RoundProgressBar extends View {
 	/**
 	 * 正确率
 	 */
-	private float accurally;
+	private float accuracy;
 
 	public static final int STROKE = 0;
 	public static final int FILL = 1;
@@ -112,10 +113,11 @@ public class RoundProgressBar extends View {
 	/**
 	 * 正确率
 	 */
-	public void setAccurally(float accurally) {
-		this.accurally = accurally;
+	public void setAccurally(float accuracy) {
+		this.accuracy = accuracy;
 	}
 
+	@SuppressLint("DrawAllocation")
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -129,7 +131,7 @@ public class RoundProgressBar extends View {
 		paint.setStyle(Paint.Style.STROKE); // 设置空心
 		paint.setStrokeWidth(roundWidth); // 设置圆环的宽度
 		paint.setAntiAlias(true); // 消除锯齿
-		canvas.drawCircle(centre, centre, radius, paint); // 画出圆环
+		canvas.drawCircle(centre , centre , radius, paint); // 画出圆环
 		// Log.e("log", "centre：" + centre);
 
 		/**
@@ -142,7 +144,7 @@ public class RoundProgressBar extends View {
 		float percent = ((float) progress / (float) max) * 100; // 中间的进度百分比，先转换成float在进行除法运算，不然都为0
 		float percentP = (float) (Math.round(progress * 100)) / 100;// 保留小数点后两位
 		float textWidth = paint.measureText(percentP + "%"); // 测量字体宽度，我们需要根据字体的宽度设置在圆环中间
-		
+
 		if (textIsDisplayable && percentP != 0 && style == STROKE) {
 			canvas.drawText(percentP + "%", centre - textWidth / 2, centre
 					+ textSize / 2, paint); // 画出进度百分比
@@ -161,12 +163,17 @@ public class RoundProgressBar extends View {
 		switch (style) {
 		case STROKE: {
 			paint.setStyle(Paint.Style.STROKE);
-//			Log.d("onDraw", "max:" + max);
-//			Log.d("onDraw", "progress:" + progress);
 			if (progress != 0 && progress <= max) {
-				canvas.drawArc(oval, 0, 360 * accurally * progress / max,
+
+				// public void drawArc(RectF oval, float startAngle, float
+				// sweepAngle, boolean useCenter, Paint paint)
+				// oval :指定圆弧的外轮廓矩形区域。
+				// startAngle: 圆弧起始角度，单位为度。
+				// sweepAngle: 圆弧扫过的角度，顺时针方向，单位为度,从右中间开始为零度。
+				// useCenter: 如果为True时，在绘制圆弧时将圆心包括在内，通常用来绘制扇形
+
+				canvas.drawArc(oval, 270, 360 * accuracy * progress / max,
 						false, paint); // 根据进度画圆弧
-				Log.e("onDraw", "drawArc");
 			}
 			break;
 		}

@@ -131,7 +131,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		@Override
 		public void run() {
 
-			runOnUiThread(new Runnable() {
+			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					secondCount++;
