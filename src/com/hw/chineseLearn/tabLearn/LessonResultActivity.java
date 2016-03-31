@@ -51,12 +51,13 @@ public class LessonResultActivity extends BaseActivity {
 	 * 正确率
 	 */
 	private TextView tv_accuracy_percent;
-	private double accuracy = 0.00d;
 	private TextView tv_result;
 
 	private TextView btn_redo;
 	private TextView btn_continue;
-	private int progress = 0;
+	private float progress = 0.0f;
+	private float progressAdd = 0.0f;
+	private float progressCount;
 	private String loseAllPanders = "";
 	private int secondCount;
 	private int score;
@@ -87,7 +88,11 @@ public class LessonResultActivity extends BaseActivity {
 				rightCount = bundle.getInt("rightCount");
 			}
 			if (bundle.containsKey("wrongCount")) {
-				rightCount = bundle.getInt("wrongCount");
+				wrongCount = bundle.getInt("wrongCount");
+			}
+			if (exerciseCount != 0) {
+				progressCount = ((float) rightCount / (float) exerciseCount) * 100;
+				progressCount = (float) (Math.round(progressCount * 100)) / 100;// 保留小数点后两位
 			}
 
 		}
@@ -121,9 +126,10 @@ public class LessonResultActivity extends BaseActivity {
 		if ("".equals(loseAllPanders)) {
 
 			mRoundProgressBar = (RoundProgressBar) findViewById(R.id.roundProgressBar);
-
 			mRoundProgressBar.setLayoutParams(lp);
-
+			mRoundProgressBar.setMax(progressCount);
+			progressAdd = progressCount / 100;
+			mRoundProgressBar.setAccurally(progressAdd);
 			tv_score = (TextView) contentView.findViewById(R.id.tv_score);
 			tv_score.setText("" + score);
 
@@ -150,12 +156,11 @@ public class LessonResultActivity extends BaseActivity {
 
 				@Override
 				public void run() {
-					while (progress <= 100) {
-						progress += 3;
-						System.out.println(progress);
+					while (progress <= progressCount) {
+						progress += progressAdd;
 						mRoundProgressBar.setProgress(progress);
 						try {
-							Thread.sleep(100);
+							Thread.sleep(50);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -163,8 +168,9 @@ public class LessonResultActivity extends BaseActivity {
 
 				}
 			}).start();
+
 			tv_result = (TextView) contentView.findViewById(R.id.tv_result);
-			tv_result.setText("Congratulations!You defeated " + 97
+			tv_result.setText("Congratulations!You defeated " + progressCount
 					+ "%babbelApp learns!");
 
 			try {
@@ -187,11 +193,7 @@ public class LessonResultActivity extends BaseActivity {
 			} finally {
 				tv_right_count.setText("" + rightCount);
 				tv_wrong_count.setText("" + wrongCount);
-				if (rightCount != 0) {
-
-					accuracy = (double) (exerciseCount / rightCount);
-				}
-				tv_accuracy_percent.setText("" + accuracy + "%");
+				tv_accuracy_percent.setText(progressCount + "%");
 			}
 
 		} else {

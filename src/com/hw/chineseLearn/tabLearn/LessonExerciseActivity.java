@@ -143,7 +143,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		@Override
 		public void run() {
 
-			runOnUiThread(new Runnable() {
+			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					secondCount++;
@@ -564,6 +564,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			rightCount++;
 		} else {
 			status = 0;
+			wrongCount++;
 		}
 
 		Button btn_report_bug = (Button) checkView
