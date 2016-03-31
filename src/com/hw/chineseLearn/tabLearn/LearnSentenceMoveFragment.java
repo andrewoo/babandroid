@@ -106,10 +106,15 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	}
 
 	private void initData() {
-		modelWord = (LGModelWord) getArguments().getSerializable("modelWord");
-		title = modelWord.getTitle();// 得到title
-		subLGModelList = modelWord.getSubLGModelList();
-
+		Bundle bundle = getArguments();
+		if(bundle!=null){
+			if(bundle.containsKey("modelWord")){
+				LGModelWord modelWord=(LGModelWord) bundle.getSerializable("modelWord");
+				title = modelWord.getTitle();// 得到title
+				subLGModelList = modelWord.getSubLGModelList();
+				answerList = modelWord.getAnswerList();
+			}
+		}
 	}
 
 	@Override
@@ -177,6 +182,8 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	private List<SubLGModel> subLGModelList;
 
 	private LGModelWord modelWord;
+
+	private List<String> answerList;
 
 
 	private void initBottomViews() {
@@ -654,9 +661,10 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 		String topViewStrings = getTopViewStrings();
 		String stringFilter = UiUtil.StringFilter(topViewStrings);
-		List<String> answerList = modelWord.getAnswerList();
-
+		System.out.println("11111"+stringFilter);
+		
 		for (int i = 0; i < answerList.size(); i++) {
+			System.out.println("22222"+answerList.get(i));
 			if (answerList.get(i).equals(stringFilter)) {
 				return true;
 			}

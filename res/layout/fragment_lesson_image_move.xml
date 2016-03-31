@@ -25,6 +25,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iv_dv_view"
             android:text="[ta]he/him"
+            android:singleLine="true"
             android:textColor="@color/deep_grey"
             android:textSize="@dimen/text_s28" />
 

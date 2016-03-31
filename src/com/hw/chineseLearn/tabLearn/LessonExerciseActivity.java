@@ -44,11 +44,17 @@ import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
+import com.hw.chineseLearn.dao.bean.LGCharacter;
+import com.hw.chineseLearn.dao.bean.LGCharacterPart;
 import com.hw.chineseLearn.dao.bean.LGModel_Sentence_010;
+import com.hw.chineseLearn.dao.bean.LGModel_Sentence_020;
 import com.hw.chineseLearn.dao.bean.LGModel_Sentence_030;
+import com.hw.chineseLearn.dao.bean.LGModel_Sentence_040;
+import com.hw.chineseLearn.dao.bean.LGModel_Sentence_050;
 import com.hw.chineseLearn.dao.bean.LGModel_Word_010;
 import com.hw.chineseLearn.dao.bean.LGModel_Word_020;
 import com.hw.chineseLearn.dao.bean.LGModel_Word_030;
+import com.hw.chineseLearn.dao.bean.LGModel_Word_040;
 import com.hw.chineseLearn.dao.bean.LGModel_Word_060;
 import com.hw.chineseLearn.dao.bean.LGSentence;
 import com.hw.chineseLearn.dao.bean.LGWord;
@@ -56,6 +62,8 @@ import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
 
@@ -111,6 +119,10 @@ public class LessonExerciseActivity extends BaseActivity {
 
 	private Timer timer = new Timer();
 	private int secondCount = 0;
+	
+	private List<String> randomList = new ArrayList<String>();
+	private List<String> partPicNameList = new ArrayList<String>();
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -830,24 +842,7 @@ public class LessonExerciseActivity extends BaseActivity {
 				replaceTo2("sentenceMoveFragment");
 				break;
 			case 4:// 单词翻译输入英语 
-				//先查询拿到wordid 查询 LGWORD 得到title
-				//查询030得到answer 
-				modelWord = new LGModelWord();
-				int lgTableId = lessonRepeatRegex.getLgTableId();
-				try {
-					LGWord lgWord=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
-					String title=lgWord.getWord()+"/"+lgWord.getPinyin();
-					modelWord.setTitle(title);
-//					MyDao.getDao(LGModel_Word_040.class)
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				wordInputFragment = new LearnWordInputFragment();
-				baseFragment = wordInputFragment;
-				Bundle bundle4 = new Bundle();
-				bundle4.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
-				wordInputFragment.setArguments(bundle4);// 把题传过去
+				parseSetData4(lessonRepeatRegex);
 				replaceTo2("wordInputFragment");
 				break;
 			case 5:
@@ -860,12 +855,13 @@ public class LessonExerciseActivity extends BaseActivity {
 			}
 		} else if (lgTable == 1) {
 			int randomSubject = regexes.get(exerciseIndex).getRandomSubject();
-			switch (3) {
+			switch (randomSubject) {
 			case 1:
 				parseSentenseData1(lessonRepeatRegex);
 				replaceTo2("wordSelectFragment");
 				break;
 			case 2:
+				parseSentenseData2(lessonRepeatRegex);
 				replaceTo2("wordInputFragment");
 				break;
 			case 3:
@@ -873,20 +869,221 @@ public class LessonExerciseActivity extends BaseActivity {
 				replaceTo2("wordSelectFragment");
 				break;
 			case 4:
+				parseSentenseData4(lessonRepeatRegex);
 				replaceTo2("sentenceMoveFragment");
 				break;
 			case 5:
-				replaceTo2("imageMoveFragment");
+				parseSentenseData5(lessonRepeatRegex);
+				replaceTo2("sentenceMoveFragment");
 				break;
 			}
 		} else if (lgTable == 2) {
+			// 查询lgcharacid title=       得到       partoption和partanswer spit; 查lgcharpart得到imagename
+			modelWord = new LGModelWord();
+			int lgTableId = lessonRepeatRegex.getLgTableId();
+			LGCharacter lGCharacterPart = null;
+			try {
+				lGCharacterPart = (LGCharacter) MyDao.getDao(LGCharacter.class).queryForId(lgTableId);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			String title = "["+lGCharacterPart.getPinyin()+"]"+lGCharacterPart.getTranslation().replace(";", "/");
+			modelWord.setTitle(title);//拿到title
+			modelWord.setCharId(lgTableId);// 拿到CharId
+			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String[] picArray = lGCharacterPart.getPartOptions().split(";");//所有选项
+			String[] answerPicArray = lGCharacterPart.getPartAnswer().split(";");//答案选项
+			List<String> picList = new ArrayList<String>();//存放选择图片名字的集合
+			for (int i = 0; i < picArray.length; i++) {
+				for (int j = 0; j < answerPicArray.length; j++) {
+					if (picArray[i].equals(answerPicArray[j]) ) {
+						picList.add(picArray[i]);//加入答案
+					}
+				}
+				if (!randomList.contains(picArray[i]) && !picList.contains(picArray[i])) {
+					randomList.add(picArray[i]);//加入答案外的
+				}
+			}
+			Collections.shuffle(randomList);
+			int length = picArray.length;
+			if (picList.size() < length) {
+				length=Math.min(length,5);//可能是4 5 6 选最小
+				int x = length - picList.size();
+				for (int i = 0; i < x; i++) {
+					picList.add(randomList.get(i));//答案以外随机加入到picArray.length个
+				}
+			}
+			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
+			try {
+				for (int i = 0; i < picList.size(); i++) {
+					LGCharacterPart lgCharacterPart = (LGCharacterPart) MyDao.getDao(LGCharacterPart.class).queryForId(
+									Integer.valueOf(picList.get(i)));
+					String picName = lgCharacterPart.getPartName();
+					SubLGModel subLGModel = modelWord.new SubLGModel();
+					subLGModel.setImageName(picName);
+					subLGModelList.add(subLGModel);//拿到所有图片选项
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			modelWord.setSubLGModelList(subLGModelList);
+			
 			imageMoveFragment = new LearnImageMoveFragment();
 			baseFragment = imageMoveFragment;
 			Bundle bundle = new Bundle();
-			bundle.putSerializable("lessonRepeatRegex", lessonRepeatRegex);
+			bundle.putSerializable("modelWord", modelWord);
 			imageMoveFragment.setArguments(bundle);// 把题传过去
 			replaceTo2("imageMoveFragment");
 		}
+	}
+
+	private void parseSentenseData5(LessonRepeatRegex lessonRepeatRegex) {
+		
+		modelWord = new LGModelWord();
+		int lgTableId = lessonRepeatRegex.getLgTableId();
+		try {
+			LGSentence lgSentence = (LGSentence) MyDao.getDao(LGSentence.class).queryForId(
+					lgTableId);
+			String title = lgSentence.getTranslations();
+			modelWord.setTitle(title);// 拿到标题
+			modelWord.setSentenceId(lgTableId);// 拿到SentenceId
+			modelWord.setLessonId(lessonId);// 拿到lessonId
+			List<String> answerList = modelWord.getAnswerList();
+			LGModel_Sentence_050 sentence050 = (LGModel_Sentence_050) MyDao
+					.getDao(LGModel_Sentence_050.class).queryBuilder().where()
+					.eq("SentenceId", lgTableId).queryForFirst();
+			String[] splitAnswer = sentence050.getAnswer().split(";");
+			StringBuffer buffer=new StringBuffer();
+			Dao dao = MyDao.getDao(LGWord.class);
+			for (int i = 0; i < splitAnswer.length; i++) {
+				LGWord lgWord=(LGWord)dao.queryForId(Integer.valueOf(splitAnswer[i]));
+				String word = lgWord.getWord();
+				buffer=buffer.append(word+" ");
+			}
+			String strBuffer=buffer.toString();
+			modelWord.setAnswerText(strBuffer);
+			answerList.add(UiUtil.StringFilter(strBuffer));//把答案加进去
+			modelWord.setAnswerList(answerList);
+			String[] split = sentence050.getOptions().split(";");
+			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
+			for (int i = 0; i < split.length; i++) {
+				SubLGModel subLGModel = modelWord.new SubLGModel();
+				LGWord lgWord=(LGWord) dao.queryForId(Integer.valueOf(split[i]));
+				String option=lgWord.getWord();
+				subLGModel.setOption(option);// 拿到选项
+				subLGModelList.add(subLGModel);
+			}
+			Collections.shuffle(subLGModelList);
+			modelWord.setSubLGModelList(subLGModelList);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		sentenceMoveFragment = new LearnSentenceMoveFragment();
+		baseFragment = sentenceMoveFragment;
+		Bundle bundle3 = new Bundle();
+		bundle3.putSerializable("modelWord", modelWord);
+		sentenceMoveFragment.setArguments(bundle3);// 把题传过去
+		
+	}
+
+	private void parseSentenseData4(LessonRepeatRegex lessonRepeatRegex) {
+		modelWord = new LGModelWord();
+		int lgTableId = lessonRepeatRegex.getLgTableId();
+		try {
+			LGSentence lgSentence = (LGSentence) MyDao.getDao(LGSentence.class).queryForId(
+					lgTableId);
+			String title = lgSentence.getSentence();
+			modelWord.setTitle(title);// 拿到标题
+			modelWord.setSentenceId(lgTableId);// 拿到SentenceId
+			modelWord.setLessonId(lessonId);// 拿到lessonId
+			List<String> answerList = modelWord.getAnswerList();
+			LGModel_Sentence_040 sentence040 = (LGModel_Sentence_040) MyDao
+					.getDao(LGModel_Sentence_040.class).queryBuilder().where()
+					.eq("SentenceId", lgTableId).queryForFirst();
+			String[] splitAnswer = sentence040.getAnswer().split("!@@@!");
+			for (int i = 0; i < splitAnswer.length; i++) {
+				answerList.add(UiUtil.StringFilter(splitAnswer[i]));// 加入答案
+			}
+			modelWord.setAnswerList(answerList);
+			modelWord.setAnswerText(splitAnswer[0]);//拿到答案 暂时为第一个
+			String[] split = sentence040.getOptions().split(";");
+			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
+			for (int i = 0; i < split.length; i++) {
+				SubLGModel subLGModel = modelWord.new SubLGModel();
+				subLGModel.setOption(split[i]);// 拿到选项
+				subLGModelList.add(subLGModel);
+			}
+			Collections.shuffle(subLGModelList);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sentenceMoveFragment = new LearnSentenceMoveFragment();
+		baseFragment = sentenceMoveFragment;
+		Bundle bundle3 = new Bundle();
+		bundle3.putSerializable("modelWord", modelWord);
+		sentenceMoveFragment.setArguments(bundle3);// 把题传过去
+		
+	}
+
+	private void parseSentenseData2(LessonRepeatRegex lessonRepeatRegex2) {
+		//查sentence得到title
+		//查sentence020 得到answerList
+		modelWord = new LGModelWord();
+		int lgTableId = lessonRepeatRegex.getLgTableId();
+		try {
+			LGSentence lgSentence=(LGSentence) MyDao.getDao(LGSentence.class).queryForId(lgTableId);
+			String title=lgSentence.getSentence();
+			modelWord.setTitle(title);//拿到title
+			modelWord.setSentenceId(lgTableId);//拿到sentenceId
+			LGModel_Sentence_020 lgSentence020=(LGModel_Sentence_020) MyDao.getDao(LGModel_Sentence_020.class).queryBuilder().where().eq("SentenceId", lgTableId).queryForFirst();
+			String[] splitAnswer = lgSentence020.getAnswer().split("!@@@!");
+			System.out.println("splitAnswer[0]"+splitAnswer[0]);
+			modelWord.setAnswerText(splitAnswer[0]);//设置答案文本
+			List<String> answerList = modelWord.getAnswerList();
+			for (int i = 0; i < splitAnswer.length; i++) {
+				String stringFilter = UiUtil.StringFilter(splitAnswer[i]);
+				answerList.add(stringFilter);
+			}
+			modelWord.setAnswerList(answerList);//加入答案集合
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		wordInputFragment = new LearnWordInputFragment();
+		baseFragment = wordInputFragment;
+		Bundle bundle4 = new Bundle();
+		bundle4.putSerializable("modelWord", modelWord);
+		wordInputFragment.setArguments(bundle4);// 把题传过去
+	}
+
+	private void parseSetData4(LessonRepeatRegex lessonRepeatRegex) {
+		//先查询拿到wordid 查询 LGWORD 得到title
+		//查询040得到answer 
+		modelWord = new LGModelWord();
+		int lgTableId = lessonRepeatRegex.getLgTableId();
+		try {
+			LGWord lgWord=(LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
+			String title=lgWord.getWord()+"/"+lgWord.getPinyin();
+			modelWord.setTitle(title);//拿到title
+			modelWord.setWordId(lgTableId);//拿到wordId
+			modelWord.setLessonId(lessonId);// 拿到lessonId
+			LGModel_Word_040 lgWord040=(LGModel_Word_040) MyDao.getDao(LGModel_Word_040.class).queryBuilder().where().eq("WordId", lgTableId).queryForFirst();
+			String[] splitAnswer = lgWord040.getAnswers().split("!@@@!");
+			modelWord.setAnswerText(splitAnswer[0]);//设置答案文本
+			List<String> answerList = modelWord.getAnswerList();
+			for (int i = 0; i < splitAnswer.length; i++) {
+				String stringFilter = UiUtil.StringFilter(splitAnswer[i]);
+				answerList.add(stringFilter);
+			}
+			modelWord.setAnswerList(answerList);//加入答案集合
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		wordInputFragment = new LearnWordInputFragment();
+		baseFragment = wordInputFragment;
+		Bundle bundle4 = new Bundle();
+		bundle4.putSerializable("modelWord", modelWord);
+		wordInputFragment.setArguments(bundle4);// 把题传过去
 	}
 
 	private void parseSetData3(LessonRepeatRegex lessonRepeatRegex) {
@@ -900,6 +1097,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			String title = lgWord.getWord() + "/" + lgWord.getPinyin();
 			modelWord.setTitle(title);// 拿到标题
 			modelWord.setWordId(lgTableId);// 拿到wordid
+			modelWord.setLessonId(lessonId);// 拿到lessonId
 			List<String> answerList = modelWord.getAnswerList();
 			LGModel_Word_030 word030 = (LGModel_Word_030) MyDao
 					.getDao(LGModel_Word_030.class).queryBuilder().where()
@@ -909,7 +1107,7 @@ public class LessonExerciseActivity extends BaseActivity {
 				answerList.add(UiUtil.StringFilter(splitAnswer[i]));// 加入答案
 			}
 			modelWord.setAnswerList(answerList);
-			// modelWord.setAnswerText(answer);//拿到答案
+			modelWord.setAnswerText(splitAnswer[0]);//拿到答案 暂时为第一个
 			String[] split = word030.getOptions().split(";");
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			for (int i = 0; i < split.length; i++) {
@@ -919,7 +1117,6 @@ public class LessonExerciseActivity extends BaseActivity {
 			}
 			Collections.shuffle(subLGModelList);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		sentenceMoveFragment = new LearnSentenceMoveFragment();
@@ -941,6 +1138,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setSentenceId(lgTableId);// 拿到sentenceId
 			int answer = sentence030.getAnswer();
 			modelWord.setAnswer(answer);// 拿到answer
+			modelWord.setLessonId(lessonId);// 拿到lessonId
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			String sentence = lgSentence.getSentence();
 			String[] options = sentence030.getOptions().split(";");
@@ -982,7 +1180,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					.eq("SentenceId", lgTableId).queryForFirst();
 			LGSentence lgSentence = (LGSentence) MyDao.getDao(LGSentence.class)
 					.queryForId(lgTableId);
-			modelWord.setSentenceId(lgTableId);
+			modelWord.setSentenceId(lgTableId);//拿到sentenceid
 			modelWord.setLessonId(lessonId);// 拿到lessonId
 			modelWord.setTitle(lgSentence.getSentence());
 			modelWord.setAnswer(sentence010.getAnswer());
@@ -1071,7 +1269,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			LGModel_Word_020 word_020 = (LGModel_Word_020) MyDao
 					.getDao(LGModel_Word_020.class).queryBuilder().where()
 					.eq("WordId", lgTableId).queryForFirst();
-			modelWord.setWordId(lgTableId);
+			modelWord.setWordId(lgTableId);//拿到wordId
 			int answer = word_020.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
 			modelWord.setLessonId(lessonId);// 拿到lessonId
