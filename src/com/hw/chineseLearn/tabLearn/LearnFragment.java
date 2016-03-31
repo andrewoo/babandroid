@@ -307,8 +307,6 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 				long arg3) {
 			// TODO Auto-generated method stub
-			if(position==0){
-				
 				Unit unit = firstList.get(position);
 				if (unit != null) {
 					// boolean isEnable = unit.isEnable();
@@ -319,9 +317,6 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 					intent.putExtra("position", position);
 					startActivity(intent);
 					// }
-				}
-			}else{
-				Toast.makeText(getActivity(), "暂未解锁", 0).show();
 			}
 		}
 	};

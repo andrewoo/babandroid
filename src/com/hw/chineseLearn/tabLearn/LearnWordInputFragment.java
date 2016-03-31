@@ -70,7 +70,7 @@ public class LearnWordInputFragment extends BaseFragment implements
 				LGModelWord modelWord=(LGModelWord) bundle.getSerializable("modelWord");
 				title = modelWord.getTitle();//得到title
 				answerList = modelWord.getAnswerList();//得到答案集合
-			}
+			} 
 		}
 		
 		
