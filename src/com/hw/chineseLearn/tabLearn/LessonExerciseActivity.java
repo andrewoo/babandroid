@@ -338,19 +338,23 @@ public class LessonExerciseActivity extends BaseActivity {
 
 			switch (drawableId) {
 			case R.drawable.bg_progress_rigth:
-				score = score + 60;
+//				if(){
+//					
+//				}
+				
+				score = score + 60;//做对加分
 				txt_lesson_score.setText("" + score);
-				if (index == exerciseCount - 1) {
+//				if (index == exerciseCount - 1) {
 					// UiUtil.showToast(context, "last test");
-				}
+//				}
 				// playRightSound();
 				// showCheckDialog(true);
 				break;
 			case R.drawable.bg_progress_wrong:
-				score = score - 60;
-				if (score < 0)
-					score = 0;
-				txt_lesson_score.setText("" + score);
+//				score = score - 60;//做错减分
+//				if (score < 0)
+//					score = 0;
+//				txt_lesson_score.setText("" + score);
 
 				lin_pander_life.removeView(panderView.get(panderLife - 1));
 				panderLife--;
@@ -832,22 +836,27 @@ public class LessonExerciseActivity extends BaseActivity {
 			switch (randomSubject) {
 			case 1:// 对应选择图片题 题目中文
 				parseSetData1(lessonRepeatRegex);// 解析数据库数据，并把对应题传过去
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("imageSelectFragment");
 				break;
 			case 2:// 单选中问题 无图片
 				parseSetData2(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordSelectFragment");
 				break;
 			case 3:// tag英文
 				parseSetData3(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("sentenceMoveFragment");
 				break;
 			case 4:// 单词翻译输入英语 
 				parseSetData4(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordInputFragment");
 				break;
 			case 5:
 				parseSetData2(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordSelectFragment");// 题目中文 选项英文
 				break;
 			case 6:
@@ -859,22 +868,27 @@ public class LessonExerciseActivity extends BaseActivity {
 			switch (randomSubject) {
 			case 1:
 				parseSentenseData1(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordSelectFragment");
 				break;
 			case 2:
 				parseSentenseData2(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordInputFragment");
 				break;
 			case 3:
 				parseSentenseData3(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordSelectFragment");
 				break;
 			case 4:
 				parseSentenseData4(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("sentenceMoveFragment");
 				break;
 			case 5:
 				parseSentenseData5(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("sentenceMoveFragment");
 				break;
 			}
@@ -1039,7 +1053,6 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setSentenceId(lgTableId);//拿到sentenceId
 			LGModel_Sentence_020 lgSentence020=(LGModel_Sentence_020) MyDao.getDao(LGModel_Sentence_020.class).queryBuilder().where().eq("SentenceId", lgTableId).queryForFirst();
 			String[] splitAnswer = lgSentence020.getAnswer().split("!@@@!");
-			System.out.println("splitAnswer[0]"+splitAnswer[0]);
 			modelWord.setAnswerText(splitAnswer[0]);//设置答案文本
 			List<String> answerList = modelWord.getAnswerList();
 			for (int i = 0; i < splitAnswer.length; i++) {
