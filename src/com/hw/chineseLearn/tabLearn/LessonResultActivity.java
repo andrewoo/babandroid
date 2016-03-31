@@ -65,7 +65,6 @@ public class LessonResultActivity extends BaseActivity {
 	private ImageView tv_lose_all, img_lose_all;
 	int characterCount = 0, wordsCount = 0, sentenceCount = 0;
 	int rightCount = 0, wrongCount = 0;
-	String progressCountString = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +157,6 @@ public class LessonResultActivity extends BaseActivity {
 				public void run() {
 					while (progress <= progressCount) {
 						progress += progressAdd;
-						// System.out.println(progress);
 						mRoundProgressBar.setProgress(progress);
 						try {
 							Thread.sleep(100);
@@ -169,11 +167,11 @@ public class LessonResultActivity extends BaseActivity {
 
 				}
 			}).start();
-			progressCountString = "" + progressCount;
-			progressCountString = progressCountString.substring(0, 5);
+
+			progressCount = (float) (Math.round(progressCount * 100)) / 100;// 保留小数点后两位
 			tv_result = (TextView) contentView.findViewById(R.id.tv_result);
-			tv_result.setText("Congratulations!You defeated "
-					+ progressCountString + "%babbelApp learns!");
+			tv_result.setText("Congratulations!You defeated " + progressCount
+					+ "%babbelApp learns!");
 
 			try {
 				ArrayList<TbMyCharacter> tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao
@@ -195,7 +193,7 @@ public class LessonResultActivity extends BaseActivity {
 			} finally {
 				tv_right_count.setText("" + rightCount);
 				tv_wrong_count.setText("" + wrongCount);
-				tv_accuracy_percent.setText(progressCountString + "%");
+				tv_accuracy_percent.setText(progressCount + "%");
 			}
 
 		} else {

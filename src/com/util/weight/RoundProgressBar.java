@@ -118,8 +118,7 @@ public class RoundProgressBar extends View {
 		paint.setStrokeWidth(roundWidth); // 设置圆环的宽度
 		paint.setAntiAlias(true); // 消除锯齿
 		canvas.drawCircle(centre, centre, radius, paint); // 画出圆环
-
-		Log.e("log", centre + "");
+		// Log.e("log", "centre：" + centre);
 
 		/**
 		 * 画进度百分比
@@ -131,8 +130,7 @@ public class RoundProgressBar extends View {
 		float percent = ((float) progress / (float) max) * 100; // 中间的进度百分比，先转换成float在进行除法运算，不然都为0
 		float textWidth = paint.measureText(percent + "%"); // 测量字体宽度，我们需要根据字体的宽度设置在圆环中间
 
-		// String percentString = ""+percent;
-		// percentString = percentString.substring(0, 5);
+		percent = (float) (Math.round(percent * 100)) / 100;// 保留小数点后两位
 		if (textIsDisplayable && percent != 0 && style == STROKE) {
 			canvas.drawText(percent + "%", centre - textWidth / 2, centre
 					+ textSize / 2, paint); // 画出进度百分比
@@ -151,20 +149,20 @@ public class RoundProgressBar extends View {
 		switch (style) {
 		case STROKE: {
 			paint.setStyle(Paint.Style.STROKE);
+			Log.d("onDraw", "max:" + max);
+			Log.d("onDraw", "progress:" + progress);
 			if (progress != 0 && progress <= max) {
 				canvas.drawArc(oval, 0, 360 * progress / max, false, paint); // 根据进度画圆弧
-				Log.d("onDraw", "max:" + max);
-				Log.d("onDraw", "progress:" + progress);
-				break;
+				Log.e("onDraw", "drawArc");
 			}
-
+			break;
 		}
 		case FILL: {
 			paint.setStyle(Paint.Style.FILL_AND_STROKE);
 			if (progress != 0 && progress <= max) {
 				canvas.drawArc(oval, 0, 360 * progress / max, true, paint); // 根据进度画圆弧
-				break;
 			}
+			break;
 		}
 		}
 
