@@ -74,7 +74,6 @@ public class LessonFlashCardActivity extends BaseActivity {
 	TextView tv_default_number;
 	TextView tv_chooseCount;
 
-	private ArrayList<LGModelFlashCard> datas = new ArrayList<LGModelFlashCard>();
 	ArrayList<TbMyCharacter> tbMyCharacterList;
 	ArrayList<TbMyWord> tbMyWordList;
 	ArrayList<TbMySentence> tbMySentenceList;
@@ -88,7 +87,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 		context = this;
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 4;
+		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 5;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
 		resources = context.getResources();
 		init();
@@ -165,6 +164,8 @@ public class LessonFlashCardActivity extends BaseActivity {
 		tv_words_count.setText("" + wordsCount);
 		tv_sentence_count.setText("" + sentenceCount);
 	}
+
+	int defaultNumber = 0;
 
 	public void showPopupWindowMenu() {
 
@@ -252,6 +253,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 					boolean fromUser) {
 				seekBar.setProgress(progress);
 				tv_default_number.setText("" + progress);
+				defaultNumber = progress;
 			}
 
 			@Override
@@ -330,48 +332,10 @@ public class LessonFlashCardActivity extends BaseActivity {
 
 			switch (buttonView.getId()) {
 			case R.id.ck_Character:
-				// ArrayList<TbMyCharacter> tbMyCharacterList;
-				// ArrayList<TbMyWord> tbMyWordList;
-				// ArrayList<TbMySentence> tbMySentenceList;
 
 				if (isChecked) {
 					chooseCount = chooseCount + characterCount;
 					isCharacterChecked = true;
-					// for (int i = 0; i < tbMyCharacterList.size(); i++) {
-					//
-					// TbMyCharacter model = tbMyCharacterList.get(i);
-					// if (model == null) {
-					// continue;
-					// }
-					// LGModelFlashCard lGModelFlashCard = new
-					// LGModelFlashCard();
-					// int id = model.getCharId();
-					//
-					// try {
-					// @SuppressWarnings("unchecked")
-					// LGCharacter character = (LGCharacter) MyDao.getDao(
-					// LGCharacter.class).queryForId(id);
-					//
-					// if (character == null) {
-					// Log.e(TAG, "character==null");
-					// continue;
-					// }
-					// String chinese = character.getCharacter();
-					// String pinyin = character.getPinyin();
-					// String english = character.getTranslation();
-					//
-					// lGModelFlashCard.setId(id);
-					// lGModelFlashCard.setChinese(chinese);
-					// lGModelFlashCard.setPinyin(pinyin);
-					// lGModelFlashCard.setEnglish(english);
-					// datas.add(lGModelFlashCard);
-					//
-					// } catch (SQLException e) {
-					// // TODO Auto-generated catch block
-					// e.printStackTrace();
-					// }
-					//
-					// }
 
 				} else {
 					chooseCount = chooseCount - characterCount;
@@ -480,8 +444,15 @@ public class LessonFlashCardActivity extends BaseActivity {
 
 			case R.id.btn_go:
 
-				startActivity(new Intent(LessonFlashCardActivity.this,
-						LessonFlashCardOpActivity.class));
+				if (defaultNumber == 0) {
+					showPopupWindowMenu();
+				} else {
+
+					Intent intent = new Intent(LessonFlashCardActivity.this,
+							LessonFlashCardOpActivity.class);
+					intent.putExtra("defaultNumber", defaultNumber);
+					startActivity(intent);
+				}
 				break;
 
 			default:

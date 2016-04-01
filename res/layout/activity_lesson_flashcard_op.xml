@@ -3,7 +3,7 @@
     xmlns:android_custom="http://schemas.android.com/apk/res/com.hw.chineseLearn"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#F7F7F7"
+    android:background="@color/white"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:gravity="center"
-                    android:text="2/5"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_s14" />
 
@@ -62,13 +62,13 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_content"
+                android:id="@+id/tv_translation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="ta"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s18"
                 android:textStyle="bold" />
@@ -87,61 +87,159 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="她"
+                android:text=""
                 android:textColor="@color/deep_grey"
                 android:textSize="@dimen/text_s18" />
 
             <TextView
-                android:id="@+id/tv_translation"
+                android:id="@+id/tv_pinyin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="she;her"
+                android:text=""
                 android:textColor="@color/deep_grey"
                 android:textSize="@dimen/text_s18" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_is_gorget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="30dp" >
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp" >
 
         <TextView
-            android:id="@+id/btn_redo"
+            android:id="@+id/btn_remember"
             android:layout_width="match_parent"
-            android:layout_height="35dip"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_bg_blue"
+            android:background="@drawable/bg_btn_remembered"
             android:gravity="center"
-            android:padding="10dip"
             android:singleLine="true"
-            android:text="Redo"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s12" />
 
         <TextView
-            android:id="@+id/btn_continue"
+            android:id="@+id/btn_forget"
             android:layout_width="match_parent"
-            android:layout_height="35dip"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_bg_blue"
+            android:background="@drawable/bg_btn_forgot"
             android:gravity="center"
-            android:padding="10dip"
             android:singleLine="true"
-            android:text="Continue"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s12"
             android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_remember_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp" >
+
+        <TextView
+            android:id="@+id/btn_remembered_perfectly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_remembered_perfect"
+            android:gravity="center"
+            android:lines="2"
+            android:text="@string/pemembered_perfectly"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
+
+        <TextView
+            android:id="@+id/btn_remembered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_remembered1"
+            android:gravity="center"
+            android:lines="1"
+            android:text="Remembered"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
+
+        <TextView
+            android:id="@+id/btn_barely_remembered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_remembered_barely"
+            android:gravity="center"
+            android:lines="2"
+            android:text="Barely Remembered"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_forgot_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp" >
+
+        <TextView
+            android:id="@+id/btn_remembered_almost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_remembered_almost"
+            android:gravity="center"
+            android:lines="2"
+            android:text="Almost Remembered"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
+
+        <TextView
+            android:id="@+id/btn_forgot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_forgot1"
+            android:gravity="center"
+            android:lines="1"
+            android:text="Forgot"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
+
+        <TextView
+            android:id="@+id/btn_dont_know"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_dont_know"
+            android:gravity="center"
+            android:lines="2"
+            android:text="Don&apos;t konw"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
     </LinearLayout>
 
 </LinearLayout>

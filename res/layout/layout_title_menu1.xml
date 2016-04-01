@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="23dp"
             android:src="@drawable/popup_anchor" />
 
         <LinearLayout

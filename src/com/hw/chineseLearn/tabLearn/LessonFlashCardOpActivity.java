@@ -7,10 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -20,6 +20,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -27,6 +28,9 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGCharacter;
+import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
+import com.hw.chineseLearn.dao.bean.LGSentence;
+import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
@@ -41,6 +45,26 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	private String TAG = "==LessonFlashCardOpActivity==";
 	public Context context;
 	private Button btn_go;
+	private TextView tv_no;
+	private ImageView img_play;
+	private TextView tv_translation;
+	private TextView tv_word;
+	private TextView tv_pinyin;
+
+	LinearLayout lin_is_gorget;
+	TextView btn_remember;
+	TextView btn_forget;
+
+	LinearLayout lin_remember_level;
+	TextView btn_remembered_perfectly;
+	TextView btn_remembered;
+	TextView btn_barely_remembered;
+
+	LinearLayout lin_forgot_level;
+	TextView btn_remembered_almost;
+	TextView btn_forgot;
+	TextView btn_dont_know;
+
 	private Resources resources;
 	private int width;
 	private int height;
@@ -48,13 +72,18 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	int characterCount = 0;
 	int wordsCount = 0;
 	int sentenceCount = 0;
+	int chooseCount = 0;
 
-	private TextView tv_no;
-	private ImageView img_play;
-	private TextView tv_content;
+	private ArrayList<LGModelFlashCard> datas = new ArrayList<LGModelFlashCard>();
+	ArrayList<TbMyCharacter> tbMyCharacterList;
+	ArrayList<TbMyWord> tbMyWordList;
+	ArrayList<TbMySentence> tbMySentenceList;
 
-	private TextView tv_word;
-	private TextView tv_translation;
+	boolean isCharacterChecked = false;
+	boolean isSentenceChecked = false;
+	boolean isWordChecked = false;
+	boolean isAutoPlay = true;
+	int defaultNumber = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +97,18 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 4;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
 		resources = context.getResources();
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			if (bundle.containsKey("defaultNumber")) {
+				defaultNumber = bundle.getInt("defaultNumber", 0);
+			}
+		}
 		init();
 	}
 
 	/**
 	 * 初始化
 	 */
-	@SuppressWarnings("unchecked")
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
@@ -88,38 +122,73 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 
 		img_play = (ImageView) contentView.findViewById(R.id.img_play);
 		tv_no = (TextView) contentView.findViewById(R.id.tv_no);
-		tv_content = (TextView) contentView.findViewById(R.id.tv_content);
-		tv_word = (TextView) contentView.findViewById(R.id.tv_word);
 		tv_translation = (TextView) contentView
 				.findViewById(R.id.tv_translation);
+		tv_word = (TextView) contentView.findViewById(R.id.tv_word);
+		tv_pinyin = (TextView) contentView.findViewById(R.id.tv_pinyin);
+
+		lin_is_gorget = (LinearLayout) contentView
+				.findViewById(R.id.lin_is_gorget);
+		lin_is_gorget.setVisibility(View.VISIBLE);
+		btn_remember = (TextView) contentView.findViewById(R.id.btn_remember);
+		btn_forget = (TextView) contentView.findViewById(R.id.btn_forget);
+
+		lin_remember_level = (LinearLayout) contentView
+				.findViewById(R.id.lin_remember_level);
+		lin_remember_level.setVisibility(View.GONE);
+		btn_remembered_perfectly = (TextView) contentView
+				.findViewById(R.id.btn_remembered_perfectly);
+		btn_remembered = (TextView) contentView
+				.findViewById(R.id.btn_remembered);
+		btn_barely_remembered = (TextView) contentView
+				.findViewById(R.id.btn_barely_remembered);
+
+		lin_forgot_level = (LinearLayout) contentView
+				.findViewById(R.id.lin_forgot_level);
+		lin_forgot_level.setVisibility(View.GONE);
+		btn_remembered_almost = (TextView) contentView
+				.findViewById(R.id.btn_remembered_almost);
+		btn_forgot = (TextView) contentView.findViewById(R.id.btn_forgot);
+		btn_dont_know = (TextView) contentView.findViewById(R.id.btn_dont_know);
+
+		btn_remember.setOnClickListener(onClickListener);
+		btn_forget.setOnClickListener(onClickListener);
+
+		btn_remembered_perfectly.setOnClickListener(onClickListener);
+		btn_remembered.setOnClickListener(onClickListener);
+		btn_barely_remembered.setOnClickListener(onClickListener);
+
+		btn_remembered_almost.setOnClickListener(onClickListener);
+		btn_forgot.setOnClickListener(onClickListener);
+		btn_dont_know.setOnClickListener(onClickListener);
+
+		initDatas();
+		setText();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void initDatas() {
+		String chooseCountStr = CustomApplication.app.preferencesUtil.getValue(
+				"count", "0");
+		chooseCount = Integer.parseInt(chooseCountStr);
+		isCharacterChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCharacterChecked");
+		isSentenceChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isSentenceChecked");
+		isWordChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isWordChecked");
+		isAutoPlay = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isAutoPlay");
 
 		try {
-			ArrayList<TbMyCharacter> tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao
-					.getDaoMy(TbMyCharacter.class).queryForAll();
+			tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao.getDaoMy(
+					TbMyCharacter.class).queryForAll();
 
-			if (tbMyCharacterList != null && tbMyCharacterList.size() != 0) {
-				for (int i = 0; i < tbMyCharacterList.size(); i++) {
-					TbMyCharacter tbMyCharacter = tbMyCharacterList.get(i);
+			tbMyWordList = (ArrayList<TbMyWord>) MyDao.getDaoMy(TbMyWord.class)
+					.queryForAll();
 
-					if (tbMyCharacter == null) {
-						continue;
-					}
-					int charId = tbMyCharacter.getCharId();
-					LGCharacter character = (LGCharacter) MyDao.getDao(
-							LGCharacter.class).queryForId(charId);
-					if (character != null) {
-						String characterStr = character.getCharacter();
-						tv_content.setText("" + characterStr);
-					}
-				}
-
-			}
-
-			ArrayList<TbMyWord> tbMyWordList = (ArrayList<TbMyWord>) MyDao
-					.getDaoMy(TbMyWord.class).queryForAll();
-
-			ArrayList<TbMySentence> tbMySentenceList = (ArrayList<TbMySentence>) MyDao
-					.getDaoMy(TbMySentence.class).queryForAll();
+			tbMySentenceList = (ArrayList<TbMySentence>) MyDao.getDaoMy(
+					TbMySentence.class).queryForAll();
 
 			characterCount = tbMyCharacterList.size();
 			wordsCount = tbMyWordList.size();
@@ -129,10 +198,183 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		if (isCharacterChecked) {
+			for (int i = 0; i < tbMyCharacterList.size(); i++) {
+
+				TbMyCharacter model = tbMyCharacterList.get(i);
+				if (model == null) {
+					continue;
+				}
+				LGModelFlashCard lGModelFlashCard = new LGModelFlashCard();
+				int id = model.getCharId();
+				lGModelFlashCard.setMyCharacter(model);
+				lGModelFlashCard.setMySentence(null);
+				lGModelFlashCard.setMyWord(null);
+
+				try {
+					@SuppressWarnings("unchecked")
+					LGCharacter character = (LGCharacter) MyDao.getDao(
+							LGCharacter.class).queryForId(id);
+
+					if (character == null) {
+						Log.e(TAG, "character==null");
+						continue;
+					}
+					String chinese = character.getCharacter();
+					String pinyin = character.getPinyin();
+					String english = character.getTranslation();
+
+					lGModelFlashCard.setId(id);
+					lGModelFlashCard.setChinese(chinese);
+					lGModelFlashCard.setPinyin(pinyin);
+					lGModelFlashCard.setEnglish(english);
+					datas.add(lGModelFlashCard);
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}
+
+		if (isSentenceChecked) {
+			for (int i = 0; i < tbMySentenceList.size(); i++) {
+
+				TbMySentence model = tbMySentenceList.get(i);
+				if (model == null) {
+					continue;
+				}
+				LGModelFlashCard lGModelFlashCard = new LGModelFlashCard();
+				int id = model.getSentenceId();
+				lGModelFlashCard.setMySentence(model);
+				lGModelFlashCard.setMyCharacter(null);
+				lGModelFlashCard.setMyWord(null);
+
+				try {
+					@SuppressWarnings("unchecked")
+					LGSentence sentence = (LGSentence) MyDao.getDao(
+							LGSentence.class).queryForId(id);
+
+					if (sentence == null) {
+						Log.e(TAG, "sentence==null");
+						continue;
+					}
+					String chinese = sentence.getSentence();
+					String pinyin = "";
+					String english = sentence.getTranslations();
+
+					lGModelFlashCard.setId(id);
+					lGModelFlashCard.setChinese(chinese);
+					lGModelFlashCard.setPinyin(pinyin);
+					lGModelFlashCard.setEnglish(english);
+					datas.add(lGModelFlashCard);
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}
+		if (isWordChecked) {
+			for (int i = 0; i < tbMyWordList.size(); i++) {
+
+				TbMyWord model = tbMyWordList.get(i);
+				if (model == null) {
+					continue;
+				}
+				LGModelFlashCard lGModelFlashCard = new LGModelFlashCard();
+				int id = model.getWordId();
+				lGModelFlashCard.setMyWord(model);
+				lGModelFlashCard.setMySentence(null);
+				lGModelFlashCard.setMyCharacter(null);
+				try {
+					@SuppressWarnings("unchecked")
+					LGWord word = (LGWord) MyDao.getDao(LGWord.class)
+							.queryForId(id);
+
+					if (word == null) {
+						Log.e(TAG, "sentence==null");
+						continue;
+					}
+					String chinese = word.getWord();
+					String pinyin = word.getPinyin();
+					String english = word.getTranslations();
+
+					lGModelFlashCard.setId(id);
+					lGModelFlashCard.setChinese(chinese);
+					lGModelFlashCard.setPinyin(pinyin);
+					lGModelFlashCard.setEnglish(english);
+					datas.add(lGModelFlashCard);
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}
 	}
 
-	private void setText(int index) {
+	int id = -1;
+	String chinese = "";
+	String english = "";
+	String pinyin = "";
 
+	int index = 0;
+
+	private void setText() {
+
+		if (datas.size() != 0) {
+			LGModelFlashCard lGModelFlashCard = datas.get(index);
+			if (lGModelFlashCard != null) {
+
+				id = lGModelFlashCard.getCharId();
+				chinese = lGModelFlashCard.getChinese();
+				english = lGModelFlashCard.getEnglish();
+				pinyin = lGModelFlashCard.getPinyin();
+
+				tv_no.setText("" + (index + 1) + "/" + defaultNumber);
+				tv_translation.setText("" + english);
+				tv_word.setText(chinese);
+				tv_pinyin.setText(pinyin);
+				index++;
+				if (index == defaultNumber - 1) {
+					// 做完了
+					Intent intent = new Intent(LessonFlashCardOpActivity.this,
+							LessonFlashCardResultActivity.class);
+					startActivityForResult(intent, 1);
+				}
+
+				lin_is_gorget.setVisibility(View.VISIBLE);
+			} else {
+				Log.e(TAG, "lGModelFlashCard==null");
+			}
+		} else {
+			Log.e(TAG, "datas.size() == 0");
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, arg2);
+
+		switch (resultCode) {
+		case 0:// finish
+			CustomApplication.app
+					.finishActivity(LessonFlashCardOpActivity.this);
+			break;
+		case 1:// redo
+			index = 0;
+			setText();
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	/**
@@ -198,10 +440,49 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 
 				break;
 
-			case R.id.btn_go:
+			case R.id.btn_remember:
+				lin_is_gorget.setVisibility(View.GONE);
+				lin_remember_level.setVisibility(View.VISIBLE);
+				lin_forgot_level.setVisibility(View.GONE);
+				break;
 
-				startActivity(new Intent(LessonFlashCardOpActivity.this,
-						LessonExerciseActivity.class));
+			case R.id.btn_forget:
+				lin_is_gorget.setVisibility(View.GONE);
+				lin_remember_level.setVisibility(View.GONE);
+				lin_forgot_level.setVisibility(View.VISIBLE);
+				break;
+
+			// remember
+			case R.id.btn_remembered_perfectly:
+				setText();
+				lin_remember_level.setVisibility(View.GONE);
+				updateDb(1);
+				break;
+			case R.id.btn_remembered:
+				setText();
+				lin_remember_level.setVisibility(View.GONE);
+				updateDb(2);
+				break;
+			case R.id.btn_barely_remembered:
+				setText();
+				lin_remember_level.setVisibility(View.GONE);
+				updateDb(3);
+				break;
+			// forgot
+			case R.id.btn_remembered_almost:
+				setText();
+				lin_forgot_level.setVisibility(View.GONE);
+				updateDb(4);
+				break;
+			case R.id.btn_forgot:
+				setText();
+				lin_forgot_level.setVisibility(View.GONE);
+				updateDb(5);
+				break;
+			case R.id.btn_dont_know:
+				setText();
+				lin_forgot_level.setVisibility(View.GONE);
+				updateDb(6);
 				break;
 
 			default:
@@ -211,49 +492,54 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	};
 
 	/**
-	 * 按钮模拟心脏跳动
+	 * 
+	 * @param Proficient
+	 *            熟练度
 	 */
-	private void playHeartbeatAnimation() {
-		AnimationSet animationSet = new AnimationSet(true);
-		animationSet.addAnimation(new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f,
-				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-				0.5f));
-		animationSet.addAnimation(new AlphaAnimation(1.0f, 0.4f));
-		animationSet.setDuration(1000);
-		animationSet.setInterpolator(new AccelerateInterpolator());
-		animationSet.setFillAfter(true);
-		animationSet.setAnimationListener(new AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
+	@SuppressWarnings("unchecked")
+	private void updateDb(int proficient) {
+
+		LGModelFlashCard lGModelFlashCard = datas.get(index);
+		if (lGModelFlashCard != null) {
+
+			TbMyCharacter tbMyCharacter = lGModelFlashCard.getMyCharacter();
+			TbMySentence tbMySentence = lGModelFlashCard.getMySentence();
+			TbMyWord tbMyWord = lGModelFlashCard.getMyWord();
+
+			if (tbMyCharacter != null) {
+				tbMyCharacter.setProficient(proficient);
+				try {
+					int C = MyDao.getDaoMy(TbMyCharacter.class).update(
+							tbMyCharacter);
+					Log.d(TAG, "更新熟练度C:" + C);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
+			if (tbMySentence != null) {
+				try {
+					tbMySentence.setProficient(proficient);
+					int S = MyDao.getDaoMy(TbMySentence.class).update(
+							tbMySentence);
+					Log.d(TAG, "更新熟练度S:" + S);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-
-			@Override
-			public void onAnimationEnd(Animation animation) {
-
-				AnimationSet animationSet = new AnimationSet(true);
-				animationSet.addAnimation(new ScaleAnimation(1.1f, 1.0f, 1.1f,
-						1.0f, Animation.RELATIVE_TO_SELF, 0.5f,
-						Animation.RELATIVE_TO_SELF, 0.5f));
-				animationSet.addAnimation(new AlphaAnimation(0.4f, 1.0f));
-				animationSet.setDuration(2000);
-				animationSet.setInterpolator(new DecelerateInterpolator());
-				animationSet.setFillAfter(false);
-				// 实现心跳的View
-				btn_go.startAnimation(animationSet);
+			if (tbMyWord != null) {
+				try {
+					tbMyWord.setProficient(proficient);
+					int W = MyDao.getDaoMy(TbMyWord.class).update(tbMyWord);
+					Log.d(TAG, "更新熟练度W:" + W);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		});
-		// 实现心跳的View
-		btn_go.startAnimation(animationSet);
-	}
+		}
 
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
 	}
 
 	@Override

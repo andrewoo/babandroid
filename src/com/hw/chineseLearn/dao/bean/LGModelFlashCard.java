@@ -22,6 +22,10 @@ public class LGModelFlashCard implements Serializable {
 	private String slowVoicePath;// 慢速语音 已隐藏
 	private String voicePath;// 语音路径
 
+	private TbMyCharacter myCharacter;
+	private TbMySentence mySentence;
+	private TbMyWord myWord;
+
 	public int getId() {
 		return Id;
 	}
@@ -108,6 +112,30 @@ public class LGModelFlashCard implements Serializable {
 
 	public void setVoicePath(String voicePath) {
 		this.voicePath = voicePath;
+	}
+
+	public TbMyCharacter getMyCharacter() {
+		return myCharacter;
+	}
+
+	public void setMyCharacter(TbMyCharacter myCharacter) {
+		this.myCharacter = myCharacter;
+	}
+
+	public TbMySentence getMySentence() {
+		return mySentence;
+	}
+
+	public void setMySentence(TbMySentence mySentence) {
+		this.mySentence = mySentence;
+	}
+
+	public TbMyWord getMyWord() {
+		return myWord;
+	}
+
+	public void setMyWord(TbMyWord myWord) {
+		this.myWord = myWord;
 	}
 
 }
