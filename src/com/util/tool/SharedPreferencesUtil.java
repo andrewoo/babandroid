@@ -1,6 +1,5 @@
 package com.util.tool;
 
-import android.R.bool;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

@@ -78,12 +78,11 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"FlashCard", View.GONE, View.VISIBLE,
-				R.drawable.btn_selector_top_right);
+				"FlashCard", View.GONE, View.GONE, 0);
 
-		LayoutParams py = btn_go.getLayoutParams();
-		py.width = width;
-		py.height = width;
+		// LayoutParams py = btn_go.getLayoutParams();
+		// py.width = width;
+		// py.height = width;
 		// btn_go.setLayoutParams(py);
 		// btn_go.setOnClickListener(onClickListener);
 

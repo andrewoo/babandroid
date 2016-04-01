@@ -351,5 +351,6 @@
     <color name="chinese_skill_yellow">#F4B460</color>
     <color name="chinese_skill_activity_bg">#F7F7F7</color>
     <color name="chinese_skill_bottom_bar_bg">#171717</color>
+    <color name="chinese_skill_touming_bg">#e0000000</color>
 
 </resources>
