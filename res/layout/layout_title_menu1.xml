@@ -71,7 +71,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="Both"
+                    android:text="Settings"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
 
@@ -130,10 +130,10 @@
                 android:id="@+id/tv_max"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text=""
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:gravity="right"
+                android:text=""
                 android:textColor="@color/deep_grey"
                 android:textSize="@dimen/text_s12" />
 
@@ -204,6 +204,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/ck_selector_bg"
                     android:button="@null"
+                    android:checked="false"
                     android:gravity="center"
                     android:padding="3dp"
                     android:text="Character"
@@ -218,6 +219,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/ck_selector_bg"
                     android:button="@null"
+                    android:checked="false"
                     android:gravity="center"
                     android:padding="3dp"
                     android:text="Word"
@@ -232,6 +234,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/ck_selector_bg"
                     android:button="@null"
+                    android:checked="false"
                     android:gravity="center"
                     android:padding="3dp"
                     android:text="Sentence"

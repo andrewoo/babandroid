@@ -171,10 +171,14 @@ public class LessonFlashCardActivity extends BaseActivity {
 		String chooseCountStr = CustomApplication.app.preferencesUtil.getValue(
 				"count", "0");
 		chooseCount = Integer.parseInt(chooseCountStr);
-		isCharacterChecked = CustomApplication.app.preferencesUtil.getValuesBoolean("isCharacterChecked");
-		isSentenceChecked = CustomApplication.app.preferencesUtil.getValuesBoolean("isSentenceChecked");
-		isWordChecked = CustomApplication.app.preferencesUtil.getValuesBoolean("isWordChecked");
-		isAutoPlay = CustomApplication.app.preferencesUtil.getValuesBoolean("isAutoPlay");
+		isCharacterChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCharacterChecked");
+		isSentenceChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isSentenceChecked");
+		isWordChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isWordChecked");
+		isAutoPlay = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isAutoPlay");
 
 		View view = LayoutInflater.from(this).inflate(
 				R.layout.layout_title_menu1, null);
@@ -220,19 +224,24 @@ public class LessonFlashCardActivity extends BaseActivity {
 			}
 		});
 
-		SlideSwitch ck_auto_play = (SlideSwitch)view.findViewById(R.id.ck_auto_play);
+		SlideSwitch ck_auto_play = (SlideSwitch) view
+				.findViewById(R.id.ck_auto_play);
 		ck_auto_play.setState(isAutoPlay);
 		ck_auto_play.setSlideListener(new SlideListener() {
 			@Override
 			public void open() {
 				// TODO Auto-generated method stub
 				isAutoPlay = true;
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isAutoPlay", isAutoPlay);
 			}
 
 			@Override
 			public void close() {
 				// TODO Auto-generated method stub
 				isAutoPlay = false;
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isAutoPlay", isAutoPlay);
 			}
 		});
 		seekBar = (SeekBar) view.findViewById(R.id.seekBar);
@@ -292,7 +301,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 		// 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
 		// 我觉得这里是API的一个bug
 		popupWindow.setBackgroundDrawable(getResources().getDrawable(
-				R.drawable.bg_half_touming));
+				R.drawable.bg_touming));
 
 		// popupWindow.showAsDropDown(iv_title_right, 0, 0);
 		popupWindow.showAtLocation(contentView, Gravity.RIGHT, 0, 60);
@@ -302,16 +311,12 @@ public class LessonFlashCardActivity extends BaseActivity {
 			@Override
 			public void onDismiss() {
 				// TODO Auto-generated method stub
-				CustomApplication.app.preferencesUtil.setValue("count", ""
-						+ chooseCount);
-				CustomApplication.app.preferencesUtil.setBooleanValue(
-						"isCharacterChecked", isCharacterChecked);
-				CustomApplication.app.preferencesUtil.setBooleanValue(
-						"isSentenceChecked", isSentenceChecked);
-				CustomApplication.app.preferencesUtil.setBooleanValue(
-						"isWordChecked", isWordChecked);
-				CustomApplication.app.preferencesUtil.setBooleanValue(
-						"isAutoPlay", isAutoPlay);
+
+				Log.d(TAG, "chooseCount:" + chooseCount);
+				Log.d(TAG, "isCharacterChecked:" + isCharacterChecked);
+				Log.d(TAG, "isSentenceChecked:" + isSentenceChecked);
+				Log.d(TAG, "isWordChecked:" + isWordChecked);
+				Log.d(TAG, "isAutoPlay:" + isAutoPlay);
 			}
 		});
 	}
@@ -372,6 +377,9 @@ public class LessonFlashCardActivity extends BaseActivity {
 					chooseCount = chooseCount - characterCount;
 					isCharacterChecked = false;
 				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isCharacterChecked", isCharacterChecked);
+
 				break;
 			case R.id.ck_Word:
 				if (isChecked) {
@@ -381,6 +389,8 @@ public class LessonFlashCardActivity extends BaseActivity {
 					chooseCount = chooseCount - wordsCount;
 					isWordChecked = false;
 				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isWordChecked", isWordChecked);
 				break;
 			case R.id.ck_Sentence:
 				if (isChecked) {
@@ -391,14 +401,16 @@ public class LessonFlashCardActivity extends BaseActivity {
 					isSentenceChecked = false;
 					chooseCount = chooseCount - sentenceCount;
 				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isSentenceChecked", isSentenceChecked);
 				break;
 			default:
 				break;
 			}
-			Log.d(TAG, "max:" + chooseCount);
-
 			tv_chooseCount.setText("" + chooseCount);
 			seekBar.setMax(chooseCount);
+			CustomApplication.app.preferencesUtil.setValue("count", ""
+					+ chooseCount);
 		}
 
 	};
