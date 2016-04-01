@@ -340,15 +340,16 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 				tv_translation.setText("" + english);
 				tv_word.setText(chinese);
 				tv_pinyin.setText(pinyin);
-				index++;
+
 				if (index == defaultNumber - 1) {
 					// 做完了
 					Intent intent = new Intent(LessonFlashCardOpActivity.this,
 							LessonFlashCardResultActivity.class);
 					startActivityForResult(intent, 1);
 				}
-
 				lin_is_gorget.setVisibility(View.VISIBLE);
+
+				index++;
 			} else {
 				Log.e(TAG, "lGModelFlashCard==null");
 			}
