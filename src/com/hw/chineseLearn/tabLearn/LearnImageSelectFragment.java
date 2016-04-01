@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +21,8 @@ import com.hw.chineseLearn.adapter.LearnImageSelectAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGWord;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.MediaPlayerHelper;
 
 /**
  * 学习-选图片
@@ -31,6 +32,8 @@ import com.util.thread.ThreadWithDialogTask;
 @SuppressLint("NewApi")
 public class LearnImageSelectFragment extends BaseFragment implements
 		OnClickListener {
+	private static final String ASSETS_SOUNDS_PATH = "sounds/";
+
 	private View contentView;// 主view
 
 	private ThreadWithDialogTask task;
@@ -42,6 +45,7 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	String question = "\"color\"";
 	private List<LGWord> lgWordList = new ArrayList<LGWord>();
 	private LGModelWord modelWord;// 存放当前题
+//	MediaPlayer mediaPlayer = null;
 
 	private int answer;// 此题的答案lgword.getanswer
 	private boolean isRight;
@@ -53,6 +57,25 @@ public class LearnImageSelectFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initDBdata();// 初始化数据库数据
+		play();
+	}
+
+	private void play() {
+		mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH+voicePath);
+		mediaPlayerHelper.play();
+		
+//		soundPool = new SoundPool(5,AudioManager.STREAM_MUSIC, 5);
+//		AssetManager am = CustomApplication.app.getAssets();
+//		AssetFileDescriptor afd = null;
+//		try {
+//			afd = am.openFd("w-11-104372091955652092.mp3");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		int load = soundPool.load(afd, 1);
+//		soundPool.play(load,  1, 1, 0, 0, 1);
+
 	}
 
 	/**
@@ -60,6 +83,7 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	 */
 	private void initDBdata() {
 		modelWord = (LGModelWord) getArguments().getSerializable("modelWorld");
+		voicePath = modelWord.getVoicePath();
 		String title = modelWord.getTitle();
 		question = title;
 	}
@@ -100,6 +124,9 @@ public class LearnImageSelectFragment extends BaseFragment implements
 
 	@Override
 	public void onStop() {
+		if(mediaPlayerHelper!=null){
+			mediaPlayerHelper.stop();
+		}
 		super.onStop();
 	}
 
@@ -147,6 +174,12 @@ public class LearnImageSelectFragment extends BaseFragment implements
 			learnImageSelectAdapter.notifyDataSetChanged();
 		}
 	};
+
+	private String voicePath;
+
+	private SoundPool soundPool;
+
+	private MediaPlayerHelper mediaPlayerHelper;
 
 	public boolean isRight() {
 		return isRight;

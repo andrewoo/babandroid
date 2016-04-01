@@ -6,6 +6,7 @@ import java.util.Random;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.drm.DrmStore.Playback;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -13,11 +14,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +31,7 @@ import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 
 /**
@@ -57,6 +61,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	ArrayList<TextView> bottomViewList = new ArrayList<TextView>();
 	ArrayList<Integer> orignViewX = new ArrayList<Integer>();
 	ArrayList<Integer> orignViewY = new ArrayList<Integer>();
+	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 
 	static Random random = new Random();
 	static String[] words = "the of and a to in is be that was he for it with as his I on have at by not they this had are but from or she an which you one we all were her would there their will when who him been has more if no out do so can what up said about other into than its time only could new them man some these then two first may any like now my such make over our even most me state after also made many did must before back see through way where get much go well your know should down work year because come people just say each those take day good how long Mr own too little use US very great still men here life both between old under last never place same another think house while high right might came off find states since used give against three himself look few general hand school part small American home during number again Mrs around thought went without however govern don't does got public United point end become head once course fact upon need system set every war put form water took"
@@ -85,12 +90,19 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initData();
+		play();
 		x = 0;
 		y = UiUtil.dip2px(context, 50 * 3 + 1 * 2 + 50);
 		screenWidth = CustomApplication.app.displayMetrics.widthPixels
 				- (UiUtil.dip2px(context, 40));
 		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 
+		initView();
+		initBottomViews();
+		initBottomGreyViews();
+	}
+
+	private void initView() {
 		contentView = LayoutInflater.from(context).inflate(
 				R.layout.fragment_lesson_sentence_move, null);
 		task = new ThreadWithDialogTask();
@@ -101,8 +113,28 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		lin_line = (LinearLayout) contentView.findViewById(R.id.lin_line);
 		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
 		txt_name.setText(title);
-		initBottomViews();
-		initBottomGreyViews();
+		
+		btn_play_normal = (Button) contentView.findViewById(R.id.btn_play_normal);
+		btn_play_normal.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (mediaPlayerHelper != null) {
+					mediaPlayerHelper.play();
+				} else {
+					mediaPlayerHelper = new MediaPlayerHelper(
+							ASSETS_SOUNDS_PATH + voicePath);
+					mediaPlayerHelper.play();
+				}
+			}
+		});
+	}
+
+	private void play() {
+		
+		mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH+voicePath);
+		mediaPlayerHelper.play();
+		
 	}
 
 	private void initData() {
@@ -113,6 +145,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				title = modelWord.getTitle();// 得到title
 				subLGModelList = modelWord.getSubLGModelList();
 				answerList = modelWord.getAnswerList();
+				voicePath = modelWord.getVoicePath();
 			}
 		}
 	}
@@ -184,6 +217,12 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	private LGModelWord modelWord;
 
 	private List<String> answerList;
+
+	private String voicePath;
+
+	private Button btn_play_normal;
+
+	private MediaPlayerHelper mediaPlayerHelper;
 
 
 	private void initBottomViews() {
@@ -651,6 +690,14 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+	}
+	
+	@Override
+	public void onStop() {
+		if(mediaPlayerHelper!=null){
+			mediaPlayerHelper.stop();
+		}
+		super.onStop();
 	}
 
 	/**

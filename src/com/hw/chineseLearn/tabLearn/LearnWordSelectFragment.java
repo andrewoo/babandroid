@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.MediaPlayerHelper;
 
 /**
  * 句子选择
@@ -36,6 +38,8 @@ import com.util.thread.ThreadWithDialogTask;
 @SuppressLint("NewApi")
 public class LearnWordSelectFragment extends BaseFragment implements
 		OnClickListener {
+	
+	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 	private View contentView;// 主view
 
 	private ThreadWithDialogTask task;
@@ -56,12 +60,20 @@ public class LearnWordSelectFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initData();
+		play();
+	}
+
+	private void play() {
+		mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH+voicePath);
+		mediaPlayerHelper.play();
 	}
 
 	private void initData() {
-
-		modelWorld = (LGModelWord) getArguments().getSerializable("modelWorld");
-
+		Bundle bundle = getArguments();
+		if(bundle.containsKey("modelWorld")){
+			modelWorld = (LGModelWord) getArguments().getSerializable("modelWorld");
+			voicePath = modelWorld.getVoicePath();
+		}
 	}
 
 	@Override
@@ -98,6 +110,9 @@ public class LearnWordSelectFragment extends BaseFragment implements
 
 	@Override
 	public void onStop() {
+		if (mediaPlayerHelper != null) {
+			mediaPlayerHelper.stop();
+		}
 		super.onStop();
 	}
 
@@ -118,6 +133,20 @@ public class LearnWordSelectFragment extends BaseFragment implements
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
 		adapter = new LearnWordSelectListAdapter(context, modelWorld);
+		btn_play_normal = (Button) contentView.findViewById(R.id.btn_play_normal);
+		btn_play_normal.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (mediaPlayerHelper != null) {
+					mediaPlayerHelper.play();
+				} else {
+					mediaPlayerHelper = new MediaPlayerHelper(
+							ASSETS_SOUNDS_PATH + voicePath);
+					mediaPlayerHelper.play();
+				}
+			}
+		});
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(onItemclickListener);
 		adapter.notifyDataSetChanged();
@@ -145,6 +174,9 @@ public class LearnWordSelectFragment extends BaseFragment implements
 	private LessonRepeatRegex lessonRepeatRegex;
 
 	private LGModelWord modelWorld;
+	private String voicePath;
+	private Button btn_play_normal;
+	private MediaPlayerHelper mediaPlayerHelper;
 
 	public boolean isRight() {
 		return isRight;

@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.BitmapLoader;
+import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 
 /**
@@ -59,7 +61,9 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	int mizigeY;
 	private List<String> picList = new ArrayList<String>();
 	private List<String> randomList = new ArrayList<String>();
-//	private List<String> partPicNameList = new ArrayList<String>();
+	// private List<String> partPicNameList = new ArrayList<String>();
+	private static final String ASSETS_SOUNDS_PATH = "sounds/";
+	private MediaPlayerHelper mediaPlayerHelper;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initData();// 得到传过来的参数
+		play();
 		screenWidth = CustomApplication.app.displayMetrics.widthPixels
 				- (dip2px(context, 40));
 		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
@@ -80,24 +85,47 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		initMoveViews();
 	}
 
+	private void play() {
+		mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
+				+ voicePath);
+		mediaPlayerHelper.play();
+	}
+
 	private void initView() {
 		contentView = LayoutInflater.from(context).inflate(
 				R.layout.fragment_lesson_image_move, null);
 		task = new ThreadWithDialogTask();
-		tv_word=(TextView) contentView.findViewById(R.id.tv_word);
-		tv_word.setText(title);//拿到title
+		tv_word = (TextView) contentView.findViewById(R.id.tv_word);
+		tv_word.setText(title);// 拿到title
 		rel_root = (RelativeLayout) contentView.findViewById(R.id.rel_root);
 		rel_top = (RelativeLayout) contentView.findViewById(R.id.rel_top);
+
+		iv_dv_view = (ImageView) contentView.findViewById(R.id.iv_dv_view);
+		iv_dv_view.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (mediaPlayerHelper != null) {
+					mediaPlayerHelper.play();
+				} else {
+					mediaPlayerHelper = new MediaPlayerHelper(
+							ASSETS_SOUNDS_PATH + voicePath);
+					mediaPlayerHelper.play();
+				}
+			}
+		});
 	}
 
 	private void initData() {
-		
+
 		Bundle bundle = getArguments();
-		if(bundle!=null){
-			if(bundle.containsKey("modelWord")){
-				LGModelWord modelWord=(LGModelWord) bundle.getSerializable("modelWord");
+		if (bundle != null) {
+			if (bundle.containsKey("modelWord")) {
+				LGModelWord modelWord = (LGModelWord) bundle
+						.getSerializable("modelWord");
+				voicePath = modelWord.getVoicePath();
 				title = modelWord.getTitle();
-				subLGModelList=null;
+				subLGModelList = null;
 				subLGModelList = modelWord.getSubLGModelList();
 			}
 		}
@@ -318,6 +346,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private Animation scaleAnimation = null;
 	private String title;
 	private List<SubLGModel> subLGModelList;
+	private String voicePath;
+	private ImageView iv_dv_view;
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
@@ -377,6 +407,14 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	public void onStop() {
+		if (mediaPlayerHelper != null) {
+			mediaPlayerHelper.stop();
+		}
+		super.onStop();
 	}
 
 	@Override

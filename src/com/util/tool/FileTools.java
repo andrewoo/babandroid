@@ -225,10 +225,10 @@ public class FileTools {
 
 				FileOutputStream fout = new FileOutputStream(addressDbFile);
 				int len = -1;
-				byte[] buffer = new byte[512];
+				byte[] buffer = new byte[1024];
 
 				while ((len = inputStream.read(buffer)) != -1) {
-					fout.write(buffer, 0, len);
+					fout.write(buffer, 0, len); 
 //				}
 			}
 		} catch (IOException e) {

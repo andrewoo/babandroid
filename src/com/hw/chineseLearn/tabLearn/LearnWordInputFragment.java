@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -29,6 +30,7 @@ import com.hw.chineseLearn.dao.bean.LGModel_Word_040;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 
 /**
@@ -45,7 +47,7 @@ public class LearnWordInputFragment extends BaseFragment implements
 	public static LearnWordInputFragment fragment;
 	Context context;
 	LearnUnitAdapter learnUnit1Adapter, learnUnit2Adapter;
-	private List<String> answerList=new ArrayList<String>();
+	private List<String> answerList = new ArrayList<String>();
 
 	private String title;
 
@@ -54,6 +56,14 @@ public class LearnWordInputFragment extends BaseFragment implements
 	private EditText et_input;
 
 	private String answerChanged;
+	private static final String ASSETS_SOUNDS_PATH = "sounds/";
+
+	private String voicePath;
+
+	private Button btn_play_normal;
+
+	private MediaPlayerHelper mediaPlayerHelper;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -61,41 +71,25 @@ public class LearnWordInputFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initData();
+		play();
+	}
+
+	private void play() {
+		mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH + voicePath);
+		mediaPlayerHelper.play();
 	}
 
 	private void initData() {
-		Bundle bundle = getArguments(); 
-		if(bundle!=null){
-			if(bundle.containsKey("modelWord")){
-				LGModelWord modelWord=(LGModelWord) bundle.getSerializable("modelWord");
-				title = modelWord.getTitle();//得到title
-				answerList = modelWord.getAnswerList();//得到答案集合
-			} 
+		Bundle bundle = getArguments();
+		if (bundle != null) {
+			if (bundle.containsKey("modelWord")) {
+				LGModelWord modelWord = (LGModelWord) bundle
+						.getSerializable("modelWord");
+				voicePath = modelWord.getVoicePath();
+				title = modelWord.getTitle();// 得到title
+				answerList = modelWord.getAnswerList();// 得到答案集合
+			}
 		}
-		
-		
-//		LessonRepeatRegex lessonRepeatRegex = (LessonRepeatRegex) getArguments().getSerializable("lessonRepeatRegex");
-//		//根据lgid查询，lgword,lgword040表, lgword表 wrod pinyin,lgword040 得到answer 切割后为答案
-//		//check得到输入框内容 如果为上边之一及正确
-//		int lgTableId = lessonRepeatRegex.getLgTableId();
-//		try {
-//			LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(lgTableId);
-//			title = lgWord.getWord()+"/"+lgWord.getPinyin();
-//			Map<String, Integer> wordIdMap=new HashMap<String, Integer>();
-//			wordIdMap.put("WordId", lgTableId);
-//			LGModel_Word_040 word040 = (LGModel_Word_040) MyDao.getDao(LGModel_Word_040.class).queryForFieldValues(wordIdMap).get(0);
-//			System.out.println("word040"+word040);
-//			String answer = word040.getAnswers();
-//			 if(answer.indexOf("!@@@!")!=-1){
-//				 String[] splitAnswer = answer.split("!@@@!");
-//				 for (int i = 0; i < splitAnswer.length; i++) {
-//					 answerList.add(splitAnswer[i]);
-//				}
-//			 }
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 	@Override
@@ -133,11 +127,6 @@ public class LearnWordInputFragment extends BaseFragment implements
 	}
 
 	@Override
-	public void onStop() {
-		super.onStop();
-	}
-
-	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
@@ -149,36 +138,60 @@ public class LearnWordInputFragment extends BaseFragment implements
 	 * 初始化
 	 */
 	public void init() {
-		
+		btn_play_normal = (Button) contentView.findViewById(R.id.btn_play_normal);
+		btn_play_normal.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (mediaPlayerHelper != null) {
+					mediaPlayerHelper.play();
+				} else {
+					mediaPlayerHelper = new MediaPlayerHelper(
+							ASSETS_SOUNDS_PATH + voicePath);
+					mediaPlayerHelper.play();
+				}
+			}
+		});
 		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
 		et_input = (EditText) contentView.findViewById(R.id.et_input);
 		txt_name.setText(title);
 		et_input.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
 				answerChanged = s.toString();
 			}
+
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 			}
-			
+
 			@Override
 			public void afterTextChanged(Editable s) {
-				
+
 			}
-		});}
+		});
+	}
+	
+	@Override
+	public void onStop() {
+		if (mediaPlayerHelper != null) {
+			mediaPlayerHelper.stop();
+		}
+		super.onStop();
+	}
 
 	@Override
 	public boolean isRight() {
-		
+
 		String stringFilter = UiUtil.StringFilter(answerChanged);
-		System.out.println("333333"+answerList.size());
-		System.out.println("333333"+stringFilter);
+		System.out.println("333333" + answerList.size());
+		System.out.println("333333" + stringFilter);
 		for (int i = 0; i < answerList.size(); i++) {
-			System.out.println("444444"+answerList.get(i));
-			if(answerList.get(i).equals(stringFilter)){
+			System.out.println("444444" + answerList.get(i));
+			if (answerList.get(i).equals(stringFilter)) {
 				return true;
 			}
 		}

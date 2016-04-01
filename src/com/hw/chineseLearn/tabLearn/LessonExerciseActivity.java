@@ -117,7 +117,7 @@ public class LessonExerciseActivity extends BaseActivity {
 
 	private List<Integer> isFirstList = new ArrayList<Integer>();// 第一次出现保存在此集合
 
-	private Timer timer = new Timer();
+	private Timer timer = null;
 	private int secondCount = 0;
 
 	private List<String> randomList = new ArrayList<String>();
@@ -156,7 +156,11 @@ public class LessonExerciseActivity extends BaseActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		timer.schedule(task, 0, 1000);
+		if (timer==null) {
+			timer = new Timer();
+			timer.schedule(task, 0, 1000);
+		}
+		
 	}
 
 	/**
@@ -938,6 +942,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setCharId(lgTableId);// 拿到CharId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lGCharacterPart.getDirCode();//得到mp3文件名
+			dirCode="c-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			String[] picArray = lGCharacterPart.getPartOptions().split(";");// 所有选项
 			String[] answerPicArray = lGCharacterPart.getPartAnswer()
 					.split(";");// 答案选项
@@ -998,6 +1005,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到标题
 			modelWord.setSentenceId(lgTableId);// 拿到SentenceId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgSentence.getDirCode();//得到mp3文件名
+			dirCode="s-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			List<String> answerList = modelWord.getAnswerList();
 			LGModel_Sentence_050 sentence050 = (LGModel_Sentence_050) MyDao
 					.getDao(LGModel_Sentence_050.class).queryBuilder().where()
@@ -1048,6 +1058,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到标题
 			modelWord.setSentenceId(lgTableId);// 拿到SentenceId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgSentence.getDirCode();//得到mp3文件名
+			dirCode="s-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			List<String> answerList = modelWord.getAnswerList();
 			LGModel_Sentence_040 sentence040 = (LGModel_Sentence_040) MyDao
 					.getDao(LGModel_Sentence_040.class).queryBuilder().where()
@@ -1089,6 +1102,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			String title = lgSentence.getSentence();
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setSentenceId(lgTableId);// 拿到sentenceId
+			String dirCode = lgSentence.getDirCode();//得到mp3文件名
+			dirCode="s-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			LGModel_Sentence_020 lgSentence020 = (LGModel_Sentence_020) MyDao
 					.getDao(LGModel_Sentence_020.class).queryBuilder().where()
 					.eq("SentenceId", lgTableId).queryForFirst();
@@ -1122,6 +1138,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgWord.getDirCode();//得到mp3文件名
+			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			LGModel_Word_040 lgWord040 = (LGModel_Word_040) MyDao
 					.getDao(LGModel_Word_040.class).queryBuilder().where()
 					.eq("WordId", lgTableId).queryForFirst();
@@ -1155,6 +1174,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到标题
 			modelWord.setWordId(lgTableId);// 拿到wordid
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgWord.getDirCode();//得到mp3文件名
+			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			List<String> answerList = modelWord.getAnswerList();
 			LGModel_Word_030 word030 = (LGModel_Word_030) MyDao
 					.getDao(LGModel_Word_030.class).queryBuilder().where()
@@ -1196,6 +1218,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			int answer = sentence030.getAnswer();
 			modelWord.setAnswer(answer);// 拿到answer
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgSentence.getDirCode();//得到mp3文件名
+			dirCode="s-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			String sentence = lgSentence.getSentence();
 			String[] options = sentence030.getOptions().split(";");
@@ -1241,6 +1266,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setLessonId(lessonId);// 拿到lessonId
 			modelWord.setTitle(lgSentence.getSentence());
 			modelWord.setAnswer(sentence010.getAnswer());
+			String dirCode = lgSentence.getDirCode();//得到mp3文件名
+			dirCode="s-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			int answer = sentence010.getAnswer();
 			String[] options = sentence010.getOptions().split(";");
@@ -1284,7 +1312,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			LGWord lgWord1 = (LGWord) MyDao.getDao(LGWord.class).queryForId(
 					lessonRepeatRegex.getLgTableId());
 			question = lgWord1.getWord();
-
+			String dirCode = lgWord1.getDirCode();//得到mp3文件名
+			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			String[] splitWordId = word_060.getOptions().split(";");
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			for (int i = 0; i < splitWordId.length; i++) {
@@ -1326,18 +1356,22 @@ public class LessonExerciseActivity extends BaseActivity {
 			LGModel_Word_020 word_020 = (LGModel_Word_020) MyDao
 					.getDao(LGModel_Word_020.class).queryBuilder().where()
 					.eq("WordId", lgTableId).queryForFirst();
+			LGWord lgWord1 = (LGWord) MyDao.getDao(LGWord.class).queryForId(
+					lessonRepeatRegex.getLgTableId());
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			int answer = word_020.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgWord1.getDirCode();//得到mp3文件名
+			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			LGWord lgWordAnswer = (LGWord) MyDao.getDao(LGWord.class)
 					.queryForId(answer);
 			String left = lgWordAnswer.getTranslations();
 			String right = lgWordAnswer.getWord() + "/"
 					+ lgWordAnswer.getPinyin();
 			modelWord.setAnswerText(left + "=" + right);// 拿到答案文本
-			LGWord lgWord1 = (LGWord) MyDao.getDao(LGWord.class).queryForId(
-					lessonRepeatRegex.getLgTableId());
+			
 			question = "Select" + "\"" + lgWord1.getTranslations() + "\"";
 			modelWord.setTitle(question);// 拿到title
 			String[] splitWordId = word_020.getOptions().split(";");
@@ -1376,7 +1410,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao
 					.getDao(LGModel_Word_010.class).queryBuilder().where()
 					.eq("WordId", lgWord.getWordId()).queryForFirst();
-
+			String dirCode = lgWord.getDirCode();//得到mp3文件名
+			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			modelWord.setVoicePath(dirCode);
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			String title = lgWord.getTranslations();
 			modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title

@@ -148,10 +148,10 @@ public class LessonViewActivity extends BaseActivity implements
 	 */
 	private void queryTbLesson() {
 		try {
-			lessonStatusList = MyDao.getDao(TbLessonMaterialStatus.class)
+			lessonStatusList = MyDao.getDaoMy(TbLessonMaterialStatus.class)
 					.queryForAll();
+			System.out.println("lessonStatusList"+lessonStatusList);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Collections.sort(lessonStatusList);
