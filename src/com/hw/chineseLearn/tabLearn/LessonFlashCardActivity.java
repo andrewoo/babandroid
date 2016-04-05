@@ -1,12 +1,20 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -15,12 +23,28 @@ import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGCharacter;
+import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
+import com.hw.chineseLearn.dao.bean.TbMyCharacter;
+import com.hw.chineseLearn.dao.bean.TbMySentence;
+import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.util.weight.SlideSwitch;
+import com.util.weight.SlideSwitch.SlideListener;
 
 /**
  * FlashCard页面
@@ -36,6 +60,23 @@ public class LessonFlashCardActivity extends BaseActivity {
 	private int width;
 	private int height;
 	View contentView;
+	int characterCount = 0;
+	int wordsCount = 0;
+	int sentenceCount = 0;
+	int chooseCount = 0;
+
+	private TextView tv_character_count;
+	private TextView tv_words_count;
+	private TextView tv_sentence_count;
+	private ImageView iv_title_right;
+
+	SeekBar seekBar;
+	TextView tv_default_number;
+	TextView tv_chooseCount;
+
+	ArrayList<TbMyCharacter> tbMyCharacterList;
+	ArrayList<TbMyWord> tbMyWordList;
+	ArrayList<TbMySentence> tbMySentenceList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,21 +87,32 @@ public class LessonFlashCardActivity extends BaseActivity {
 		context = this;
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
+		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 5;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
 		resources = context.getResources();
 		init();
 	}
 
+	boolean isCharacterChecked = false;
+	boolean isSentenceChecked = false;
+	boolean isWordChecked = false;
+	boolean isAutoPlay = true;
+
 	/**
 	 * 初始化
 	 */
+	@SuppressWarnings("unchecked")
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"FlashCard", View.GONE, View.GONE, 0);
+				"FlashCard", View.GONE, View.VISIBLE,
+				R.drawable.btn_selector_top_right);
 
 		btn_go = (Button) contentView.findViewById(R.id.btn_go);
+		LayoutParams py = btn_go.getLayoutParams();
+		py.width = width;
+		py.height = width;
+		btn_go.setLayoutParams(py);
 		btn_go.setOnClickListener(onClickListener);
 
 		new Thread() {
@@ -80,8 +132,252 @@ public class LessonFlashCardActivity extends BaseActivity {
 				}
 			};
 		}.start();
+		tv_character_count = (TextView) contentView
+				.findViewById(R.id.tv_character_count);
+		tv_words_count = (TextView) contentView
+				.findViewById(R.id.tv_words_count);
+		tv_sentence_count = (TextView) contentView
+				.findViewById(R.id.tv_sentence_count);
 
+		tv_character_count.setText("0");
+		tv_words_count.setText("0");
+		tv_sentence_count.setText("0");
+		try {
+			tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao.getDaoMy(
+					TbMyCharacter.class).queryForAll();
+
+			tbMyWordList = (ArrayList<TbMyWord>) MyDao.getDaoMy(TbMyWord.class)
+					.queryForAll();
+
+			tbMySentenceList = (ArrayList<TbMySentence>) MyDao.getDaoMy(
+					TbMySentence.class).queryForAll();
+
+			characterCount = tbMyCharacterList.size();
+			wordsCount = tbMyWordList.size();
+			sentenceCount = tbMySentenceList.size();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		tv_character_count.setText("" + characterCount);
+		tv_words_count.setText("" + wordsCount);
+		tv_sentence_count.setText("" + sentenceCount);
 	}
+
+	int defaultNumber = 0;
+
+	public void showPopupWindowMenu() {
+
+		String chooseCountStr = CustomApplication.app.preferencesUtil.getValue(
+				"count", "0");
+		chooseCount = Integer.parseInt(chooseCountStr);
+		isCharacterChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCharacterChecked");
+		isSentenceChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isSentenceChecked");
+		isWordChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isWordChecked");
+		isAutoPlay = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isAutoPlay");
+
+		View view = LayoutInflater.from(this).inflate(
+				R.layout.layout_title_menu1, null);
+
+		int width = CustomApplication.app.displayMetrics.widthPixels / 10 * 6;
+		final PopupWindow popupWindow = new PopupWindow(view,
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, true);
+
+		LinearLayout lin_content = (LinearLayout) view
+				.findViewById(R.id.lin_content);
+		LayoutParams ly = lin_content.getLayoutParams();
+		ly.width = width;
+		lin_content.setLayoutParams(ly);
+
+		LinearLayout lin_aa = (LinearLayout) view.findViewById(R.id.lin_aa);
+		lin_aa.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				popupWindow.dismiss();
+			}
+		});
+		RadioGroup rg_display = (RadioGroup) view.findViewById(R.id.rg_display);
+		rg_display.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup arg0, int checkedId) {
+				// TODO Auto-generated method stub
+				switch (checkedId) {
+
+				case R.id.rb_Chinese://
+
+					break;
+				case R.id.rb_Settings:
+
+					break;
+				case R.id.rb_Pinyin:
+
+					break;
+
+				}
+			}
+		});
+
+		SlideSwitch ck_auto_play = (SlideSwitch) view
+				.findViewById(R.id.ck_auto_play);
+		ck_auto_play.setState(isAutoPlay);
+		ck_auto_play.setSlideListener(new SlideListener() {
+			@Override
+			public void open() {
+				// TODO Auto-generated method stub
+				isAutoPlay = true;
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isAutoPlay", isAutoPlay);
+			}
+
+			@Override
+			public void close() {
+				// TODO Auto-generated method stub
+				isAutoPlay = false;
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isAutoPlay", isAutoPlay);
+			}
+		});
+		seekBar = (SeekBar) view.findViewById(R.id.seekBar);
+		seekBar.setMax(chooseCount);
+		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() // 监听器
+		{
+			public void onProgressChanged(SeekBar arg0, int progress,
+					boolean fromUser) {
+				seekBar.setProgress(progress);
+				tv_default_number.setText("" + progress);
+				defaultNumber = progress;
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		CheckBox ck_Character = (CheckBox) view.findViewById(R.id.ck_Character);
+		ck_Character.setChecked(isCharacterChecked);
+		ck_Character.setOnCheckedChangeListener(onCheckedChangeListener);
+
+		CheckBox ck_Word = (CheckBox) view.findViewById(R.id.ck_Word);
+		ck_Word.setChecked(isWordChecked);
+		ck_Word.setOnCheckedChangeListener(onCheckedChangeListener);
+
+		CheckBox ck_Sentence = (CheckBox) view.findViewById(R.id.ck_Sentence);
+		ck_Sentence.setChecked(isSentenceChecked);
+		ck_Sentence.setOnCheckedChangeListener(onCheckedChangeListener);
+
+		tv_default_number = (TextView) view
+				.findViewById(R.id.tv_default_number);
+		tv_default_number.setText("" + 0);
+
+		tv_chooseCount = (TextView) view.findViewById(R.id.tv_max);
+		tv_chooseCount.setText("" + chooseCount);
+
+		// seekBar.setProgress(max);
+
+		popupWindow.setTouchable(true);
+		popupWindow.setTouchInterceptor(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				Log.i("mengdd", "onTouch : ");
+				return false;
+				// 这里如果返回true的话，touch事件将被拦截
+				// 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+			}
+		});
+		// 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+		// 我觉得这里是API的一个bug
+		popupWindow.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.bg_touming));
+
+		// popupWindow.showAsDropDown(iv_title_right, 0, 0);
+		popupWindow.showAtLocation(contentView, Gravity.RIGHT, 0, 60);
+
+		popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+			@Override
+			public void onDismiss() {
+				// TODO Auto-generated method stub
+
+				Log.d(TAG, "chooseCount:" + chooseCount);
+				Log.d(TAG, "isCharacterChecked:" + isCharacterChecked);
+				Log.d(TAG, "isSentenceChecked:" + isSentenceChecked);
+				Log.d(TAG, "isWordChecked:" + isWordChecked);
+				Log.d(TAG, "isAutoPlay:" + isAutoPlay);
+			}
+		});
+	}
+
+	CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			// TODO Auto-generated method stub
+
+			switch (buttonView.getId()) {
+			case R.id.ck_Character:
+
+				if (isChecked) {
+					chooseCount = chooseCount + characterCount;
+					isCharacterChecked = true;
+
+				} else {
+					chooseCount = chooseCount - characterCount;
+					isCharacterChecked = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isCharacterChecked", isCharacterChecked);
+
+				break;
+			case R.id.ck_Word:
+				if (isChecked) {
+					chooseCount = chooseCount + wordsCount;
+					isWordChecked = true;
+				} else {
+					chooseCount = chooseCount - wordsCount;
+					isWordChecked = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isWordChecked", isWordChecked);
+				break;
+			case R.id.ck_Sentence:
+				if (isChecked) {
+					isSentenceChecked = true;
+					chooseCount = chooseCount + sentenceCount;
+				} else {
+
+					isSentenceChecked = false;
+					chooseCount = chooseCount - sentenceCount;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isSentenceChecked", isSentenceChecked);
+				break;
+			default:
+				break;
+			}
+			tv_chooseCount.setText("" + chooseCount);
+			seekBar.setMax(chooseCount);
+			CustomApplication.app.preferencesUtil.setValue("count", ""
+					+ chooseCount);
+		}
+
+	};
 
 	/**
 	 * 顶部标题栏
@@ -122,7 +418,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 		tv_title_right.setVisibility(textRight);
 		tv_title_right.setOnClickListener(onClickListener);
 
-		ImageView iv_title_right = (ImageView) view_title
+		iv_title_right = (ImageView) view_title
 				.findViewById(R.id.iv_title_right);
 		iv_title_right.setVisibility(imgRight);
 		iv_title_right.setImageResource(imgRightDrawable);
@@ -143,13 +439,20 @@ public class LessonFlashCardActivity extends BaseActivity {
 				break;
 
 			case R.id.iv_title_right://
-
+				showPopupWindowMenu();
 				break;
 
 			case R.id.btn_go:
 
-				startActivity(new Intent(LessonFlashCardActivity.this,
-						LessonExerciseActivity.class));
+				if (defaultNumber == 0) {
+					showPopupWindowMenu();
+				} else {
+
+					Intent intent = new Intent(LessonFlashCardActivity.this,
+							LessonFlashCardOpActivity.class);
+					intent.putExtra("defaultNumber", defaultNumber);
+					startActivity(intent);
+				}
 				break;
 
 			default:
@@ -163,11 +466,11 @@ public class LessonFlashCardActivity extends BaseActivity {
 	 */
 	private void playHeartbeatAnimation() {
 		AnimationSet animationSet = new AnimationSet(true);
-		animationSet.addAnimation(new ScaleAnimation(1.0f, 1.8f, 1.0f, 1.8f,
+		animationSet.addAnimation(new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f));
 		animationSet.addAnimation(new AlphaAnimation(1.0f, 0.4f));
-		animationSet.setDuration(200);
+		animationSet.setDuration(1000);
 		animationSet.setInterpolator(new AccelerateInterpolator());
 		animationSet.setFillAfter(true);
 		animationSet.setAnimationListener(new AnimationListener() {
@@ -183,11 +486,11 @@ public class LessonFlashCardActivity extends BaseActivity {
 			public void onAnimationEnd(Animation animation) {
 
 				AnimationSet animationSet = new AnimationSet(true);
-				animationSet.addAnimation(new ScaleAnimation(1.8f, 1.0f, 1.8f,
+				animationSet.addAnimation(new ScaleAnimation(1.1f, 1.0f, 1.1f,
 						1.0f, Animation.RELATIVE_TO_SELF, 0.5f,
 						Animation.RELATIVE_TO_SELF, 0.5f));
 				animationSet.addAnimation(new AlphaAnimation(0.4f, 1.0f));
-				animationSet.setDuration(600);
+				animationSet.setDuration(2000);
 				animationSet.setInterpolator(new DecelerateInterpolator());
 				animationSet.setFillAfter(false);
 				// 实现心跳的View

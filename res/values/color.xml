@@ -351,5 +351,12 @@
     <color name="chinese_skill_yellow">#F4B460</color>
     <color name="chinese_skill_activity_bg">#F7F7F7</color>
     <color name="chinese_skill_bottom_bar_bg">#171717</color>
+    <color name="chinese_skill_touming_bg">#e0000000</color>
+    <color name="remember_prefectly">#C6CA7A</color>
+    <color name="remembered">#D2CF9C</color>
+    <color name="barely_remembered">#E1DEC8</color>
+    <color name="almost_remembered">#EACED5</color>
+    <color name="forgot">#DDAEBA</color>
+    <color name="dont_know">#F48B91</color>
 
 </resources>

@@ -4,5 +4,4 @@
     <item android:drawable="@drawable/bg_circle_blue" android:state_checked="true"/>
     <item android:drawable="@drawable/bg_circle_blue" android:state_selected="true"/>
     <item android:drawable="@drawable/bg_circle_white"/>
-
 </selector>
