@@ -136,7 +136,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		CustomApplication.app.addActivity(this);
 		init();
 		initMediaPlayer();
-		playRightSound();
+//		playRightSound();
 	}
 
 	TimerTask task = new TimerTask() {
@@ -242,7 +242,7 @@ public class LessonExerciseActivity extends BaseActivity {
 //			return;
 //		} catch (IOException localIOException1) {
 //		}
-		new MediaPlayerHelper("sounds/wrong_sound.mp3").play();
+		new MediaPlayerHelper("sounds/correct_sound.mp3").play();
 	}
 
 	// 存放panderView的集合
@@ -440,7 +440,8 @@ public class LessonExerciseActivity extends BaseActivity {
 				if (isCurrentTestRight) {
 					setProgressViewBg(exerciseIndex,// 设置进度快的背景
 							R.drawable.bg_progress_rigth);
-					showCheckDialog(true);
+					showCheckDialog(true);//弹出正确的对话框
+					playRightSound();//播放正确的声音
 				} else {
 					setProgressViewBg(exerciseIndex,
 							R.drawable.bg_progress_wrong);
