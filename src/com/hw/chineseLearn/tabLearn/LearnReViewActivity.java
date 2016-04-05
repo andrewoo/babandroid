@@ -304,19 +304,26 @@ public class LearnReViewActivity extends BaseActivity implements
 
 			case R.id.lin_review_characters:
 
-				startActivity(new Intent(LearnReViewActivity.this,
-						LessonReViewCharacterActivity.class));
+				if (characterCount > 0) {
+					startActivity(new Intent(LearnReViewActivity.this,
+							LessonReViewCharacterActivity.class));
+				}
+
 				break;
 
 			case R.id.lin_review_words:
+				if (wordsCount > 0) {
+					startActivity(new Intent(LearnReViewActivity.this,
+							LessonReViewWordActivity.class));
+				}
 
-				startActivity(new Intent(LearnReViewActivity.this,
-						LessonReViewWordActivity.class));
 				break;
 			case R.id.lin_review_sentence:
+				if (sentenceCount > 0) {
+					startActivity(new Intent(LearnReViewActivity.this,
+							LessonReViewSentenceActivity.class));
+				}
 
-				startActivity(new Intent(LearnReViewActivity.this,
-						LessonReViewSentenceActivity.class));
 				break;
 
 			default:
