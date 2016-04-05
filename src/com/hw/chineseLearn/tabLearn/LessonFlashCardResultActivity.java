@@ -6,13 +6,10 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -22,6 +19,8 @@ import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.util.tool.UiUtil;
+import com.util.weight.RectView;
 import com.util.weight.RoundProgressBar;
 
 /**
@@ -49,6 +48,7 @@ public class LessonFlashCardResultActivity extends BaseActivity {
 	ArrayList<TbMyCharacter> tbMyCharacterList;
 	ArrayList<TbMyWord> tbMyWordList;
 	ArrayList<TbMySentence> tbMySentenceList;
+	RectView pro_remember_prefectly;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -206,6 +206,31 @@ public class LessonFlashCardResultActivity extends BaseActivity {
 		almost_remembered.setText("" + almostRememberedCount);
 		forgot.setText("" + forgotCount);
 		dont_know.setText("" + dontKnowCount);
+
+		LayoutParams lp1 = new LayoutParams(UiUtil.dip2px(
+				getApplicationContext(), 10), UiUtil.dip2px(
+				getApplicationContext(), 50));
+		pro_remember_prefectly = (RectView) contentView
+				.findViewById(R.id.pro_remember_prefectly);
+		pro_remember_prefectly.setLayoutParams(lp1);
+		pro_remember_prefectly.setMax(100);
+		pro_remember_prefectly.setProgress(50);
+		// new Thread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// while (rememberPrefectlyCount <= 100) {
+		// progress += progressAdd;
+		// pro_remember_prefectly.setProgress(progress);
+		// try {
+		// Thread.sleep(50);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// }
+		// }).start();
 
 	}
 
