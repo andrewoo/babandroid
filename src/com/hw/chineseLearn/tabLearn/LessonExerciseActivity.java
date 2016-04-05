@@ -64,6 +64,7 @@ import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
 
@@ -217,27 +218,31 @@ public class LessonExerciseActivity extends BaseActivity {
 	}
 
 	public void playWrongSound() {
-		AssetManager am = getAssets();// 获得该应用的AssetManager
-		try {
-			AssetFileDescriptor afd = am.openFd("sounds/wrong_sound.mp3");
-			mediaPlayer.setDataSource(afd.getFileDescriptor());
-			mediaPlayer.prepare(); // 准备
-			mediaPlayer.start();
-			return;
-		} catch (IOException localIOException1) {
-		}
+//		AssetManager am = getAssets();// 获得该应用的AssetManager
+//		try {
+//			AssetFileDescriptor afd = am.openFd("sounds/wrong_sound.mp3");
+//			mediaPlayer.setDataSource(afd.getFileDescriptor());
+//			mediaPlayer.setVolume(1f, 1f);
+//			mediaPlayer.prepare(); // 准备
+//			mediaPlayer.start();
+//			return;
+//		} catch (IOException localIOException1) {
+//		}
+		new MediaPlayerHelper("sounds/wrong_sound.mp3").play();
 	}
 
 	public void playRightSound() {
-		AssetManager am = getAssets();// 获得该应用的AssetManager
-		try {
-			AssetFileDescriptor afd = am.openFd("sounds/correct_sound.mp3");
-			mediaPlayer.setDataSource(afd.getFileDescriptor());
-			mediaPlayer.prepare(); // 准备
-			mediaPlayer.start();
-			return;
-		} catch (IOException localIOException1) {
-		}
+//		AssetManager am = getAssets();// 获得该应用的AssetManager
+//		try {
+//			AssetFileDescriptor afd = am.openFd("sounds/correct_sound.mp3");
+//			mediaPlayer.setDataSource(afd.getFileDescriptor());
+//			mediaPlayer.setVolume(1f, 1f);
+//			mediaPlayer.prepare(); // 准备
+//			mediaPlayer.start();
+//			return;
+//		} catch (IOException localIOException1) {
+//		}
+		new MediaPlayerHelper("sounds/wrong_sound.mp3").play();
 	}
 
 	// 存放panderView的集合
@@ -1410,9 +1415,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao
 					.getDao(LGModel_Word_010.class).queryBuilder().where()
 					.eq("WordId", lgWord.getWordId()).queryForFirst();
-			String dirCode = lgWord.getDirCode();//得到mp3文件名
-			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
-			modelWord.setVoicePath(dirCode);
+//			String dirCode = lgWord.getDirCode();//得到mp3文件名
+//			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+//			modelWord.setVoicePath(dirCode);
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			String title = lgWord.getTranslations();
 			modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title
@@ -1439,6 +1444,8 @@ public class LessonExerciseActivity extends BaseActivity {
 				subLGModel.setImageName(mainPicName);// 拿到图片名字
 				subLGModel.setOption(optionName);// 拿到选项文字
 				subLGModel.setWordId(Integer.valueOf(splitOptions[i]));// 拿到对应id
+				//dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+				subLGModel.setSubVoicePath("w-"+splitOptions[i]+"-"+lGWord.getDirCode()+".mp3");//拿到对应声音
 				subLGModeList.add(subLGModel);
 			}
 			Collections.shuffle(subLGModeList);

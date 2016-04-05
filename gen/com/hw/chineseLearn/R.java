@@ -2713,7 +2713,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class raw {
         public static final int hello=0x7f050000;
-        public static final int w1=0x7f050001;
     }
     public static final class string {
         public static final int action_settings=0x7f090003;

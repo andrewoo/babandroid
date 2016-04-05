@@ -20,8 +20,11 @@ import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.util.tool.BitmapLoader;
+import com.util.tool.MediaPlayerHelper;
 
 public class LearnImageSelectAdapter extends BaseAdapter {
+	
+	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 	
 	private static final String ASSETS_LGWORD_PATH ="data/lgword/";
 	private Context context;
@@ -118,6 +121,7 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 			holder.txt_word_name.setTextColor(colorWhite);
 			holder.iv_tag.setImageDrawable(resources
 					.getDrawable(R.drawable.word_model1_sel));
+			new MediaPlayerHelper(ASSETS_SOUNDS_PATH+subLGModelList.get(position).getSubVoicePath()).play();//选中播放
 		} else {// 未选中
 			holder.lin_content.setBackground(resources
 					.getDrawable(R.drawable.bg_white1));

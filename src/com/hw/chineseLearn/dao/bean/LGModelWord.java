@@ -124,11 +124,15 @@ public class LGModelWord implements Serializable {
 		private String imageName;
 		private String option;
 		private int wordId;
-		
-		//////以后用到字段
-		private List<String> voicePath;
+		private String subVoicePath;
 		
 		
+		public String getSubVoicePath() {
+			return subVoicePath;
+		}
+		public void setSubVoicePath(String subVoicePath) {
+			this.subVoicePath = subVoicePath;
+		}
 		public String getImageName() {
 			return imageName;
 		}
