@@ -183,6 +183,13 @@ public class LessonFlashCardActivity extends BaseActivity {
 
 		View view = LayoutInflater.from(this).inflate(
 				R.layout.layout_title_menu1, null);
+		
+		tv_default_number = (TextView) view
+				.findViewById(R.id.tv_default_number);
+		tv_default_number.setText("" + 0);
+
+		tv_chooseCount = (TextView) view.findViewById(R.id.tv_max);
+		tv_chooseCount.setText("" + chooseCount);
 
 		int width = CustomApplication.app.displayMetrics.widthPixels / 10 * 6;
 		final PopupWindow popupWindow = new PopupWindow(view,
@@ -246,7 +253,6 @@ public class LessonFlashCardActivity extends BaseActivity {
 			}
 		});
 		seekBar = (SeekBar) view.findViewById(R.id.seekBar);
-		seekBar.setMax(chooseCount);
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() // 监听器
 		{
 			public void onProgressChanged(SeekBar arg0, int progress,
@@ -272,24 +278,38 @@ public class LessonFlashCardActivity extends BaseActivity {
 		CheckBox ck_Character = (CheckBox) view.findViewById(R.id.ck_Character);
 		ck_Character.setChecked(isCharacterChecked);
 		ck_Character.setOnCheckedChangeListener(onCheckedChangeListener);
+		if (ck_Character.isChecked()) {
+			chooseCount = chooseCount + characterCount;
+			isCharacterChecked = true;
+
+		} else {
+			// chooseCount = chooseCount - characterCount;
+			isCharacterChecked = false;
+		}
 
 		CheckBox ck_Word = (CheckBox) view.findViewById(R.id.ck_Word);
 		ck_Word.setChecked(isWordChecked);
 		ck_Word.setOnCheckedChangeListener(onCheckedChangeListener);
+		if (ck_Word.isChecked()) {
+			chooseCount = chooseCount + wordsCount;
+			isWordChecked = true;
+		} else {
+			// chooseCount = chooseCount - wordsCount;
+			isWordChecked = false;
+		}
 
 		CheckBox ck_Sentence = (CheckBox) view.findViewById(R.id.ck_Sentence);
 		ck_Sentence.setChecked(isSentenceChecked);
 		ck_Sentence.setOnCheckedChangeListener(onCheckedChangeListener);
+		if (ck_Sentence.isChecked()) {
+			isSentenceChecked = true;
+			chooseCount = chooseCount + sentenceCount;
+		} else {
+			// chooseCount = chooseCount - sentenceCount;
+			isSentenceChecked = false;
 
-		tv_default_number = (TextView) view
-				.findViewById(R.id.tv_default_number);
-		tv_default_number.setText("" + 0);
-
-		tv_chooseCount = (TextView) view.findViewById(R.id.tv_max);
+		}
 		tv_chooseCount.setText("" + chooseCount);
-
-		// seekBar.setProgress(max);
-
 		popupWindow.setTouchable(true);
 		popupWindow.setTouchInterceptor(new OnTouchListener() {
 			@Override
@@ -319,6 +339,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 				Log.d(TAG, "isSentenceChecked:" + isSentenceChecked);
 				Log.d(TAG, "isWordChecked:" + isWordChecked);
 				Log.d(TAG, "isAutoPlay:" + isAutoPlay);
+				chooseCount = 0;
 			}
 		});
 	}

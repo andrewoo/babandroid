@@ -69,8 +69,8 @@ public class LessonViewActivity extends BaseActivity implements
 		setContentView(contentView);
 		context = this;
 		Bundle bundle = getIntent().getExtras();
-		if(bundle!=null){
-			if(bundle.containsKey("unit")){
+		if (bundle != null) {
+			if (bundle.containsKey("unit")) {
 				mUnit = (Unit) bundle.getSerializable("unit");
 			}
 		}
@@ -95,7 +95,8 @@ public class LessonViewActivity extends BaseActivity implements
 	@SuppressWarnings("unchecked")
 	private List<LessonRepeatRegex> getRepeatRegexBeanList() {
 		try {
-			lesson=(Lesson) MyDao.getDao(Lesson.class).queryForId(mUnit.getLessonList().split(";")[selection]);
+			lesson = (Lesson) MyDao.getDao(Lesson.class).queryForId(
+					mUnit.getLessonList().split(";")[selection]);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,7 +109,8 @@ public class LessonViewActivity extends BaseActivity implements
 			String[] splitFenHao = questions[i].split(";");
 			if (splitFenHao[0].indexOf("-") != -1) {
 				String[] splitLgTableId = splitFenHao[0].split("-");
-				for (int j = 0; j < Integer.valueOf(splitFenHao[splitFenHao.length - 1]); j++) {
+				for (int j = 0; j < Integer
+						.valueOf(splitFenHao[splitFenHao.length - 1]); j++) {
 					if (j == 0) {
 						regex.setLgTable(Integer.valueOf(splitLgTableId[j]
 								.split(":")[0]));
@@ -150,7 +152,7 @@ public class LessonViewActivity extends BaseActivity implements
 		try {
 			lessonStatusList = MyDao.getDaoMy(TbLessonMaterialStatus.class)
 					.queryForAll();
-			System.out.println("lessonStatusList"+lessonStatusList);
+			System.out.println("lessonStatusList" + lessonStatusList);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -198,11 +200,24 @@ public class LessonViewActivity extends BaseActivity implements
 		// 创建一个AnimationSet对象（AnimationSet是存放多个Animations的集合）
 		animationSet = new AnimationSet(true);
 
-		ScaleAnimation scaleAnimation = new ScaleAnimation(1, 0.1f, 1, 0.1f,
-				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+		// 参数说明
+		// fromX：起始X坐标上的伸缩尺寸。
+		// toX：结束X坐标上的伸缩尺寸。
+		// fromY：起始Y坐标上的伸缩尺寸。
+		// toY：结束Y坐标上的伸缩尺寸。
+		// pivotXType：X轴的伸缩模式，可以取值为ABSOLUTE、RELATIVE_TO_SELF、RELATIVE_TO_PARENT。
+		// pivotXValue：X坐标的伸缩值。0.5f表明是以自身这个控件的一半长度为x轴
+		// pivotYType：Y轴的伸缩模式，可以取值为ABSOLUTE、RELATIVE_TO_SELF、RELATIVE_TO_PARENT。
+		// pivotYValue：Y坐标的伸缩值。
+		// 有三种默认值：
+		// RELATIVE_TO_PARENT 相对于父控件
+		// RELATIVE_TO_SELF 相对于符自己
+		// RELATIVE_TO_ABSOLUTE 绝对坐标
+		ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1f, 0.1f, 1f,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_PARENT,
 				0.5f);
 		// 设置动画执行之前等待的时间（单位：毫秒）
-		scaleAnimation.setStartOffset(1000);
+		scaleAnimation.setStartOffset(0);
 		// 设置动画执行的时间（单位：毫秒）
 		scaleAnimation.setDuration(2000);
 		// 如果fillAfter设为true，则动画执行后，控件将停留在动画结束的状态
@@ -212,7 +227,7 @@ public class LessonViewActivity extends BaseActivity implements
 		animationSet.setRepeatCount(3);
 		animationSet.setRepeatMode(Animation.REVERSE);
 		// 使用ImageView的startAnimation方法开始执行动画
-		// iv_unit_img.startAnimation(animationSet);
+		iv_unit_img.startAnimation(animationSet);
 	}
 
 	/**
@@ -340,7 +355,7 @@ public class LessonViewActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 
 		selection = position;
-		 final ArrayList<LessonRepeatRegex> regexes= (ArrayList<LessonRepeatRegex>) getRepeatRegexBeanList();// 得到正则表达式中所有题型的集合
+		final ArrayList<LessonRepeatRegex> regexes = (ArrayList<LessonRepeatRegex>) getRepeatRegexBeanList();// 得到正则表达式中所有题型的集合
 		Log.d(TAG, "selection:" + selection);
 		adapter.setSelection(position);
 
@@ -349,9 +364,9 @@ public class LessonViewActivity extends BaseActivity implements
 		// message.arg2 = position;
 		// message.what = 1;
 		// mHandler.sendMessageDelayed(message, 5);
-		if(convertView==null){
-			convertView=View.inflate(this, R.layout.layout_gellay_item, null);
-			}
+		if (convertView == null) {
+			convertView = View.inflate(this, R.layout.layout_gellay_item, null);
+		}
 		Button btn_redo = (Button) convertView.findViewById(R.id.btn_redo);
 		Button btn_start = (Button) convertView.findViewById(R.id.btn_start);
 		Button btn_review = (Button) convertView.findViewById(R.id.btn_review);
