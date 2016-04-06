@@ -278,7 +278,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	public void init() {
 		// TODO Auto-generated method stub
 		rel_test_out = (RelativeLayout) contentView
-				.findViewById(R.id.rel_test_out);
+				.findViewById(R.id.rel_test_out); 
 		rel_test_out.setOnClickListener(this);
 
 		centGridView = (SelfGridView) contentView
