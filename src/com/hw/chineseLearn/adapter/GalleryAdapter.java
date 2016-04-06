@@ -37,14 +37,14 @@ public class GalleryAdapter extends BaseAdapter {
 	int height;
 	Animation animation;
 	private Unit unit;
-	private List<Lesson> lessonList;
-	private List<TbLessonMaterialStatus> lessonStatusList;
+	private List<String> descList;
+	private List<Integer> lessonStatus;
 
-	public GalleryAdapter(Context mContext,Unit unit,List<Lesson> lessonList,List<TbLessonMaterialStatus> lessonStatusList) {
+	public GalleryAdapter(Context mContext,Unit unit,List<Integer> lessonStatus,List<String> descList) {
 		this.mContext = mContext;
 		this.unit = unit;
-		this.lessonList = lessonList;
-		this.lessonStatusList = lessonStatusList;
+		this.descList = descList;
+		this.lessonStatus = lessonStatus;
 		inflater = LayoutInflater.from(mContext);
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
@@ -156,40 +156,40 @@ public class GalleryAdapter extends BaseAdapter {
 		// }
 
 		//判断显示start redo review
-		
-		if(lessonStatusList!=null){
-			if(lessonStatusList.get(position).getStatus()==1){
+		if(lessonStatus!=null){
+			
+			if(lessonStatus.get(position)==1){
 				holder.btn_start.setVisibility(View.VISIBLE);
-				holder.btn_redo.setVisibility(View.GONE);
+//				holder.btn_redo.setVisibility(View.GONE);
 				holder.btn_review.setVisibility(View.GONE);
 				holder.btn_lock .setVisibility(View.GONE);
-			}else if(lessonStatusList.get(position).getStatus()==0){
+			}else if(lessonStatus.get(position)==0){
 				holder.btn_lock .setVisibility(View.VISIBLE);
 				holder.btn_start.setVisibility(View.GONE);
-				holder.btn_redo.setVisibility(View.GONE);
+//				holder.btn_redo.setVisibility(View.GONE);
 				holder.btn_review.setVisibility(View.GONE);
 			}
 		}
 		
-		if (holder.btn_redo.getVisibility() == View.VISIBLE) {
-			holder.btn_start.setVisibility(View.GONE);
-		}
+//		if (holder.btn_redo.getVisibility() == View.VISIBLE) {
+//			holder.btn_start.setVisibility(View.GONE);
+//		}
 		if (holder.btn_start.getVisibility() == View.VISIBLE) {
-			holder.btn_redo.setVisibility(View.GONE);
+//			holder.btn_redo.setVisibility(View.GONE);
 			holder.btn_review.setVisibility(View.GONE);
 		}
 		
 		//设置description 属性文本
-		String[] spitList = unit.getLessonList().split(";");
-		Integer lessonId = Integer.valueOf(spitList[position]);
-		Lesson lesson = null;
-		try {
-			lesson = (Lesson) MyDao.getDao(Lesson.class).queryForId(lessonId);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			String description = lesson.getDescription();
+//		String[] spitList = unit.getLessonList().split(";");
+//		Integer lessonId = Integer.valueOf(spitList[position]);
+//		Lesson lesson = null;
+//		try {
+//			lesson = (Lesson) MyDao.getDao(Lesson.class).queryForId(lessonId);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+			String description = descList.get(position);
 			String[] split = description.split("!@@@!");
 			String desc = "";
 			for (int i = 0; i < split.length; i++) {

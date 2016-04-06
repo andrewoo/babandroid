@@ -2,6 +2,7 @@ package com.hw.chineseLearn.tabLearn;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -19,9 +20,11 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.hw.chineseLearn.dao.bean.Unit;
 import com.util.tool.DateUtil;
 import com.util.weight.RoundProgressBar;
 
@@ -65,11 +68,14 @@ public class LessonResultActivity extends BaseActivity {
 	private ImageView tv_lose_all, img_lose_all;
 	int characterCount = 0, wordsCount = 0, sentenceCount = 0;
 	int rightCount = 0, wrongCount = 0;
+	private int lessonId;//确定当前lesson
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = this;
+		//到此界面说明题做完 解锁下个lesson或unit
+		unLockLesson();
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			if (bundle.containsKey("loseAllPanders")) {
@@ -89,6 +95,9 @@ public class LessonResultActivity extends BaseActivity {
 			}
 			if (bundle.containsKey("wrongCount")) {
 				wrongCount = bundle.getInt("wrongCount");
+			}
+			if (bundle.containsKey("lessonId")) {
+				lessonId = bundle.getInt("lessonId");
 			}
 			if (exerciseCount != 0) {
 				progressCount = ((float) rightCount / (float) exerciseCount) * 100;
@@ -114,6 +123,34 @@ public class LessonResultActivity extends BaseActivity {
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 3;
 		resources = context.getResources();
 		init();
+	}
+	
+
+	/**
+	 * 解锁下个lesson或unit
+	 * 
+	 */
+	private void unLockLesson() {
+		//知道当前lessonid 得到下个lessonid 更新表 确定数据
+		List<Unit> unitList =CustomApplication.app.unitList;
+		//遍历unit表找到对应lessonid 并解锁
+		for (int i = 0; i < unitList.size(); i++) {
+			String[] lessonIdAarray = unitList.get(i).getLessonList().split(";");
+			for (int j = 0; j < lessonIdAarray.length; j++) {
+				int id=Integer.valueOf(lessonIdAarray[j]);
+				
+				if(id==lessonId){//找到对应id后 把后边一个lessonid存入表 解锁
+					int idLast=Integer.valueOf(lessonIdAarray[lessonIdAarray.length-1]);//最后一个
+					if(id==idLast){//如果是最后一个就解锁下个unit
+						
+					}else{//不是最后一个就解锁下个lesson
+//						MyDao.getDaoMy(TbLessonMaterialStatus.class).update(arg0);
+					}
+					
+				}
+			}
+		}
+		
 	}
 
 	/**

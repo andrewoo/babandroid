@@ -3,7 +3,6 @@ package com.hw.chineseLearn.tabLearn;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -60,6 +59,8 @@ public class LessonViewActivity extends BaseActivity implements
 	private List<TbLessonMaterialStatus> lessonStatusList;// tbLesson表
 	private Unit mUnit;// 当前Unit列
 	private List<Lesson> lessonList;// lesson表
+	private List<Integer> statusList=new ArrayList<Integer>();//存放是否解锁状态的集合
+	private List<String> descList=new ArrayList<String>();//存放gallery每个页面描述的集合
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +75,9 @@ public class LessonViewActivity extends BaseActivity implements
 				mUnit = (Unit) bundle.getSerializable("unit");
 			}
 		}
-		queryLesson();// 查询lesson表
-		queryTbLesson();// 查询tbLesson得到状态List
+//		queryLesson();// 查询lesson表
+//		queryTbLesson();// 查询tbLesson得到状态List
+		getStatusAndLessonDesc();//拿到状态穿给下个界面
 		init();// 初始化gallery和动画
 
 		CustomApplication.app.addActivity(this);
@@ -84,6 +86,31 @@ public class LessonViewActivity extends BaseActivity implements
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
 
+	}
+
+	/**
+	 * 拿到所有的状态和lessondesc
+	 */
+	private void getStatusAndLessonDesc() {
+		//拿到每个lessonid查询materiallesson表 得到对应选项的状态
+		//加入到集合 传递
+		try {
+			String[] lessonIdArray = mUnit.getLessonList().split(";");
+			for (int i = 0; i < lessonIdArray.length; i++) {
+				Lesson lesson = (Lesson) MyDao.getDao(Lesson.class).queryForId(lessonIdArray[i]);
+				TbLessonMaterialStatus msLong=(TbLessonMaterialStatus) MyDao.getDaoMy(TbLessonMaterialStatus.class).queryForId(lesson.getLessonId());
+				if(msLong!=null){
+					statusList.add(msLong.getStatus());//拿到是否解锁的状态
+				}else{
+					statusList.add(0);//若没找到就加入0 表示为解锁
+				}
+				descList.add(lesson.getDescription());//拿到描述文本
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -146,29 +173,27 @@ public class LessonViewActivity extends BaseActivity implements
 	/**
 	 * 查询TbLesson----表
 	 */
-	private void queryTbLesson() {
-		try {
-			lessonStatusList = MyDao.getDaoMy(TbLessonMaterialStatus.class)
-					.queryForAll();
-			System.out.println("lessonStatusList"+lessonStatusList);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		Collections.sort(lessonStatusList);
-	}
+//	private void queryTbLesson() {
+//		try {
+//			lessonStatusList = MyDao.getDaoMy(TbLessonMaterialStatus.class).queryForAll();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		Collections.sort(lessonStatusList);
+//	}
 
 	/**
 	 * 查询lesson表
 	 */
-	private void queryLesson() {
-		try {
-			lessonList = MyDao.getDao(Lesson.class).queryForAll();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Collections.sort(lessonList);
-	}
+//	private void queryLesson() {
+//		try {
+//			lessonList = MyDao.getDao(Lesson.class).queryForAll();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		Collections.sort(lessonList);
+//	}
 
 	@Override
 	protected void onDestroy() {
@@ -184,7 +209,7 @@ public class LessonViewActivity extends BaseActivity implements
 		setTitle(View.GONE, View.VISIBLE,
 				R.drawable.btn_selector_top_left_white, mUnit.getUnitName(),
 				View.GONE, View.GONE, 0);
-		adapter = new GalleryAdapter(this, mUnit, lessonList, lessonStatusList);
+		adapter = new GalleryAdapter(this, mUnit, statusList,descList);
 		gallery = (MyGallery) findViewById(R.id.gallery);
 		gallery.setOnItemClickListener(onItemclickListener);
 		gallery.setAdapter(adapter);

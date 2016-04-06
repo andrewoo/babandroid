@@ -46,7 +46,7 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	private List<LGWord> lgWordList = new ArrayList<LGWord>();
 	private LGModelWord modelWord;// 存放当前题
 	MediaPlayerHelper meidiaPlayer;
-//	MediaPlayer mediaPlayer = null;
+	// MediaPlayer mediaPlayer = null;
 
 	private int answer;// 此题的答案lgword.getanswer
 	private boolean isRight;
@@ -58,24 +58,24 @@ public class LearnImageSelectFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initDBdata();// 初始化数据库数据
-//		play();
+		// play();
 	}
 
 	private void play() {
-//		mediaPlayerHelper = new MediaPlayerHelper("");
-//		mediaPlayerHelper.play();
-		
-//		soundPool = new SoundPool(5,AudioManager.STREAM_MUSIC, 5);
-//		AssetManager am = CustomApplication.app.getAssets();
-//		AssetFileDescriptor afd = null;
-//		try {
-//			afd = am.openFd("w-11-104372091955652092.mp3");
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		int load = soundPool.load(afd, 1);
-//		soundPool.play(load,  1, 1, 0, 0, 1);
+		// mediaPlayerHelper = new MediaPlayerHelper("");
+		// mediaPlayerHelper.play();
+
+		// soundPool = new SoundPool(5,AudioManager.STREAM_MUSIC, 5);
+		// AssetManager am = CustomApplication.app.getAssets();
+		// AssetFileDescriptor afd = null;
+		// try {
+		// afd = am.openFd("w-11-104372091955652092.mp3");
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// int load = soundPool.load(afd, 1);
+		// soundPool.play(load, 1, 1, 0, 0, 1);
 
 	}
 
@@ -125,7 +125,7 @@ public class LearnImageSelectFragment extends BaseFragment implements
 
 	@Override
 	public void onStop() {
-		if(mediaPlayerHelper!=null){
+		if (mediaPlayerHelper != null) {
 			mediaPlayerHelper.stop();
 		}
 		super.onStop();
@@ -172,13 +172,15 @@ public class LearnImageSelectFragment extends BaseFragment implements
 			} else {
 				isRight = false;
 			}
-			
-			if(meidiaPlayer==null){
-				meidiaPlayer = new MediaPlayerHelper(ASSETS_SOUNDS_PATH+modelWord.getSubLGModelList().get(position).getSubVoicePath());
-			}
-				meidiaPlayer.setLoad(ASSETS_SOUNDS_PATH+ modelWord.getSubLGModelList().get(position).getSubVoicePath());
-				meidiaPlayer.play();
-			
+
+			meidiaPlayer = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
+					+ modelWord.getSubLGModelList().get(position)
+							.getSubVoicePath());
+//			meidiaPlayer.setLoad(ASSETS_SOUNDS_PATH
+//					+ modelWord.getSubLGModelList().get(position)
+//							.getSubVoicePath());
+			meidiaPlayer.play();
+
 			learnImageSelectAdapter.notifyDataSetChanged();
 		}
 	};

@@ -471,10 +471,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		try {
 			unitList = unitdao.queryForAll();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		CustomApplication.app.unitList = unitList;
 		return unitList;
 	}
 

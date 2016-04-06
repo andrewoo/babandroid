@@ -683,6 +683,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					intent.putExtra("exerciseCount", exerciseCount);// 总练习题目数
 					intent.putExtra("rightCount", rightCount);// 正确个数
 					intent.putExtra("wrongCount", wrongCount);// 错误个数
+					intent.putExtra("lessonId", lessonId);//传递lessonid确定哪个lesson做完
 
 					startActivityForResult(intent, 100);
 					if (timer != null) {
