@@ -39,7 +39,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxWidth="10dp"
-                    android:progressDrawable="@drawable/bg_blue" />
+                    android:progressDrawable="@drawable/bg_blue" 
+                    android:visibility="gone"
+                    />
 
                 <View
                     android:layout_width="wrap_content"
@@ -47,13 +49,14 @@
                     android:layout_weight="1"
                     android:background="@color/transparent" />
 
-                <TextView
-                    android:id="@+id/remembered"
-                    android:layout_width="wrap_content"
+                <View
+                    android:id="@+id/view_remembered"
+                    android:layout_width="10dp"
                     android:layout_height="wrap_content"
                     android:paddingLeft="2dp"
                     android:paddingRight="2dp"
                     android:text="0"
+                    android:background="@drawable/bg_blue"
                     android:textColor="@color/remembered"
                     android:textSize="@dimen/text_s10" />
 
