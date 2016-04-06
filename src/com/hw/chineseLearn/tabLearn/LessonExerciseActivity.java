@@ -156,16 +156,17 @@ public class LessonExerciseActivity extends BaseActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if (timer==null) {
+		if (timer == null) {
 			timer = new Timer();
 			timer.schedule(task, 0, 1000);
 		}
-		
+
 	}
 
 	/**
 	 * 初始化bundle数据
 	 */
+	@SuppressWarnings("unchecked")
 	private void initBudle() {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
@@ -182,27 +183,30 @@ public class LessonExerciseActivity extends BaseActivity {
 		}
 		int randomSubject = 0;
 		// 给每个Subject随机赋值确定查哪张表
-		for (int i = 0; i < regexes.size(); i++) {
-			int lgTable = regexes.get(i).getLgTable();
-			if (lgTable == 0) {
-				LGWord lgWord = null;
-				try {
-					lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
-							regexes.get(i).getLgTableId());
-				} catch (SQLException e) {
-				}
-				int length = lgWord.getWord().length();
-				if (length > 1) {// 长度大于一才可以到第6个表
-					randomSubject = new Random().nextInt(6) + 1;
-				} else {
+		if (regexes != null && regexes.size() != 0) {
+
+			for (int i = 0; i < regexes.size(); i++) {
+				int lgTable = regexes.get(i).getLgTable();
+				if (lgTable == 0) {
+					LGWord lgWord = null;
+					try {
+						lgWord = (LGWord) MyDao.getDao(LGWord.class)
+								.queryForId(regexes.get(i).getLgTableId());
+					} catch (SQLException e) {
+					}
+					int length = lgWord.getWord().length();
+					if (length > 1) {// 长度大于一才可以到第6个表
+						randomSubject = new Random().nextInt(6) + 1;
+					} else {
+						randomSubject = new Random().nextInt(5) + 1;
+					}
+					regexes.get(i).setRandomSubject(randomSubject);
+				} else if (lgTable == 1) {
 					randomSubject = new Random().nextInt(5) + 1;
+					regexes.get(i).setRandomSubject(randomSubject);
+				} else if (lgTable == 2) {
+					regexes.get(i).setRandomSubject(1);
 				}
-				regexes.get(i).setRandomSubject(randomSubject);
-			} else if (lgTable == 1) {
-				randomSubject = new Random().nextInt(5) + 1;
-				regexes.get(i).setRandomSubject(randomSubject);
-			} else if (lgTable == 2) {
-				regexes.get(i).setRandomSubject(1);
 			}
 		}
 	}
@@ -217,30 +221,30 @@ public class LessonExerciseActivity extends BaseActivity {
 	}
 
 	public void playWrongSound() {
-//		AssetManager am = getAssets();// 获得该应用的AssetManager
-//		try {
-//			AssetFileDescriptor afd = am.openFd("sounds/wrong_sound.mp3");
-//			mediaPlayer.setDataSource(afd.getFileDescriptor());
-//			mediaPlayer.setVolume(1f, 1f);
-//			mediaPlayer.prepare(); // 准备
-//			mediaPlayer.start();
-//			return;
-//		} catch (IOException localIOException1) {
-//		}
+		// AssetManager am = getAssets();// 获得该应用的AssetManager
+		// try {
+		// AssetFileDescriptor afd = am.openFd("sounds/wrong_sound.mp3");
+		// mediaPlayer.setDataSource(afd.getFileDescriptor());
+		// mediaPlayer.setVolume(1f, 1f);
+		// mediaPlayer.prepare(); // 准备
+		// mediaPlayer.start();
+		// return;
+		// } catch (IOException localIOException1) {
+		// }
 		new MediaPlayerHelper("sounds/wrong_sound.mp3").play();
 	}
 
 	public void playRightSound() {
-//		AssetManager am = getAssets();// 获得该应用的AssetManager
-//		try {
-//			AssetFileDescriptor afd = am.openFd("sounds/correct_sound.mp3");
-//			mediaPlayer.setDataSource(afd.getFileDescriptor());
-//			mediaPlayer.setVolume(1f, 1f);
-//			mediaPlayer.prepare(); // 准备
-//			mediaPlayer.start();
-//			return;
-//		} catch (IOException localIOException1) {
-//		}
+		// AssetManager am = getAssets();// 获得该应用的AssetManager
+		// try {
+		// AssetFileDescriptor afd = am.openFd("sounds/correct_sound.mp3");
+		// mediaPlayer.setDataSource(afd.getFileDescriptor());
+		// mediaPlayer.setVolume(1f, 1f);
+		// mediaPlayer.prepare(); // 准备
+		// mediaPlayer.start();
+		// return;
+		// } catch (IOException localIOException1) {
+		// }
 		new MediaPlayerHelper("sounds/correct_sound.mp3").play();
 	}
 
@@ -370,15 +374,15 @@ public class LessonExerciseActivity extends BaseActivity {
 					} else if (randomSubject == 3) {
 						score = score + 140;
 					} else if (randomSubject == 4) {
-						score = score +120;
+						score = score + 120;
 					} else if (randomSubject == 5) {
 						score = score + 160;
-					} 
+					}
 
 				} else if (lgTable == 2) {
 					score = score + 100;
 				}
-//				score = score + 60;// 做对加分
+				// score = score + 60;// 做对加分
 				txt_lesson_score.setText("" + score);
 				// if (index == exerciseCount - 1) {
 				// UiUtil.showToast(context, "last test");
@@ -438,13 +442,13 @@ public class LessonExerciseActivity extends BaseActivity {
 				if (isCurrentTestRight) {
 					setProgressViewBg(exerciseIndex,// 设置进度快的背景
 							R.drawable.bg_progress_rigth);
-					showCheckDialog(true);//弹出正确的对话框
-					playRightSound();//播放正确的声音
+					showCheckDialog(true);// 弹出正确的对话框
+					playRightSound();// 播放正确的声音
 				} else {
 					setProgressViewBg(exerciseIndex,
 							R.drawable.bg_progress_wrong);
-					showCheckDialog(false);//展示错误对话框
-					playWrongSound();//播放错误音乐
+					showCheckDialog(false);// 展示错误对话框
+					playWrongSound();// 播放错误音乐
 				}
 
 				if (modelWord.getCharId() != 0) {
@@ -683,7 +687,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					intent.putExtra("exerciseCount", exerciseCount);// 总练习题目数
 					intent.putExtra("rightCount", rightCount);// 正确个数
 					intent.putExtra("wrongCount", wrongCount);// 错误个数
-					intent.putExtra("lessonId", lessonId);//传递lessonid确定哪个lesson做完
+					intent.putExtra("lessonId", lessonId);// 传递lessonid确定哪个lesson做完
 
 					startActivityForResult(intent, 100);
 					if (timer != null) {
@@ -866,7 +870,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
 		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
-		if (lgTable == 0) {//word
+		if (lgTable == 0) {// word
 			int randomSubject = lessonRepeatRegex.getRandomSubject();
 			if (isFirst(lessonRepeatRegex.getLgTableId())) {// 判断 如果是第一次出现的ID
 															// 就从word010表中查询
@@ -902,7 +906,7 @@ public class LessonExerciseActivity extends BaseActivity {
 				parseSetData6(lessonRepeatRegex);
 				replaceTo2("wordSelectFragment");// 题目中文 选项英文
 			}
-		} else if (lgTable == 1) {//sentence
+		} else if (lgTable == 1) {// sentence
 			int randomSubject = regexes.get(exerciseIndex).getRandomSubject();
 			switch (randomSubject) {
 			case 1:
@@ -948,8 +952,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setCharId(lgTableId);// 拿到CharId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
-			String dirCode = lGCharacterPart.getDirCode();//得到mp3文件名
-			dirCode="c-"+lgTableId+"-"+dirCode+".mp3";
+			String dirCode = lGCharacterPart.getDirCode();// 得到mp3文件名
+			dirCode = "c-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			String[] picArray = lGCharacterPart.getPartOptions().split(";");// 所有选项
 			String[] answerPicArray = lGCharacterPart.getPartAnswer()
@@ -1011,8 +1015,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到标题
 			modelWord.setSentenceId(lgTableId);// 拿到SentenceId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
-			String dirCode = lgSentence.getDirCode();//得到mp3文件名
-			dirCode="s-"+lgTableId+"-"+dirCode+".mp3";
+			String dirCode = lgSentence.getDirCode();// 得到mp3文件名
+			dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			List<String> answerList = modelWord.getAnswerList();
 			LGModel_Sentence_050 sentence050 = (LGModel_Sentence_050) MyDao
@@ -1064,8 +1068,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到标题
 			modelWord.setSentenceId(lgTableId);// 拿到SentenceId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
-			String dirCode = lgSentence.getDirCode();//得到mp3文件名
-			dirCode="s-"+lgTableId+"-"+dirCode+".mp3";
+			String dirCode = lgSentence.getDirCode();// 得到mp3文件名
+			dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			List<String> answerList = modelWord.getAnswerList();
 			LGModel_Sentence_040 sentence040 = (LGModel_Sentence_040) MyDao
@@ -1108,8 +1112,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			String title = lgSentence.getSentence();
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setSentenceId(lgTableId);// 拿到sentenceId
-			String dirCode = lgSentence.getDirCode();//得到mp3文件名
-			dirCode="s-"+lgTableId+"-"+dirCode+".mp3";
+			String dirCode = lgSentence.getDirCode();// 得到mp3文件名
+			dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			LGModel_Sentence_020 lgSentence020 = (LGModel_Sentence_020) MyDao
 					.getDao(LGModel_Sentence_020.class).queryBuilder().where()
@@ -1144,8 +1148,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
-			String dirCode = lgWord.getDirCode();//得到mp3文件名
-			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			String dirCode = lgWord.getDirCode();// 得到mp3文件名
+			dirCode = "w-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			LGModel_Word_040 lgWord040 = (LGModel_Word_040) MyDao
 					.getDao(LGModel_Word_040.class).queryBuilder().where()
@@ -1180,8 +1184,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到标题
 			modelWord.setWordId(lgTableId);// 拿到wordid
 			modelWord.setLessonId(lessonId);// 拿到lessonId
-			String dirCode = lgWord.getDirCode();//得到mp3文件名
-			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			String dirCode = lgWord.getDirCode();// 得到mp3文件名
+			dirCode = "w-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			List<String> answerList = modelWord.getAnswerList();
 			LGModel_Word_030 word030 = (LGModel_Word_030) MyDao
@@ -1224,8 +1228,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			int answer = sentence030.getAnswer();
 			modelWord.setAnswer(answer);// 拿到answer
 			modelWord.setLessonId(lessonId);// 拿到lessonId
-			String dirCode = lgSentence.getDirCode();//得到mp3文件名
-			dirCode="s-"+lgTableId+"-"+dirCode+".mp3";
+			String dirCode = lgSentence.getDirCode();// 得到mp3文件名
+			dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			String sentence = lgSentence.getSentence();
@@ -1272,8 +1276,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setLessonId(lessonId);// 拿到lessonId
 			modelWord.setTitle(lgSentence.getSentence());
 			modelWord.setAnswer(sentence010.getAnswer());
-			String dirCode = lgSentence.getDirCode();//得到mp3文件名
-			dirCode="s-"+lgTableId+"-"+dirCode+".mp3";
+			String dirCode = lgSentence.getDirCode();// 得到mp3文件名
+			dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			int answer = sentence010.getAnswer();
@@ -1318,8 +1322,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			LGWord lgWord1 = (LGWord) MyDao.getDao(LGWord.class).queryForId(
 					lessonRepeatRegex.getLgTableId());
 			question = lgWord1.getWord();
-			String dirCode = lgWord1.getDirCode();//得到mp3文件名
-			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			String dirCode = lgWord1.getDirCode();// 得到mp3文件名
+			dirCode = "w-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			String[] splitWordId = word_060.getOptions().split(";");
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
@@ -1368,8 +1372,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			int answer = word_020.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
 			modelWord.setLessonId(lessonId);// 拿到lessonId
-			String dirCode = lgWord1.getDirCode();//得到mp3文件名
-			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			String dirCode = lgWord1.getDirCode();// 得到mp3文件名
+			dirCode = "w-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			LGWord lgWordAnswer = (LGWord) MyDao.getDao(LGWord.class)
 					.queryForId(answer);
@@ -1377,7 +1381,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			String right = lgWordAnswer.getWord() + "/"
 					+ lgWordAnswer.getPinyin();
 			modelWord.setAnswerText(left + "=" + right);// 拿到答案文本
-			
+
 			question = "Select" + "\"" + lgWord1.getTranslations() + "\"";
 			modelWord.setTitle(question);// 拿到title
 			String[] splitWordId = word_020.getOptions().split(";");
@@ -1416,9 +1420,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao
 					.getDao(LGModel_Word_010.class).queryBuilder().where()
 					.eq("WordId", lgWord.getWordId()).queryForFirst();
-//			String dirCode = lgWord.getDirCode();//得到mp3文件名
-//			dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
-//			modelWord.setVoicePath(dirCode);
+			// String dirCode = lgWord.getDirCode();//得到mp3文件名
+			// dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			// modelWord.setVoicePath(dirCode);
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			String title = lgWord.getTranslations();
 			modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title
@@ -1445,8 +1449,9 @@ public class LessonExerciseActivity extends BaseActivity {
 				subLGModel.setImageName(mainPicName);// 拿到图片名字
 				subLGModel.setOption(optionName);// 拿到选项文字
 				subLGModel.setWordId(Integer.valueOf(splitOptions[i]));// 拿到对应id
-				//dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
-				subLGModel.setSubVoicePath("w-"+splitOptions[i]+"-"+lGWord.getDirCode()+".mp3");//拿到对应声音
+				// dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+				subLGModel.setSubVoicePath("w-" + splitOptions[i] + "-"
+						+ lGWord.getDirCode() + ".mp3");// 拿到对应声音
 				subLGModeList.add(subLGModel);
 			}
 			Collections.shuffle(subLGModeList);

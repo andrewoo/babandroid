@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -212,14 +213,31 @@ public class LessonTestOutActivity extends BaseActivity implements
 				break;
 
 			case R.id.btn_test_now://
-				startActivity(new Intent(LessonTestOutActivity.this,
-						LessonExerciseActivity.class));
+				Intent intent = new Intent(LessonTestOutActivity.this,
+						LessonTestOutTestActivity.class);
+				startActivityForResult(intent, 0);
 				break;
 
 			default:
 				break;
 			}
 		}
+	};
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
+		switch (resultCode) {
+		case 1:// miss，点击了continue
+
+			break;
+		case 100:// pass,解锁所有的unit
+			// 弹出dialog
+			// congriglations
+			break;
+
+		default:
+			break;
+		}
+		Log.d(TAG, "resultCode:" + resultCode);
 	};
 
 	@Override

@@ -310,6 +310,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 
 		}
 		tv_chooseCount.setText("" + chooseCount);
+		seekBar.setMax(chooseCount);
 		popupWindow.setTouchable(true);
 		popupWindow.setTouchInterceptor(new OnTouchListener() {
 			@Override
