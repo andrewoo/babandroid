@@ -218,31 +218,37 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	 * @param position
 	 */
 	private void setPartAnswer(int position) {
-		LGCharacter model = listBase.get(position);
-		if (model != null) {
-			String partAnswer = model.getPartAnswer();
-			Log.d(TAG, "partAnswer:" + partAnswer);
-			// 772;773;
-			String pngs[] = partAnswer.split(";");
+		if (listBase != null && listBase.size() != 0) {
 
-			for (int i = 0; i < pngs.length; i++) {
+			LGCharacter model = listBase.get(position);
+			if (model != null) {
+				String partAnswer = model.getPartAnswer();
+				Log.d(TAG, "partAnswer:" + partAnswer);
+				// 772;773;
+				String pngs[] = partAnswer.split(";");
 
-				String picName = pngs[i];
+				for (int i = 0; i < pngs.length; i++) {
 
-				if ("".equals(picName))
-					continue;
+					String picName = pngs[i];
 
-				picName = "pp-" + picName;
+					if ("".equals(picName))
+						continue;
 
-				Bitmap imageFromAssetsFile = BitmapLoader
-						.getImageFromAssetsFile(picName);
-				iv_mizige.setImageBitmap(imageFromAssetsFile);
+					picName = "pp-" + picName;
+
+					Bitmap imageFromAssetsFile = BitmapLoader
+							.getImageFromAssetsFile(picName);
+					iv_mizige.setImageBitmap(imageFromAssetsFile);
+				}
+				String pinyin = model.getPinyin();
+				tv_pinyin.setText(pinyin);
+
+				String translation = model.getTranslation();
+				tv_translation.setText(translation);
 			}
-			String pinyin = model.getPinyin();
-			tv_pinyin.setText(pinyin);
 
-			String translation = model.getTranslation();
-			tv_translation.setText(translation);
+		} else {
+			Log.e(TAG, "listBase == null || listBase.size() == 0");
 		}
 	}
 }

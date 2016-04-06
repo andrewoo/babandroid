@@ -348,7 +348,6 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 					startActivityForResult(intent, 1);
 				}
 				lin_is_gorget.setVisibility(View.VISIBLE);
-
 				index++;
 			} else {
 				Log.e(TAG, "lGModelFlashCard==null");
@@ -499,48 +498,49 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	 */
 	@SuppressWarnings("unchecked")
 	private void updateDb(int proficient) {
+		if (index < datas.size()) {
 
-		LGModelFlashCard lGModelFlashCard = datas.get(index);
-		if (lGModelFlashCard != null) {
+			LGModelFlashCard lGModelFlashCard = datas.get(index);
+			if (lGModelFlashCard != null) {
 
-			TbMyCharacter tbMyCharacter = lGModelFlashCard.getMyCharacter();
-			TbMySentence tbMySentence = lGModelFlashCard.getMySentence();
-			TbMyWord tbMyWord = lGModelFlashCard.getMyWord();
+				TbMyCharacter tbMyCharacter = lGModelFlashCard.getMyCharacter();
+				TbMySentence tbMySentence = lGModelFlashCard.getMySentence();
+				TbMyWord tbMyWord = lGModelFlashCard.getMyWord();
 
-			if (tbMyCharacter != null) {
-				tbMyCharacter.setProficient(proficient);
-				try {
-					int C = MyDao.getDaoMy(TbMyCharacter.class).update(
-							tbMyCharacter);
-					Log.d(TAG, "更新熟练度C:" + C);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (tbMyCharacter != null) {
+					tbMyCharacter.setProficient(proficient);
+					try {
+						int C = MyDao.getDaoMy(TbMyCharacter.class).update(
+								tbMyCharacter);
+						Log.d(TAG, "更新熟练度C:" + C);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
-			if (tbMySentence != null) {
-				try {
-					tbMySentence.setProficient(proficient);
-					int S = MyDao.getDaoMy(TbMySentence.class).update(
-							tbMySentence);
-					Log.d(TAG, "更新熟练度S:" + S);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (tbMySentence != null) {
+					try {
+						tbMySentence.setProficient(proficient);
+						int S = MyDao.getDaoMy(TbMySentence.class).update(
+								tbMySentence);
+						Log.d(TAG, "更新熟练度S:" + S);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
-			if (tbMyWord != null) {
-				try {
-					tbMyWord.setProficient(proficient);
-					int W = MyDao.getDaoMy(TbMyWord.class).update(tbMyWord);
-					Log.d(TAG, "更新熟练度W:" + W);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (tbMyWord != null) {
+					try {
+						tbMyWord.setProficient(proficient);
+						int W = MyDao.getDaoMy(TbMyWord.class).update(tbMyWord);
+						Log.d(TAG, "更新熟练度W:" + W);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}
-
 	}
 
 	@Override

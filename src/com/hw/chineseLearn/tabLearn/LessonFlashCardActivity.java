@@ -171,7 +171,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 
 		String chooseCountStr = CustomApplication.app.preferencesUtil.getValue(
 				"count", "0");
-		chooseCount = Integer.parseInt(chooseCountStr);
+		// chooseCount = Integer.parseInt(chooseCountStr);
 		isCharacterChecked = CustomApplication.app.preferencesUtil
 				.getValuesBoolean("isCharacterChecked");
 		isSentenceChecked = CustomApplication.app.preferencesUtil
@@ -375,6 +375,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 			seekBar.setMax(chooseCount);
 			CustomApplication.app.preferencesUtil.setValue("count", ""
 					+ chooseCount);
+			Log.d(TAG, "chooseCount:" + chooseCount);
 		}
 
 	};
