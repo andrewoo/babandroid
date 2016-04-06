@@ -268,6 +268,7 @@ public class LessonTestOutActivity extends BaseActivity implements
 	 * 对话框
 	 */
 	private void showPassedDialog() {
+		updateDb();
 		if (mModifyDialog == null) {
 			mModifyDialog = new AlertDialog.Builder(context).create();
 		}
@@ -278,27 +279,17 @@ public class LessonTestOutActivity extends BaseActivity implements
 		TextView title = (TextView) view.findViewById(R.id.dialog_title);
 		TextView content = (TextView) view.findViewById(R.id.dialog_content);
 		Button ok = (Button) view.findViewById(R.id.commit_btn);
-		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
 
 		title.setText("Congratulations");
 		content.setText("You have successfully passed the TestOut!");
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
 		ok.setText("Ok");
-		cancel.setText("Cancel");
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
 				CustomApplication.app
 						.finishActivity(LessonTestOutActivity.this);
-				mModifyDialog.dismiss();
-			}
-		});
-
-		cancel.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
 				mModifyDialog.dismiss();
 			}
 		});
@@ -324,30 +315,33 @@ public class LessonTestOutActivity extends BaseActivity implements
 				String[] aa = UiUtil.getListFormString(lessonList);
 
 				for (int j = 0; j < aa.length; j++) {
-					String lessonIdStr = aa[0];// 只更新lessonList中的第一节
+					String lessonIdStr = aa[j];// 只更新lessonList中的第一节
+					int lessonId = Integer.parseInt(lessonIdStr);
+
 					try {
 						TbLessonMaterialStatus model = (TbLessonMaterialStatus) MyDao
 								.getDaoMy(TbLessonMaterialStatus.class)
-								.queryForId(lessonIdStr);
+								.queryForId(lessonId);
+
 						if (model == null) {// 没有查询到数据,创建
 
 							TbLessonMaterialStatus modelNew = new TbLessonMaterialStatus();
-
-							int lessonId = Integer.parseInt(lessonIdStr);
 							modelNew.setLessonId(lessonId);
-							modelNew.setStatus(1);
+
+							if (j == 0) {
+								modelNew.setStatus(1);
+							} else {
+								modelNew.setStatus(0);
+							}
 							MyDao.getDaoMy(TbLessonMaterialStatus.class)
-									.create(modelNew);
-						} else {// 更新数据
-							model.setStatus(1);
-							MyDao.getDaoMy(TbLessonMaterialStatus.class)
-									.update(model);
+									.createOrUpdate(modelNew);
 						}
 
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+
 				}
 			}
 		}
