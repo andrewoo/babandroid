@@ -1,6 +1,5 @@
 package com.util.tool;
 
-import java.io.FileDescriptor;
 import java.io.IOException;
 
 import android.content.res.AssetFileDescriptor;
@@ -8,9 +7,7 @@ import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
-import android.media.MediaPlayer.OnPreparedListener;
 import android.media.SoundPool.OnLoadCompleteListener;
-import android.net.Uri;
 
 import com.hw.chineseLearn.base.CustomApplication;
 
@@ -34,28 +31,37 @@ public class MediaPlayerHelper {
 			e.printStackTrace();
 		}
 		sound = soundPool.load(afd, 1);
-	}
-
-	public void play() {
-		
 		soundPool.setOnLoadCompleteListener(new OnLoadCompleteListener() {
             @Override
-            public void onLoadComplete(SoundPool soundPool, int sampleId,
-                    int status) {
+            public void onLoadComplete(SoundPool soundPool, int sampleId,int status) {
             	loaded=true;
-            	soundPool.stop(sound);
-            	soundPool.play(sound,  1, 1, 0, 0, 1);
+            	play();
             }
         });
+	}
+	
+	public void setLoad(String assetsPath){
+		AssetManager am = CustomApplication.app.getAssets();
+		try {
+			AssetFileDescriptor	afd = am.openFd(assetsPath);
+			sound = soundPool.load(afd, 1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void play(){
+		
 		if(loaded){
 			soundPool.stop(sound);
         	soundPool.play(sound,  1, 1, 0, 0, 1);
 		}
-
 	}
 
 	public void stop() {
 		soundPool.stop(sound);
+		release();
 	}
 
 	public void release() {

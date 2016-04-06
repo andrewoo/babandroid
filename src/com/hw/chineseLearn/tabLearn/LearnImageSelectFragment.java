@@ -45,6 +45,7 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	String question = "\"color\"";
 	private List<LGWord> lgWordList = new ArrayList<LGWord>();
 	private LGModelWord modelWord;// 存放当前题
+	MediaPlayerHelper meidiaPlayer;
 //	MediaPlayer mediaPlayer = null;
 
 	private int answer;// 此题的答案lgword.getanswer
@@ -57,12 +58,12 @@ public class LearnImageSelectFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initDBdata();// 初始化数据库数据
-		play();
+//		play();
 	}
 
 	private void play() {
-		mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH+voicePath);
-		mediaPlayerHelper.play();
+//		mediaPlayerHelper = new MediaPlayerHelper("");
+//		mediaPlayerHelper.play();
 		
 //		soundPool = new SoundPool(5,AudioManager.STREAM_MUSIC, 5);
 //		AssetManager am = CustomApplication.app.getAssets();
@@ -171,6 +172,13 @@ public class LearnImageSelectFragment extends BaseFragment implements
 			} else {
 				isRight = false;
 			}
+			
+			if(meidiaPlayer==null){
+				meidiaPlayer = new MediaPlayerHelper(ASSETS_SOUNDS_PATH+modelWord.getSubLGModelList().get(position).getSubVoicePath());
+			}
+				meidiaPlayer.setLoad(ASSETS_SOUNDS_PATH+ modelWord.getSubLGModelList().get(position).getSubVoicePath());
+				meidiaPlayer.play();
+			
 			learnImageSelectAdapter.notifyDataSetChanged();
 		}
 	};

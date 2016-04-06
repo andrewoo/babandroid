@@ -136,7 +136,6 @@ public class LessonExerciseActivity extends BaseActivity {
 		CustomApplication.app.addActivity(this);
 		init();
 		initMediaPlayer();
-//		playRightSound();
 	}
 
 	TimerTask task = new TimerTask() {
@@ -349,7 +348,6 @@ public class LessonExerciseActivity extends BaseActivity {
 				int lgTable = lessonRepeatRegex.getLgTable();
 				int randomSubject = lessonRepeatRegex.getRandomSubject();
 				if (lgTable == 0) {
-
 					if (randomSubject == 1) {
 						score = score + 60;
 					} else if (randomSubject == 2) {
@@ -445,7 +443,8 @@ public class LessonExerciseActivity extends BaseActivity {
 				} else {
 					setProgressViewBg(exerciseIndex,
 							R.drawable.bg_progress_wrong);
-					showCheckDialog(false);
+					showCheckDialog(false);//展示错误对话框
+					playWrongSound();//播放错误音乐
 				}
 
 				if (modelWord.getCharId() != 0) {

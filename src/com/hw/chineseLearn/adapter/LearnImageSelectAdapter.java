@@ -23,23 +23,23 @@ import com.util.tool.BitmapLoader;
 import com.util.tool.MediaPlayerHelper;
 
 public class LearnImageSelectAdapter extends BaseAdapter {
-	
+
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
-	
-	private static final String ASSETS_LGWORD_PATH ="data/lgword/";
+
+	private static final String ASSETS_LGWORD_PATH = "data/lgword/";
 	private Context context;
 	private LayoutInflater inflater;
 
 	private int width, height;
-	private int selectPosition=-1;
+	private int selectPosition = -1;
 	private Resources resources = null;
 	int colorWhite = -1;
 	int colorBlack = -1;
 	private LGModelWord modelWord;
-	private List<SubLGModel> subLGModelList;	
+	private List<SubLGModel> subLGModelList;
+	MediaPlayerHelper meidiaPlayer;
 
-	public LearnImageSelectAdapter(Context context,
-			LGModelWord modelWord) {
+	public LearnImageSelectAdapter(Context context, LGModelWord modelWord) {
 		this.context = context;
 		this.modelWord = modelWord;
 		subLGModelList = modelWord.getSubLGModelList();
@@ -49,11 +49,12 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 		colorBlack = resources.getColor(R.color.black);
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		height = CustomApplication.app.displayMetrics.heightPixels / 3 * 4;
+		
 	}
 
 	@Override
 	public int getCount() {
-		
+
 		return subLGModelList == null ? 0 : subLGModelList.size();
 	}
 
@@ -105,15 +106,16 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 			return convertView;
 		}
 
-//		String unitName = model.getWord()+"/"+model.getPinyin();
-//		String imageName = model.getMainPic();
+		// String unitName = model.getWord()+"/"+model.getPinyin();
+		// String imageName = model.getMainPic();
 		String imageName = subLGModelList.get(position).getImageName();
 		String option = subLGModelList.get(position).getOption();
 		holder.txt_word_name.setText("" + option);
-		Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGWORD_PATH+imageName);
+		Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGWORD_PATH
+				+ imageName);
 		holder.iv_img.setImageBitmap(bitmap);
-//		holder.iv_img.setImageResource(resources.getIdentifier(imageName,
-//				"drawable", context.getPackageName()));
+		// holder.iv_img.setImageResource(resources.getIdentifier(imageName,
+		// "drawable", context.getPackageName()));
 
 		if (selectPosition == position) {// 选中
 			holder.lin_content.setBackground(resources
@@ -121,7 +123,7 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 			holder.txt_word_name.setTextColor(colorWhite);
 			holder.iv_tag.setImageDrawable(resources
 					.getDrawable(R.drawable.word_model1_sel));
-			new MediaPlayerHelper(ASSETS_SOUNDS_PATH+subLGModelList.get(position).getSubVoicePath()).play();//选中播放
+			
 		} else {// 未选中
 			holder.lin_content.setBackground(resources
 					.getDrawable(R.drawable.bg_white1));
