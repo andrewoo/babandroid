@@ -77,7 +77,7 @@ public class LessonViewActivity extends BaseActivity implements
 		}
 //		queryLesson();// 查询lesson表
 //		queryTbLesson();// 查询tbLesson得到状态List
-		getStatusAndLessonDesc();//拿到状态穿给下个界面
+		getStatusAndLessonDesc();//拿到状态传给下个界面
 		init();// 初始化gallery和动画
 
 		CustomApplication.app.addActivity(this);
@@ -92,24 +92,32 @@ public class LessonViewActivity extends BaseActivity implements
 	 * 拿到所有的状态和lessondesc
 	 */
 	private void getStatusAndLessonDesc() {
-		//拿到每个lessonid查询materiallesson表 得到对应选项的状态
-		//加入到集合 传递
-		try {
-			String[] lessonIdArray = mUnit.getLessonList().split(";");
-			for (int i = 0; i < lessonIdArray.length; i++) {
-				Lesson lesson = (Lesson) MyDao.getDao(Lesson.class).queryForId(lessonIdArray[i]);
-				TbLessonMaterialStatus msLong=(TbLessonMaterialStatus) MyDao.getDaoMy(TbLessonMaterialStatus.class).queryForId(lesson.getLessonId());
-				if(msLong!=null){
-					statusList.add(msLong.getStatus());//拿到是否解锁的状态
-				}else{
-					statusList.add(0);//若没找到就加入0 表示为解锁
+		if (mUnit!=null) {
+			//拿到每个lessonid查询materiallesson表 得到对应选项的状态
+			//加入到集合 传递
+			try {
+				String[] lessonIdArray = mUnit.getLessonList().split(";");
+				for (int i = 0; i < lessonIdArray.length; i++) {
+					if ("".equals(lessonIdArray[i])) { //最后一个是分号 切割后可能为""
+						continue;
+					}
+					Lesson lesson = (Lesson) MyDao.getDao(Lesson.class)
+							.queryForId(Integer.valueOf(lessonIdArray[i]));
+					TbLessonMaterialStatus msLong = (TbLessonMaterialStatus) MyDao
+							.getDaoMy(TbLessonMaterialStatus.class).queryForId(
+									lesson.getLessonId());
+					if (msLong != null) {
+						statusList.add(msLong.getStatus());//拿到是否解锁的状态
+					} else {
+						statusList.add(0);//若没找到就加入0 表示未解锁
+					}
+					descList.add(lesson.getDescription());//拿到描述文本
 				}
-				descList.add(lesson.getDescription());//拿到描述文本
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -448,12 +456,19 @@ public class LessonViewActivity extends BaseActivity implements
 			gallery.setSelection(selection);// 选中当前页面
 			break;
 		case 1:// LessonExerciseActivity通过课程或者 continue要继续练习
-
+			getStatusAndLessonDesc();
+			if(adapter!=null){
+				adapter.notifyDataSetChanged();
+			}
 			if (selection == 1) {
 				gallery.setSelection(selection);// for bug
 			} else {
 				gallery.setSelection(selection + 1);// 选中下一个页面
 			}
+			//再查一次数据库 更新值
+			
+			
+			
 			break;
 		default:
 			break;

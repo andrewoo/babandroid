@@ -25,6 +25,7 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.hw.chineseLearn.dao.bean.Unit;
+import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus;
 import com.util.tool.DateUtil;
 import com.util.weight.RoundProgressBar;
 
@@ -37,7 +38,7 @@ public class LessonResultActivity extends BaseActivity {
 
 	private String TAG = "==LessonResultActivity==";
 	public Context context;
-	private Resources resources;
+	private Resources resources; 
 	private int width;
 	private int height;
 	View contentView;
@@ -96,8 +97,9 @@ public class LessonResultActivity extends BaseActivity {
 			if (bundle.containsKey("wrongCount")) {
 				wrongCount = bundle.getInt("wrongCount");
 			}
-			if (bundle.containsKey("lessonId")) {
-				lessonId = bundle.getInt("lessonId");
+			if (bundle.containsKey("LessonId")) {
+				lessonId = bundle.getInt("LessonId");
+				System.out.println("LessonId result bundle"+lessonId);
 			}
 			if (exerciseCount != 0) {
 				progressCount = ((float) rightCount / (float) exerciseCount) * 100;
@@ -135,16 +137,42 @@ public class LessonResultActivity extends BaseActivity {
 		List<Unit> unitList =CustomApplication.app.unitList;
 		//遍历unit表找到对应lessonid 并解锁
 		for (int i = 0; i < unitList.size(); i++) {
+			 String lessonList = unitList.get(i).getLessonList();
+			if(lessonList.endsWith(";")){
+				lessonList=lessonList.substring(0, lessonList.length()-1);		
+			}
 			String[] lessonIdAarray = unitList.get(i).getLessonList().split(";");
 			for (int j = 0; j < lessonIdAarray.length; j++) {
+				if("".equals(lessonIdAarray[j])){
+					continue;
+				}
 				int id=Integer.valueOf(lessonIdAarray[j]);
-				
+				System.out.println("LessonId result if前"+lessonId);
 				if(id==lessonId){//找到对应id后 把后边一个lessonid存入表 解锁
 					int idLast=Integer.valueOf(lessonIdAarray[lessonIdAarray.length-1]);//最后一个
-					if(id==idLast){//如果是最后一个就解锁下个unit
+					if(id==idLast){//如果是最后一个就解锁下个unit的第一个lesson
+						if(i<unitList.size()-1){
+							String firstId = unitList.get(i+1).getLessonList().split(";")[0];//下一个unit的第一个lessonid
+							TbLessonMaterialStatus materialStatus=new TbLessonMaterialStatus();
+							materialStatus.setLessonId(Integer.valueOf(firstId));
+							materialStatus.setStatus(1);
+							try {
+								MyDao.getDaoMy(TbLessonMaterialStatus.class).createOrUpdate(materialStatus);
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
 						
 					}else{//不是最后一个就解锁下个lesson
-//						MyDao.getDaoMy(TbLessonMaterialStatus.class).update(arg0);
+						TbLessonMaterialStatus materialStatus=new TbLessonMaterialStatus();
+						try {
+							materialStatus.setLessonId(Integer.valueOf(lessonIdAarray[j+1]));
+							materialStatus.setStatus(1);
+							MyDao.getDaoMy(TbLessonMaterialStatus.class).createOrUpdate(materialStatus);
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
 					}
 					
 				}
