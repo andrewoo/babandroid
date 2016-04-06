@@ -133,7 +133,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 
 		initBudle();// 初始化数据
 		context = this;
-		CustomApplication.app.addActivity(this);
+		CustomApplication.app.addActivity(this); 
 		init();
 		initMediaPlayer();
 	}
@@ -310,23 +310,24 @@ public class LessonTestOutTestActivity extends BaseActivity {
 			panderView.put(i, imageView);
 		}
 
-		// exerciseCount=list.size();
-		exerciseCount = regexes.size();
-		progressView.clear();
-		lin_lesson_progress.removeAllViews();
-		// 加上十几个背景块
-		for (int i = 0; i < exerciseCount; i++) {
-			ImageView imageView = new ImageView(context);
-			LayoutParams layoutParams = new LayoutParams(
-					LayoutParams.MATCH_PARENT, 37, 1);
-			layoutParams.setMargins(0, 5, 5, 5);
-			imageView.setLayoutParams(layoutParams);
-			imageView.setBackground(context.getResources().getDrawable(
-					R.drawable.bg_progress_noraml));
-			lin_lesson_progress.addView(imageView);
-			progressView.put(i, imageView);
+		if (regexes != null) {
+			exerciseCount = regexes.size();
+			progressView.clear();
+			lin_lesson_progress.removeAllViews();
+			// 加上十几个背景块
+			for (int i = 0; i < exerciseCount; i++) {
+				ImageView imageView = new ImageView(context);
+				LayoutParams layoutParams = new LayoutParams(
+						LayoutParams.MATCH_PARENT, 37, 1);
+				layoutParams.setMargins(0, 5, 5, 5);
+				imageView.setLayoutParams(layoutParams);
+				imageView.setBackground(context.getResources().getDrawable(
+						R.drawable.bg_progress_noraml));
+				lin_lesson_progress.addView(imageView);
+				progressView.put(i, imageView);
+			}
+			regexToView(regexes.get(exerciseIndex));// 第一次进入时
 		}
-		regexToView(regexes.get(exerciseIndex));// 第一次进入时
 	}
 
 	/**

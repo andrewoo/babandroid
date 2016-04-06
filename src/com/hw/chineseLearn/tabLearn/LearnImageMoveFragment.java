@@ -1,8 +1,6 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -10,6 +8,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,16 +25,13 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.dao.MyDao;
-import com.hw.chineseLearn.dao.bean.LGCharacter;
-import com.hw.chineseLearn.dao.bean.LGCharacterPart;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
-import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.BitmapLoader;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
+import com.util.tool.UtilMedthod;
 
 /**
  * 学习-拼汉字
@@ -64,6 +59,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	// private List<String> partPicNameList = new ArrayList<String>();
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 	private MediaPlayerHelper mediaPlayerHelper;
+	private int colorBlue = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,9 +74,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 		viewMagin = dip2px(context, 10);
 		itemViewWidth = (screenWidth - viewMagin * 2) / 3;
-
+		colorBlue = context.getResources().getColor(R.color.chinese_skill_blue);
 		initView();
-
 		initBgViews();
 		initMoveViews();
 	}
@@ -167,6 +162,14 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			bgViewList.add(imageView);
 			rel_root.addView(imageView);
 
+			int imageWidth = imageView.getWidth();
+			int height = imageView.getHeight();
+			Log.d(TAG, "imageWidth:" + imageWidth);
+			Log.d(TAG, "height:" + height);
+			 imageView.setImageDrawable(UtilMedthod.setBackgroundRounded(
+			 context, itemViewWidth, itemViewWidth, 0,
+			 colorBlue));
+
 			int x1 = 0, y1 = y;
 
 			if (i == 4) {
@@ -183,9 +186,9 @@ public class LearnImageMoveFragment extends BaseFragment implements
 					y1 = y;
 				}
 			}
-			Log.d(TAG, "x:" + x);
-			Log.d(TAG, "y:" + y);
-			Log.d(TAG, "itemViewWidth:" + itemViewWidth);
+			// Log.d(TAG, "x:" + x);
+			// Log.d(TAG, "y:" + y);
+			// Log.d(TAG, "itemViewWidth:" + itemViewWidth);
 
 			Point point = new Point();
 			point.x = x1;
@@ -254,9 +257,9 @@ public class LearnImageMoveFragment extends BaseFragment implements
 					y1 = y;
 				}
 			}
-			Log.d(TAG, "x:" + x);
-			Log.d(TAG, "y:" + y);
-			Log.d(TAG, "itemViewWidth:" + itemViewWidth);
+			// Log.d(TAG, "x:" + x);
+			// Log.d(TAG, "y:" + y);
+			// Log.d(TAG, "itemViewWidth:" + itemViewWidth);
 
 			orignViewX.add(x1);
 			orignViewY.add(y1);
@@ -374,7 +377,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			rel_top.getLocationInWindow(locations);
 			// lin_lin在屏幕中的y
 			relTopHeight = locations[1];
-			Log.d(TAG, "relTopHeight:" + relTopHeight);
+			// Log.d(TAG, "relTopHeight:" + relTopHeight);
 			break;
 		case MotionEvent.ACTION_MOVE:
 			moveViewWithFinger(imageView, event.getRawX(), event.getRawY());// 动态设置view的位置，拖动效果
@@ -385,13 +388,13 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			float X = event.getRawX();
 			float Y = event.getRawY();
 
-			Log.d(TAG, "X：" + X);
-			Log.d(TAG, "mizigeX：" + mizigeX);
-			Log.d(TAG, "mizigeView.getWidth()：" + mizigeView.getWidth());
-
-			Log.d(TAG, "Y：" + Y);
-			Log.d(TAG, "mizigeY：" + mizigeY);
-			Log.d(TAG, "mizigeView.getHeight()：" + mizigeView.getHeight());
+			// Log.d(TAG, "X：" + X);
+			// Log.d(TAG, "mizigeX：" + mizigeX);
+			// Log.d(TAG, "mizigeView.getWidth()：" + mizigeView.getWidth());
+			//
+			// Log.d(TAG, "Y：" + Y);
+			// Log.d(TAG, "mizigeY：" + mizigeY);
+			// Log.d(TAG, "mizigeView.getHeight()：" + mizigeView.getHeight());
 
 			if ((X > (mizigeX + imageView.getWidth() / 2) && X < (mizigeX + mizigeView
 					.getWidth()))

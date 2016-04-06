@@ -88,11 +88,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (!(new File(DATABASE_NAME).exists())) {
 			isFirstRun = true;
 			isFirstRunForApplication = true;
-			FileTools.copyDb("Babbel_ub.db");
+
 		} else {
 			isFirstRun = false;
 			isFirstRunForApplication = false;
 		}
+
+		FileTools.copyDb("Babbel_ub.db");
 	}
 
 	@Override

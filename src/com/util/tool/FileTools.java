@@ -120,24 +120,23 @@ public class FileTools {
 		System.out.println("文件内容是:" + "\r\n" + readStr);
 		return readStr;
 	}
-	
+
 	/**
 	 * 读取文本文件.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	public static String readTxtFile(InputStream is) throws Exception {
-	     int size = is.available();   
-	     // Read the entire asset into a local byte buffer.   
-	     byte[] buffer = new byte[size];   
-	     is.read(buffer);   
-	     is.close();   
-	     // Convert the buffer into a string.   
-	     String text = new String(buffer, "UTF-8");
-	     return text;
+		int size = is.available();
+		// Read the entire asset into a local byte buffer.
+		byte[] buffer = new byte[size];
+		is.read(buffer);
+		is.close();
+		// Convert the buffer into a string.
+		String text = new String(buffer, "UTF-8");
+		return text;
 	}
-	
-	 
 
 	/**
 	 * 写文件.
@@ -210,26 +209,26 @@ public class FileTools {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	public static void copyDb(String dbName) {
 		try {
-			InputStream inputStream = CustomApplication.app.getAssets().open(dbName);
-			
-			File filesDir =CustomApplication.app.getFilesDir(); 
-			
-			File addressDbFile = new File(filesDir,dbName);
-//			if(addressDbFile.exists() && addressDbFile.length()>0){ 
-//				
-//			} else {
+			InputStream inputStream = CustomApplication.app.getAssets().open(
+					dbName);
+
+			File filesDir = CustomApplication.app.getFilesDir();
+
+			File addressDbFile = new File(filesDir, dbName);
+			if (addressDbFile.exists() && addressDbFile.length() > 0) {
+				Log.d("....", "addressDbFile.exists");
+			} else {
 
 				FileOutputStream fout = new FileOutputStream(addressDbFile);
 				int len = -1;
 				byte[] buffer = new byte[1024];
 
 				while ((len = inputStream.read(buffer)) != -1) {
-					fout.write(buffer, 0, len); 
-//				}
+					fout.write(buffer, 0, len);
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
