@@ -978,8 +978,10 @@ public class LessonExerciseActivity extends BaseActivity {
 							.getDao(LGCharacterPart.class).queryForId(
 									Integer.valueOf(picList.get(i)));
 					String picName = lgCharacterPart.getPartName();
+					int partId = lgCharacterPart.getPartId();
 					SubLGModel subLGModel = modelWord.new SubLGModel();
 					subLGModel.setImageName(picName);
+					subLGModel.setWordId(partId);//拿到tag图片对应的id
 					subLGModelList.add(subLGModel);// 拿到所有图片选项
 				}
 			} catch (Exception e) {

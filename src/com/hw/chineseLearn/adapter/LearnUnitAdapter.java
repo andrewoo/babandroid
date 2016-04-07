@@ -1,6 +1,6 @@
 package com.hw.chineseLearn.adapter;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,8 +17,9 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
 public class LearnUnitAdapter extends BaseAdapter {
 	
@@ -83,7 +84,23 @@ public class LearnUnitAdapter extends BaseAdapter {
 			return convertView;
 		}
 		String unitName = model.getUnitName();
-		String imageName = "lu1_" + model.getIconResSuffix();
+		//如果数据库中为1 就lu1  else 就是lu0
+		int status=0;
+		try {
+			TbLessonMaterialStatus ms=(TbLessonMaterialStatus) MyDao.getDaoMy(TbLessonMaterialStatus.class).queryForId(Integer.valueOf(model.getLessonList().split(";")[0]));
+			if(ms!=null){
+				status = ms.getStatus();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		String imageName =null;
+		if(status==0){
+			imageName = "lu0_" + model.getIconResSuffix();
+		}else if(status==1){
+			 imageName = "lu1_" + model.getIconResSuffix();
+		}
+		
 		String lessonList = model.getLessonList();
 
 //		if (model.isEnable()) {
