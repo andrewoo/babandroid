@@ -805,6 +805,9 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 	/**
 	 * learn表中regex对应表关系
 	 */
+	/**
+	 * @param lessonRepeatRegex
+	 */
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
 		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
@@ -814,26 +817,30 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 															// 就从word010表中查询
 				randomSubject = 1;
 			}
-
 			switch (randomSubject) {
 			case 1:// 对应选择图片题 题目中文
 				parseSetData1(lessonRepeatRegex);// 解析数据库数据，并把对应题传过去
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("imageSelectFragment");
 				break;
 			case 2:// 单选中问题 无图片
 				parseSetData2(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordSelectFragment");
 				break;
 			case 3:// tag英文
 				parseSetData3(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("sentenceMoveFragment");
 				break;
 			case 4:// 单词翻译输入英语
 				parseSetData4(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordInputFragment");
 				break;
 			case 5:
 				parseSetData2(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordSelectFragment");// 题目中文 选项英文
 				break;
 			case 6:
@@ -845,26 +852,31 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			switch (randomSubject) {
 			case 1:
 				parseSentenseData1(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordSelectFragment");
 				break;
 			case 2:
 				parseSentenseData2(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordInputFragment");
 				break;
 			case 3:
 				parseSentenseData3(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("wordSelectFragment");
 				break;
 			case 4:
 				parseSentenseData4(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("sentenceMoveFragment");
 				break;
 			case 5:
 				parseSentenseData5(lessonRepeatRegex);
+				Log.i("answer", modelWord.getAnswerText());
 				replaceTo2("sentenceMoveFragment");
 				break;
 			}
-		} else if (lgTable == 2) {// character
+		} else if (lgTable == 2) {
 			// 查询lgcharacid title= 得到 partoption和partanswer spit;
 			// 查lgcharpart得到imagename
 			modelWord = new LGModelWord();
@@ -881,9 +893,15 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setCharId(lgTableId);// 拿到CharId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
-			String[] picArray = lGCharacterPart.getPartOptions().split(";");// 所有选项
-			String[] answerPicArray = lGCharacterPart.getPartAnswer()
-					.split(";");// 答案选项
+			String dirCode = lGCharacterPart.getDirCode();// 得到mp3文件名
+			dirCode = "c-" + lgTableId + "-" + dirCode + ".mp3";
+			modelWord.setVoicePath(dirCode);
+			String[] picArray = UiUtil.getListFormString(lGCharacterPart
+					.getPartOptions());// 所有选项
+			String answerString = lGCharacterPart.getPartAnswer();
+			Log.d(TAG, "answerString:" + answerString);
+			String[] answerPicArray = UiUtil.getListFormString(answerString);// 答案选项
+
 			List<String> picList = new ArrayList<String>();// 存放选择图片名字的集合
 			for (int i = 0; i < picArray.length; i++) {
 				for (int j = 0; j < answerPicArray.length; j++) {
@@ -896,6 +914,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 					randomList.add(picArray[i]);// 加入答案外的
 				}
 			}
+			modelWord.setAnswerList(picList);// 合并集合前 拿到答案
 			Collections.shuffle(randomList);
 			int length = picArray.length;
 			if (picList.size() < length) {
@@ -912,8 +931,10 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 							.getDao(LGCharacterPart.class).queryForId(
 									Integer.valueOf(picList.get(i)));
 					String picName = lgCharacterPart.getPartName();
+					int partId = lgCharacterPart.getPartId();
 					SubLGModel subLGModel = modelWord.new SubLGModel();
 					subLGModel.setImageName(picName);
+					subLGModel.setWordId(partId);// 拿到tag图片对应的id
 					subLGModelList.add(subLGModel);// 拿到所有图片选项
 				}
 			} catch (Exception e) {

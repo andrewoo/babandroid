@@ -27,7 +27,7 @@
             android:text="[ta]he/him"
             android:singleLine="true"
             android:textColor="@color/deep_grey"
-            android:textSize="@dimen/text_s28" />
+            android:textSize="@dimen/text_s26" />
 
         <Button
             android:id="@+id/btn_hint"

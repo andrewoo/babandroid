@@ -171,6 +171,9 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		return contentView;
 	}
 
+	/**
+	 * @param isSetHint
+	 */
 	private void setHintBgs(boolean isSetHint) {
 
 		if (isSetHint) {

@@ -327,7 +327,7 @@ public class LessonTestOutActivity extends BaseActivity implements
 				String[] aa = UiUtil.getListFormString(lessonList);
 
 				for (int j = 0; j < aa.length; j++) {
-					String lessonIdStr = aa[j];// 只更新lessonList中的第一节
+					String lessonIdStr = aa[j];// 
 					int lessonId = Integer.parseInt(lessonIdStr);
 
 					try {
