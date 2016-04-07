@@ -946,8 +946,9 @@ public class LessonExerciseActivity extends BaseActivity {
 			dirCode = "c-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
 			String[] picArray = lGCharacterPart.getPartOptions().split(";");// 所有选项
-			String[] answerPicArray = lGCharacterPart.getPartAnswer()
-					.split(";");// 答案选项
+			String answerString = lGCharacterPart.getPartAnswer();
+			Log.d(TAG, "answerString:" + answerString);
+			String[] answerPicArray = UiUtil.getListFormString(answerString);// 答案选项
 
 			List<String> picList = new ArrayList<String>();// 存放选择图片名字的集合
 			for (int i = 0; i < picArray.length; i++) {
