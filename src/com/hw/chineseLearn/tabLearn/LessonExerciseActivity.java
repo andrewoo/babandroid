@@ -158,7 +158,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		super.onResume();
 		if (timer == null) {
 			timer = new Timer();
-			if(task!=null){
+			if (task != null) {
 				timer.schedule(task, 0, 1000);
 			}
 		}
@@ -679,7 +679,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					intent.putExtra("exerciseCount", exerciseCount);// 总练习题目数
 					intent.putExtra("rightCount", rightCount);// 正确个数
 					intent.putExtra("wrongCount", wrongCount);// 错误个数
-					intent.putExtra("LessonId", lessonId);//传递lessonid确定哪个lesson做完
+					intent.putExtra("LessonId", lessonId);// 传递lessonid确定哪个lesson做完
 
 					startActivityForResult(intent, 100);
 					if (timer != null) {
@@ -758,9 +758,9 @@ public class LessonExerciseActivity extends BaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
 		switch (resultCode) {
 		case 0:// redo
-			exerciseIndex = 0;
-				 init();
-//			regexToView(regexes.get(exerciseIndex));
+			init();
+			builder = null;
+			// regexToView(regexes.get(exerciseIndex));
 			break;
 		case 1:// continue
 			setResult(1);
@@ -948,6 +948,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			String[] picArray = lGCharacterPart.getPartOptions().split(";");// 所有选项
 			String[] answerPicArray = lGCharacterPart.getPartAnswer()
 					.split(";");// 答案选项
+
 			List<String> picList = new ArrayList<String>();// 存放选择图片名字的集合
 			for (int i = 0; i < picArray.length; i++) {
 				for (int j = 0; j < answerPicArray.length; j++) {
@@ -960,6 +961,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					randomList.add(picArray[i]);// 加入答案外的
 				}
 			}
+			modelWord.setAnswerList(picList);// 合并集合前 拿到答案
 			Collections.shuffle(randomList);
 			int length = picArray.length;
 			if (picList.size() < length) {

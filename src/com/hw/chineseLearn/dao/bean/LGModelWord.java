@@ -122,7 +122,7 @@ public class LGModelWord implements Serializable {
 	public class SubLGModel implements Serializable{
 		
 		private String imageName;
-		private String option;
+		private String option;//选项文字
 		private int wordId;
 		private String subVoicePath;
 		

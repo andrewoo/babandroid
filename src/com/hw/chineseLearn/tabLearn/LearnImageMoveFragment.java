@@ -122,6 +122,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				title = modelWord.getTitle();
 				subLGModelList = null;
 				subLGModelList = modelWord.getSubLGModelList();
+				answerList = modelWord.getAnswerList();
 			}
 		}
 	}
@@ -351,6 +352,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private List<SubLGModel> subLGModelList;
 	private String voicePath;
 	private ImageView iv_dv_view;
+	private List<String> answerList;
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
