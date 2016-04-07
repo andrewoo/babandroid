@@ -120,7 +120,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 						.getSerializable("modelWord");
 				voicePath = modelWord.getVoicePath();
 				title = modelWord.getTitle();
-				subLGModelList = null;
 				subLGModelList = modelWord.getSubLGModelList();
 			}
 		}
@@ -155,7 +154,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
 					itemViewWidth, itemViewWidth);
 			imageView.setLayoutParams(ly);
-			imageView.setBackground(context.getResources().getDrawable(
+			imageView.setImageDrawable(context.getResources().getDrawable(
 					R.drawable.bg_white1));
 			imageView.setFocusable(false);
 			moveViewWithFingerUp(imageView, x, y);
@@ -166,9 +165,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			int height = imageView.getHeight();
 			Log.d(TAG, "imageWidth:" + imageWidth);
 			Log.d(TAG, "height:" + height);
-			 imageView.setImageDrawable(UtilMedthod.setBackgroundRounded(
-			 context, itemViewWidth, itemViewWidth, 0,
-			 colorBlue));
+			imageView.setImageDrawable(UtilMedthod.setBackgroundRounded(
+					context, itemViewWidth, itemViewWidth, 5, colorBlue));
 
 			int x1 = 0, y1 = y;
 
