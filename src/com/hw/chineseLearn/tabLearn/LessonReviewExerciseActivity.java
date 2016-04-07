@@ -901,7 +901,11 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			String answerString = lGCharacterPart.getPartAnswer();
 			Log.d(TAG, "answerString:" + answerString);
 			String[] answerPicArray = UiUtil.getListFormString(answerString);// 答案选项
-
+			List<String> answerList=new ArrayList<String>();
+			for (int i = 0; i < answerPicArray.length; i++) {
+				answerList.add(answerPicArray[i]);
+			}
+			modelWord.setAnswerList(answerList);// 拿到答案集合
 			List<String> picList = new ArrayList<String>();// 存放选择图片名字的集合
 			for (int i = 0; i < picArray.length; i++) {
 				for (int j = 0; j < answerPicArray.length; j++) {
@@ -914,7 +918,6 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 					randomList.add(picArray[i]);// 加入答案外的
 				}
 			}
-			modelWord.setAnswerList(picList);// 合并集合前 拿到答案
 			Collections.shuffle(randomList);
 			int length = picArray.length;
 			if (picList.size() < length) {
