@@ -2,6 +2,9 @@ package com.hw.chineseLearn.tabLearn;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -27,6 +30,8 @@ import com.hw.chineseLearn.adapter.TestOutGalleryAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.Lesson;
+import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
@@ -51,6 +56,8 @@ public class LessonTestOutActivity extends BaseActivity implements
 	int width;
 	int height;
 	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
+	private String rules;
+	ArrayList<LessonRepeatRegex> regexes ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,66 +82,6 @@ public class LessonTestOutActivity extends BaseActivity implements
 		setTitle(View.GONE, View.VISIBLE,
 				R.drawable.btn_selector_top_left_white, "TestOut", View.GONE,
 				View.GONE, 0);
-
-		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-		modelBase1.setIconResSuffix("lu1_1_1");
-		modelBase1.setUnitName("Basics1");
-		listBase.add(modelBase1);
-
-		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
-		modelBase2.setIconResSuffix("lu1_1_2");
-		modelBase2.setUnitName("Basics2");
-		listBase.add(modelBase2);
-
-		LearnUnitBaseModel modelBase3 = new LearnUnitBaseModel();
-		modelBase3.setIconResSuffix("lu1_1_3");
-		modelBase3.setUnitName("Basics3");
-		listBase.add(modelBase3);
-
-		LearnUnitBaseModel modelBase4 = new LearnUnitBaseModel();
-		modelBase4.setIconResSuffix("lu1_1_4");
-		modelBase4.setUnitName("Color");
-		listBase.add(modelBase4);
-
-		LearnUnitBaseModel modelBase5 = new LearnUnitBaseModel();
-		modelBase5.setIconResSuffix("lu1_1_5");
-		modelBase5.setUnitName("Number&Measure");
-		listBase.add(modelBase5);
-
-		LearnUnitBaseModel modelBase6 = new LearnUnitBaseModel();
-		modelBase6.setIconResSuffix("lu1_1_6");
-		modelBase6.setUnitName("Food");
-		listBase.add(modelBase6);
-
-		LearnUnitBaseModel modelBase7 = new LearnUnitBaseModel();
-		modelBase7.setIconResSuffix("lu1_2_1");
-		modelBase7.setUnitName("Shape");
-		listBase.add(modelBase7);
-
-		LearnUnitBaseModel modelBase8 = new LearnUnitBaseModel();
-		modelBase8.setIconResSuffix("lu1_2_2");
-		modelBase8.setUnitName("Nature");
-		listBase.add(modelBase8);
-
-		LearnUnitBaseModel modelBase9 = new LearnUnitBaseModel();
-		modelBase9.setIconResSuffix("lu1_2_3");
-		modelBase9.setUnitName("Negation");
-		listBase.add(modelBase9);
-
-		LearnUnitBaseModel modelBase10 = new LearnUnitBaseModel();
-		modelBase10.setIconResSuffix("lu1_2_4");
-		modelBase10.setUnitName("Question");
-		listBase.add(modelBase10);
-
-		LearnUnitBaseModel modelBase11 = new LearnUnitBaseModel();
-		modelBase11.setIconResSuffix("lu1_3_1");
-		modelBase11.setUnitName("Time");
-		listBase.add(modelBase11);
-
-		LearnUnitBaseModel modelBase12 = new LearnUnitBaseModel();
-		modelBase12.setIconResSuffix("lu1_3_2");
-		modelBase12.setUnitName("Tense");
-		listBase.add(modelBase12);
 
 		gallery = new MyGallery(this);
 		LayoutParams ly = new Gallery.LayoutParams(width, height);
@@ -215,8 +162,11 @@ public class LessonTestOutActivity extends BaseActivity implements
 				break;
 
 			case R.id.btn_test_now://
+				//点击后调用方法 传递过去
+				regexes =  (ArrayList<LessonRepeatRegex>) getRepeatRegexBeanList();
 				Intent intent = new Intent(LessonTestOutActivity.this,
 						LessonTestOutTestActivity.class);
+				intent.putExtra("regexes", regexes);
 				startActivityForResult(intent, 0);
 				break;
 
@@ -224,6 +174,7 @@ public class LessonTestOutActivity extends BaseActivity implements
 				break;
 			}
 		}
+
 	};
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
@@ -346,5 +297,53 @@ public class LessonTestOutActivity extends BaseActivity implements
 			}
 		}
 
+	}
+	private List<LessonRepeatRegex> getRepeatRegexBeanList() {
+
+		rules="2:6;1;1#1:1237;2;1#0:1228;2;1#0:69;4;1#1:1386;4;1#0:122-0:117;5;2#1:248;5;1#2:46;6;1#0:200;6;1#0:77;7;1#1:135;8;1#2:18;9;1#1:155-1:1294;14;2#1:1398;15;1#0:107;55;1#0:311;57;1#";
+		
+		String[] questions = rules.split("#");
+		List<LessonRepeatRegex> regexes = new ArrayList<LessonRepeatRegex>();
+		List<LessonRepeatRegex> subRegexes = new ArrayList<LessonRepeatRegex>();
+		for (int i = 0; i < questions.length; i++) {// 遍历把值加入到实体beanList
+			LessonRepeatRegex regex = new LessonRepeatRegex();
+			String[] splitFenHao = questions[i].split(";");
+			if (splitFenHao[0].indexOf("-") != -1) {
+				String[] splitLgTableId = splitFenHao[0].split("-");
+				for (int j = 0; j < Integer
+						.valueOf(splitFenHao[splitFenHao.length - 1]); j++) {
+					if (j == 0) {
+						regex.setLgTable(Integer.valueOf(splitLgTableId[j]
+								.split(":")[0]));
+						regex.setLgTableId(Integer.valueOf(splitLgTableId[j]
+								.split(":")[1]));
+						regex.setCount(Integer
+								.valueOf(splitFenHao[splitFenHao.length - 1]));
+						subRegexes.add(regex);
+					} else {
+						LessonRepeatRegex regex1 = new LessonRepeatRegex();
+						regex1.setLgTable(Integer.valueOf(splitLgTableId[j]
+								.split(":")[0]));
+						regex1.setLgTableId(Integer.valueOf(splitLgTableId[j]
+								.split(":")[1]));
+						regex1.setCount(Integer
+								.valueOf(splitFenHao[splitFenHao.length - 1]));
+						subRegexes.add(new Random().nextInt(subRegexes.size()),
+								regex1);
+					}
+				}
+				Collections.shuffle(subRegexes);// 打乱顺序
+				regexes.addAll(subRegexes);
+				subRegexes.clear();
+				continue;
+			}
+			String[] splitMaoHao = splitFenHao[0].split(":");
+			regex.setLgTable(Integer.valueOf(splitMaoHao[0]));// -分割后：前的数字
+			regex.setLgTableId(Integer.valueOf(splitMaoHao[1]));// -分割后：后的数字
+			regex.setCount(Integer.valueOf(splitFenHao[splitFenHao.length - 1]));// 得到最后一个字符
+			regexes.add(regex);
+		}
+		return regexes;
+	
 	}
 }
