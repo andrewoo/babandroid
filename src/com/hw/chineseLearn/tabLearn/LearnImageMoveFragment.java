@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,6 +51,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private RelativeLayout rel_root;
 	private RelativeLayout rel_top;
 	private TextView tv_word;
+	private Button btn_hint;
 	private int relTopHeight;
 	private int screenWidth, screenHeight;
 	int mizigeX;
@@ -60,6 +62,19 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 	private MediaPlayerHelper mediaPlayerHelper;
 	private int colorBlue = 0;
+	private int viewMagin;
+	private int itemViewWidth;
+
+	ArrayList<Point> pointList = new ArrayList<Point>();
+
+	ArrayList<ImageView> bgViewList = new ArrayList<ImageView>();
+	ArrayList<ImageView> moveViewList = new ArrayList<ImageView>();
+
+	ArrayList<Integer> orignViewX = new ArrayList<Integer>();
+	ArrayList<Integer> orignViewY = new ArrayList<Integer>();
+	ImageView mizigeView;
+	Drawable bgWhite, bgHint;
+	boolean isSetHint = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -69,15 +84,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		context = getActivity();
 		initData();// 得到传过来的参数
 		play();
-		screenWidth = CustomApplication.app.displayMetrics.widthPixels
-				- (dip2px(context, 40));
-		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
-		viewMagin = dip2px(context, 10);
-		itemViewWidth = (screenWidth - viewMagin * 2) / 3;
-		colorBlue = context.getResources().getColor(R.color.chinese_skill_blue);
 		initView();
-		initBgViews();
-		initMoveViews();
 	}
 
 	private void play() {
@@ -86,7 +93,21 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		mediaPlayerHelper.play();
 	}
 
+	/**
+	 * 
+	 */
 	private void initView() {
+
+		screenWidth = CustomApplication.app.displayMetrics.widthPixels
+				- (dip2px(context, 40));
+		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
+		viewMagin = dip2px(context, 10);
+		itemViewWidth = (screenWidth - viewMagin * 2) / 3;
+		colorBlue = context.getResources().getColor(R.color.chinese_skill_blue);
+		bgWhite = context.getResources().getDrawable(R.drawable.bg_white1);
+		bgHint = UtilMedthod.setBackgroundRounded(context, itemViewWidth,
+				itemViewWidth, 5, colorBlue);
+
 		contentView = LayoutInflater.from(context).inflate(
 				R.layout.fragment_lesson_image_move, null);
 		task = new ThreadWithDialogTask();
@@ -109,6 +130,23 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				}
 			}
 		});
+
+		btn_hint = (Button) contentView.findViewById(R.id.btn_hint);
+		btn_hint.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if (isSetHint) {
+					isSetHint = false;
+				} else {
+					isSetHint = true;
+				}
+				setHintBgs(isSetHint);
+			}
+		});
+		initBgViews();
+		initMoveViews();
 	}
 
 	private void initData() {
@@ -133,32 +171,66 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		return contentView;
 	}
 
-	private int viewMagin;
-	private int itemViewWidth;
+	private void setHintBgs(boolean isSetHint) {
 
-	ArrayList<Point> pointList = new ArrayList<Point>();
-	ArrayList<ImageView> bgViewList = new ArrayList<ImageView>();
+		if (isSetHint) {
+			for (int i = 0; i < answerList.size(); i++) {
+				String idStr = answerList.get(i);
+				int id = -1;
+				try {
+					id = Integer.parseInt(idStr);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 
-	ArrayList<ImageView> moveViewList = new ArrayList<ImageView>();
-	ArrayList<Integer> orignViewX = new ArrayList<Integer>();
-	ArrayList<Integer> orignViewY = new ArrayList<Integer>();
-	ImageView mizigeView;
+				for (int j = 0; j < bgViewList.size(); j++) {
+					ImageView imageView = bgViewList.get(j);
+					if (imageView == null) {
+						continue;
+					}
+					int tag = (Integer) imageView.getTag();
+					if (id == tag) {
+						imageView.setImageDrawable(bgHint);
+					} else {
+						imageView.setImageDrawable(bgWhite);
+					}
+				}
+			}
+		} else {// 不设置hint
+			for (int i = 0; i < bgViewList.size(); i++) {
+				ImageView imageView = bgViewList.get(i);
+				if (imageView == null) {
+					continue;
+				}
+				imageView.setImageDrawable(bgWhite);
+			}
+		}
 
+	}
+
+	/**
+	 * 
+	 */
 	private void initBgViews() {
-
+		bgViewList.clear();
 		int x = 0;
 		int y = dip2px(context, 65);// topView y坐标的初始位置
 
 		for (int i = 0; i < subLGModelList.size(); i++) {
-
+			SubLGModel model = subLGModelList.get(i);
 			ImageView imageView = new ImageView(context);
 			RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
 					itemViewWidth, itemViewWidth);
 			imageView.setLayoutParams(ly);
-			imageView.setImageDrawable(context.getResources().getDrawable(
-					R.drawable.bg_white1));
+			imageView.setImageDrawable(bgWhite);
 			imageView.setFocusable(false);
 			moveViewWithFingerUp(imageView, x, y);
+			if (model != null) {
+				int wordId = model.getWordId();
+				imageView.setTag(wordId);
+			} else {
+				Log.e(TAG, "initBgViews,subLGModel == null");
+			}
 			bgViewList.add(imageView);
 			rel_root.addView(imageView);
 
@@ -166,8 +238,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			int height = imageView.getHeight();
 			Log.d(TAG, "imageWidth:" + imageWidth);
 			Log.d(TAG, "height:" + height);
-			imageView.setImageDrawable(UtilMedthod.setBackgroundRounded(
-					context, itemViewWidth, itemViewWidth, 5, colorBlue));
 
 			int x1 = 0, y1 = y;
 
@@ -215,8 +285,11 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		moveViewWithFingerUp(mizigeView, mizigeX, mizigeY);
 	}
 
+	/**
+	 * 
+	 */
 	private void initMoveViews() {
-
+		moveViewList.clear();
 		int x = 0;
 		int y = dip2px(context, 65);// topView y坐标的初始位置
 
@@ -226,18 +299,22 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
 					itemViewWidth, itemViewWidth);
 			imageView.setLayoutParams(ly);
-			// imageView.setBackground(context.getResources().getDrawable(
-			// R.drawable.bg_white1));
-			imageView.setTag(i);
+			// imageView.setTag(i);
 			imageView.setFocusable(false);
 			imageView.setOnTouchListener(this);
-			// imageView.setImageResource(context.getResources().getIdentifier(
-			// "pp_" + (19 + i), "drawable", context.getPackageName()));
-			String imageName = subLGModelList.get(i).getImageName();
-			Bitmap bitmap = BitmapLoader
-					.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
-							+ imageName);
-			imageView.setImageBitmap(bitmap);
+			SubLGModel model = subLGModelList.get(i);
+			if (model != null) {
+				String imageName = model.getImageName();
+				int wordId = model.getWordId();
+				Bitmap bitmap = BitmapLoader
+						.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
+								+ imageName);
+				imageView.setImageBitmap(bitmap);
+				imageView.setTag(wordId);
+			} else {
+				Log.e(TAG, "initMoveViews,subLGModel == null");
+			}
+			moveViewList.add(imageView);
 			rel_root.addView(imageView);
 
 			int x1 = 0, y1 = y;
@@ -331,7 +408,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		int x = 0, y = 0;
 		x = orignViewX.get(tag);
 		y = orignViewY.get(tag);
-		// moveViewWithFingerUp(imageView, x, y);
 
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView
 				.getLayoutParams();

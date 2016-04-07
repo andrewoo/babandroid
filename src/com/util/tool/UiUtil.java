@@ -558,9 +558,9 @@ public class UiUtil {
 	 * @return
 	 */
 	public static String[] getListFormString(String str) {
-		String strEnd = str.substring(str.length() - 1, str.length());
-		if (strEnd.equals(";")) {
-			str = str.substring(0, str.length() - 1);
+//		String strEnd = str.substring(str.length() - 1, str.length());
+		if (str.endsWith(";")) {
+			str = str.substring(0, str.length() - 1);//去掉最后一个字符
 			Log.d(TAG, "str:" + str);
 		}
 		return str.split(";");
