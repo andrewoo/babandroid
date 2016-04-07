@@ -100,18 +100,16 @@ public class LearnUnitAdapter extends BaseAdapter {
 		}else if(status==1){
 			 imageName = "lu1_" + model.getIconResSuffix();
 		}
-		
-		String lessonList = model.getLessonList();
 
-//		if (model.isEnable()) {
+		if (status==1) {
+			String lessonList = model.getLessonList();
 			if (lessonList != null) {
 				String[] lessonId = lessonList.split(";");
 
-				Log.e("________", "lessonId.length:" + lessonId.length);
 				holder.lin_dots.removeAllViews();
 				for (int i = 0; i < lessonId.length; i++) {
 					ImageView imageView = new ImageView(context);
-					LayoutParams layoutParams = new LayoutParams(5, 5);
+					LayoutParams layoutParams = new LayoutParams(7, 7);
 					layoutParams.setMargins(5, 3, 5, 3);
 					imageView.setLayoutParams(layoutParams);
 					imageView.setBackground(context.getResources().getDrawable(
@@ -119,7 +117,7 @@ public class LearnUnitAdapter extends BaseAdapter {
 					holder.lin_dots.addView(imageView);
 				}
 			}
-//		}
+		}
 
 		holder.tv_name.setText("" + unitName);
 		holder.iv_img.setImageResource(context.getResources().getIdentifier(

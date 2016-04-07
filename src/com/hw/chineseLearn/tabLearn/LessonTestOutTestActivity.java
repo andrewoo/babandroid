@@ -133,9 +133,12 @@ public class LessonTestOutTestActivity extends BaseActivity {
 
 		initBudle();// 初始化数据
 		context = this;
-		CustomApplication.app.addActivity(this); 
+		CustomApplication.app.addActivity(this);
 		init();
-		initMediaPlayer();
+		if (timer == null) {
+			timer = new Timer();
+		}
+		timer.schedule(task, 0, 1000);
 	}
 
 	TimerTask task = new TimerTask() {
@@ -156,11 +159,6 @@ public class LessonTestOutTestActivity extends BaseActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if (timer == null) {
-			timer = new Timer();
-			timer.schedule(task, 0, 1000);
-		}
-
 	}
 
 	/**
@@ -210,16 +208,6 @@ public class LessonTestOutTestActivity extends BaseActivity {
 			}
 		}
 	}
-
-	MediaPlayer mediaPlayer = null;
-
-	private void initMediaPlayer() {
-
-		if (mediaPlayer == null) {
-			mediaPlayer = new MediaPlayer();
-		}
-	}
-
 	public void playWrongSound() {
 		// AssetManager am = getAssets();// 获得该应用的AssetManager
 		// try {
@@ -487,7 +475,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
 
 		title.setText("Quit?");
-		content.setText("Are you sure you what to quit? You will lose all progress in this lesson");
+		content.setText("Are you sure you what to quit? You will lose all progress in this test");
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
 		ok.setText("Ok");
 		cancel.setText("Cancel");
@@ -600,25 +588,15 @@ public class LessonTestOutTestActivity extends BaseActivity {
 
 				if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
 
-					Intent intent = new Intent(LessonTestOutTestActivity.this,
-							LessonResultActivity.class);
-					// intent.putExtra("loseAllPanders", "");
-					// intent.putExtra("secondCount", secondCount);// 用时秒数
-					// intent.putExtra("score", score);// 得分
-					// intent.putExtra("exerciseCount", exerciseCount);// 总练习题目数
-					// intent.putExtra("rightCount", rightCount);// 正确个数
-					// intent.putExtra("wrongCount", wrongCount);// 错误个数
-					// intent.putExtra("lessonId", lessonId);//
-					// 传递lessonid确定哪个lesson做完
-
-					startActivityForResult(intent, 100);
+					setResult(100);
+					CustomApplication.app
+							.finishActivity(LessonTestOutTestActivity.this);
+					
 					if (timer != null) {
 						timer.cancel();
-						timer = null;
 					}
 					if (task != null) {
 						task.cancel();
-						task = null;
 					}
 				}
 				// learn表中regex第一位 对应View关系
@@ -670,12 +648,6 @@ public class LessonTestOutTestActivity extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		setResult(0);
-		if (mediaPlayer != null) {
-			if (mediaPlayer.isPlaying()) {
-				mediaPlayer.stop();
-			}
-		}
 		isFirstList.clear();
 		if (timer != null) {
 			timer.cancel();

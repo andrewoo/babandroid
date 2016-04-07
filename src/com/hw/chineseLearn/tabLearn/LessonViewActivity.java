@@ -183,37 +183,6 @@ public class LessonViewActivity extends BaseActivity implements
 	}
 
 	/**
-	 * 查询TbLesson----表
-	 */
-//	private void queryTbLesson() {
-//		try {
-//			lessonStatusList = MyDao.getDaoMy(TbLessonMaterialStatus.class).queryForAll();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		Collections.sort(lessonStatusList);
-//	}
-
-	/**
-	 * 查询lesson表
-	 */
-//	private void queryLesson() {
-//		try {
-//			lessonList = MyDao.getDao(Lesson.class).queryForAll();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		Collections.sort(lessonList);
-//	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
-	/**
 	 * 初始化
 	 */
 	public void init() {
@@ -344,44 +313,6 @@ public class LessonViewActivity extends BaseActivity implements
 
 		}
 	};
-	Handler mHandler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			// if (msg.arg1 == 1) {
-			//
-			// } else if (msg.arg1 == 2) {
-			//
-			// } else if (msg.arg1 == 4) {
-			//
-			// if (msg.what == 1) {
-			//
-			// for (Entry<Integer, View> entry : adapter.mapView
-			// .entrySet()) {
-			//
-			// int position = entry.getKey();
-			// if (position == msg.arg2) {
-			// View views = entry.getValue();
-			// LinearLayout lin_c = (LinearLayout) views
-			// .findViewById(R.id.lin_c);
-			// lin_c.setLayoutParams(new LinearLayout.LayoutParams(
-			// width, height));
-			// Log.d(TAG, "选中！");
-			// } else {
-			// View views = entry.getValue();
-			// LinearLayout lin_c = (LinearLayout) views
-			// .findViewById(R.id.lin_c);
-			// lin_c.setLayoutParams(new LinearLayout.LayoutParams(
-			// LayoutParams.WRAP_CONTENT,
-			// LayoutParams.WRAP_CONTENT));
-			// Log.d(TAG, "未选中！");
-			// }
-			//
-			// }
-			// }
-			// }
-		}
-	};
 	private Lesson lesson;
 
 	@Override
@@ -391,14 +322,8 @@ public class LessonViewActivity extends BaseActivity implements
 
 		selection = position;
 		final ArrayList<LessonRepeatRegex> regexes = (ArrayList<LessonRepeatRegex>) getRepeatRegexBeanList();// 得到正则表达式中所有题型的集合
-		Log.d(TAG, "selection:" + selection);
 		adapter.setSelection(position);
 
-		// Message message = new Message();
-		// message.arg1 = 4;
-		// message.arg2 = position;
-		// message.what = 1;
-		// mHandler.sendMessageDelayed(message, 5);
 		if (convertView == null) {
 			convertView = View.inflate(this, R.layout.layout_gellay_item, null);
 		}

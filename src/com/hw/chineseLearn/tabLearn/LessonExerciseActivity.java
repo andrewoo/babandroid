@@ -130,12 +130,15 @@ public class LessonExerciseActivity extends BaseActivity {
 		contentView = LayoutInflater.from(this).inflate(
 				R.layout.activity_lesson_exercise, null);
 		setContentView(contentView);
-
-		initBudle();// 初始化数据
 		context = this;
+		initBudle();// 初始化数据
 		CustomApplication.app.addActivity(this);
 		init();
-		initMediaPlayer();
+		if (timer == null) {
+			timer = new Timer();
+		}
+		timer.schedule(task, 0, 1000);
+
 	}
 
 	TimerTask task = new TimerTask() {
@@ -156,13 +159,6 @@ public class LessonExerciseActivity extends BaseActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if (timer == null) {
-			timer = new Timer();
-			if (task != null) {
-				timer.schedule(task, 0, 1000);
-			}
-		}
-
 	}
 
 	/**
@@ -210,15 +206,6 @@ public class LessonExerciseActivity extends BaseActivity {
 					regexes.get(i).setRandomSubject(1);
 				}
 			}
-		}
-	}
-
-	MediaPlayer mediaPlayer = null;
-
-	private void initMediaPlayer() {
-
-		if (mediaPlayer == null) {
-			mediaPlayer = new MediaPlayer();
 		}
 	}
 
@@ -279,6 +266,12 @@ public class LessonExerciseActivity extends BaseActivity {
 	}
 
 	private void initTestDatas() {
+
+		builder = null;
+		secondCount = 0;
+		rightCount = 0;
+		wrongCount = 0;
+
 		isFirstList.clear();
 		lin_pander_life = (LinearLayout) findViewById(R.id.lin_pander_life);
 		txt_lesson_score = (TextView) findViewById(R.id.txt_lesson_score);
@@ -302,23 +295,27 @@ public class LessonExerciseActivity extends BaseActivity {
 			panderView.put(i, imageView);
 		}
 
-		// exerciseCount=list.size();
-		exerciseCount = regexes.size();
-		progressView.clear();
-		lin_lesson_progress.removeAllViews();
-		// 加上十几个背景块
-		for (int i = 0; i < exerciseCount; i++) {
-			ImageView imageView = new ImageView(context);
-			LayoutParams layoutParams = new LayoutParams(
-					LayoutParams.MATCH_PARENT, 37, 1);
-			layoutParams.setMargins(0, 5, 5, 5);
-			imageView.setLayoutParams(layoutParams);
-			imageView.setBackground(context.getResources().getDrawable(
-					R.drawable.bg_progress_noraml));
-			lin_lesson_progress.addView(imageView);
-			progressView.put(i, imageView);
+		if (regexes != null) {
+
+			exerciseCount = regexes.size();
+			progressView.clear();
+			lin_lesson_progress.removeAllViews();
+			// 加上十几个背景块
+			for (int i = 0; i < exerciseCount; i++) {
+				ImageView imageView = new ImageView(context);
+				LayoutParams layoutParams = new LayoutParams(
+						LayoutParams.MATCH_PARENT, 37, 1);
+				layoutParams.setMargins(0, 5, 5, 5);
+				imageView.setLayoutParams(layoutParams);
+				imageView.setBackground(context.getResources().getDrawable(
+						R.drawable.bg_progress_noraml));
+				lin_lesson_progress.addView(imageView);
+				progressView.put(i, imageView);
+			}
+			regexToView(regexes.get(exerciseIndex));// 第一次进入时
+		} else {
+			Log.e(TAG, "regexes == null");
 		}
-		regexToView(regexes.get(exerciseIndex));// 第一次进入时
 	}
 
 	/**
@@ -739,11 +736,6 @@ public class LessonExerciseActivity extends BaseActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		setResult(0);
-		if (mediaPlayer != null) {
-			if (mediaPlayer.isPlaying()) {
-				mediaPlayer.stop();
-			}
-		}
 		isFirstList.clear();
 		if (timer != null) {
 			timer.cancel();
@@ -759,7 +751,6 @@ public class LessonExerciseActivity extends BaseActivity {
 		switch (resultCode) {
 		case 0:// redo
 			init();
-			builder = null;
 			// regexToView(regexes.get(exerciseIndex));
 			break;
 		case 1:// continue
@@ -982,7 +973,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					int partId = lgCharacterPart.getPartId();
 					SubLGModel subLGModel = modelWord.new SubLGModel();
 					subLGModel.setImageName(picName);
-					subLGModel.setWordId(partId);//拿到tag图片对应的id
+					subLGModel.setWordId(partId);// 拿到tag图片对应的id
 					subLGModelList.add(subLGModel);// 拿到所有图片选项
 				}
 			} catch (Exception e) {
