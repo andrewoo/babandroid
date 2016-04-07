@@ -1,16 +1,17 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -22,12 +23,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.GalleryAdapter;
 import com.hw.chineseLearn.adapter.TestOutGalleryAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
+import com.hw.chineseLearn.dao.bean.Unit;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
-import com.util.weight.CoverFlow;
+import com.util.tool.UiUtil;
 import com.util.weight.MyGallery;
 
 /**
@@ -38,7 +41,7 @@ import com.util.weight.MyGallery;
 public class LessonTestOutActivity extends BaseActivity implements
 		OnItemSelectedListener, OnItemClickListener {
 
-	private String TAG = "==LessonTestOutActivity==";
+	private static String TAG = "==LessonTestOutActivity==";
 	public Context context;
 	private MyGallery gallery;// CoverFlow
 	private LinearLayout lin_gallery_test_out;
@@ -212,14 +215,31 @@ public class LessonTestOutActivity extends BaseActivity implements
 				break;
 
 			case R.id.btn_test_now://
-				startActivity(new Intent(LessonTestOutActivity.this,
-						LessonExerciseActivity.class));
+				Intent intent = new Intent(LessonTestOutActivity.this,
+						LessonTestOutTestActivity.class);
+				startActivityForResult(intent, 0);
 				break;
 
 			default:
 				break;
 			}
 		}
+	};
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
+		switch (resultCode) {
+		case 1:// miss，点击了continue
+
+			break;
+		case 100:// pass,解锁所有的unit
+			// 弹出dialog
+			showPassedDialog();
+			break;
+
+		default:
+			break;
+		}
+		Log.d(TAG, "resultCode:" + resultCode);
 	};
 
 	@Override
@@ -240,10 +260,91 @@ public class LessonTestOutActivity extends BaseActivity implements
 	public void onItemClick(AdapterView<?> arg0, View convertView,
 			int position, long arg3) {
 		// TODO Auto-generated method stub
-
-		startActivity(new Intent(LessonTestOutActivity.this,
-				LessonExerciseActivity.class));
-
 	}
 
+	AlertDialog mModifyDialog;
+
+	/**
+	 * 对话框
+	 */
+	private void showPassedDialog() {
+		updateDb();
+		if (mModifyDialog == null) {
+			mModifyDialog = new AlertDialog.Builder(context).create();
+		}
+
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View view = inflater.inflate(R.layout.layout_dialog_congratulation,
+				null);
+		TextView title = (TextView) view.findViewById(R.id.dialog_title);
+		TextView content = (TextView) view.findViewById(R.id.dialog_content);
+		Button ok = (Button) view.findViewById(R.id.commit_btn);
+
+		title.setText("Congratulations");
+		content.setText("You have successfully passed the TestOut!");
+		title.setGravity(Gravity.CENTER_HORIZONTAL);
+		ok.setText("Ok");
+		ok.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				CustomApplication.app
+						.finishActivity(LessonTestOutActivity.this);
+				mModifyDialog.dismiss();
+			}
+		});
+
+		mModifyDialog.show();
+		mModifyDialog.setContentView(view);
+	}
+
+	/**
+	 * 更新数据库，解锁所有的Unit
+	 */
+	@SuppressWarnings("unchecked")
+	private void updateDb() {
+		int unitListSize = CustomApplication.app.unitList.size();
+
+		if (CustomApplication.app.unitList != null && unitListSize != 0) {
+			for (int i = 0; i < unitListSize; i++) {
+				Unit unit = CustomApplication.app.unitList.get(i);
+				if (unit == null) {
+					continue;
+				}
+				String lessonList = unit.getLessonList();
+				String[] aa = UiUtil.getListFormString(lessonList);
+
+				for (int j = 0; j < aa.length; j++) {
+					String lessonIdStr = aa[j];// 只更新lessonList中的第一节
+					int lessonId = Integer.parseInt(lessonIdStr);
+
+					try {
+						TbLessonMaterialStatus model = (TbLessonMaterialStatus) MyDao
+								.getDaoMy(TbLessonMaterialStatus.class)
+								.queryForId(lessonId);
+
+						if (model == null) {// 没有查询到数据,创建
+
+							TbLessonMaterialStatus modelNew = new TbLessonMaterialStatus();
+							modelNew.setLessonId(lessonId);
+
+							if (j == 0) {
+								modelNew.setStatus(1);
+							} else {
+								modelNew.setStatus(0);
+							}
+							MyDao.getDaoMy(TbLessonMaterialStatus.class)
+									.createOrUpdate(modelNew);
+						}
+
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+			}
+		}
+
+	}
 }

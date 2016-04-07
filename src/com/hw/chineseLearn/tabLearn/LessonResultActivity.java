@@ -76,7 +76,6 @@ public class LessonResultActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		context = this;
 		//到此界面说明题做完 解锁下个lesson或unit
-		unLockLesson();
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			if (bundle.containsKey("loseAllPanders")) {
@@ -119,7 +118,7 @@ public class LessonResultActivity extends BaseActivity {
 		Log.d(TAG, "loseAllPanders:" + loseAllPanders);
 
 		setContentView(contentView);
-
+		unLockLesson();
 		CustomApplication.app.addActivity(this);
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 5;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 3;

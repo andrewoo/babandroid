@@ -92,6 +92,8 @@ public class LessonViewActivity extends BaseActivity implements
 	 * 拿到所有的状态和lessondesc
 	 */
 	private void getStatusAndLessonDesc() {
+		descList.clear();
+		statusList.clear();
 		if (mUnit!=null) {
 			//拿到每个lessonid查询materiallesson表 得到对应选项的状态
 			//加入到集合 传递

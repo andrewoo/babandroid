@@ -216,7 +216,7 @@ public class BaseActivity extends FragmentActivity {
 		// ft.add(R.id.content,fragment);
 		ft.replace(R.id.container1, fragment);
 		ft.addToBackStack(null);
-		ft.commit();
+		ft.commitAllowingStateLoss();
 	}
 
 	/**

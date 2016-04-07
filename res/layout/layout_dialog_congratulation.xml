@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/default_dialog_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:background="@color/deep_grey"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_top_btn_bg"
+        android:clickable="false"
+        android:gravity="center"
+        android:paddingTop="5dip"
+        android:text="退出"
+        android:textColor="@color/chinese_skill_blue"
+        android:textSize="@dimen/text_s16" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_grey_white" />
+
+    <TextView
+        android:id="@+id/dialog_content"
+        style="@style/dialog_msg_alert_txt_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="false"
+        android:gravity="center"
+        android:paddingBottom="15dip"
+        android:paddingLeft="0dip"
+        android:paddingTop="10dip"
+        android:text="您确定要退出吗？"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/text_s14" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/commit_btn"
+            android:layout_width="120dip"
+            android:layout_height="40dip"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_bg_blue"
+            android:gravity="center"
+            android:padding="10dip"
+            android:singleLine="true"
+            android:text="OK"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_s15"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

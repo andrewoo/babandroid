@@ -26,6 +26,9 @@ import android.widget.Toast;
  * @author YH
  */
 public class UiUtil {
+
+	private static String TAG = "UiUtil";
+
 	/**
 	 * 显示toast信息
 	 * 
@@ -529,22 +532,38 @@ public class UiUtil {
 
 	/**
 	 * 清楚掉所有特殊字符
+	 * 
 	 * @param str
 	 * @return
 	 */
-	public static String StringFilter(String str){
+	public static String StringFilter(String str) {
 		// 只允许字母和数字
 		// String regEx = "[^a-zA-Z0-9]";
 		// 清除掉所有特殊字符
 		String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-		if(str!=null){
+		if (str != null) {
 			str = str.replace(" ", "");
 			Pattern p = Pattern.compile(regEx);
 			Matcher m = p.matcher(str);
 			return m.replaceAll("").trim().toLowerCase();
-		}else{
+		} else {
 			return "";
 		}
+	}
+
+	/**
+	 * 传入一个字符串，返回一个字符串数组
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String[] getListFormString(String str) {
+		String strEnd = str.substring(str.length() - 1, str.length());
+		if (strEnd.equals(";")) {
+			str = str.substring(0, str.length() - 1);
+			Log.d(TAG, "str:" + str);
+		}
+		return str.split(";");
 	}
 
 }
