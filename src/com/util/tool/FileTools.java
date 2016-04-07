@@ -218,7 +218,7 @@ public class FileTools {
 			File filesDir = CustomApplication.app.getFilesDir();
 
 			File addressDbFile = new File(filesDir, dbName);
-			if (addressDbFile.exists() && addressDbFile.length() > 1024*4) {
+			if (addressDbFile.exists() && addressDbFile.length() > 13000) {
 				Log.d("....", "addressDbFile.exists");
 			} else {
 

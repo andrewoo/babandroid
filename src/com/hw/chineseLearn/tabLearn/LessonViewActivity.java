@@ -75,8 +75,6 @@ public class LessonViewActivity extends BaseActivity implements
 				mUnit = (Unit) bundle.getSerializable("unit");
 			}
 		}
-//		queryLesson();// 查询lesson表
-//		queryTbLesson();// 查询tbLesson得到状态List
 		getStatusAndLessonDesc();//拿到状态传给下个界面
 		init();// 初始化gallery和动画
 
@@ -364,8 +362,16 @@ public class LessonViewActivity extends BaseActivity implements
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				startActivity(new Intent(context, LessonReViewActivity.class));
+//				startActivity(new Intent(context, LessonReViewActivity.class));
+				//review 就是start
+				Intent intent = new Intent(context,
+						LessonExerciseActivity.class);
+				intent.putExtra("utilId", position);
+				intent.putExtra("regexes", regexes);
+				intent.putExtra("LessonId", lesson.getLessonId());
+				startActivityForResult(intent, 0);
+				Log.d("GalleryAdapter", "utilId:" + position);
+				
 			}
 		});
 

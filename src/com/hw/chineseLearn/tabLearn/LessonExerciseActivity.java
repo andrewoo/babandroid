@@ -1,6 +1,5 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,9 +17,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -42,10 +38,10 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
-import com.hw.chineseLearn.dao.bean.LGModelWord;
-import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.LGCharacterPart;
+import com.hw.chineseLearn.dao.bean.LGModelWord;
+import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.hw.chineseLearn.dao.bean.LGModel_Sentence_010;
 import com.hw.chineseLearn.dao.bean.LGModel_Sentence_020;
 import com.hw.chineseLearn.dao.bean.LGModel_Sentence_030;
@@ -63,7 +59,6 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
@@ -751,7 +746,6 @@ public class LessonExerciseActivity extends BaseActivity {
 		switch (resultCode) {
 		case 0:// redo
 			init();
-			// regexToView(regexes.get(exerciseIndex));
 			break;
 		case 1:// continue
 			setResult(1);
@@ -940,7 +934,11 @@ public class LessonExerciseActivity extends BaseActivity {
 			String answerString = lGCharacterPart.getPartAnswer();
 			Log.d(TAG, "answerString:" + answerString);
 			String[] answerPicArray = UiUtil.getListFormString(answerString);// 答案选项
-
+			List<String> answerList=new ArrayList<String>();
+			for (int i = 0; i < answerPicArray.length; i++) {
+				answerList.add(answerPicArray[i]);
+			}
+			modelWord.setAnswerList(answerList);// 拿到答案集合
 			List<String> picList = new ArrayList<String>();// 存放选择图片名字的集合
 			for (int i = 0; i < picArray.length; i++) {
 				for (int j = 0; j < answerPicArray.length; j++) {
@@ -953,7 +951,6 @@ public class LessonExerciseActivity extends BaseActivity {
 					randomList.add(picArray[i]);// 加入答案外的
 				}
 			}
-			modelWord.setAnswerList(picList);// 合并集合前 拿到答案
 			Collections.shuffle(randomList);
 			int length = picArray.length;
 			if (picList.size() < length) {

@@ -169,6 +169,12 @@ public class GalleryAdapter extends BaseAdapter {
 //				holder.btn_redo.setVisibility(View.GONE);
 				holder.btn_review.setVisibility(View.GONE);
 			}
+			else if(lessonStatus.get(position)==2){
+				holder.btn_lock .setVisibility(View.GONE);
+				holder.btn_start.setVisibility(View.GONE);
+//				holder.btn_redo.setVisibility(View.GONE);
+				holder.btn_review.setVisibility(View.VISIBLE);
+			}
 		}
 		
 //		if (holder.btn_redo.getVisibility() == View.VISIBLE) {
