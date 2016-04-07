@@ -56,6 +56,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private int screenWidth, screenHeight;
 	int mizigeX;
 	int mizigeY;
+	int mizigeWidth;
+	int mizigeHeight;
 	private List<String> picList = new ArrayList<String>();
 	private List<String> randomList = new ArrayList<String>();
 	// private List<String> partPicNameList = new ArrayList<String>();
@@ -69,6 +71,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 	ArrayList<ImageView> bgViewList = new ArrayList<ImageView>();
 	ArrayList<ImageView> moveViewList = new ArrayList<ImageView>();
+	ArrayList<ImageView> answerViewList = new ArrayList<ImageView>();
 
 	ArrayList<Integer> orignViewX = new ArrayList<Integer>();
 	ArrayList<Integer> orignViewY = new ArrayList<Integer>();
@@ -106,7 +109,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		colorBlue = context.getResources().getColor(R.color.chinese_skill_blue);
 		bgWhite = context.getResources().getDrawable(R.drawable.bg_white1);
 		bgHint = UtilMedthod.setBackgroundRounded(context, itemViewWidth,
-				itemViewWidth, 5, colorBlue);
+				itemViewWidth, 10, colorBlue);
 
 		contentView = LayoutInflater.from(context).inflate(
 				R.layout.fragment_lesson_image_move, null);
@@ -194,11 +197,19 @@ public class LearnImageMoveFragment extends BaseFragment implements
 					int tag = (Integer) imageView.getTag();
 					if (id == tag) {
 						imageView.setImageDrawable(bgHint);
-					} else {
-						imageView.setImageDrawable(bgWhite);
+						ImageView iv = imageView;
+						answerViewList.add(iv);
+						break;
 					}
 				}
 			}
+			for (int i = 0; i < answerViewList.size(); i++) {
+				ImageView iv = answerViewList.get(i);
+				if (iv != null) {
+					iv.setVisibility(View.VISIBLE);
+				}
+			}
+
 		} else {// 不设置hint
 			for (int i = 0; i < bgViewList.size(); i++) {
 				ImageView imageView = bgViewList.get(i);
@@ -207,6 +218,14 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				}
 				imageView.setImageDrawable(bgWhite);
 			}
+
+			for (int i = 0; i < answerViewList.size(); i++) {
+				ImageView iv = answerViewList.get(i);
+				if (iv != null) {
+					iv.setVisibility(View.GONE);
+				}
+			}
+
 		}
 
 	}
@@ -274,18 +293,62 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		}
 
 		mizigeView = new ImageView(context);
+		mizigeWidth = screenWidth - itemViewWidth - viewMagin;
+		mizigeHeight = mizigeWidth;
 		RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
-				screenWidth - itemViewWidth - viewMagin, screenWidth
-						- itemViewWidth - viewMagin);
+				mizigeWidth, mizigeHeight);
+
 		mizigeView.setLayoutParams(ly);
 		mizigeView.setBackground(context.getResources().getDrawable(
 				R.drawable.mizige));
 		mizigeView.setFocusable(false);
 		rel_root.addView(mizigeView);
-
 		mizigeX = pointList.get(3).x + itemViewWidth + viewMagin;
 		mizigeY = pointList.get(3).y;
 		moveViewWithFingerUp(mizigeView, mizigeX, mizigeY);
+		findAndSetAnswerViews();
+	}
+
+	/**
+	 * 找到正确答案的view，并添加到正确答案view集合中
+	 */
+	private void findAndSetAnswerViews() {
+		for (int i = 0; i < answerList.size(); i++) {
+			String idStr = answerList.get(i);
+			int id = -1;
+			try {
+				id = Integer.parseInt(idStr);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+			for (int j = 0; j < subLGModelList.size(); j++) {
+
+				SubLGModel model = subLGModelList.get(i);
+
+				if (model == null) {
+					continue;
+				}
+				int wordId = model.getWordId();
+				if (id == wordId) {
+					ImageView iv = new ImageView(context);// 复制view
+					String imageName = model.getImageName();
+					Bitmap bitmap = BitmapLoader
+							.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
+									+ imageName);
+					iv.setImageBitmap(bitmap);
+					RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
+							mizigeWidth, mizigeHeight);
+					iv.setLayoutParams(ly);
+					iv.setFocusable(false);
+					iv.setVisibility(View.GONE);
+					rel_root.addView(iv);
+					moveViewWithFingerUp(iv, mizigeX, mizigeY);
+					answerViewList.add(iv);
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -302,7 +365,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
 					itemViewWidth, itemViewWidth);
 			imageView.setLayoutParams(ly);
-			// imageView.setTag(i);
+			imageView.setTag(i);
 			imageView.setFocusable(false);
 			imageView.setOnTouchListener(this);
 			SubLGModel model = subLGModelList.get(i);
@@ -313,7 +376,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 						.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
 								+ imageName);
 				imageView.setImageBitmap(bitmap);
-				imageView.setTag(wordId);
+				// imageView.setTag(wordId);
+				imageView.setBackground(bgWhite);
 			} else {
 				Log.e(TAG, "initMoveViews,subLGModel == null");
 			}
@@ -378,8 +442,10 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				.getLayoutParams();
 		params.leftMargin = (int) rawX - view.getWidth() / 2;
 		params.topMargin = (int) rawY - relTopHeight - view.getHeight() / 2;
-		params.width = itemViewWidth * 2;
-		params.height = itemViewWidth * 2;
+		// params.width = itemViewWidth * 2;
+		// params.height = itemViewWidth * 2;
+		params.width = mizigeWidth;
+		params.height = mizigeHeight;
 		view.setLayoutParams(params);
 	}
 
