@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical|center_horizontal"
-    android:background="@color/deep_grey"
-    android:orientation="vertical" >
+    android:background="@drawable/bg_white"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingTop="10dp" >
 
     <TextView
         android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/dialog_top_btn_bg"
         android:clickable="false"
         android:gravity="center"
         android:paddingTop="5dip"
@@ -29,7 +30,6 @@
         style="@style/dialog_msg_alert_txt_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:clickable="false"
         android:gravity="center"
         android:paddingBottom="15dip"
@@ -42,7 +42,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal" >
 
