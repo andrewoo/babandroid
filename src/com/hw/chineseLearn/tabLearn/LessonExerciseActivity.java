@@ -737,7 +737,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			timer = null;
 		}
 		if (task != null) {
-			task.cancel();
+			task.cancel(); 
 			task = null;
 		}
 	};

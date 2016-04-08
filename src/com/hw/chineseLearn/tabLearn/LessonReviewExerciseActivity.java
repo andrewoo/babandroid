@@ -965,11 +965,14 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到标题
 			modelWord.setSentenceId(lgTableId);// 拿到SentenceId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgSentence.getDirCode();// 得到mp3文件名
+			dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
+			modelWord.setVoicePath(dirCode);
 			List<String> answerList = modelWord.getAnswerList();
 			LGModel_Sentence_050 sentence050 = (LGModel_Sentence_050) MyDao
 					.getDao(LGModel_Sentence_050.class).queryBuilder().where()
 					.eq("SentenceId", lgTableId).queryForFirst();
-			String[] splitAnswer = sentence050.getAnswer().split(";");
+			String[] splitAnswer = UiUtil.getListFormString(sentence050.getAnswer());
 			StringBuffer buffer = new StringBuffer();
 			Dao dao = MyDao.getDao(LGWord.class);
 			for (int i = 0; i < splitAnswer.length; i++) {
@@ -982,7 +985,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			modelWord.setAnswerText(strBuffer);
 			answerList.add(UiUtil.StringFilter(strBuffer));// 把答案加进去
 			modelWord.setAnswerList(answerList);
-			String[] split = sentence050.getOptions().split(";");
+			String[] split = UiUtil.getListFormString(sentence050.getOptions());
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			for (int i = 0; i < split.length; i++) {
 				SubLGModel subLGModel = modelWord.new SubLGModel();
@@ -1015,6 +1018,9 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到标题
 			modelWord.setSentenceId(lgTableId);// 拿到SentenceId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgSentence.getDirCode();// 得到mp3文件名
+			dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
+			modelWord.setVoicePath(dirCode);
 			List<String> answerList = modelWord.getAnswerList();
 			LGModel_Sentence_040 sentence040 = (LGModel_Sentence_040) MyDao
 					.getDao(LGModel_Sentence_040.class).queryBuilder().where()
@@ -1025,7 +1031,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			}
 			modelWord.setAnswerList(answerList);
 			modelWord.setAnswerText(splitAnswer[0]);// 拿到答案 暂时为第一个
-			String[] split = sentence040.getOptions().split(";");
+			String[] split = UiUtil.getListFormString(sentence040.getOptions());
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			for (int i = 0; i < split.length; i++) {
 				SubLGModel subLGModel = modelWord.new SubLGModel();
@@ -1056,11 +1062,13 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			String title = lgSentence.getSentence();
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setSentenceId(lgTableId);// 拿到sentenceId
+			String dirCode = lgSentence.getDirCode();// 得到mp3文件名
+			dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
+			modelWord.setVoicePath(dirCode);
 			LGModel_Sentence_020 lgSentence020 = (LGModel_Sentence_020) MyDao
 					.getDao(LGModel_Sentence_020.class).queryBuilder().where()
 					.eq("SentenceId", lgTableId).queryForFirst();
 			String[] splitAnswer = lgSentence020.getAnswer().split("!@@@!");
-			System.out.println("splitAnswer[0]" + splitAnswer[0]);
 			modelWord.setAnswerText(splitAnswer[0]);// 设置答案文本
 			List<String> answerList = modelWord.getAnswerList();
 			for (int i = 0; i < splitAnswer.length; i++) {
@@ -1090,6 +1098,9 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgWord.getDirCode();// 得到mp3文件名
+			dirCode = "w-" + lgTableId + "-" + dirCode + ".mp3";
+			modelWord.setVoicePath(dirCode);
 			LGModel_Word_040 lgWord040 = (LGModel_Word_040) MyDao
 					.getDao(LGModel_Word_040.class).queryBuilder().where()
 					.eq("WordId", lgTableId).queryForFirst();
@@ -1123,6 +1134,9 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到标题
 			modelWord.setWordId(lgTableId);// 拿到wordid
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgWord.getDirCode();// 得到mp3文件名
+			dirCode = "w-" + lgTableId + "-" + dirCode + ".mp3";
+			modelWord.setVoicePath(dirCode);
 			List<String> answerList = modelWord.getAnswerList();
 			LGModel_Word_030 word030 = (LGModel_Word_030) MyDao
 					.getDao(LGModel_Word_030.class).queryBuilder().where()
@@ -1133,7 +1147,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			}
 			modelWord.setAnswerList(answerList);
 			modelWord.setAnswerText(splitAnswer[0]);// 拿到答案 暂时为第一个
-			String[] split = word030.getOptions().split(";");
+			String[] split = UiUtil.getListFormString(word030.getOptions());
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			for (int i = 0; i < split.length; i++) {
 				SubLGModel subLGModel = modelWord.new SubLGModel();
@@ -1164,9 +1178,12 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			int answer = sentence030.getAnswer();
 			modelWord.setAnswer(answer);// 拿到answer
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgSentence.getDirCode();// 得到mp3文件名
+			dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
+			modelWord.setVoicePath(dirCode);
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			String sentence = lgSentence.getSentence();
-			String[] options = sentence030.getOptions().split(";");
+			String[] options = UiUtil.getListFormString(sentence030.getOptions());
 			for (int i = 0; i < options.length; i++) {
 				SubLGModel subLGModel = modelWord.new SubLGModel();
 				String[] option = options[i].split("=");
@@ -1209,9 +1226,12 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			modelWord.setLessonId(lessonId);// 拿到lessonId
 			modelWord.setTitle(lgSentence.getSentence());
 			modelWord.setAnswer(sentence010.getAnswer());
+			String dirCode = lgSentence.getDirCode();// 得到mp3文件名
+			dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
+			modelWord.setVoicePath(dirCode);
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			int answer = sentence010.getAnswer();
-			String[] options = sentence010.getOptions().split(";");
+			String[] options = UiUtil.getListFormString(sentence010.getOptions());
 			for (int i = 0; i < options.length; i++) {
 				String[] option = options[i].split("=");
 				SubLGModel subLGModel = modelWord.new SubLGModel();
@@ -1252,8 +1272,10 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			LGWord lgWord1 = (LGWord) MyDao.getDao(LGWord.class).queryForId(
 					lessonRepeatRegex.getLgTableId());
 			question = lgWord1.getWord();
-
-			String[] splitWordId = word_060.getOptions().split(";");
+			String dirCode = lgWord1.getDirCode();// 得到mp3文件名
+			dirCode = "w-" + lgTableId + "-" + dirCode + ".mp3";
+			modelWord.setVoicePath(dirCode);
+			String[] splitWordId = UiUtil.getListFormString(word_060.getOptions());
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			for (int i = 0; i < splitWordId.length; i++) {
 				SubLGModel subLGModel = modelWord.new SubLGModel();
@@ -1294,21 +1316,25 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			LGModel_Word_020 word_020 = (LGModel_Word_020) MyDao
 					.getDao(LGModel_Word_020.class).queryBuilder().where()
 					.eq("WordId", lgTableId).queryForFirst();
+			LGWord lgWord1 = (LGWord) MyDao.getDao(LGWord.class).queryForId(
+					lessonRepeatRegex.getLgTableId());
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			int answer = word_020.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+			String dirCode = lgWord1.getDirCode();// 得到mp3文件名
+			dirCode = "w-" + lgTableId + "-" + dirCode + ".mp3";
+			modelWord.setVoicePath(dirCode);
 			LGWord lgWordAnswer = (LGWord) MyDao.getDao(LGWord.class)
 					.queryForId(answer);
 			String left = lgWordAnswer.getTranslations();
 			String right = lgWordAnswer.getWord() + "/"
 					+ lgWordAnswer.getPinyin();
 			modelWord.setAnswerText(left + "=" + right);// 拿到答案文本
-			LGWord lgWord1 = (LGWord) MyDao.getDao(LGWord.class).queryForId(
-					lessonRepeatRegex.getLgTableId());
+
 			question = "Select" + "\"" + lgWord1.getTranslations() + "\"";
 			modelWord.setTitle(question);// 拿到title
-			String[] splitWordId = word_020.getOptions().split(";");
+			String[] splitWordId = UiUtil.getListFormString(word_020.getOptions());
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			for (int i = 0; i < splitWordId.length; i++) {
 				LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
@@ -1344,7 +1370,9 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			LGModel_Word_010 Word_010 = (LGModel_Word_010) MyDao
 					.getDao(LGModel_Word_010.class).queryBuilder().where()
 					.eq("WordId", lgWord.getWordId()).queryForFirst();
-
+			// String dirCode = lgWord.getDirCode();//得到mp3文件名
+			// dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+			// modelWord.setVoicePath(dirCode);
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			String title = lgWord.getTranslations();
 			modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title
@@ -1358,7 +1386,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 					+ lgWordAnswer.getPinyin();
 			modelWord.setAnswerText(left + "=" + right);// 拿到答案文本
 			String imageOptions = Word_010.getImageOptions();
-			String[] splitOptions = imageOptions.split(";");// 得到4个选项
+			String[] splitOptions = UiUtil.getListFormString(imageOptions);// 得到4个选项
 			subLGModeList = modelWord.getSubLGModelList();
 			for (int i = 0; i < splitOptions.length; i++) {
 				LGWord lGWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
@@ -1371,6 +1399,9 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 				subLGModel.setImageName(mainPicName);// 拿到图片名字
 				subLGModel.setOption(optionName);// 拿到选项文字
 				subLGModel.setWordId(Integer.valueOf(splitOptions[i]));// 拿到对应id
+				// dirCode="w-"+lgTableId+"-"+dirCode+".mp3";
+				subLGModel.setSubVoicePath("w-" + splitOptions[i] + "-"
+						+ lGWord.getDirCode() + ".mp3");// 拿到对应声音
 				subLGModeList.add(subLGModel);
 			}
 			Collections.shuffle(subLGModeList);

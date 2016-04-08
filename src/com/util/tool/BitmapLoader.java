@@ -13,6 +13,7 @@ import com.hw.chineseLearn.base.CustomApplication;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 
 /**
@@ -292,8 +293,14 @@ public class BitmapLoader {
         AssetManager am = CustomApplication.app.getResources().getAssets();  
         try  
         {  
+        	
             InputStream is = am.open(fileName);  
-            image = BitmapFactory.decodeStream(is);  
+            
+            BitmapFactory.Options options = new BitmapFactory.Options();
+        	options.inPreferredConfig = Config.RGB_565;
+        	image = BitmapFactory.decodeStream(is, null, options);
+            
+//            image = BitmapFactory.decodeStream(is);  
             is.close();  
         }  
         catch (IOException e)  
