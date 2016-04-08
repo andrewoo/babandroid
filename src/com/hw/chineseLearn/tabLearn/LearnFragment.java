@@ -28,6 +28,7 @@ import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.UiUtil;
 import com.util.weight.SelfGridView;
 
 /**
@@ -106,8 +107,13 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
+		//更新当前状态
+		if(learnUnit1Adapter!=null && learnUnit2Adapter!=null){
+			learnUnit1Adapter.notifyDataSetChanged();
+			learnUnit2Adapter.notifyDataSetChanged();
+		}
+		
 		// task.RunWithMsg(getActivity(), new LoadNoticesThread(),
 		// "Learn is loading…");
 	}
@@ -155,15 +161,14 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 			TbLessonMaterialStatus ms = null;
 			try {
 				ms = (TbLessonMaterialStatus) MyDao.getDaoMy(//拿到第一个lessonid 查表确定status
-						TbLessonMaterialStatus.class).queryForId(
-						unit.getLessonList().split(";")[0]);
+						TbLessonMaterialStatus.class).queryForId(UiUtil.getListFormString(unit.getLessonList())[0]);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			if (ms != null) {
 				if (ms.getStatus() == 0) {
 					isEnable = false;
-				} else if (ms.getStatus() == 1) {
+				} else  {
 					isEnable = true;
 				}
 			}
@@ -181,21 +186,38 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	};
 
 	OnItemClickListener itemClickListener1 = new OnItemClickListener() {
-
+ 
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 				long arg3) {
 			// TODO Auto-generated method stub
+			boolean isEnable = false;
 			Unit unit = sencondList.get(position);
+			
+			TbLessonMaterialStatus ms = null;
+			try {
+				ms = (TbLessonMaterialStatus) MyDao.getDaoMy(//拿到第一个lessonid 查表确定status
+						TbLessonMaterialStatus.class).queryForId(UiUtil.getListFormString(unit.getLessonList())[0]);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if (ms != null) {
+				if (ms.getStatus() == 0) {
+					isEnable = false;
+				} else  {
+					isEnable = true;
+				}
+			}
+			
 			if (unit != null) {
 				// boolean isEnable = learnUnitBaseModel.isEnable();
-				// if (isEnable) {
+				 if (isEnable) {
 				Intent intent = new Intent(getActivity(),
 						LessonViewActivity.class);
 				intent.putExtra("unit", unit);
 				intent.putExtra("position", position);
 				startActivity(intent);
-				// }
+				 }
 			}
 		}
 	};

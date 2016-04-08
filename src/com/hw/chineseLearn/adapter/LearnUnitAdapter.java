@@ -20,6 +20,7 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
+import com.util.tool.UiUtil;
 
 public class LearnUnitAdapter extends BaseAdapter {
 	
@@ -87,7 +88,7 @@ public class LearnUnitAdapter extends BaseAdapter {
 		//如果数据库中为1 就lu1  else 就是lu0
 		int status=0;
 		try {
-			TbLessonMaterialStatus ms=(TbLessonMaterialStatus) MyDao.getDaoMy(TbLessonMaterialStatus.class).queryForId(Integer.valueOf(model.getLessonList().split(";")[0]));
+			TbLessonMaterialStatus ms=(TbLessonMaterialStatus) MyDao.getDaoMy(TbLessonMaterialStatus.class).queryForId(Integer.valueOf(UiUtil.getListFormString(model.getLessonList())[0]));
 			if(ms!=null){
 				status = ms.getStatus();
 			}
@@ -97,11 +98,11 @@ public class LearnUnitAdapter extends BaseAdapter {
 		String imageName =null;
 		if(status==0){
 			imageName = "lu0_" + model.getIconResSuffix();
-		}else if(status==1){
-			 imageName = "lu1_" + model.getIconResSuffix();
+		}else {
+			imageName = "lu1_" + model.getIconResSuffix();
 		}
 
-		if (status==1) {
+		if (status!=0) {
 			String lessonList = model.getLessonList();
 			if (lessonList != null) {
 				String[] lessonId = lessonList.split(";");

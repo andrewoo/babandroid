@@ -324,37 +324,60 @@ public class LessonTestOutActivity extends BaseActivity implements
 					continue;
 				}
 				String lessonList = unit.getLessonList();
-				String[] aa = UiUtil.getListFormString(lessonList);
-
-				for (int j = 0; j < aa.length; j++) {
-					String lessonIdStr = aa[j];// 
-					int lessonId = Integer.parseInt(lessonIdStr);
-
-					try {
-						TbLessonMaterialStatus model = (TbLessonMaterialStatus) MyDao
-								.getDaoMy(TbLessonMaterialStatus.class)
-								.queryForId(lessonId);
-
-						if (model == null) {// 没有查询到数据,创建
-
-							TbLessonMaterialStatus modelNew = new TbLessonMaterialStatus();
-							modelNew.setLessonId(lessonId);
-
-							if (j == 0) {
-								modelNew.setStatus(1);
-							} else {
-								modelNew.setStatus(0);
-							}
-							MyDao.getDaoMy(TbLessonMaterialStatus.class)
-									.createOrUpdate(modelNew);
-						}
-
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+				String[] aa = UiUtil.getListFormString(lessonList);//lessonid数组 只取第一个 查表改变status解锁
+				try {
+					if ("".equals(aa[0])) {
+						continue;
 					}
-
+					TbLessonMaterialStatus model = (TbLessonMaterialStatus) MyDao
+							.getDaoMy(TbLessonMaterialStatus.class).queryForId(aa[0]);
+						if (model!=null) {
+							System.out.println("model.getid"+model.getLessonId());
+							if (model.getStatus() == 0) {//如果status为0 就变为1
+								model.setStatus(1);
+								MyDao.getDaoMy(TbLessonMaterialStatus.class).createOrUpdate(model);
+							}
+						}else{//如果数据库不存在 就插入status为1
+							TbLessonMaterialStatus msModel=new TbLessonMaterialStatus();
+							msModel.setLessonId(Integer.valueOf(aa[0]));
+							msModel.setStatus(1);
+							MyDao.getDaoMy(TbLessonMaterialStatus.class).createOrUpdate(msModel);
+						}
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
+//				for (int j = 0; j < aa.length; j++) {
+//					String lessonIdStr = aa[j];
+//					if ("".equals(aa[j])) {
+//						continue;
+//					}
+//					int lessonId = Integer.parseInt(lessonIdStr);
+//
+//					try {
+//						TbLessonMaterialStatus model = (TbLessonMaterialStatus) MyDao
+//								.getDaoMy(TbLessonMaterialStatus.class)
+//								.queryForId(lessonId);
+//
+//						if (model == null) {// 没有查询到数据,创建
+//
+//							TbLessonMaterialStatus modelNew = new TbLessonMaterialStatus();
+//							modelNew.setLessonId(lessonId);
+//							System.out.println("lessonIdStr   " + lessonIdStr);
+//							if (j == 0) {// 先判断 数据库中 如果是0 就为1 其它不动
+//								if (model.getStatus() == 0) {
+//									modelNew.setStatus(1);
+//									MyDao.getDaoMy(TbLessonMaterialStatus.class)
+//											.createOrUpdate(modelNew);
+//								}
+//							}
+//						}
+//
+//					} catch (SQLException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//
+//				}
 			}
 		}
 		TbSetting tbSetting = new TbSetting();

@@ -8,6 +8,7 @@ import java.util.Random;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +35,8 @@ import com.hw.chineseLearn.dao.bean.Lesson;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
+import com.util.tool.BitmapLoader;
+import com.util.tool.UiUtil;
 import com.util.weight.MyGallery;
 
 /**
@@ -87,7 +90,7 @@ public class LessonViewActivity extends BaseActivity implements
 	}
 
 	/**
-	 * 拿到所有的状态和lessondesc
+	 * 拿到所有的状态和lesson desc
 	 */
 	private void getStatusAndLessonDesc() {
 		descList.clear();
@@ -96,9 +99,9 @@ public class LessonViewActivity extends BaseActivity implements
 			//拿到每个lessonid查询materiallesson表 得到对应选项的状态
 			//加入到集合 传递
 			try {
-				String[] lessonIdArray = mUnit.getLessonList().split(";");
+				String[] lessonIdArray = UiUtil.getListFormString(mUnit.getLessonList());
 				for (int i = 0; i < lessonIdArray.length; i++) {
-					if ("".equals(lessonIdArray[i])) { //最后一个是分号 切割后可能为""
+					if ("".equals(lessonIdArray[i])) { //如果为空就跳过此次
 						continue;
 					}
 					Lesson lesson = (Lesson) MyDao.getDao(Lesson.class)
@@ -197,7 +200,8 @@ public class LessonViewActivity extends BaseActivity implements
 		gallery.setOnItemSelectedListener(this);
 		gallery.setSelection(selection);
 		iv_unit_img = (ImageView) findViewById(R.id.iv_unit_img);
-		iv_unit_img.setOnClickListener(onClickListener);
+		iv_unit_img.setImageResource(getResources().getIdentifier("lu1_"+mUnit.getIconResSuffix(),
+				 "drawable", context.getPackageName()));
 
 		// 创建一个AnimationSet对象（AnimationSet是存放多个Animations的集合）
 		animationSet = new AnimationSet(true);
@@ -398,10 +402,6 @@ public class LessonViewActivity extends BaseActivity implements
 			} else {
 				gallery.setSelection(selection + 1);// 选中下一个页面
 			}
-			//再查一次数据库 更新值
-			
-			
-			
 			break;
 		default:
 			break;
