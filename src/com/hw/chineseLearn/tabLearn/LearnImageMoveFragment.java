@@ -521,7 +521,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			// Log.d(TAG, "mizigeY：" + mizigeY);
 			// Log.d(TAG, "mizigeView.getHeight()：" + mizigeView.getHeight());
 
-			if ((X > (mizigeX + imageView.getWidth() / 2) && X < (mizigeX + mizigeView
+			if ((X > (mizigeX - imageView.getWidth() / 2) && X < (mizigeX + mizigeView
 					.getWidth()))
 					&& (Y > (mizigeY + imageView.getHeight() / 2))
 					&& Y < (mizigeY + mizigeView.getHeight())) {

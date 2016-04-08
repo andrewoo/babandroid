@@ -48,6 +48,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	private TextView tv_pinyin;
 	private TextView tv_translation;
 	private ImageView img_record, img_loop;
+	RelativeLayout rel_mizige;
 
 	ReviewCharListAdapter reviewListAdapter;
 	ArrayList<LGCharacter> listBase = new ArrayList<LGCharacter>();
@@ -68,9 +69,6 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		resources = context.getResources();
 		init();
 	}
-
-	int mizigeX, mizigeY;
-	RelativeLayout rel_mizige;
 
 	/**
 	 * 初始化
