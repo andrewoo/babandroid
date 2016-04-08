@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -102,9 +103,9 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private void initView() {
 
 		screenWidth = CustomApplication.app.displayMetrics.widthPixels
-				- (dip2px(context, 40));
+				- (UiUtil.dip2px(context, 40));
 		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
-		viewMagin = dip2px(context, 10);
+		viewMagin = UiUtil.dip2px(context, 10);
 		itemViewWidth = (screenWidth - viewMagin * 2) / 3;
 		colorBlue = context.getResources().getColor(R.color.chinese_skill_blue);
 		bgWhite = context.getResources().getDrawable(R.drawable.bg_white1);
@@ -197,8 +198,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 					int tag = (Integer) imageView.getTag();
 					if (id == tag) {
 						imageView.setImageDrawable(bgHint);
-						ImageView iv = imageView;
-						answerViewList.add(iv);
 						break;
 					}
 				}
@@ -236,7 +235,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private void initBgViews() {
 		bgViewList.clear();
 		int x = 0;
-		int y = dip2px(context, 65);// topView y坐标的初始位置
+		int y = UiUtil.dip2px(context, 65);// topView y坐标的初始位置
 
 		for (int i = 0; i < subLGModelList.size(); i++) {
 			SubLGModel model = subLGModelList.get(i);
@@ -357,7 +356,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private void initMoveViews() {
 		moveViewList.clear();
 		int x = 0;
-		int y = dip2px(context, 65);// topView y坐标的初始位置
+		int y = UiUtil.dip2px(context, 65);// topView y坐标的初始位置
 
 		for (int i = 0; i < subLGModelList.size(); i++) {
 
@@ -377,7 +376,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 								+ imageName);
 				imageView.setImageBitmap(bitmap);
 				// imageView.setTag(wordId);
-				imageView.setBackground(bgWhite);
+				// imageView.setBackground(bgWhite);
 			} else {
 				Log.e(TAG, "initMoveViews,subLGModel == null");
 			}
@@ -415,22 +414,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	}
 
 	/**
-	 * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-	 */
-	public static int dip2px(Context context, float dpValue) {
-		final float scale = context.getResources().getDisplayMetrics().density;
-		return (int) (dpValue * scale + 0.5f);
-	}
-
-	/**
-	 * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
-	 */
-	public static int px2dip(Context context, float pxValue) {
-		final float scale = context.getResources().getDisplayMetrics().density;
-		return (int) (pxValue / scale + 0.5f);
-	}
-
-	/**
 	 * 设置View的布局属性，使得view随着手指移动 注意：view所在的布局必须使用RelativeLayout 而且不得设置居中等样式
 	 * 
 	 * @param view
@@ -442,8 +425,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				.getLayoutParams();
 		params.leftMargin = (int) rawX - view.getWidth() / 2;
 		params.topMargin = (int) rawY - relTopHeight - view.getHeight() / 2;
-		// params.width = itemViewWidth * 2;
-		// params.height = itemViewWidth * 2;
 		params.width = mizigeWidth;
 		params.height = mizigeHeight;
 		view.setLayoutParams(params);
@@ -503,7 +484,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		imageView.bringToFront();
 		Bitmap bitmap = ((BitmapDrawable) (imageView.getDrawable()))
 				.getBitmap();
-
 		// if (bitmap.getPixel((int) (event.getX()), ((int) event.getY())) == 0)
 		// {
 		// String aa = "点击了透明区域";

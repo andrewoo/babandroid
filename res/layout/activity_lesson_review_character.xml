@@ -45,15 +45,11 @@
         android:paddingTop="30dp" >
 
         <RelativeLayout
+            android:id="@+id/rel_mizige"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
-
-            <ImageView
-                android:id="@+id/iv_mizige"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:background="@drawable/mizige" />
+            android:layout_weight="1"
+            android:background="@drawable/mizige" >
         </RelativeLayout>
 
         <LinearLayout
