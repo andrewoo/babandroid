@@ -131,8 +131,9 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	}
 
 	private void play() {
-		
-		mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH+voicePath);
+		if(mediaPlayerHelper==null){
+			mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH+voicePath);
+		}
 		mediaPlayerHelper.play();
 		
 	}

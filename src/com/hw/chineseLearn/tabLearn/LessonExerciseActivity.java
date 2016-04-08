@@ -681,13 +681,12 @@ public class LessonExerciseActivity extends BaseActivity {
 						task.cancel();
 					}
 				}
+				builder.dismiss();
 				// learn表中regex第一位 对应View关系
 				if (exerciseIndex < exerciseCount - 1) {
 					exerciseIndex++;
 					regexToView(regexes.get(exerciseIndex));
 				}
-
-				builder.dismiss();
 			}
 
 		});
