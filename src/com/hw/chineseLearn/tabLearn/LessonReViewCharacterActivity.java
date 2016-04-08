@@ -12,26 +12,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.ReviewCharListAdapter;
-import com.hw.chineseLearn.adapter.ReviewWordListAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGCharacter;
-import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
-import com.hw.chineseLearn.dao.bean.TbMySentence;
-import com.hw.chineseLearn.dao.bean.TbMyWord;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.tool.BitmapLoader;
 import com.util.tool.UiUtil;
 
@@ -49,7 +45,6 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	private int mizigeWidth;
 	private int mizigeHeight;
 	View contentView;
-	private ImageView iv_mizige;
 	private TextView tv_pinyin;
 	private TextView tv_translation;
 	private ImageView img_record, img_loop;
@@ -74,6 +69,9 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		init();
 	}
 
+	int mizigeX, mizigeY;
+	RelativeLayout rel_mizige;
+
 	/**
 	 * 初始化
 	 */
@@ -83,18 +81,16 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Character Review", View.GONE, View.VISIBLE,
 				R.drawable.revie_pen);
-
-		iv_mizige = (ImageView) contentView.findViewById(R.id.iv_mizige);
+		rel_mizige = (RelativeLayout) contentView.findViewById(R.id.rel_mizige);
 		tv_pinyin = (TextView) contentView.findViewById(R.id.tv_pinyin);
 		tv_translation = (TextView) contentView
 				.findViewById(R.id.tv_translation);
 		img_record = (ImageView) contentView.findViewById(R.id.img_record);
 		img_loop = (ImageView) contentView.findViewById(R.id.img_loop);
 
-		LayoutParams layoutParams1 = (LayoutParams) iv_mizige.getLayoutParams();
-		layoutParams1.width = mizigeWidth;
-		layoutParams1.height = mizigeWidth;
-		iv_mizige.setLayoutParams(layoutParams1);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				mizigeWidth, mizigeWidth);
+		rel_mizige.setLayoutParams(layoutParams);
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
 
@@ -213,6 +209,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 			setPartAnswer(position);
 		}
 	};
+	private static final String ASSETS_LGCHARACTERPART_PATH = "data/character_part/";
 
 	/**
 	 * @param position
@@ -225,8 +222,8 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 				String partAnswer = model.getPartAnswer();
 				Log.d(TAG, "partAnswer:" + partAnswer);
 				// 772;773;
-				String pngs[] = partAnswer.split(";");
-
+				String pngs[] = UiUtil.getListFormString(partAnswer);
+				rel_mizige.removeAllViews();
 				for (int i = 0; i < pngs.length; i++) {
 
 					String picName = pngs[i];
@@ -234,11 +231,19 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 					if ("".equals(picName))
 						continue;
 
-					picName = "pp-" + picName;
+					picName = "pp-" + picName + ".png";
 
 					Bitmap imageFromAssetsFile = BitmapLoader
-							.getImageFromAssetsFile(picName);
-					iv_mizige.setImageBitmap(imageFromAssetsFile);
+							.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
+									+ picName);
+					ImageView imgageView = new ImageView(context);
+					imgageView.setImageBitmap(imageFromAssetsFile);
+					RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+							mizigeWidth, mizigeWidth);
+					imgageView.setLayoutParams(layoutParams);
+
+					rel_mizige.addView(imgageView);
+
 				}
 				String pinyin = model.getPinyin();
 				tv_pinyin.setText(pinyin);

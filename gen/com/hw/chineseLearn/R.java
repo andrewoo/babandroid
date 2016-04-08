@@ -2344,7 +2344,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int iv_menu02=0x7f0601e0;
         public static final int iv_menu03=0x7f0601e3;
         public static final int iv_message=0x7f06017a;
-        public static final int iv_mizige=0x7f060081;
         public static final int iv_picture=0x7f0601b9;
         public static final int iv_select=0x7f060102;
         public static final int iv_tag=0x7f0601ba;
@@ -2483,6 +2482,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int rel_intent=0x7f060198;
         public static final int rel_like_us_on_facebook=0x7f060153;
         public static final int rel_logout=0x7f0600b0;
+        public static final int rel_mizige=0x7f060081;
         public static final int rel_my_notice=0x7f06014b;
         public static final int rel_op=0x7f0601aa;
         public static final int rel_others=0x7f0600b3;

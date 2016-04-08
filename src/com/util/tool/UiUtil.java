@@ -558,12 +558,47 @@ public class UiUtil {
 	 * @return
 	 */
 	public static String[] getListFormString(String str) {
-//		String strEnd = str.substring(str.length() - 1, str.length());
+		// String strEnd = str.substring(str.length() - 1, str.length());
 		if (str.endsWith(";")) {
-			str = str.substring(0, str.length() - 1);//去掉最后一个字符
+			str = str.substring(0, str.length() - 1);// 去掉最后一个字符
 			Log.d(TAG, "str:" + str);
 		}
 		return str.split(";");
 	}
 
+	/**
+	 * @param bitmap
+	 * @return
+	 */
+	public static Bitmap transparentImage(Bitmap bitmap) {
+
+		Bitmap bm = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
+				bitmap.getConfig());
+		int width = bm.getWidth();
+		int height = bm.getHeight();
+		// int m_BmpPixel[] = new int[width * height];
+		// bitmap.getPixels(m_BmpPixel, 0, width, 0, 0, width, height);
+
+		for (int row = 0; row < height; row++) {
+			for (int col = 0; col < width; col++) {
+				int pixel = bitmap.getPixel(col, row);// ARGB
+				if (pixel == 0) {
+					continue;
+				}
+				int red = Color.red(pixel); // same as (pixel >> 16) &0xff
+				int green = Color.green(pixel); // same as (pixel >> 8) &0xff
+				int blue = Color.blue(pixel); // same as (pixel & 0xff)
+				int alpha = Color.alpha(pixel); // same as (pixel >>> 24)
+				// int gray = (int) (0.3 * red + 0.59 * green + 0.11 * blue);
+				int gray = (Math.max(blue, Math.max(red, green)) + Math.min(
+						blue, Math.min(red, green))) / 2;
+				// int gray = (red + green + blue) / 3;
+
+				bm.setPixel(col, row, Color.argb(alpha, gray, gray, gray));
+			}
+		}
+
+		return bm;
+
+	}
 }
