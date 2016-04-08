@@ -34,6 +34,7 @@ import com.hw.chineseLearn.dao.bean.Lesson;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
+import com.util.tool.UiUtil;
 import com.util.weight.MyGallery;
 
 /**
@@ -87,7 +88,7 @@ public class LessonViewActivity extends BaseActivity implements
 	}
 
 	/**
-	 * 拿到所有的状态和lessondesc
+	 * 拿到所有的状态和lesson desc
 	 */
 	private void getStatusAndLessonDesc() {
 		descList.clear();
@@ -96,9 +97,9 @@ public class LessonViewActivity extends BaseActivity implements
 			//拿到每个lessonid查询materiallesson表 得到对应选项的状态
 			//加入到集合 传递
 			try {
-				String[] lessonIdArray = mUnit.getLessonList().split(";");
+				String[] lessonIdArray = UiUtil.getListFormString(mUnit.getLessonList());
 				for (int i = 0; i < lessonIdArray.length; i++) {
-					if ("".equals(lessonIdArray[i])) { //最后一个是分号 切割后可能为""
+					if ("".equals(lessonIdArray[i])) { //如果为空就跳过此次
 						continue;
 					}
 					Lesson lesson = (Lesson) MyDao.getDao(Lesson.class)

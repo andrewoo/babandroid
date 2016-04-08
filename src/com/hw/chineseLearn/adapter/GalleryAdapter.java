@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.test.UiThreadTest;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.Lesson;
 import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
+import com.util.tool.UiUtil;
 
 public class GalleryAdapter extends BaseAdapter {
 	Context mContext;
@@ -46,7 +48,7 @@ public class GalleryAdapter extends BaseAdapter {
 		this.descList = descList;
 		this.lessonStatus = lessonStatus;
 		inflater = LayoutInflater.from(mContext);
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
+		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;//gallery的宽和高
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
 	}
 
@@ -93,7 +95,7 @@ public class GalleryAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return unit.getLessonList().split(";").length; // 这里的目的是可以让图片循环浏览
+		return UiUtil.getListFormString( unit.getLessonList()).length; // 这里的目的是可以让图片循环浏览
 	}
 
 	@Override
@@ -120,14 +122,14 @@ public class GalleryAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = inflater.inflate(R.layout.layout_gellay_item, null);
-
 			holder.lin_c = (LinearLayout) convertView.findViewById(R.id.lin_c);
-
+			holder.lin_c.setLayoutParams(new RelativeLayout.LayoutParams(//设置当前view的大小
+					width, height));
 			holder.tv_description = (TextView) convertView
 					.findViewById(R.id.tv_description);
 			holder.tv_no = (TextView) convertView
 					.findViewById(R.id.tv_no);
-
+			
 //			holder.tv_description = (TextView) convertView
 //					.findViewById(R.id.tv_description);
 			
@@ -160,50 +162,40 @@ public class GalleryAdapter extends BaseAdapter {
 			
 			if(lessonStatus.get(position)==1){
 				holder.btn_start.setVisibility(View.VISIBLE);
-//				holder.btn_redo.setVisibility(View.GONE);
 				holder.btn_review.setVisibility(View.GONE);
 				holder.btn_lock .setVisibility(View.GONE);
 			}else if(lessonStatus.get(position)==0){
 				holder.btn_lock .setVisibility(View.VISIBLE);
 				holder.btn_start.setVisibility(View.GONE);
-//				holder.btn_redo.setVisibility(View.GONE);
 				holder.btn_review.setVisibility(View.GONE);
 			}
 			else if(lessonStatus.get(position)==2){
 				holder.btn_lock .setVisibility(View.GONE);
 				holder.btn_start.setVisibility(View.GONE);
-//				holder.btn_redo.setVisibility(View.GONE);
 				holder.btn_review.setVisibility(View.VISIBLE);
 			}
 		}
 		
-//		if (holder.btn_redo.getVisibility() == View.VISIBLE) {
-//			holder.btn_start.setVisibility(View.GONE);
-//		}
 		if (holder.btn_start.getVisibility() == View.VISIBLE) {
-//			holder.btn_redo.setVisibility(View.GONE);
 			holder.btn_review.setVisibility(View.GONE);
 		}
-		
-		//设置description 属性文本
-//		String[] spitList = unit.getLessonList().split(";");
-//		Integer lessonId = Integer.valueOf(spitList[position]);
-//		Lesson lesson = null;
-//		try {
-//			lesson = (Lesson) MyDao.getDao(Lesson.class).queryForId(lessonId);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		//分割去掉数据库中特殊字符
 			String description = descList.get(position);
 			String[] split = description.split("!@@@!");
 			String desc = "";
+			
 			for (int i = 0; i < split.length; i++) {
-				desc+=split[i]+"\n";
+				String str = split[i]; 
+				if(str.contains("Sentence Pattern:")){
+					str=str.replace("Sentence Pattern:", "");
+				}if(str.contains("Words:")){
+					str=str.replace("Words:", "");
+				}
+				
+				desc+=str+"\n";
 			}
 			holder.tv_description.setText(desc);
-		holder.tv_no.setText((position+1)+"of"+unit.getLessonList().split(";").length);//1 of 2
-
+		holder.tv_no.setText((position+1)+"of"+UiUtil.getListFormString(unit.getLessonList()).length);//1 of 2
 		return convertView;
 	}
 
