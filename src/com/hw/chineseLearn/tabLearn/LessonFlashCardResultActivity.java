@@ -3,15 +3,17 @@ package com.hw.chineseLearn.tabLearn;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.widget.LinearLayout.LayoutParams;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -22,7 +24,6 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.util.tool.UiUtil;
-import com.util.weight.RectView;
 
 /**
  * flashCard操作结果页面
@@ -34,8 +35,8 @@ public class LessonFlashCardResultActivity extends BaseActivity {
 	private String TAG = "==LessonFlashCardResultActivity==";
 	public Context context;
 	private Resources resources;
-	private int width;
-	private int height;
+	private int screenWidth;
+	private int screenHeight;
 	View contentView;
 
 	TextView btn_redo;
@@ -43,13 +44,16 @@ public class LessonFlashCardResultActivity extends BaseActivity {
 	TextView remember_prefectly, remembered, barely_remembered,
 			almost_remembered, forgot, dont_know;
 
+	ImageView iv_remember_prefectly, iv_remembered, iv_barely_remembered,
+			iv_almost_remembered, iv_forgot, iv_dont_know;
+
 	int rememberPrefectlyCount, rememberedCount, barelyRememberedCount,
 			almostRememberedCount, forgotCount, dontKnowCount;
 
 	ArrayList<TbMyCharacter> tbMyCharacterList;
 	ArrayList<TbMyWord> tbMyWordList;
 	ArrayList<TbMySentence> tbMySentenceList;
-	RectView pro_remember_prefectly;
+	ValueAnimator value;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +66,8 @@ public class LessonFlashCardResultActivity extends BaseActivity {
 		setContentView(contentView);
 
 		CustomApplication.app.addActivity(this);
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 5;
-		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 3;
+		screenWidth = CustomApplication.app.displayMetrics.widthPixels;
+		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 		resources = context.getResources();
 		init();
 	}
@@ -73,12 +77,11 @@ public class LessonFlashCardResultActivity extends BaseActivity {
 	 */
 	@SuppressWarnings("unchecked")
 	public void init() {
-		LayoutParams lp = new LayoutParams(width, height);
-
-		// tv_lose_all = (ImageView) findViewById(R.id.tv_lose_all);
-		// img_lose_all = (ImageView) findViewById(R.id.img_lose_all);
-		// tv_lose_all.setLayoutParams(lp);
-		// img_lose_all.setLayoutParams(lp);
+		LinearLayout lin_bottom = (LinearLayout) contentView
+				.findViewById(R.id.lin_bottom);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, screenHeight / 2);
+		lin_bottom.setLayoutParams(params);
 
 		btn_redo = (TextView) contentView.findViewById(R.id.btn_redo);
 		btn_redo.setOnClickListener(onClickListener);
@@ -208,73 +211,46 @@ public class LessonFlashCardResultActivity extends BaseActivity {
 		forgot.setText("" + forgotCount);
 		dont_know.setText("" + dontKnowCount);
 
-		LayoutParams lp1 = new LayoutParams(UiUtil.dip2px(
-				getApplicationContext(), 10), UiUtil.dip2px(
-				getApplicationContext(), 50));
-		pro_remember_prefectly = (RectView) contentView
-				.findViewById(R.id.pro_remember_prefectly);
-		pro_remember_prefectly.setLayoutParams(lp1);
-		pro_remember_prefectly.setMax(100);
-		pro_remember_prefectly.setProgress(50);
+		iv_remember_prefectly = (ImageView) contentView
+				.findViewById(R.id.iv_remember_prefectly);
+		iv_remembered = (ImageView) contentView
+				.findViewById(R.id.iv_remembered);
+		iv_barely_remembered = (ImageView) contentView
+				.findViewById(R.id.iv_barely_remembered);
+		iv_almost_remembered = (ImageView) contentView
+				.findViewById(R.id.iv_almost_remembered);
+		iv_forgot = (ImageView) contentView.findViewById(R.id.iv_forgot);
+		iv_dont_know = (ImageView) contentView.findViewById(R.id.iv_dont_know);
 
-		View view_remembered = (View) contentView
-				.findViewById(R.id.view_remembered);
-		// 参数说明
-		//
-		// fromX：起始X坐标上的伸缩尺寸。
-		//
-		// toX：结束X坐标上的伸缩尺寸。
-		//
-		// fromY：起始Y坐标上的伸缩尺寸。
-		//
-		// toY：结束Y坐标上的伸缩尺寸。
-		//
-		// pivotXType：X轴的伸缩模式，可以取值为ABSOLUTE、RELATIVE_TO_SELF、RELATIVE_TO_PARENT。
-		//
-		// pivotXValue：X坐标的伸缩值。0.5f表明是以自身这个控件的一半长度为x轴
-		//
-		// pivotYType：Y轴的伸缩模式，可以取值为ABSOLUTE、RELATIVE_TO_SELF、RELATIVE_TO_PARENT。
-		//
-		// pivotYValue：Y坐标的伸缩值。
-		//
-		// 有三种默认值：
-		//
-		// RELATIVE_TO_PARENT 相对于父控件
-		//
-		// RELATIVE_TO_SELF 相对于符自己
-		//
-		// RELATIVE_TO_ABSOLUTE 绝对坐标
+		setRectValueAnim(iv_remember_prefectly, rememberPrefectlyCount);
+		setRectValueAnim(iv_remembered, rememberedCount);
+		setRectValueAnim(iv_barely_remembered, barelyRememberedCount);
 
-		final ScaleAnimation animation = new ScaleAnimation(0.0f, 1.4f, 0.0f,
-				1.4f, Animation.RELATIVE_TO_SELF, 0.5f,
-				Animation.RELATIVE_TO_SELF, 0.5f);
-		animation.setDuration(2000);// 设置动画持续时间
-		
-		view_remembered.setAnimation(animation);
-		/** 开始动画 */
-		animation.startNow(); 
-		/** 常用方法 */
-		// animation.setRepeatCount(int repeatCount);//设置重复次数
-		// animation.setFillAfter(boolean);//动画执行完后是否停留在执行完的状态
-		// animation.setStartOffset(long startOffset);//执行前的等待时间
+		setRectValueAnim(iv_almost_remembered, almostRememberedCount);
+		setRectValueAnim(iv_forgot, forgotCount);
+		setRectValueAnim(iv_dont_know, dontKnowCount);
 
-		// new Thread(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// while (rememberPrefectlyCount <= 100) {
-		// progress += progressAdd;
-		// pro_remember_prefectly.setProgress(progress);
-		// try {
-		// Thread.sleep(50);
-		// } catch (InterruptedException e) {
-		// e.printStackTrace();
-		// }
-		// }
-		//
-		// }
-		// }).start();
+	}
 
+	/**
+	 * @param imageView
+	 * @param maxValue
+	 */
+	private void setRectValueAnim(final ImageView imageView, int maxValue) {
+		value = ValueAnimator.ofInt(0, maxValue * 5);
+		value.addUpdateListener(new AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+
+				int height = (Integer) animation.getAnimatedValue();
+
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						UiUtil.dip2px(getApplicationContext(), 10), height);
+				imageView.setLayoutParams(params);
+			}
+		});
+		value.setDuration(1000);
+		value.start();
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {

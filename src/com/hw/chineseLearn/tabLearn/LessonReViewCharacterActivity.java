@@ -30,6 +30,7 @@ import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.util.tool.BitmapLoader;
 import com.util.tool.UiUtil;
+import com.util.tool.UtilMedthod;
 
 /**
  * 课程复习-偏旁部首-页面
@@ -235,7 +236,8 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 							.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
 									+ picName);
 					ImageView imgageView = new ImageView(context);
-					imgageView.setImageBitmap(imageFromAssetsFile);
+					imgageView.setImageBitmap(UtilMedthod
+							.translateImageColor(imageFromAssetsFile, 0));
 					RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 							mizigeWidth, mizigeWidth);
 					imgageView.setLayoutParams(layoutParams);
