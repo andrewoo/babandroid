@@ -9,15 +9,15 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Bitmap.Config;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
@@ -27,6 +27,8 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.hw.chineseLearn.base.CustomApplication;
 
 public class UtilMedthod {
 
@@ -244,19 +246,51 @@ public class UtilMedthod {
 						blue, Math.min(red, green))) / 2;
 				// int gray = (red + green + blue) / 3;
 
-//				bm.setPixel(col, row, Color.argb(alpha, gray, gray, gray));
+				// bm.setPixel(col, row, Color.argb(alpha, gray, gray, gray));
 				bm.setPixel(col, row, color);
 			}
 		}
 		Canvas c = new Canvas(bm);
 		Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
 		paint.setAntiAlias(true);
-//		paint.setColor(color);
+		// paint.setColor(color);
 		RectF rec = new RectF(0, 0, width, height);
 		c.drawRoundRect(rec, iHeight, iHeight, paint);
 
 		Drawable d = new BitmapDrawable(context.getResources(), bm);
 		return d;
+	}
+
+	/**
+	 * 改变图片中有像素部分的颜色
+	 * 
+	 * @param 改变颜色的图片    想要改变的颜色 参考如下
+	 *            
+	 * @return 改变颜色后的图片
+	 */
+	public static Bitmap getAlphaBitmap(Bitmap bitmap,int color) {
+//		public static final int BLACK       = 0xFF000000;
+//	    public static final int DKGRAY      = 0xFF444444;
+//	    public static final int GRAY        = 0xFF888888;
+//	    public static final int LTGRAY      = 0xFFCCCCCC;
+//	    public static final int WHITE       = 0xFFFFFFFF;
+//	    public static final int RED         = 0xFFFF0000;
+//	    public static final int GREEN       = 0xFF00FF00;
+//	    public static final int BLUE        = 0xFF0000FF;
+//	    public static final int YELLOW      = 0xFFFFFF00;
+//	    public static final int CYAN        = 0xFF00FFFF;
+//	    public static final int MAGENTA     = 0xFFFF00FF;
+		
+		Bitmap mAlphaBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), Config.ARGB_8888);
+		Canvas mCanvas = new Canvas(mAlphaBitmap);
+		Paint mPaint = new Paint();
+		mPaint.setColor(color);// 填入想要的颜色
+		// 从原位图中提取只包含alpha的位图
+		Bitmap alphaBitmap = bitmap.extractAlpha();
+		// 在画布上（mAlphaBitmap）绘制alpha位图
+		mCanvas.drawBitmap(alphaBitmap, 0, 0, mPaint);
+		return mAlphaBitmap;
 	}
 
 }
