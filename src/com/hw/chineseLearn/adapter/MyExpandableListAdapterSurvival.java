@@ -51,7 +51,7 @@ public class MyExpandableListAdapterSurvival extends BaseExpandableListAdapter {
 	}
 
 	public MyExpandableListAdapterSurvival(Context context,
-			ArrayList<LearnSurvivalExpandBaseModel> data) {
+			ArrayList<LearnSurvivalExpandBaseModel> data) { 
 		this.data = data;
 		this.context = context;
 		this.childInflater = LayoutInflater.from(context);

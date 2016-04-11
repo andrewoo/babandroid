@@ -1,28 +1,26 @@
 package com.hw.chineseLearn.adapter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.bean.category;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
 public class SurvivalKitAdapter extends BaseAdapter {
 	private Context context;
-	public ArrayList<LearnUnitBaseModel> list;
+	public List<category> categoryList;
 	private LayoutInflater inflater;
 
 	private int width, height;
@@ -32,10 +30,10 @@ public class SurvivalKitAdapter extends BaseAdapter {
 	int colorBlack = -1;
 
 	public SurvivalKitAdapter(Context context,
-			ArrayList<LearnUnitBaseModel> list) {
+			List<category> categoryList) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
-		this.list = list;
+		this.categoryList = categoryList;
 		resources = context.getResources();
 		colorWhite = resources.getColor(R.color.white);
 		colorBlack = resources.getColor(R.color.black);
@@ -46,13 +44,13 @@ public class SurvivalKitAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return list == null ? 0 : list.size();
+		return categoryList == null ? 0 : categoryList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return list.get(position);
+		return categoryList.get(position);
 	}
 
 	@Override
@@ -88,13 +86,18 @@ public class SurvivalKitAdapter extends BaseAdapter {
 		}
 		// convertView.setLayoutParams(new LinearLayout.LayoutParams(
 		// LayoutParams.WRAP_CONTENT, convertView.getWidth() / 3 * 4));
-		LearnUnitBaseModel model = list.get(position);
-		if (model == null) {
+		category cate = categoryList.get(position);
+		if (cate == null) {
 			return convertView;
 		}
 
-		String unitName = model.getUnitName();
-		String imageName = "" + model.getIconResSuffix();
+		String unitName = cate.getEng_name();
+		String imageName="";
+		if(cate.getComplete_dl()==0){
+			imageName = "survival_" + cate.getId();
+		}else{
+			imageName = "survival_" + cate.getId()+"_hit";
+		}
 
 		holder.txt_word_name.setText("" + unitName);
 		holder.iv_tag.setImageResource(resources.getIdentifier(imageName,
