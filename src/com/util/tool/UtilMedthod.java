@@ -211,81 +211,37 @@ public class UtilMedthod {
 	}
 
 	/**
-	 * @param context
-	 * @param w
-	 * @param h
-	 * @param corner
-	 * @param color
-	 * @return
-	 */
-	public static Drawable translateImageColor(Context context, Bitmap bmp,
-			int corner, int color) {
-		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-		double dH = (metrics.heightPixels / 100) * 1.5;
-		int iHeight = (int) dH;
-		iHeight = corner;
-
-		Bitmap bm = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(),
-				Bitmap.Config.ARGB_8888);
-
-		int width = bmp.getWidth();
-		int height = bmp.getHeight();
-
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
-				int pixel = bmp.getPixel(col, row);// ARGB
-				if (pixel == 0) {
-					continue;
-				}
-				int red = Color.red(pixel); // same as (pixel >> 16) &0xff
-				int green = Color.green(pixel); // same as (pixel >> 8) &0xff
-				int blue = Color.blue(pixel); // same as (pixel & 0xff)
-				int alpha = Color.alpha(pixel); // same as (pixel >>> 24)
-				// int gray = (int) (0.3 * red + 0.59 * green + 0.11 * blue);
-				int gray = (Math.max(blue, Math.max(red, green)) + Math.min(
-						blue, Math.min(red, green))) / 2;
-				// int gray = (red + green + blue) / 3;
-
-				// bm.setPixel(col, row, Color.argb(alpha, gray, gray, gray));
-				bm.setPixel(col, row, color);
-			}
-		}
-		Canvas c = new Canvas(bm);
-		Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
-		paint.setAntiAlias(true);
-		// paint.setColor(color);
-		RectF rec = new RectF(0, 0, width, height);
-		c.drawRoundRect(rec, iHeight, iHeight, paint);
-
-		Drawable d = new BitmapDrawable(context.getResources(), bm);
-		return d;
-	}
-
-	/**
 	 * 改变图片中有像素部分的颜色
 	 * 
-	 * @param 改变颜色的图片    想要改变的颜色 参考如下
-	 *            
-	 * @return 改变颜色后的图片
+	 * @param color
+	 *            想要改变的颜色
+	 * 
+	 * @return mAlphaBitmap 改变颜色后的图片
 	 */
-	public static Bitmap getAlphaBitmap(Bitmap bitmap,int color) {
-//		public static final int BLACK       = 0xFF000000;
-//	    public static final int DKGRAY      = 0xFF444444;
-//	    public static final int GRAY        = 0xFF888888;
-//	    public static final int LTGRAY      = 0xFFCCCCCC;
-//	    public static final int WHITE       = 0xFFFFFFFF;
-//	    public static final int RED         = 0xFFFF0000;
-//	    public static final int GREEN       = 0xFF00FF00;
-//	    public static final int BLUE        = 0xFF0000FF;
-//	    public static final int YELLOW      = 0xFFFFFF00;
-//	    public static final int CYAN        = 0xFF00FFFF;
-//	    public static final int MAGENTA     = 0xFFFF00FF;
-		
+	public static Bitmap translateImageColor(Bitmap bitmap, int color) {
+		int colorRandom;
+		int DKGRAY = 0xFF444444;
+		int GRAY = 0xFF888888;
+		int LTGRAY = 0xFFCCCCCC;
+		int RED = 0xFFFF0000;
+		int GREEN = 0xFF00FF00;
+		int BLUE = 0xFF0000FF;
+		int YELLOW = 0xFFFFFF00;
+		int CYAN = 0xFF00FFFF;
+		int MAGENTA = 0xFFFF00FF;
+
+		if (color == 0) {
+			int[] colors = { DKGRAY, GRAY, LTGRAY, RED, GREEN, BLUE, YELLOW,
+					CYAN, MAGENTA };
+			colorRandom = colors[(int) (Math.random() * colors.length)]; // 随机取数组某个位置的元素
+		} else {
+			colorRandom = color;
+		}
 		Bitmap mAlphaBitmap = Bitmap.createBitmap(bitmap.getWidth(),
 				bitmap.getHeight(), Config.ARGB_8888);
 		Canvas mCanvas = new Canvas(mAlphaBitmap);
 		Paint mPaint = new Paint();
-		mPaint.setColor(color);// 填入想要的颜色
+		mPaint.setColor(colorRandom);// 填入想要的颜色
 		// 从原位图中提取只包含alpha的位图
 		Bitmap alphaBitmap = bitmap.extractAlpha();
 		// 在画布上（mAlphaBitmap）绘制alpha位图

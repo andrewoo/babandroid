@@ -3,6 +3,8 @@ package com.hw.chineseLearn.tabLearn;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -43,6 +45,7 @@ import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.util.tool.UiUtil;
 import com.util.weight.SlideSwitch;
 import com.util.weight.SlideSwitch.SlideListener;
 
@@ -77,6 +80,17 @@ public class LessonFlashCardActivity extends BaseActivity {
 	ArrayList<TbMyCharacter> tbMyCharacterList;
 	ArrayList<TbMyWord> tbMyWordList;
 	ArrayList<TbMySentence> tbMySentenceList;
+
+	TextView remember_prefectly, remembered, barely_remembered,
+			almost_remembered, forgot, dont_know;
+
+	ImageView iv_remember_prefectly, iv_remembered, iv_barely_remembered,
+			iv_almost_remembered, iv_forgot, iv_dont_know;
+
+	int rememberPrefectlyCount, rememberedCount, barelyRememberedCount,
+			almostRememberedCount, forgotCount, dontKnowCount;
+
+	ValueAnimator value;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +177,185 @@ public class LessonFlashCardActivity extends BaseActivity {
 		tv_character_count.setText("" + characterCount);
 		tv_words_count.setText("" + wordsCount);
 		tv_sentence_count.setText("" + sentenceCount);
+
+		remember_prefectly = (TextView) contentView
+				.findViewById(R.id.remember_prefectly);
+		remembered = (TextView) contentView.findViewById(R.id.remembered);
+		barely_remembered = (TextView) contentView
+				.findViewById(R.id.barely_remembered);
+		almost_remembered = (TextView) contentView
+				.findViewById(R.id.almost_remembered);
+		forgot = (TextView) contentView.findViewById(R.id.forgot);
+		dont_know = (TextView) contentView.findViewById(R.id.dont_know);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		try {
+			tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao.getDaoMy(
+					TbMyCharacter.class).queryForAll();
+
+			tbMyWordList = (ArrayList<TbMyWord>) MyDao.getDaoMy(TbMyWord.class)
+					.queryForAll();
+
+			tbMySentenceList = (ArrayList<TbMySentence>) MyDao.getDaoMy(
+					TbMySentence.class).queryForAll();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		rememberPrefectlyCount = 0;
+		rememberedCount = 0;
+		barelyRememberedCount = 0;
+		almostRememberedCount = 0;
+		forgotCount = 0;
+		dontKnowCount = 0;
+
+		for (int i = 0; i < tbMyCharacterList.size(); i++) {
+			TbMyCharacter model = tbMyCharacterList.get(i);
+			if (model == null) {
+				continue;
+			}
+			int proficient = model.getProficient();
+			switch (proficient) {
+			case 1:
+				rememberPrefectlyCount++;
+				break;
+			case 2:
+				rememberedCount++;
+				break;
+			case 3:
+				barelyRememberedCount++;
+				break;
+			case 4:
+				almostRememberedCount++;
+				break;
+			case 5:
+				forgotCount++;
+				break;
+			case 6:
+				dontKnowCount++;
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		for (int i = 0; i < tbMyWordList.size(); i++) {
+			TbMyWord model = tbMyWordList.get(i);
+			if (model == null) {
+				continue;
+			}
+			int proficient = model.getProficient();
+			switch (proficient) {
+			case 1:
+				rememberPrefectlyCount++;
+				break;
+			case 2:
+				rememberedCount++;
+				break;
+			case 3:
+				barelyRememberedCount++;
+				break;
+			case 4:
+				almostRememberedCount++;
+				break;
+			case 5:
+				forgotCount++;
+				break;
+			case 6:
+				dontKnowCount++;
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		for (int i = 0; i < tbMySentenceList.size(); i++) {
+			TbMySentence model = tbMySentenceList.get(i);
+			if (model == null) {
+				continue;
+			}
+			int proficient = model.getProficient();
+			switch (proficient) {
+			case 1:
+				rememberPrefectlyCount++;
+				break;
+			case 2:
+				rememberedCount++;
+				break;
+			case 3:
+				barelyRememberedCount++;
+				break;
+			case 4:
+				almostRememberedCount++;
+				break;
+			case 5:
+				forgotCount++;
+				break;
+			case 6:
+				dontKnowCount++;
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		remember_prefectly.setText("" + rememberPrefectlyCount);
+		remembered.setText("" + rememberedCount);
+		barely_remembered.setText("" + barelyRememberedCount);
+		almost_remembered.setText("" + almostRememberedCount);
+		forgot.setText("" + forgotCount);
+		dont_know.setText("" + dontKnowCount);
+
+		iv_remember_prefectly = (ImageView) contentView
+				.findViewById(R.id.iv_remember_prefectly);
+		iv_remembered = (ImageView) contentView
+				.findViewById(R.id.iv_remembered);
+		iv_barely_remembered = (ImageView) contentView
+				.findViewById(R.id.iv_barely_remembered);
+		iv_almost_remembered = (ImageView) contentView
+				.findViewById(R.id.iv_almost_remembered);
+		iv_forgot = (ImageView) contentView.findViewById(R.id.iv_forgot);
+		iv_dont_know = (ImageView) contentView.findViewById(R.id.iv_dont_know);
+		
+		setRectValueAnim(iv_remember_prefectly, rememberPrefectlyCount);
+		setRectValueAnim(iv_remembered, rememberedCount);
+		setRectValueAnim(iv_barely_remembered, barelyRememberedCount);
+
+		setRectValueAnim(iv_almost_remembered, almostRememberedCount);
+		setRectValueAnim(iv_forgot, forgotCount);
+		setRectValueAnim(iv_dont_know, dontKnowCount);
+	}
+
+	/**
+	 * @param imageView
+	 * @param maxValue
+	 */
+	private void setRectValueAnim(final ImageView imageView, int maxValue) {
+		value = ValueAnimator.ofInt(0, maxValue * 5);
+		value.addUpdateListener(new AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+
+				int height = (Integer) animation.getAnimatedValue();
+
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						UiUtil.dip2px(getApplicationContext(), 10), height);
+				imageView.setLayoutParams(params);
+			}
+		});
+		value.setDuration(1000);
+		value.start();
 	}
 
 	int defaultNumber = 0;
@@ -183,7 +376,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 
 		View view = LayoutInflater.from(this).inflate(
 				R.layout.layout_title_menu1, null);
-		
+
 		tv_default_number = (TextView) view
 				.findViewById(R.id.tv_default_number);
 		tv_default_number.setText("" + 0);

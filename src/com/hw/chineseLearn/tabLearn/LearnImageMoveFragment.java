@@ -65,6 +65,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 	private MediaPlayerHelper mediaPlayerHelper;
 	private int colorBlue = 0;
+	private int colorGrey = 0;
 	private int viewMagin;
 	private int itemViewWidth;
 
@@ -108,6 +109,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		viewMagin = UiUtil.dip2px(context, 10);
 		itemViewWidth = (screenWidth - viewMagin * 2) / 3;
 		colorBlue = context.getResources().getColor(R.color.chinese_skill_blue);
+		colorGrey = context.getResources().getColor(R.color.min_grey);
 		bgWhite = context.getResources().getDrawable(R.drawable.bg_white1);
 		bgHint = UtilMedthod.setBackgroundRounded(context, itemViewWidth,
 				itemViewWidth, 10, colorBlue);
@@ -335,7 +337,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 					Bitmap bitmap = BitmapLoader
 							.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
 									+ imageName);
-					iv.setImageBitmap(bitmap);
+					iv.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
+							colorGrey));
 					RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
 							mizigeWidth, mizigeHeight);
 					iv.setLayoutParams(ly);

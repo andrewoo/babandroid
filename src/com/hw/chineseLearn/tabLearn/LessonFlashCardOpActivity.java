@@ -11,13 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.ScaleAnimation;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +28,7 @@ import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.util.tool.UiUtil;
 
 /**
  * FlashCard操作页面
@@ -44,6 +39,8 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 
 	private String TAG = "==LessonFlashCardOpActivity==";
 	public Context context;
+
+	private LinearLayout lin_1;
 	private Button btn_go;
 	private TextView tv_no;
 	private ImageView img_play;
@@ -66,8 +63,8 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	TextView btn_dont_know;
 
 	private Resources resources;
-	private int width;
-	private int height;
+	private int screenWidth;
+	private int screenHeight;
 	View contentView;
 	int characterCount = 0;
 	int wordsCount = 0;
@@ -94,8 +91,8 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 		context = this;
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 4;
-		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
+		screenWidth = CustomApplication.app.displayMetrics.widthPixels;
+		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 		resources = context.getResources();
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
@@ -113,12 +110,11 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"FlashCard", View.GONE, View.GONE, 0);
-
-		// LayoutParams py = btn_go.getLayoutParams();
-		// py.width = width;
-		// py.height = width;
-		// btn_go.setLayoutParams(py);
-		// btn_go.setOnClickListener(onClickListener);
+		lin_1 = (LinearLayout) contentView.findViewById(R.id.lin_1);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				screenWidth - UiUtil.dip2px(getApplicationContext(), 60),
+				screenHeight * 7 / 10);
+		lin_1.setLayoutParams(params);
 
 		img_play = (ImageView) contentView.findViewById(R.id.img_play);
 		tv_no = (TextView) contentView.findViewById(R.id.tv_no);
@@ -154,13 +150,13 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 		btn_remember.setOnClickListener(onClickListener);
 		btn_forget.setOnClickListener(onClickListener);
 
-		btn_remembered_perfectly.setOnClickListener(onClickListener);
-		btn_remembered.setOnClickListener(onClickListener);
-		btn_barely_remembered.setOnClickListener(onClickListener);
+		btn_remembered_perfectly.setOnClickListener(onClickListenerOp);
+		btn_remembered.setOnClickListener(onClickListenerOp);
+		btn_barely_remembered.setOnClickListener(onClickListenerOp);
 
-		btn_remembered_almost.setOnClickListener(onClickListener);
-		btn_forgot.setOnClickListener(onClickListener);
-		btn_dont_know.setOnClickListener(onClickListener);
+		btn_remembered_almost.setOnClickListener(onClickListenerOp);
+		btn_forgot.setOnClickListener(onClickListenerOp);
+		btn_dont_know.setOnClickListener(onClickListenerOp);
 
 		initDatas();
 		setText();
@@ -340,13 +336,6 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 				tv_translation.setText("" + english);
 				tv_word.setText(chinese);
 				tv_pinyin.setText(pinyin);
-
-				if (index == defaultNumber - 1) {
-					// 做完了
-					Intent intent = new Intent(LessonFlashCardOpActivity.this,
-							LessonFlashCardResultActivity.class);
-					startActivityForResult(intent, 1);
-				}
 				lin_is_gorget.setVisibility(View.VISIBLE);
 				index++;
 			} else {
@@ -451,36 +440,42 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 				lin_remember_level.setVisibility(View.GONE);
 				lin_forgot_level.setVisibility(View.VISIBLE);
 				break;
+			default:
+				break;
+			}
+		}
+	};
+
+	OnClickListener onClickListenerOp = new OnClickListener() {
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			switch (arg0.getId()) {
 
 			// remember
 			case R.id.btn_remembered_perfectly:
-				setText();
 				lin_remember_level.setVisibility(View.GONE);
 				updateDb(1);
 				break;
 			case R.id.btn_remembered:
-				setText();
 				lin_remember_level.setVisibility(View.GONE);
 				updateDb(2);
 				break;
 			case R.id.btn_barely_remembered:
-				setText();
 				lin_remember_level.setVisibility(View.GONE);
 				updateDb(3);
 				break;
 			// forgot
 			case R.id.btn_remembered_almost:
-				setText();
 				lin_forgot_level.setVisibility(View.GONE);
 				updateDb(4);
 				break;
 			case R.id.btn_forgot:
-				setText();
 				lin_forgot_level.setVisibility(View.GONE);
 				updateDb(5);
 				break;
 			case R.id.btn_dont_know:
-				setText();
 				lin_forgot_level.setVisibility(View.GONE);
 				updateDb(6);
 				break;
@@ -488,6 +483,7 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 			default:
 				break;
 			}
+
 		}
 	};
 
@@ -539,6 +535,15 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 						e.printStackTrace();
 					}
 				}
+			}
+
+			if (index == defaultNumber) {
+				// 做完了
+				Intent intent = new Intent(LessonFlashCardOpActivity.this,
+						LessonFlashCardResultActivity.class);
+				startActivityForResult(intent, 1);
+			} else {
+				setText();
 			}
 		}
 	}

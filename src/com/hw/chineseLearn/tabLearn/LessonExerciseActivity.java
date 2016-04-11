@@ -844,6 +844,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	/**
 	 * learn表中regex对应表关系
 	 */
+	@SuppressWarnings("unchecked")
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
 		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
@@ -929,6 +930,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setCharId(lgTableId);// 拿到CharId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+
 			String dirCode = lGCharacterPart.getDirCode();// 得到mp3文件名
 			dirCode = "c-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
@@ -971,10 +973,13 @@ public class LessonExerciseActivity extends BaseActivity {
 									Integer.valueOf(picList.get(i)));
 					String picName = lgCharacterPart.getPartName();
 					int partId = lgCharacterPart.getPartId();
+					String strRect = lgCharacterPart.getStrRect();
 					SubLGModel subLGModel = modelWord.new SubLGModel();
 					subLGModel.setImageName(picName);
 					subLGModel.setWordId(partId);// 拿到tag图片对应的id
+					subLGModel.setStrRect(strRect);
 					subLGModelList.add(subLGModel);// 拿到所有图片选项
+
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

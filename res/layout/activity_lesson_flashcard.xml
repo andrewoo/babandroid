@@ -157,6 +157,97 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp" >
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent" />
+
+                <ImageView
+                    android:id="@+id/iv_remember_prefectly"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_flashcard_remember_prefectly"
+                    android:maxWidth="10dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent" />
+
+                <ImageView
+                    android:id="@+id/iv_remembered"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_flashcard_remembered"
+                    android:maxWidth="10dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent" />
+
+                <ImageView
+                    android:id="@+id/iv_barely_remembered"
+                    android:layout_width="7dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_flashcard_barely_remembered"
+                    android:maxWidth="10dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent" />
+
+                <ImageView
+                    android:id="@+id/iv_almost_remembered"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_flashcard_almost_remembered"
+                    android:maxWidth="10dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent" />
+
+                <ImageView
+                    android:id="@+id/iv_forgot"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_flashcard_forgot"
+                    android:maxWidth="10dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent" />
+
+                <ImageView
+                    android:id="@+id/iv_dont_know"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_flashcard_dont_konw"
+                    android:maxWidth="10dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent" />
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

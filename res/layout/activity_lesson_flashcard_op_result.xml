@@ -9,14 +9,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0.0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="bottom"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0.0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="10dp"
@@ -34,31 +34,12 @@
                     android:layout_weight="1"
                     android:background="@color/transparent" />
 
-                <com.util.weight.RectView
-                    android:id="@+id/pro_remember_prefectly"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxWidth="10dp"
-                    android:progressDrawable="@drawable/bg_blue" 
-                    android:visibility="gone"
-                    />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/transparent" />
-
-                <View
-                    android:id="@+id/view_remembered"
+                <ImageView
+                    android:id="@+id/iv_remember_prefectly"
                     android:layout_width="10dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:text="0"
-                    android:background="@drawable/bg_blue"
-                    android:textColor="@color/remembered"
-                    android:textSize="@dimen/text_s10" />
+                    android:background="@drawable/bg_flashcard_remember_prefectly"
+                    android:maxWidth="10dp" />
 
                 <View
                     android:layout_width="wrap_content"
@@ -66,15 +47,12 @@
                     android:layout_weight="1"
                     android:background="@color/transparent" />
 
-                <TextView
-                    android:id="@+id/barely_remembered"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/iv_remembered"
+                    android:layout_width="10dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:text="10"
-                    android:textColor="@color/barely_remembered"
-                    android:textSize="@dimen/text_s10" />
+                    android:background="@drawable/bg_flashcard_remembered"
+                    android:maxWidth="10dp" />
 
                 <View
                     android:layout_width="wrap_content"
@@ -82,15 +60,12 @@
                     android:layout_weight="1"
                     android:background="@color/transparent" />
 
-                <TextView
-                    android:id="@+id/almost_remembered"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/iv_barely_remembered"
+                    android:layout_width="7dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:text="0"
-                    android:textColor="@color/almost_remembered"
-                    android:textSize="@dimen/text_s10" />
+                    android:background="@drawable/bg_flashcard_barely_remembered"
+                    android:maxWidth="10dp" />
 
                 <View
                     android:layout_width="wrap_content"
@@ -98,15 +73,12 @@
                     android:layout_weight="1"
                     android:background="@color/transparent" />
 
-                <TextView
-                    android:id="@+id/forgot"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/iv_almost_remembered"
+                    android:layout_width="10dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:text="0"
-                    android:textColor="@color/forgot"
-                    android:textSize="@dimen/text_s10" />
+                    android:background="@drawable/bg_flashcard_almost_remembered"
+                    android:maxWidth="10dp" />
 
                 <View
                     android:layout_width="wrap_content"
@@ -114,15 +86,25 @@
                     android:layout_weight="1"
                     android:background="@color/transparent" />
 
-                <TextView
-                    android:id="@+id/dont_know"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/iv_forgot"
+                    android:layout_width="10dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:text="0"
-                    android:textColor="@color/dont_know"
-                    android:textSize="@dimen/text_s10" />
+                    android:background="@drawable/bg_flashcard_forgot"
+                    android:maxWidth="10dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent" />
+
+                <ImageView
+                    android:id="@+id/iv_dont_know"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_flashcard_dont_konw"
+                    android:maxWidth="10dp" />
 
                 <View
                     android:layout_width="wrap_content"
@@ -340,44 +322,53 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="30dp" >
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/btn_redo"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="35dip"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_bg_blue"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:gravity="center"
-            android:padding="10dip"
-            android:singleLine="true"
-            android:text="Redo"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_s12" />
+            android:orientation="horizontal"
+            android:padding="30dp" >
 
-        <TextView
-            android:id="@+id/btn_continue"
-            android:layout_width="match_parent"
-            android:layout_height="35dip"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_bg_blue"
-            android:gravity="center"
-            android:padding="10dip"
-            android:singleLine="true"
-            android:text="Continue"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_s12"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/btn_redo"
+                android:layout_width="match_parent"
+                android:layout_height="35dip"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg_blue"
+                android:gravity="center"
+                android:padding="10dip"
+                android:singleLine="true"
+                android:text="Redo"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_s12" />
+
+            <TextView
+                android:id="@+id/btn_continue"
+                android:layout_width="match_parent"
+                android:layout_height="35dip"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg_blue"
+                android:gravity="center"
+                android:padding="10dip"
+                android:singleLine="true"
+                android:text="Continue"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_s12"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
