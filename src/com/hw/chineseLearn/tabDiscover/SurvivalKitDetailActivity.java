@@ -1,25 +1,29 @@
 package com.hw.chineseLearn.tabDiscover;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.adapter.MyExpandableListAdapterSurvival;
+import com.hw.chineseLearn.adapter.SurvivalListAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbMyCategory;
 import com.hw.chineseLearn.dao.bean.category;
-import com.hw.chineseLearn.model.LearnSurvivalExpandBaseModel;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.hw.chineseLearn.dao.bean.item;
 
 /**
  * 救生练习页面
@@ -31,84 +35,21 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	private String TAG = "==SurvivalKitDetailActivity==";
 	private Context context;
 	View contentView;
-//	private String title = "Title";
+	// private String title = "Title";
 	private category cate;
-	private ExpandableListView expandableListView;
-	private MyExpandableListAdapterSurvival adapter;
+//	private ExpandableListView expandableListView;
+	private SurvivalListAdapter adapter;
 
-	ArrayList<LearnSurvivalExpandBaseModel> data = new ArrayList<LearnSurvivalExpandBaseModel>();
-	ArrayList<LearnUnitBaseModel> childList = new ArrayList<LearnUnitBaseModel>();
+	List<item> data = new ArrayList<item>();
 
 	private void initData() {
-		LearnSurvivalExpandBaseModel model1 = new LearnSurvivalExpandBaseModel();
-		model1.setUnitName("Greetings");
-		model1.setChildData(childList);
-		data.add(model1);
-
-		LearnSurvivalExpandBaseModel model2 = new LearnSurvivalExpandBaseModel();
-		model2.setUnitName("Friends");
-		model2.setChildData(childList);
-		data.add(model2);
-
-		LearnSurvivalExpandBaseModel model3 = new LearnSurvivalExpandBaseModel();
-		model3.setUnitName("Wishes");
-		model3.setChildData(childList);
-		data.add(model3);
-
-		LearnSurvivalExpandBaseModel model4 = new LearnSurvivalExpandBaseModel();
-		model4.setUnitName("Question");
-		model4.setChildData(childList);
-		data.add(model4);
+		try {
+			data=MyDao.getDao(item.class).queryBuilder().where().eq("cid", cate.getId()).query();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
-
-	// public String[] groups = { "Greetings", "Friends", "Wishes", "Question"
-	// };
-	// public String[][] children = {
-	// { "Hello!", "Good morning!", "Good afternoon!", "Good evening!",
-	// "Good night!", "GoodBye!", "Thank you!",
-	// "You are welcome!", "Sorry(apology)", "it doesn't matter",
-	// "Excuse me(Attention)" },
-	// { "Miss", "Yes", "No", "Pardon?", "What's your name?",
-	// "My name is...", "Nice to meet you!", "How are you",
-	// "I am fine", "I am not fine", "and you?",
-	// "Where are you from?", "I am from...",
-	// "Where do you live?", "I live in Beijing Hotel.",
-	// "Where are you going?" },
-	// { "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-	// "C11" },
-	// { "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-	// "A14", "B23" },
-	// { "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-	// "B24", "B23", "B23" },
-	// { "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-	// "C11" },
-	// { "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-	// "A14" },
-	// { "B21", "B22", "B23", "B24", "B24", "B24" },
-	// { "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-	// "C11" },
-	// { "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-	// "A14" },
-	// { "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-	// "B24" },
-	// { "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-	// "C11" },
-	// { "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-	// "A14" },
-	// { "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-	// "B24" },
-	// { "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-	// "C11" },
-	// { "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-	// "A14" },
-	// { "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-	// "B24" },
-	// { "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-	// "C11" },
-	// { "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-	// "A14" },
-	// { "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-	// "B24" } };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,36 +73,54 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	 */
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE,
-				R.drawable.btn_selector_top_left_black, cate.getEng_name(), View.GONE,
-				View.GONE, 0);
-		System.out.println("cate.getEng_name()"+cate.getEng_name());
-		initChildList();
-		initData(); 
+				R.drawable.btn_selector_top_left_black, cate.getEng_name(),
+				View.GONE, View.GONE, 0);
+		// initChildList();
+		initData();
+		initView();
 
-		expandableListView = (ExpandableListView) contentView
-				.findViewById(R.id.expandableListView);
-		adapter = new MyExpandableListAdapterSurvival(context, data);
-		expandableListView.setAdapter(adapter);
-		// 监听父列表的弹出事件
-		expandableListView
-				.setOnGroupExpandListener(new ExpandableListViewListenerC());
-		// 监听父列表的关闭事件
-		expandableListView
-				.setOnGroupCollapseListener(new ExpandableListViewListenerB());
-		// 监听子列表
-		expandableListView
-				.setOnChildClickListener(new ExpandableListViewListenerA());
+		// expandableListView = (ExpandableListView) contentView
+		// .findViewById(R.id.expandableListView);
+		// adapter = new MyExpandableListAdapterSurvival(context, data);
+		// expandableListView.setAdapter(adapter);
+		// // 监听父列表的弹出事件
+		// expandableListView
+		// .setOnGroupExpandListener(new ExpandableListViewListenerC());
+		// // 监听父列表的关闭事件
+		// expandableListView
+		// .setOnGroupCollapseListener(new ExpandableListViewListenerB());
+		// // 监听子列表
+		// expandableListView
+		// .setOnChildClickListener(new ExpandableListViewListenerA());
 	}
 
-	private void initChildList() {
+	private void initView() {
+		listView = (ListView) contentView.findViewById(R.id.listview);
+		adapter=new SurvivalListAdapter(this,(ArrayList<item>) data);
+		listView.setAdapter(adapter);
 
-		for (int i = 0; i < 11; i++) {
-			LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-			modelBase1.setUnitName("" + (i + 1));
-			modelBase1.setEnable(false);
-			childList.add(modelBase1);
-		}
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				adapter.setSelection(position);
+				adapter.notifyDataSetChanged();
+			}
+			
+		});
 	}
+
+	// private void initChildList() {
+	//
+	// for (int i = 0; i < 11; i++) {
+	// LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
+	// modelBase1.setUnitName("" + (i + 1));
+	// modelBase1.setEnable(false);
+	// childList.add(modelBase1);
+	// }
+	// }
 
 	OnClickListener onClickListener = new OnClickListener() {
 
@@ -181,6 +140,7 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 			}
 		}
 	};
+	private ListView listView;
 
 	/**
 	 * 顶部标题栏
@@ -235,21 +195,21 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	 * @author Administrator
 	 * 
 	 */
-	public class ExpandableListViewListenerA implements
-			ExpandableListView.OnChildClickListener {
-
-		@Override
-		public boolean onChildClick(ExpandableListView parent, View view,
-				int groupPosition, int childPosition, long id) {
-			// TODO Auto-generated method stub
-
-			adapter.setSelection(groupPosition, childPosition);
-			adapter.notifyDataSetChanged();
-			Log.d(TAG, "groupPosition:" + groupPosition);
-			Log.d(TAG, "childPosition:" + childPosition);
-			return true;
-		}
-	}
+//	public class ExpandableListViewListenerA implements
+//			ExpandableListView.OnChildClickListener {
+//
+//		@Override
+//		public boolean onChildClick(ExpandableListView parent, View view,
+//				int groupPosition, int childPosition, long id) {
+//			// TODO Auto-generated method stub
+//
+//			adapter.setSelection(groupPosition, childPosition);
+//			adapter.notifyDataSetChanged();
+//			Log.d(TAG, "groupPosition:" + groupPosition);
+//			Log.d(TAG, "childPosition:" + childPosition);
+//			return true;
+//		}
+//	}
 
 	/**
 	 * 监听父级列表的关闭事件事件
@@ -257,15 +217,15 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	 * @author Administrator
 	 * 
 	 */
-	public class ExpandableListViewListenerB implements
-			ExpandableListView.OnGroupCollapseListener {
-
-		@Override
-		public void onGroupCollapse(int groupPosition) {
-			// TODO Auto-generated method stub
-			Log.d(TAG, "关闭");
-		}
-	}
+//	public class ExpandableListViewListenerB implements
+//			ExpandableListView.OnGroupCollapseListener {
+//
+//		@Override
+//		public void onGroupCollapse(int groupPosition) {
+//			// TODO Auto-generated method stub
+//			Log.d(TAG, "关闭");
+//		}
+//	}
 
 	/**
 	 * 监听父级列表的弹出事件
@@ -273,13 +233,13 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	 * @author Administrator
 	 * 
 	 */
-	public class ExpandableListViewListenerC implements
-			ExpandableListView.OnGroupExpandListener {
-		@Override
-		public void onGroupExpand(int groupPosition) {
-			// TODO Auto-generated method stub
-			Log.d(TAG, "弹出");
-		}
-	}
+//	public class ExpandableListViewListenerC implements
+//			ExpandableListView.OnGroupExpandListener {
+//		@Override
+//		public void onGroupExpand(int groupPosition) {
+//			// TODO Auto-generated method stub
+//			Log.d(TAG, "弹出");
+//		}
+//	}
 
 }

@@ -1,5 +1,6 @@
 package com.hw.chineseLearn.tabDiscover;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,13 @@ import com.hw.chineseLearn.adapter.SurvivalKitAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbMyCategory;
 import com.hw.chineseLearn.dao.bean.category;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.HttpHandler;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
 
 /**
  * 生存模式
@@ -37,8 +43,8 @@ public class SurvivalKitActivity extends BaseActivity {
 	View contentView;
 	ListView lv_survival;
 	SurvivalKitAdapter adapter;
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
 	private List<category> categoryList=new ArrayList<category>();//数据库中所有category
+	private List<TbMyCategory> myCategoryList=new ArrayList<TbMyCategory>();//所有TbMyCategory
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,26 +62,28 @@ public class SurvivalKitActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onResume();
 
-		if (CustomApplication.app.favouriteList.size() != 0) {
-			LearnUnitBaseModel modelBase = new LearnUnitBaseModel();
-			modelBase.setIconResSuffix("favorite_img");
-			modelBase.setUnitName("Favourite");
-			listBase.set(0, modelBase);
-		} else {
-			for (int i = 0; i < listBase.size(); i++) {
-				LearnUnitBaseModel modelBase = listBase.get(i);
-
-				if (modelBase == null) {
-					continue;
-				}
-				String unitName = modelBase.getUnitName();
-				if ("Favourite".equals(unitName)) {
-					listBase.remove(i);
-					break;
-				}
-			}
+//		if (CustomApplication.app.favouriteList.size() != 0) {
+//			LearnUnitBaseModel modelBase = new LearnUnitBaseModel();
+//			modelBase.setIconResSuffix("favorite_img");
+//			modelBase.setUnitName("Favourite");
+//			listBase.set(0, modelBase);
+//		} else {
+//			for (int i = 0; i < listBase.size(); i++) {
+//				LearnUnitBaseModel modelBase = listBase.get(i);
+//
+//				if (modelBase == null) {
+//					continue;
+//				}
+//				String unitName = modelBase.getUnitName();
+//				if ("Favourite".equals(unitName)) {
+//					listBase.remove(i);
+//					break;
+//				}
+//			}
+//		}
+		if(adapter!=null){
+			adapter.notifyDataSetChanged();
 		}
-		adapter.notifyDataSetChanged();
 
 	}
 
@@ -87,11 +95,17 @@ public class SurvivalKitActivity extends BaseActivity {
 				"Survival Kit", View.GONE, View.GONE, 0);
 		lv_survival = (ListView) contentView.findViewById(R.id.lv_survival);
 		lv_survival.setOnItemClickListener(onItemclickListener);
-//		initDatas();
 		initDBDatas();
+		initIcon();
 		adapter = new SurvivalKitAdapter(context, categoryList);
 		lv_survival.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
+	}
+
+	private void initIcon() {
+		for (int i = 0; i < categoryList.size(); i++) {
+			categoryList.get(i).setComplete_dl(myCategoryList.get(i).getComplete_dl());
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -99,73 +113,11 @@ public class SurvivalKitActivity extends BaseActivity {
 		//从数据库中拿到测试的数据
 		try {
 			categoryList = MyDao.getDao(category.class).queryForAll();
+			myCategoryList = MyDao.getDaoMy((TbMyCategory.class)).queryForAll();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	}
-
-	private void initDatas() {
-		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-		modelBase1.setIconResSuffix("survival_0_0_1");
-		modelBase1.setUnitName("Basics");
-		listBase.add(modelBase1);
-
-		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
-		modelBase2.setIconResSuffix("survival_0_1_1");
-		modelBase2.setUnitName("Flirting");
-		listBase.add(modelBase2);
-
-		LearnUnitBaseModel modelBase3 = new LearnUnitBaseModel();
-		modelBase3.setIconResSuffix("survival_0_2_1");
-		modelBase3.setUnitName("Food");
-		listBase.add(modelBase3);
-
-		LearnUnitBaseModel modelBase4 = new LearnUnitBaseModel();
-		modelBase4.setIconResSuffix("survival_1_0_0");
-		modelBase4.setUnitName("Emergency");
-		listBase.add(modelBase4);
-
-		LearnUnitBaseModel modelBase5 = new LearnUnitBaseModel();
-		modelBase5.setIconResSuffix("survival_1_1_0");
-		modelBase5.setUnitName("Health");
-		listBase.add(modelBase5);
-
-		LearnUnitBaseModel modelBase6 = new LearnUnitBaseModel();
-		modelBase6.setIconResSuffix("survival_1_2_0");
-		modelBase6.setUnitName("Shopping");
-		listBase.add(modelBase6);
-
-		LearnUnitBaseModel modelBase7 = new LearnUnitBaseModel();
-		modelBase7.setIconResSuffix("survival_2_0_0");
-		modelBase7.setUnitName("Entertainment");
-		listBase.add(modelBase7);
-
-		LearnUnitBaseModel modelBase8 = new LearnUnitBaseModel();
-		modelBase8.setIconResSuffix("survival_2_1_0");
-		modelBase8.setUnitName("Sightseeing");
-		listBase.add(modelBase8);
-
-		LearnUnitBaseModel modelBase9 = new LearnUnitBaseModel();
-		modelBase9.setIconResSuffix("survival_2_2_0");
-		modelBase9.setUnitName("Signs in Public");
-		listBase.add(modelBase9);
-
-		LearnUnitBaseModel modelBase10 = new LearnUnitBaseModel();
-		modelBase10.setIconResSuffix("survival_3_0_0");
-		modelBase10.setUnitName("Accommodation");
-		listBase.add(modelBase10);
-
-		LearnUnitBaseModel modelBase11 = new LearnUnitBaseModel();
-		modelBase11.setIconResSuffix("survival_3_1_0");
-		modelBase11.setUnitName("Number");
-		listBase.add(modelBase11);
-
-		LearnUnitBaseModel modelBase12 = new LearnUnitBaseModel();
-		modelBase12.setIconResSuffix("survival_3_2_0");
-		modelBase12.setUnitName("Tools");
-		listBase.add(modelBase12);
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {
@@ -191,11 +143,25 @@ public class SurvivalKitActivity extends BaseActivity {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-			// TODO Auto-generated method stub
+			//点击后查表 确定是 跳转界面还是下载
 			 category category = categoryList.get(arg2);
-			Intent intent = new Intent(SurvivalKitActivity.this,SurvivalKitDetailActivity.class);
-			intent.putExtra("category", category);
-			startActivity(intent);
+			
+			int cid = category.getId();
+			int complete_dl; 
+			try {
+				TbMyCategory tbMyCategory=(TbMyCategory) MyDao.getDaoMy(TbMyCategory.class).queryForId(cid);
+				complete_dl = tbMyCategory.getComplete_dl();
+			} catch (SQLException e) {e.printStackTrace();}
+			if(cid==0){//如果是0 下载 显示下载动画
+				//查询数据库是否为空 如果不为空isUploading=true
+				//欠你一个动画 根据数据库中的值 给定动画位置
+				download();
+				
+			}else{//跳转界面
+				Intent intent = new Intent(SurvivalKitActivity.this,SurvivalKitDetailActivity.class);
+				intent.putExtra("category", category);
+				startActivity(intent);
+			}
 		}
 	};
 
@@ -245,6 +211,41 @@ public class SurvivalKitActivity extends BaseActivity {
 		iv_title_right.setVisibility(imgRight);
 		iv_title_right.setImageResource(imgRightDrawable);
 
+	}
+
+	private boolean isUploading;//是否正在下载
+	protected void download() {
+		HttpUtils http = new HttpUtils();
+		HttpHandler handler = http.download("https://d2kox946o1unj2.cloudfront.net/cssc_1.zip",
+		    "/sdcard/cssc_1.zip",
+		    true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
+		    true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
+		    new RequestCallBack<File>() {
+
+				@Override
+		        public void onStart() {
+					isUploading=true;
+		        }
+
+		        @Override
+		        public void onLoading(long total, long current, boolean isUploading) {
+		        	
+		        	
+		        }
+
+		        @Override
+		        public void onSuccess(ResponseInfo<File> responseInfo) {
+//		            testTextView.setText("downloaded:" + responseInfo.result.getPath());
+		        	isUploading=false;
+		        }
+
+
+		        @Override
+		        public void onFailure(HttpException error, String msg) {
+		        	isUploading=false;
+		        }
+		});
+		
 	}
 
 }
