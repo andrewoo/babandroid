@@ -1,5 +1,6 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import com.util.tool.BitmapLoader;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.tool.UtilMedthod;
+import com.util.tool.VmChangeRunable;
 
 /**
  * 课程复习-偏旁部首-页面
@@ -65,17 +67,18 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	ReviewCharListAdapter reviewListAdapter;
 	ArrayList<LGCharacter> listBase = new ArrayList<LGCharacter>();
 	ArrayList<TbMyCharacter> tbMyCharList;
-
+	private static final String ASSETS_SOUNDS_PATH = "sounds/";
+	private String voicePath;
 	private MediaPlayerHelper mediaPlayerHelper;
 	boolean isRecord = false;
 	String lastRecFileName = "";
-	private MediaPlayer mediaPlayer;
 	private AudioRecorder mr;
 	private String flag = "listen";
 	/**
 	 * 获取的音量大小
 	 */
 	int vmValue = 0;
+	String filePath = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +94,22 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		mizigeHeight = mizigeWidth;
 		resources = context.getResources();
 		lastRecFileName = "babbel_record";
-		mediaPlayerHelper = new MediaPlayerHelper(
-				DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName + ".amr");
+		filePath = DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName
+				+ ".amr";
+		File file = new File(filePath);
+		if (file.exists()) {
+			Log.d(TAG, "file.exists()！");
+			file.delete();
+		}
 		init();
+	}
+
+	private void play() {
+		if (mediaPlayerHelper == null) {
+			mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
+					+ voicePath);
+		}
+		mediaPlayerHelper.play();
 	}
 
 	/**
@@ -113,7 +129,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		img_record.setOnClickListener(onClickListener);
 
 		img_loop = (ImageView) contentView.findViewById(R.id.img_loop);
-		img_record.setVisibility(View.GONE);
+		img_loop.setVisibility(View.GONE);
 		img_loop.setOnClickListener(onClickListener);
 
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -239,6 +255,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 			}
 		}
 	};
+	Thread thread = null;
 
 	@SuppressLint("NewApi")
 	private void setRecoedBg() {
@@ -260,7 +277,8 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 						Log.e(TAG, "volume " + volume);
 						vmValue = 15 * volume / 32768;
 						Log.e(TAG, "vmValue " + vmValue);
-						new Thread(new VmChangeRunAble()).start();
+						thread = new Thread(new VmChangeRunAble());
+						thread.start();
 						return 0;
 					}
 				});
@@ -276,8 +294,9 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 					mr.stop();
 					mr = null;
 				}
-
-				mediaPlay();
+				mediaPlayerHelper = null;
+				mediaPlayerHelper = new MediaPlayerHelper(filePath);
+				mediaPlayerHelper.play();
 				img_loop.setVisibility(View.VISIBLE);
 				img_record.setBackground(resources
 						.getDrawable(R.drawable.recorder_animate_bg));
@@ -294,14 +313,31 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	 * 
 	 */
 	public void mediaPlay() {
-		mediaPlayerHelper.play();
+		if (mediaPlayerHelper != null) {
+			mediaPlayerHelper.play();
+		}
 	}
 
 	/**
 	 * 
 	 */
 	public void mediaStop() {
-		mediaPlayerHelper.stop();
+		if (mediaPlayerHelper != null) {
+			mediaPlayerHelper.stop();
+		}
+
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		mediaStop();
+		mediaPlayerHelper = null;
+		if (thread != null) {
+			thread.destroy();
+			thread = null;
+		}
 	}
 
 	/**
@@ -499,6 +535,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 			reviewListAdapter.setSelection(position);
 			reviewListAdapter.notifyDataSetChanged();
 			setPartAnswer(position);
+
 		}
 	};
 	private static final String ASSETS_LGCHARACTERPART_PATH = "data/character_part/";
@@ -543,6 +580,12 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 
 				String translation = model.getTranslation();
 				tv_translation.setText(translation);
+
+				int lgTableId = model.getCharId();
+				String dirCode = model.getDirCode();
+				voicePath = "c-" + lgTableId + "-" + dirCode + ".mp3";
+				mediaPlayerHelper = null;
+				play();
 			}
 
 		} else {
