@@ -1,6 +1,8 @@
 package com.hw.chineseLearn.tabDiscover;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +21,8 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.SurvivalKitAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.category;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
 /**
@@ -34,6 +38,7 @@ public class SurvivalKitActivity extends BaseActivity {
 	ListView lv_survival;
 	SurvivalKitAdapter adapter;
 	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
+	private List<category> categoryList=new ArrayList<category>();//数据库中所有category
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +87,23 @@ public class SurvivalKitActivity extends BaseActivity {
 				"Survival Kit", View.GONE, View.GONE, 0);
 		lv_survival = (ListView) contentView.findViewById(R.id.lv_survival);
 		lv_survival.setOnItemClickListener(onItemclickListener);
-		initDatas();
-		adapter = new SurvivalKitAdapter(context, listBase);
+//		initDatas();
+		initDBDatas();
+		adapter = new SurvivalKitAdapter(context, categoryList);
 		lv_survival.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void initDBDatas() {
+		//从数据库中拿到测试的数据
+		try {
+			categoryList = MyDao.getDao(category.class).queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void initDatas() {
@@ -174,14 +192,13 @@ public class SurvivalKitActivity extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			// TODO Auto-generated method stub
-			String title = listBase.get(arg2).getUnitName();
-			Intent intent = new Intent(SurvivalKitActivity.this,
-					SurvivalKitDetailActivity.class);
-			intent.putExtra("title", title);
+			 category category = categoryList.get(arg2);
+			Intent intent = new Intent(SurvivalKitActivity.this,SurvivalKitDetailActivity.class);
+			intent.putExtra("category", category);
 			startActivity(intent);
-
 		}
 	};
+
 
 	/**
 	 * 顶部标题栏

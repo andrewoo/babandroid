@@ -17,6 +17,7 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.MyExpandableListAdapterSurvival;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.bean.category;
 import com.hw.chineseLearn.model.LearnSurvivalExpandBaseModel;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
@@ -30,7 +31,8 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	private String TAG = "==SurvivalKitDetailActivity==";
 	private Context context;
 	View contentView;
-	private String title = "Title";
+//	private String title = "Title";
+	private category cate;
 	private ExpandableListView expandableListView;
 	private MyExpandableListAdapterSurvival adapter;
 
@@ -118,8 +120,8 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 		context = this;
 		Bundle budle = this.getIntent().getExtras();
 		if (budle != null) {
-			if (budle.containsKey("title")) {
-				title = budle.getString("title");
+			if (budle.containsKey("category")) {
+				cate = (category) budle.getSerializable("category");
 			}
 		}
 		init();
@@ -130,10 +132,11 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	 */
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE,
-				R.drawable.btn_selector_top_left_black, title, View.GONE,
+				R.drawable.btn_selector_top_left_black, cate.getEng_name(), View.GONE,
 				View.GONE, 0);
+		System.out.println("cate.getEng_name()"+cate.getEng_name());
 		initChildList();
-		initData();
+		initData(); 
 
 		expandableListView = (ExpandableListView) contentView
 				.findViewById(R.id.expandableListView);
