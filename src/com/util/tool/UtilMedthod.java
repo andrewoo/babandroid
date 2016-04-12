@@ -249,4 +249,24 @@ public class UtilMedthod {
 		return mAlphaBitmap;
 	}
 
+	/**
+	 * @param bitmap
+	 * @param color
+	 * @return
+	 */
+	public static Bitmap getImageHasAlpha(Bitmap bitmap) {
+
+		// 从原位图中提取只包含alpha的位图
+		Bitmap alphaBitmap = bitmap.extractAlpha();
+		int w = alphaBitmap.getWidth();
+		int h = alphaBitmap.getHeight();
+		Bitmap mAlphaBitmap = Bitmap.createBitmap(w, h, Config.ARGB_8888);
+		Canvas mCanvas = new Canvas(mAlphaBitmap);
+		Paint mPaint = new Paint();
+		mPaint.setColor(0xFFFF0000);
+		// 在画布上（mAlphaBitmap）绘制alpha位图
+		mCanvas.drawBitmap(alphaBitmap, 0, 0, mPaint);
+		return mAlphaBitmap;
+	}
+
 }

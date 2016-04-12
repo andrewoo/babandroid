@@ -559,10 +559,14 @@ public class UiUtil {
 	 */
 	public static String[] getListFormString(String str) {
 		// String strEnd = str.substring(str.length() - 1, str.length());
+		if (str == null) {
+			return null;
+		}
 		if (str.endsWith(";")) {
 			str = str.substring(0, str.length() - 1);// 去掉最后一个字符
 			Log.d(TAG, "str:" + str);
 		}
+
 		return str.split(";");
 	}
 

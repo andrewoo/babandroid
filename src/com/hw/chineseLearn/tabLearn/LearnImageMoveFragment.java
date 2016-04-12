@@ -1,12 +1,14 @@
 package com.hw.chineseLearn.tabLearn;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
-import android.app.UiModeManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -80,6 +82,11 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	ImageView mizigeView;
 	Drawable bgWhite, bgHint;
 	boolean isSetHint = false;
+	/**
+	 * 所有选项和view的对应map
+	 */
+	HashMap<ImageView, SubLGModel> subLGModelMap = new HashMap<ImageView, SubLGModel>();
+	HashMap<ImageView, SubLGModel> choosedSubLGModelMap = new HashMap<ImageView, SubLGModel>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -120,6 +127,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		tv_word = (TextView) contentView.findViewById(R.id.tv_word);
 		tv_word.setText(title);// 拿到title
 		rel_root = (RelativeLayout) contentView.findViewById(R.id.rel_root);
+		rel_root.bringToFront();
 		rel_top = (RelativeLayout) contentView.findViewById(R.id.rel_top);
 
 		iv_dv_view = (ImageView) contentView.findViewById(R.id.iv_dv_view);
@@ -304,8 +312,11 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				R.drawable.mizige));
 		mizigeView.setFocusable(false);
 		rel_root.addView(mizigeView);
+		int xx = pointList.get(3).x;
+		Log.d(TAG, "pointList.get(3).x:" + xx);
 		mizigeX = pointList.get(3).x + itemViewWidth + viewMagin;
 		mizigeY = pointList.get(3).y;
+
 		moveViewWithFingerUp(mizigeView, mizigeX, mizigeY);
 		findAndSetAnswerViews();
 	}
@@ -373,16 +384,18 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			SubLGModel model = subLGModelList.get(i);
 			if (model != null) {
 				String imageName = model.getImageName();
+				String strRect = model.getStrRect();// x.y.宽.高.
 				int wordId = model.getWordId();
 				Bitmap bitmap = BitmapLoader
 						.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
 								+ imageName);
 				imageView.setImageBitmap(bitmap);
 				// imageView.setTag(wordId);
-				// imageView.setBackground(bgWhite);
+
 			} else {
 				Log.e(TAG, "initMoveViews,subLGModel == null");
 			}
+			subLGModelMap.put(imageView, model);// 建立对应关系
 			moveViewList.add(imageView);
 			rel_root.addView(imageView);
 
@@ -481,8 +494,12 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private ImageView iv_dv_view;
 	private List<String> answerList;
 
+	private float scale = 0.0f;
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
+
+		scale = (float) mizigeWidth / (float) 420;// 缩放比
 		ImageView imageView = (ImageView) v;
 		imageView.bringToFront();
 		Bitmap bitmap = ((BitmapDrawable) (imageView.getDrawable()))
@@ -497,6 +514,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		// // imageView.dispatchTouchEvent(event);
 		// UiUtil.showToast(context, "没有点击透明区域");
 		// }
+		SubLGModel model = subLGModelMap.get(imageView);
 
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
@@ -505,7 +523,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			rel_top.getLocationInWindow(locations);
 			// lin_lin在屏幕中的y
 			relTopHeight = locations[1];
-			// Log.d(TAG, "relTopHeight:" + relTopHeight);
+			Log.d(TAG, "relTopHeight:" + relTopHeight);
 			break;
 		case MotionEvent.ACTION_MOVE:
 			moveViewWithFinger(imageView, event.getRawX(), event.getRawY());// 动态设置view的位置，拖动效果
@@ -516,23 +534,80 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			float X = event.getRawX();
 			float Y = event.getRawY();
 
-			// Log.d(TAG, "X：" + X);
-			// Log.d(TAG, "mizigeX：" + mizigeX);
-			// Log.d(TAG, "mizigeView.getWidth()：" + mizigeView.getWidth());
-			//
-			// Log.d(TAG, "Y：" + Y);
-			// Log.d(TAG, "mizigeY：" + mizigeY);
-			// Log.d(TAG, "mizigeView.getHeight()：" + mizigeView.getHeight());
+			int[] locationss = new int[2];
+			imageView.getLocationInWindow(locationss);
+			// lin_lin在屏幕中的y
+			int x = locationss[0];
+			int y = locationss[1];
+			Log.d(TAG, "imageView-X:" + x);
+			Log.d(TAG, "imageView-Y:" + y);
 
-			if ((X > (mizigeX - imageView.getWidth() / 2) && X < (mizigeX + mizigeView
-					.getWidth()))
-					&& (Y > (mizigeY + imageView.getHeight() / 2))
-					&& Y < (mizigeY + mizigeView.getHeight())) {
-				// 拖到了米字格的区域
-				UiUtil.showToast(context, "拖到了");
-			} else {
-				UiUtil.showToast(context, "木拖到");
-				moveToOrignPosition(imageView);
+			String strRect = model.getStrRect();
+			if (strRect != null) {
+				Log.d(TAG, "strRect:" + strRect);
+				String[] strRectList = strRect.split(",");
+
+				if (strRectList.length == 4) {
+					String xStr = strRectList[0];
+					String yStr = strRectList[1];
+					String wStr = strRectList[2];
+					String hStr = strRectList[3];
+					int l = 0;
+					int t = 0;
+					int w = 0;
+					int h = 0;
+					try {
+						l = Integer.parseInt(xStr);
+						t = Integer.parseInt(yStr);
+						w = Integer.parseInt(wStr);
+						h = Integer.parseInt(hStr);
+
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					// 缩放后的值
+					float l1 = scale * l;// left
+					float t1 = scale * t;// top
+					float r1 = (420 - l - w) * scale;// right
+					float b1 = (420 - t - h) * scale;// bottom
+
+					Log.d(TAG, "缩放后的值l1:" + l1);
+					Log.d(TAG, "缩放后的值t1:" + t1);
+					Log.d(TAG, "缩放后的值r1:" + r1);
+					Log.d(TAG, "缩放后的值b1:" + b1);
+
+					Log.d(TAG, "X:" + X);
+					Log.d(TAG, "Y:" + Y);
+					Log.d(TAG,
+							"UiUtil.dip2px(context, 20):"
+									+ UiUtil.dip2px(context, 20));
+
+					Log.d(TAG, "mizigeX:" + mizigeX);
+					Log.d(TAG, "mizigeY:" + mizigeY);
+					Log.d(TAG, "mizigeWidth:" + mizigeWidth);
+
+					if (((x + l1) > (mizigeX + UiUtil.dip2px(context, 20)))
+							&& (y + t1 > (mizigeY + relTopHeight))
+							&& (x + mizigeWidth - r1) < (mizigeX + mizigeWidth + UiUtil
+									.dip2px(context, 20))
+							&& (y + mizigeHeight - b1) < (mizigeY
+									+ mizigeHeight + relTopHeight)) {
+						// 拖到了米字格的区域
+						UiUtil.showToast(context,
+								"拖到了" + "id:" + model.getWordId());
+						choosedSubLGModelMap.put(imageView, model);
+
+					} else {
+						UiUtil.showToast(context, "木拖到");
+						moveToOrignPosition(imageView);
+						if (choosedSubLGModelMap.containsKey(imageView)) {
+							choosedSubLGModelMap.remove(imageView);
+						}
+					}
+
+					checkAnswer();
+				}
+
 			}
 
 			break;
@@ -557,9 +632,64 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		}
 	}
 
+	private void checkAnswer() {
+		StringBuffer buffer = new StringBuffer();
+		StringBuffer buffer1 = new StringBuffer();
+		for (int i = 0; i < answerList.size(); i++) {
+			String idStr = answerList.get(i);
+			int id = -1;
+			try {
+				id = Integer.parseInt(idStr);
+				buffer = buffer.append("" + id + ";");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		Log.d(TAG, "正确答案Id:" + buffer.toString());
+		Log.d(TAG,
+				"---------------------------------------------------------------");
+
+		for (Map.Entry<ImageView, SubLGModel> entry : choosedSubLGModelMap
+				.entrySet()) {
+			SubLGModel model = entry.getValue();
+			if (model == null) {
+				continue;
+			}
+			int mapId = model.getWordId();
+			buffer1 = buffer1.append("" + mapId + ";");
+		}
+		Log.d(TAG, "选择的Id:" + buffer1.toString());
+	}
+
 	@Override
 	public boolean isRight() {
-		return true;
+		int rightIdCount = 0;
+		int chooseIdCount = 0;
+		for (int i = 0; i < answerList.size(); i++) {
+			String idStr = answerList.get(i);
+			int id = -1;
+			try {
+				id = Integer.parseInt(idStr);
+				rightIdCount = rightIdCount + id;
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+
+		for (Map.Entry<ImageView, SubLGModel> entry : choosedSubLGModelMap
+				.entrySet()) {
+			SubLGModel model = entry.getValue();
+			if (model == null) {
+				continue;
+			}
+			int mapId = model.getWordId();
+			chooseIdCount = chooseIdCount + mapId;
+		}
+		if (rightIdCount == chooseIdCount) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
