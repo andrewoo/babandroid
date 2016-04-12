@@ -28,6 +28,7 @@ public class SurvivalKitAdapter extends BaseAdapter {
 	private Resources resources = null;
 	int colorWhite = -1;
 	int colorBlack = -1;
+	private boolean isUploading;
 
 	public SurvivalKitAdapter(Context context,
 			List<category> categoryList) {
@@ -62,6 +63,10 @@ public class SurvivalKitAdapter extends BaseAdapter {
 	public void setSelection(int position) {
 		this.selectPosition = position;
 	}
+	
+	public void setUploading(boolean isUploading) {
+		this.isUploading = isUploading;
+	}
 
 	int count = 1;
 	// 存放view的集合
@@ -77,9 +82,8 @@ public class SurvivalKitAdapter extends BaseAdapter {
 			convertView = inflater.inflate(
 					R.layout.layout_survival_kit_list_item, null);
 			holder.iv_tag = (ImageView) convertView.findViewById(R.id.img_tag);
-			holder.txt_word_name = (TextView) convertView
-					.findViewById(R.id.txt_word_name);
-
+			holder.txt_word_name = (TextView) convertView.findViewById(R.id.txt_word_name);
+			holder.iv_arrow = (ImageView) convertView.findViewById(R.id.iv_arrow);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -95,8 +99,14 @@ public class SurvivalKitAdapter extends BaseAdapter {
 		String imageName="";
 		if(cate.getComplete_dl()==0){
 			imageName = "survival_" + cate.getId();
+			if(isUploading){
+				holder.iv_arrow .setBackgroundResource(R.drawable.item_show_arrow);//暂时测试用 下载中的图片
+			}else{
+				holder.iv_arrow .setBackgroundResource(R.drawable.ls_dl_btn);
+			}
 		}else{
 			imageName = "survival_" + cate.getId()+"_hit";
+			holder.iv_arrow .setBackgroundResource(R.drawable.arrow);
 		}
 
 		holder.txt_word_name.setText("" + unitName);
@@ -122,7 +132,8 @@ public class SurvivalKitAdapter extends BaseAdapter {
 
 	public class ViewHolder {
 
-		private ImageView iv_tag;
+		public ImageView iv_tag;
 		public TextView txt_word_name;
+		public ImageView iv_arrow;
 	}
 }

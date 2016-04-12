@@ -5,8 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -26,8 +23,8 @@ import android.widget.LinearLayout.LayoutParams;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.dao.MyDao;
-import com.hw.chineseLearn.dao.bean.Unit;
-import com.j256.ormlite.dao.Dao;
+import com.hw.chineseLearn.dao.bean.TbMyCategory;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.tool.FileTools;
 import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
@@ -174,7 +171,7 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.splash);
 		// copyfile();
-		FileTools.copyDb("chineselearn.db");
+		initDB();
 		iv_bg = (ImageView) findViewById(R.id.iv_bg);
 
 		LayoutParams layoutParams1 = (LayoutParams) iv_bg.getLayoutParams();
@@ -207,6 +204,28 @@ public class SplashActivity extends BaseActivity {
 			}
 		}, 1);
 
+	}
+
+	/**
+	 * 复制数据库和插入初始值
+	 */
+	private void initDB() {
+		FileTools.copyDb("chineselearn.db");
+		TbMyCategory tb=new TbMyCategory();
+		tb.setId(1);
+		tb.setComplete_dl(1);
+		try {
+			MyDao.getDaoMy(TbMyCategory.class).update(tb);//初始化TbMyCategory表
+			FileTools.unZip(this, "downsound/cssc_1.zip", DatabaseHelperMy.CACHE_DIR_DOWNLOAD+"/kit");//解压第一个文件CACHE_DIR_DOWNLOAD
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		
 	}
 
 }

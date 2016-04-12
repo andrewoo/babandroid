@@ -31,10 +31,12 @@
             android:textSize="@dimen/text_s16" />
 
         <ImageView
+            android:id="@+id/iv_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:scaleType="fitXY"
             android:background="@drawable/arrow" />
     </RelativeLayout>
 
