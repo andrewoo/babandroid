@@ -27,6 +27,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	public static final String CACHE_DIR_LOG;
 	public static final String CACHE_DIR;
 	public static final String CACHE_DIR_DB;
+	public static final String CACHE_DIR_SOUND;
 	public static final String CACHE_DIR_DOWNLOAD;
 	public static final String CACHE_DIR_MAPPKGS;
 
@@ -52,6 +53,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		DATABASE_NAME = CACHE_DIR_DB + "/babbleApp.db";
 		REPORT_FORM = CACHE_DIR + "/ReportForm";
 		CACHE_DIR_LOG = CACHE_DIR + "/log";
+		CACHE_DIR_SOUND = CACHE_DIR + "/rec";
 		CACHE_DIR_MAPPKGS = CACHE_DIR + "/mapPkgs";
 
 		File file = new File(CACHE_DIR);
@@ -64,6 +66,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		}
 
 		file = new File(CACHE_DIR_DB);
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+		file = new File(CACHE_DIR_SOUND);
 		if (!file.exists()) {
 			file.mkdirs();
 		}

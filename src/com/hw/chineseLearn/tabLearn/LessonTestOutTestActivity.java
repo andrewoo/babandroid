@@ -846,6 +846,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 			modelWord.setTitle(title);// 拿到title
 			modelWord.setCharId(lgTableId);// 拿到CharId
 			modelWord.setLessonId(lessonId);// 拿到lessonId
+
 			String dirCode = lGCharacterPart.getDirCode();// 得到mp3文件名
 			dirCode = "c-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
@@ -854,7 +855,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 			String answerString = lGCharacterPart.getPartAnswer();
 			Log.d(TAG, "answerString:" + answerString);
 			String[] answerPicArray = UiUtil.getListFormString(answerString);// 答案选项
-			List<String> answerList=new ArrayList<String>();
+			List<String> answerList = new ArrayList<String>();
 			for (int i = 0; i < answerPicArray.length; i++) {
 				answerList.add(answerPicArray[i]);
 			}
@@ -888,10 +889,13 @@ public class LessonTestOutTestActivity extends BaseActivity {
 									Integer.valueOf(picList.get(i)));
 					String picName = lgCharacterPart.getPartName();
 					int partId = lgCharacterPart.getPartId();
+					String strRect = lgCharacterPart.getStrRect();
 					SubLGModel subLGModel = modelWord.new SubLGModel();
 					subLGModel.setImageName(picName);
 					subLGModel.setWordId(partId);// 拿到tag图片对应的id
+					subLGModel.setStrRect(strRect);
 					subLGModelList.add(subLGModel);// 拿到所有图片选项
+
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
