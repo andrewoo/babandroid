@@ -335,7 +335,6 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		mediaStop();
 		mediaPlayerHelper = null;
 		if (thread != null) {
-			thread.destroy();
 			thread = null;
 		}
 	}
