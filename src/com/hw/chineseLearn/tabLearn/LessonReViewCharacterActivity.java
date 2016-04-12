@@ -92,7 +92,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		resources = context.getResources();
 		lastRecFileName = "babbel_record";
 		mediaPlayerHelper = new MediaPlayerHelper(
-				DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName);
+				DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName + ".amr");
 		init();
 	}
 
@@ -113,6 +113,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		img_record.setOnClickListener(onClickListener);
 
 		img_loop = (ImageView) contentView.findViewById(R.id.img_loop);
+		img_record.setVisibility(View.GONE);
 		img_loop.setOnClickListener(onClickListener);
 
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -244,6 +245,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		if (isRecord) {
 			img_record.setBackground(resources
 					.getDrawable(R.drawable.recorder_animate_bg_click));
+			img_loop.setVisibility(View.GONE);
 			flag = "talk";
 			try {
 				String fileName = lastRecFileName;
@@ -256,11 +258,8 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 
 						int volume = mr.recorder.getMaxAmplitude();
 						Log.e(TAG, "volume " + volume);
-						// vmValue = (volume + 1) * 6 / 32768;
 						vmValue = 15 * volume / 32768;
 						Log.e(TAG, "vmValue " + vmValue);
-						// if (vmValue > 6)
-						// vmValue = 6;
 						new Thread(new VmChangeRunAble()).start();
 						return 0;
 					}
@@ -270,17 +269,20 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 			}
 
 		} else {
-			img_record.setBackground(resources
-					.getDrawable(R.drawable.recorder_animate_bg));
-			img_record.setImageDrawable(resources
-					.getDrawable(R.drawable.recorder_animate_01));
+
 			flag = "listen";
 			try {
 				if (mr != null) {
 					mr.stop();
 					mr = null;
 				}
+
 				mediaPlay();
+				img_loop.setVisibility(View.VISIBLE);
+				img_record.setBackground(resources
+						.getDrawable(R.drawable.recorder_animate_bg));
+				img_record.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_01));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
