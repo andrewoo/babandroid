@@ -228,7 +228,7 @@ public class LessonResultActivity extends BaseActivity {
 				@Override
 				public void run() {
 					while (progress <= progressCount) {
-						progress += progressAdd;
+						progress += progressAdd*2;
 						mRoundProgressBar.setProgress(progress);
 						try {
 							Thread.sleep(50);

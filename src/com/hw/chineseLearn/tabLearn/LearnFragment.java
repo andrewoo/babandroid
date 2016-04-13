@@ -16,8 +16,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnUnitAdapter;
@@ -25,8 +25,8 @@ import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.MainActivity;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
+import com.hw.chineseLearn.dao.bean.TbSetting;
 import com.hw.chineseLearn.dao.bean.Unit;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.UiUtil;
 import com.util.weight.SelfGridView;
@@ -51,6 +51,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	ArrayList<Unit> sencondList = new ArrayList<Unit>();// testout下边的集合
 
 	SelfGridView centGridView, centGridView1;
+	private ImageView img_lock;
 
 	private List<Unit> unitDataList;// 存储Unit的集合
 
@@ -105,17 +106,46 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		}
 	}
 
+	/**
+	 * 0未解锁1解锁
+	 */
+	int unLock = 0;
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onResume() {
 		super.onResume();
-		//更新当前状态
-		if(learnUnit1Adapter!=null && learnUnit2Adapter!=null){
+		// 更新当前状态
+		if (learnUnit1Adapter != null && learnUnit2Adapter != null) {
 			learnUnit1Adapter.notifyDataSetChanged();
 			learnUnit2Adapter.notifyDataSetChanged();
 		}
-		
-		// task.RunWithMsg(getActivity(), new LoadNoticesThread(),
-		// "Learn is loading…");
+
+		try {
+			TbSetting tbSetting = (TbSetting) MyDao.getDaoMy(TbSetting.class)
+					.queryForId("Unlock");
+			if (tbSetting != null) {
+				unLock = tbSetting.getSettingValue();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (unLock == 0) {
+			rel_test_out.setEnabled(true);
+			rel_test_out.setBackground(context.getResources().getDrawable(
+					R.drawable.btn_bg_orange));
+			img_lock.setImageDrawable(context.getResources().getDrawable(
+					R.drawable.testout_img));
+		} else {
+			rel_test_out.setEnabled(false);
+			rel_test_out.setBackground(context.getResources().getDrawable(
+					R.drawable.btn_grey_unlock));
+			img_lock.setImageDrawable(context.getResources().getDrawable(
+					R.drawable.testout_img_grey));
+		}
+
 	}
 
 	/**
@@ -128,6 +158,8 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		rel_test_out = (RelativeLayout) contentView
 				.findViewById(R.id.rel_test_out);
 		rel_test_out.setOnClickListener(this);
+
+		img_lock = (ImageView) contentView.findViewById(R.id.img_lock);
 
 		centGridView = (SelfGridView) contentView
 				.findViewById(R.id.gv_center_gridview);
@@ -160,15 +192,17 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 			Unit unit = firstList.get(position);
 			TbLessonMaterialStatus ms = null;
 			try {
-				ms = (TbLessonMaterialStatus) MyDao.getDaoMy(//拿到第一个lessonid 查表确定status
-						TbLessonMaterialStatus.class).queryForId(UiUtil.getListFormString(unit.getLessonList())[0]);
+				ms = (TbLessonMaterialStatus) MyDao.getDaoMy(// 拿到第一个lessonid
+																// 查表确定status
+						TbLessonMaterialStatus.class).queryForId(
+						UiUtil.getListFormString(unit.getLessonList())[0]);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			if (ms != null) {
 				if (ms.getStatus() == 0) {
 					isEnable = false;
-				} else  {
+				} else {
 					isEnable = true;
 				}
 			}
@@ -186,38 +220,40 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 	};
 
 	OnItemClickListener itemClickListener1 = new OnItemClickListener() {
- 
+
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 				long arg3) {
 			// TODO Auto-generated method stub
 			boolean isEnable = false;
 			Unit unit = sencondList.get(position);
-			
+
 			TbLessonMaterialStatus ms = null;
 			try {
-				ms = (TbLessonMaterialStatus) MyDao.getDaoMy(//拿到第一个lessonid 查表确定status
-						TbLessonMaterialStatus.class).queryForId(UiUtil.getListFormString(unit.getLessonList())[0]);
+				ms = (TbLessonMaterialStatus) MyDao.getDaoMy(// 拿到第一个lessonid
+																// 查表确定status
+						TbLessonMaterialStatus.class).queryForId(
+						UiUtil.getListFormString(unit.getLessonList())[0]);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			if (ms != null) {
 				if (ms.getStatus() == 0) {
 					isEnable = false;
-				} else  {
+				} else {
 					isEnable = true;
 				}
 			}
-			
+
 			if (unit != null) {
 				// boolean isEnable = learnUnitBaseModel.isEnable();
-				 if (isEnable) {
-				Intent intent = new Intent(getActivity(),
-						LessonViewActivity.class);
-				intent.putExtra("unit", unit);
-				intent.putExtra("position", position);
-				startActivity(intent);
-				 }
+				if (isEnable) {
+					Intent intent = new Intent(getActivity(),
+							LessonViewActivity.class);
+					intent.putExtra("unit", unit);
+					intent.putExtra("position", position);
+					startActivity(intent);
+				}
 			}
 		}
 	};

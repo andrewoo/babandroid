@@ -237,7 +237,7 @@ public class LessonFlashCardResultActivity extends BaseActivity {
 	 * @param maxValue
 	 */
 	private void setRectValueAnim(final ImageView imageView, int maxValue) {
-		value = ValueAnimator.ofInt(0, maxValue * 5);
+		value = ValueAnimator.ofInt(0, maxValue * 10);
 		value.addUpdateListener(new AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator animation) {

@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,14 +39,13 @@ import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.db.DatabaseHelper;
-import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.tool.AudioRecorder;
 import com.util.tool.AudioRecorder.VMChangeListener;
 import com.util.tool.BitmapLoader;
 import com.util.tool.MediaPlayerHelper;
+import com.util.tool.MediaPlayerHelperLoop;
 import com.util.tool.UiUtil;
 import com.util.tool.UtilMedthod;
-import com.util.tool.VmChangeRunable;
 
 /**
  * 课程复习-偏旁部首-页面
@@ -69,7 +71,9 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	ArrayList<TbMyCharacter> tbMyCharList;
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 	private String voicePath;
-	private MediaPlayerHelper mediaPlayerHelper;
+	private MediaPlayerHelper mediaPlayerHelperAsset;
+	private MediaPlayerHelper mediaPlayerHelperRecord;
+	private MediaPlayerHelperLoop mediaPlayerHelperLoop;
 	boolean isRecord = false;
 	String lastRecFileName = "";
 	private AudioRecorder mr;
@@ -79,6 +83,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	 */
 	int vmValue = 0;
 	String filePath = "";
+	boolean loop = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,21 +101,71 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		lastRecFileName = "babbel_record";
 		filePath = DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName
 				+ ".amr";
+		deleteRecord();
+		init();
+		if (timer == null) {
+			timer = new Timer();
+		}
+		timer.schedule(task, 0, 1000);
+	}
+
+	private void deleteRecord() {
 		File file = new File(filePath);
 		if (file.exists()) {
 			Log.d(TAG, "file.exists()！");
 			file.delete();
 		}
-		init();
 	}
 
-	private void play() {
-		if (mediaPlayerHelper == null) {
-			mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
+	/**
+	 * 播放asset里的声音文件
+	 */
+	private void assetPlay() {
+		if (mediaPlayerHelperAsset == null) {
+			mediaPlayerHelperAsset = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
 					+ voicePath);
 		}
-		mediaPlayerHelper.play();
+		if (loop) {
+			mediaPlayerHelperAsset.stop();
+		} else {
+			mediaPlayerHelperAsset.play();
+		}
+
 	}
+
+	/**
+	 * 播放录音文件
+	 */
+	private void recordPlay() {
+		if (mediaPlayerHelperRecord == null) {
+			mediaPlayerHelperRecord = new MediaPlayerHelper(filePath);
+		}
+		mediaPlayerHelperRecord.play();
+	}
+
+	/**
+	 * 播放
+	 */
+	private void Loop() {
+		if (mediaPlayerHelperLoop == null) {
+			mediaPlayerHelperLoop = new MediaPlayerHelperLoop(voicePath,
+					filePath);
+		}
+		mediaPlayerHelperLoop.play();
+	}
+
+	TimerTask task = new TimerTask() {
+		@Override
+		public void run() {
+
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					// Loop();
+				}
+			});
+		}
+	};
 
 	/**
 	 * 初始化
@@ -244,11 +299,18 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 					isRecord = true;
 				}
 				setRecoedBg();
-
 				break;
 
 			case R.id.img_loop:
-
+				if (loop) {
+					img_loop.setImageDrawable(resources
+							.getDrawable(R.drawable.unloop_play));
+					loop = false;
+				} else {
+					img_loop.setImageDrawable(resources
+							.getDrawable(R.drawable.loop_play));
+					loop = true;
+				}
 				break;
 			default:
 				break;
@@ -256,6 +318,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		}
 	};
 	Thread thread = null;
+	private Timer timer = null;
 
 	@SuppressLint("NewApi")
 	private void setRecoedBg() {
@@ -264,6 +327,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 					.getDrawable(R.drawable.recorder_animate_bg_click));
 			img_loop.setVisibility(View.GONE);
 			flag = "talk";
+			deleteRecord();
 			try {
 				String fileName = lastRecFileName;
 				mr = new AudioRecorder(fileName);
@@ -277,7 +341,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 						Log.e(TAG, "volume " + volume);
 						vmValue = 15 * volume / 32768;
 						Log.e(TAG, "vmValue " + vmValue);
-						thread = new Thread(new VmChangeRunAble());
+						thread = new Thread(new VmChangeRunableInner());
 						thread.start();
 						return 0;
 					}
@@ -294,9 +358,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 					mr.stop();
 					mr = null;
 				}
-				mediaPlayerHelper = null;
-				mediaPlayerHelper = new MediaPlayerHelper(filePath);
-				mediaPlayerHelper.play();
+				Loop();
 				img_loop.setVisibility(View.VISIBLE);
 				img_record.setBackground(resources
 						.getDrawable(R.drawable.recorder_animate_bg));
@@ -312,18 +374,12 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	/**
 	 * 
 	 */
-	public void mediaPlay() {
-		if (mediaPlayerHelper != null) {
-			mediaPlayerHelper.play();
-		}
-	}
-
-	/**
-	 * 
-	 */
 	public void mediaStop() {
-		if (mediaPlayerHelper != null) {
-			mediaPlayerHelper.stop();
+		if (mediaPlayerHelperAsset != null) {
+			mediaPlayerHelperAsset.stop();
+		}
+		if (mediaPlayerHelperRecord != null) {
+			mediaPlayerHelperRecord.stop();
 		}
 
 	}
@@ -333,9 +389,18 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		mediaStop();
-		mediaPlayerHelper = null;
+		mediaPlayerHelperAsset = null;
+		mediaPlayerHelperRecord = null;
 		if (thread != null) {
 			thread = null;
+		}
+		if (timer != null) {
+			timer.cancel();
+			timer = null;
+		}
+		if (task != null) {
+			task.cancel();
+			task = null;
 		}
 	}
 
@@ -343,7 +408,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	 * @author yh
 	 * 
 	 */
-	class VmChangeRunAble implements Runnable {
+	class VmChangeRunableInner implements Runnable {
 		@Override
 		public void run() {
 			Looper.prepare();
@@ -583,8 +648,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 				int lgTableId = model.getCharId();
 				String dirCode = model.getDirCode();
 				voicePath = "c-" + lgTableId + "-" + dirCode + ".mp3";
-				mediaPlayerHelper = null;
-				play();
+				assetPlay();
 			}
 
 		} else {

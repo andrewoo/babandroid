@@ -593,12 +593,12 @@ public class LearnImageMoveFragment extends BaseFragment implements
 							&& (y + mizigeHeight - b1) < (mizigeY
 									+ mizigeHeight + relTopHeight)) {
 						// 拖到了米字格的区域
-						UiUtil.showToast(context,
-								"拖到了" + "id:" + model.getWordId());
-						choosedSubLGModelMap.put(imageView, model);
+						// UiUtil.showToast(context,
+						// "拖到了" + "id:" + model.getWordId());
+						// choosedSubLGModelMap.put(imageView, model);
 
 					} else {
-						UiUtil.showToast(context, "木拖到");
+						// UiUtil.showToast(context, "木拖到");
 						moveToOrignPosition(imageView);
 						if (choosedSubLGModelMap.containsKey(imageView)) {
 							choosedSubLGModelMap.remove(imageView);

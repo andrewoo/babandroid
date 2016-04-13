@@ -28,6 +28,7 @@ import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 
 /**
@@ -318,8 +319,22 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	String chinese = "";
 	String english = "";
 	String pinyin = "";
-
 	int index = 0;
+	private String voicePath;
+	private MediaPlayerHelper mediaPlayerHelperAsset;
+	private static final String ASSETS_SOUNDS_PATH = "sounds/";
+
+	/**
+	 * 播放asset里的声音文件
+	 */
+	private void assetPlay() {
+		if (mediaPlayerHelperAsset == null) {
+			mediaPlayerHelperAsset = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
+					+ voicePath);
+		}
+		mediaPlayerHelperAsset.play();
+
+	}
 
 	private void setText() {
 
@@ -331,13 +346,14 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 				chinese = lGModelFlashCard.getChinese();
 				english = lGModelFlashCard.getEnglish();
 				pinyin = lGModelFlashCard.getPinyin();
-
+				voicePath = lGModelFlashCard.getVoicePath();
+				Log.d(TAG, "voicePath:" + voicePath);
+				assetPlay();
 				tv_no.setText("" + (index + 1) + "/" + defaultNumber);
 				tv_translation.setText("" + english);
 				tv_word.setText(chinese);
 				tv_pinyin.setText(pinyin);
 				lin_is_gorget.setVisibility(View.VISIBLE);
-				index++;
 			} else {
 				Log.e(TAG, "lGModelFlashCard==null");
 			}
@@ -508,7 +524,7 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 					try {
 						int C = MyDao.getDaoMy(TbMyCharacter.class).update(
 								tbMyCharacter);
-						Log.d(TAG, "更新熟练度C:" + C);
+						// Log.d(TAG, "更新熟练度C:" + C);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -519,7 +535,7 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 						tbMySentence.setProficient(proficient);
 						int S = MyDao.getDaoMy(TbMySentence.class).update(
 								tbMySentence);
-						Log.d(TAG, "更新熟练度S:" + S);
+						// Log.d(TAG, "更新熟练度S:" + S);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -529,14 +545,15 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 					try {
 						tbMyWord.setProficient(proficient);
 						int W = MyDao.getDaoMy(TbMyWord.class).update(tbMyWord);
-						Log.d(TAG, "更新熟练度W:" + W);
+						// Log.d(TAG, "更新熟练度W:" + W);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
-
+			index++;
+			Log.d(TAG, "index:" + index + "  defaultNumber:" + defaultNumber);
 			if (index == defaultNumber) {
 				// 做完了
 				Intent intent = new Intent(LessonFlashCardOpActivity.this,
@@ -545,6 +562,7 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 			} else {
 				setText();
 			}
+
 		}
 	}
 

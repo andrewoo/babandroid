@@ -113,7 +113,7 @@ public class LessonExerciseActivity extends BaseActivity {
 
 	private List<Integer> isFirstList = new ArrayList<Integer>();// 第一次出现保存在此集合
 
-	private Timer timer = null;
+	private Timer timer = new Timer();
 	private int secondCount = 0;
 
 	private List<String> randomList = new ArrayList<String>();
@@ -129,9 +129,6 @@ public class LessonExerciseActivity extends BaseActivity {
 		initBudle();// 初始化数据
 		CustomApplication.app.addActivity(this);
 		init();
-		if (timer == null) {
-			timer = new Timer();
-		}
 		timer.schedule(task, 0, 1000);
 
 	}
@@ -140,13 +137,15 @@ public class LessonExerciseActivity extends BaseActivity {
 		@Override
 		public void run() {
 
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					secondCount++;
-					Log.d(TAG, "secondCount:" + secondCount);
-				}
-			});
+			// new Thread(new Runnable() {
+			// @Override
+			// public void run() {
+			// secondCount++;
+			// Log.d(TAG, "secondCount:" + secondCount);
+			// }
+			// });
+			secondCount++;
+			Log.d(TAG, "secondCount:" + secondCount);
 		}
 	};
 
@@ -392,12 +391,6 @@ public class LessonExerciseActivity extends BaseActivity {
 							LessonResultActivity.class);
 					intent.putExtra("loseAllPanders", "loseAllPanders");
 					startActivityForResult(intent, 100);
-					if (timer != null) {
-						timer.cancel();
-					}
-					if (task != null) {
-						task.cancel();
-					}
 
 				} else {
 					// playWrongSound();
@@ -675,14 +668,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					intent.putExtra("rightCount", rightCount);// 正确个数
 					intent.putExtra("wrongCount", wrongCount);// 错误个数
 					intent.putExtra("LessonId", lessonId);// 传递lessonid确定哪个lesson做完
-
 					startActivityForResult(intent, 100);
-					if (timer != null) {
-						timer.cancel();
-					}
-					if (task != null) {
-						task.cancel();
-					}
 				}
 				builder.dismiss();
 				// learn表中regex第一位 对应View关系
