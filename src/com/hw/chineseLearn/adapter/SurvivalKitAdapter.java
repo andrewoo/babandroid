@@ -16,11 +16,11 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.category;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.hw.chineseLearn.model.SurvivalKitModel;
 
 public class SurvivalKitAdapter extends BaseAdapter {
 	private Context context;
-	public List<category> categoryList;
+	public List<SurvivalKitModel> modelList;
 	private LayoutInflater inflater;
 
 	private int width, height;
@@ -31,10 +31,10 @@ public class SurvivalKitAdapter extends BaseAdapter {
 	private boolean isUploading;
 
 	public SurvivalKitAdapter(Context context,
-			List<category> categoryList) {
+			List<SurvivalKitModel> modelList) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
-		this.categoryList = categoryList;
+		this.modelList = modelList;
 		resources = context.getResources();
 		colorWhite = resources.getColor(R.color.white);
 		colorBlack = resources.getColor(R.color.black);
@@ -45,13 +45,13 @@ public class SurvivalKitAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return categoryList == null ? 0 : categoryList.size();
+		return modelList == null ? 0 : modelList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return categoryList.get(position);
+		return modelList.get(position);
 	}
 
 	@Override
@@ -64,9 +64,6 @@ public class SurvivalKitAdapter extends BaseAdapter {
 		this.selectPosition = position;
 	}
 	
-	public void setUploading(boolean isUploading) {
-		this.isUploading = isUploading;
-	}
 
 	int count = 1;
 	// 存放view的集合
@@ -90,24 +87,39 @@ public class SurvivalKitAdapter extends BaseAdapter {
 		}
 		// convertView.setLayoutParams(new LinearLayout.LayoutParams(
 		// LayoutParams.WRAP_CONTENT, convertView.getWidth() / 3 * 4));
-		category cate = categoryList.get(position);
-		if (cate == null) {
+		SurvivalKitModel survivalKitModel = modelList.get(position);
+		if (modelList == null) {
 			return convertView;
 		}
 
-		String unitName = cate.getEng_name();
-		String imageName="";
-		if(cate.getComplete_dl()==0){
-			imageName = "survival_" + cate.getId();
-			if(isUploading){
-				holder.iv_arrow .setBackgroundResource(R.drawable.item_show_arrow);//暂时测试用 下载中的图片
-			}else{
-				holder.iv_arrow .setBackgroundResource(R.drawable.ls_dl_btn);
-			}
-		}else{
-			imageName = "survival_" + cate.getId()+"_hit";
-			holder.iv_arrow .setBackgroundResource(R.drawable.arrow);
-		}
+		String unitName = survivalKitModel.getItemName();
+		 String imageName = survivalKitModel.getImageName();
+		 if(survivalKitModel.getState()==0){
+			 holder.iv_arrow .setBackgroundResource(R.drawable.ls_dl_btn);
+		 }else if(survivalKitModel.getState()==1){
+			 holder.iv_arrow .setBackgroundResource(R.drawable.arrow);
+		 }else if(survivalKitModel.getState()==2){
+			 
+			 if(survivalKitModel.getPositionTag()==position){
+				 float progress = modelList.get(position).getProgress();
+				 System.out.println("progress"+position+"--"+progress);
+				 holder.iv_arrow .setBackgroundResource(R.drawable.item_show_arrow);
+			 }
+			 
+			
+		 }
+//		String imageName="";
+//		if(cate.getComplete_dl()==0){
+//			imageName = "survival_" + cate.getId();
+//			if(isUploading){
+//				holder.iv_arrow .setBackgroundResource(R.drawable.item_show_arrow);//暂时测试用 下载中的图片
+//			}else{
+//				holder.iv_arrow .setBackgroundResource(R.drawable.ls_dl_btn);
+//			}
+//		}else{
+//			imageName = "survival_" + cate.getId()+"_hit";
+//			holder.iv_arrow .setBackgroundResource(R.drawable.arrow);
+//		}
 
 		holder.txt_word_name.setText("" + unitName);
 		holder.iv_tag.setImageResource(resources.getIdentifier(imageName,
