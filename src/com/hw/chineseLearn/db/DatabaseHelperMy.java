@@ -18,7 +18,7 @@ public class DatabaseHelperMy extends OrmLiteSqliteOpenHelper {
 
 	public static final String DATABASE_PATH = CustomApplication.app
 			.getFilesDir() + "/Babbel_ub.db";
-
+	
 	private AndroidConnectionSource connectionSource;
 	private static String TAG = "==DatabaseHelper==";
 	public static final int DATABASE_VERSION = 1;// 数据库版本
@@ -34,7 +34,9 @@ public class DatabaseHelperMy extends OrmLiteSqliteOpenHelper {
 	public static final String REPORT_FORM;// 数据报表
 	static Boolean isFirstRun = false;
 	public static Boolean isFirstRunForApplication = false;
-
+	
+	public static final String SOUND_PATH;
+	
 	static {
 		if (Environment.MEDIA_MOUNTED.equals(Environment
 				.getExternalStorageState())) {
@@ -52,6 +54,8 @@ public class DatabaseHelperMy extends OrmLiteSqliteOpenHelper {
 		REPORT_FORM = CACHE_DIR + "/ReportForm";
 		CACHE_DIR_LOG = CACHE_DIR + "/log";
 		CACHE_DIR_MAPPKGS = CACHE_DIR + "/mapPkgs";
+		
+		SOUND_PATH = CACHE_DIR_DOWNLOAD+"/kit";//kit界面 解压后声音存放位置
 
 		File file = new File(CACHE_DIR);
 		if (!file.exists()) {

@@ -1,5 +1,6 @@
 package com.util.tool;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -235,48 +236,86 @@ public class FileTools {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void unZip(Context context, String assetName,String outputDirectory) throws IOException { 
-        //创建解压目标目录 
-        File file = new File(outputDirectory); 
-        //如果目标目录不存在，则创建 
-        if (!file.exists()) { 
-            file.mkdirs(); 
-        } 
-        InputStream inputStream = null; 
-        //打开压缩文件 
-        inputStream = context.getAssets().open(assetName); 
-        ZipInputStream zipInputStream = new ZipInputStream(inputStream); 
-        //读取一个进入点 
-        ZipEntry zipEntry = zipInputStream.getNextEntry(); 
-        //使用1Mbuffer 
-        byte[] buffer = new byte[1024 * 1024]; 
-        //解压时字节计数 
-        int count = 0; 
-        //如果进入点为空说明已经遍历完所有压缩包中文件和目录 
-        while (zipEntry != null) { 
-            //如果是一个目录 
-            if (zipEntry.isDirectory()) { 
-                //String name = zipEntry.getName(); 
-                //name = name.substring(0, name.length() - 1); 
-                file = new File(outputDirectory + File.separator + zipEntry.getName()); 
-                file.mkdir(); 
-            } else { 
-                //如果是文件 
-                file = new File(outputDirectory + File.separator 
-                        + zipEntry.getName()); 
-                //创建该文件 
-                file.createNewFile(); 
-                FileOutputStream fileOutputStream = new FileOutputStream(file); 
-                while ((count = zipInputStream.read(buffer)) > 0) { 
-                    fileOutputStream.write(buffer, 0, count); 
-                } 
-                fileOutputStream.close(); 
-            } 
-            //定位到下一个文件入口 
-            zipEntry = zipInputStream.getNextEntry(); 
-        } 
-        zipInputStream.close(); 
-    } 
+
+	public static void unZip(Context context, String assetName,
+			String outputDirectory) throws IOException {
+		// 创建解压目标目录
+		File file = new File(outputDirectory);
+		// 如果目标目录不存在，则创建
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+		InputStream inputStream = null;
+		// 打开压缩文件
+		inputStream = context.getAssets().open(assetName);
+		ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+		// 读取一个进入点
+		ZipEntry zipEntry = zipInputStream.getNextEntry();
+		// 使用1Mbuffer
+		byte[] buffer = new byte[1024 * 1024];
+		// 解压时字节计数
+		int count = 0;
+		// 如果进入点为空说明已经遍历完所有压缩包中文件和目录
+		while (zipEntry != null) {
+			// 如果是一个目录
+			if (zipEntry.isDirectory()) {
+				// String name = zipEntry.getName();
+				// name = name.substring(0, name.length() - 1);
+				file = new File(outputDirectory + File.separator
+						+ zipEntry.getName());
+				file.mkdir();
+			} else {
+				// 如果是文件
+				file = new File(outputDirectory + File.separator
+						+ zipEntry.getName());
+				// 创建该文件
+				file.createNewFile();
+				FileOutputStream fileOutputStream = new FileOutputStream(file);
+				while ((count = zipInputStream.read(buffer)) > 0) {
+					fileOutputStream.write(buffer, 0, count);
+				}
+				fileOutputStream.close();
+			}
+			// 定位到下一个文件入口
+			zipEntry = zipInputStream.getNextEntry();
+		}
+		zipInputStream.close();
+	}
+
+	public static void unZip(String unZipfileName, String mDestPath) {
+		if (!mDestPath.endsWith("/")) {
+			mDestPath = mDestPath + "/";
+		}
+		FileOutputStream fileOut = null;
+		ZipInputStream zipIn = null;
+		ZipEntry zipEntry = null;
+		File file = null;
+		int readedBytes = 0;
+		byte buf[] = new byte[4096];
+		try {
+			zipIn = new ZipInputStream(new BufferedInputStream(
+					new FileInputStream(unZipfileName)));
+			while ((zipEntry = zipIn.getNextEntry()) != null) {
+				file = new File(mDestPath + zipEntry.getName());
+				if (zipEntry.isDirectory()) {
+					file.mkdirs();
+				} else {
+					// 如果指定文件的目录不存在,则创建之.
+					File parent = file.getParentFile();
+					if (!parent.exists()) {
+						parent.mkdirs();
+					}
+					fileOut = new FileOutputStream(file);
+					while ((readedBytes = zipIn.read(buf)) > 0) {
+						fileOut.write(buf, 0, readedBytes);
+					}
+					fileOut.close();
+				}
+				zipIn.closeEntry();
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
 
 }

@@ -1,44 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tc="http://schemas.android.com/apk/res/com.hw.chineseLearn"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_white_to_grey"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="10dp" >
 
         <ImageView
             android:id="@+id/img_tag"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:src="@drawable/survival_1" />
 
         <TextView
             android:id="@+id/txt_word_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/img_tag"
+            android:layout_weight="1"
             android:text="Basic"
             android:textColor="@color/deep_grey"
             android:textSize="@dimen/text_s16" />
+
+        <com.util.weight.TasksCompletedView
+            android:id="@+id/tasks_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            tc:circleColor="@color/chinese_skill_blue"
+            tc:radius="15dip"
+            tc:ringColor="@color/dimgrey"
+            tc:strokeWidth="3dip" />
 
         <ImageView
             android:id="@+id/iv_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:scaleType="fitXY"
-            android:background="@drawable/arrow" />
-    </RelativeLayout>
+            android:background="@drawable/arrow"
+            android:scaleType="fitXY" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

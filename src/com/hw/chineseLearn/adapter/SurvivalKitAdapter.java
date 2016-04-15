@@ -6,6 +6,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.opengl.Visibility;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.category;
 import com.hw.chineseLearn.model.SurvivalKitModel;
+import com.util.weight.TasksCompletedView;
 
 public class SurvivalKitAdapter extends BaseAdapter {
 	private Context context;
@@ -68,6 +70,7 @@ public class SurvivalKitAdapter extends BaseAdapter {
 	int count = 1;
 	// 存放view的集合
 	HashMap<Integer, View> mapView = new HashMap<Integer, View>();
+	
 
 	@SuppressLint("NewApi")
 	@Override
@@ -81,6 +84,7 @@ public class SurvivalKitAdapter extends BaseAdapter {
 			holder.iv_tag = (ImageView) convertView.findViewById(R.id.img_tag);
 			holder.txt_word_name = (TextView) convertView.findViewById(R.id.txt_word_name);
 			holder.iv_arrow = (ImageView) convertView.findViewById(R.id.iv_arrow);
+			holder.circleView = (TasksCompletedView) convertView.findViewById(R.id.tasks_view);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -95,17 +99,21 @@ public class SurvivalKitAdapter extends BaseAdapter {
 		String unitName = survivalKitModel.getItemName();
 		 String imageName = survivalKitModel.getImageName();
 		 if(survivalKitModel.getState()==0){
+			 holder.circleView.setVisibility(View.GONE);
+			 holder.iv_arrow.setVisibility(View.VISIBLE);
 			 holder.iv_arrow .setBackgroundResource(R.drawable.ls_dl_btn);
 		 }else if(survivalKitModel.getState()==1){
+			 holder.circleView.setVisibility(View.GONE);
+			 holder.iv_arrow.setVisibility(View.VISIBLE);
 			 holder.iv_arrow .setBackgroundResource(R.drawable.arrow);
-		 }else if(survivalKitModel.getState()==2){
-			 
+		 }else if(survivalKitModel.getState()==2){ 
+			 holder.iv_arrow .setVisibility(View.GONE);
+			 holder.circleView.setVisibility(View.VISIBLE);
 			 if(survivalKitModel.getPositionTag()==position){
 				 float progress = modelList.get(position).getProgress();
 				 System.out.println("progress"+position+"--"+progress);
-				 holder.iv_arrow .setBackgroundResource(R.drawable.item_show_arrow);
+				 holder.circleView.setProgress(progress);
 			 }
-			 
 			
 		 }
 //		String imageName="";
@@ -147,5 +155,6 @@ public class SurvivalKitAdapter extends BaseAdapter {
 		public ImageView iv_tag;
 		public TextView txt_word_name;
 		public ImageView iv_arrow;
+		public TasksCompletedView circleView;
 	}
 }
