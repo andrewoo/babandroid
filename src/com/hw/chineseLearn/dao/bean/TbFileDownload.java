@@ -22,9 +22,9 @@ public class TbFileDownload {
 	@DatabaseField(columnName = "type")
 	private int type;
 	@DatabaseField(columnName = "curFileContentSize")
-	private int curFileContentSize;
+	private long curFileContentSize;
 	@DatabaseField(columnName = "fileContentSize")
-	private int fileContentSize;
+	private long fileContentSize;
 	@DatabaseField(columnName = "fileName")
 	private String fileName;
 	@DatabaseField(columnName = "filePath")
@@ -58,22 +58,6 @@ public class TbFileDownload {
 
 	public void setType(int type) {
 		this.type = type;
-	}
-
-	public int getCurFileContentSize() {
-		return curFileContentSize;
-	}
-
-	public void setCurFileContentSize(int curFileContentSize) {
-		this.curFileContentSize = curFileContentSize;
-	}
-
-	public int getFileContentSize() {
-		return fileContentSize;
-	}
-
-	public void setFileContentSize(int fileContentSize) {
-		this.fileContentSize = fileContentSize;
 	}
 
 	public String getFileName() {
@@ -116,4 +100,20 @@ public class TbFileDownload {
 		this.dlStatus = dlStatus;
 	}
 
+	public long getCurFileContentSize() {
+		return curFileContentSize;
+	}
+
+	public void setCurFileContentSize(long curFileContentSize) {
+		this.curFileContentSize = curFileContentSize;
+	}
+
+	public long getFileContentSize() {
+		return fileContentSize;
+	}
+
+	public void setFileContentSize(long fileContentSize) {
+		this.fileContentSize = fileContentSize;
+	}
+	
 }

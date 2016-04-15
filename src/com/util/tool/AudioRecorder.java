@@ -103,12 +103,19 @@ public class AudioRecorder
 
 	}
 
-	public void stop() throws IOException
+	public void stop() throws IOException 
 	{
 		stoped = true;
-		recorder.stop();
+		recorder.stop();  
 
 		recorder.release();
+	}
+	
+	public void reset() 
+	{
+		stoped = true;
+
+		recorder.reset();
 	}
 
 	boolean stoped = false;

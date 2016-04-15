@@ -63,7 +63,6 @@
                 android:id="@+id/txt_sentence_cn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:text="你好！"
                 android:textColor="@color/deep_grey"
                 android:textSize="@dimen/text_s14" />
@@ -72,28 +71,44 @@
                 android:id="@+id/txt_sentence_en"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_marginTop="5dp"
                 android:singleLine="true"
-                android:text="Hello！"
                 android:textColor="@color/mid_grey"
                 android:textSize="@dimen/text_s14" />
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rel_funcations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="center"
+            android:orientation="horizontal"
             android:padding="10dp" >
+
+         
+            
+            
+
+            <View
+                android:id="@+id/view_split"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="gone"
+                android:clickable="false"
+                android:focusable="false" />
+
+            <ImageView
+                android:id="@+id/img_record_play"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/slow_play_2" />
 
             <ImageView
                 android:id="@+id/img_record"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
                 android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/img_loop"
                 android:background="@drawable/recorder_animate_bg"
                 android:src="@drawable/recorder_animate_01" />
 
@@ -101,38 +116,21 @@
                 android:id="@+id/img_loop"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
-                android:layout_toLeftOf="@+id/view_split"
                 android:background="@drawable/recorder_animate_bg"
-                android:src="@drawable/loop_play" />
-
-            <View
-                android:id="@+id/view_split"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true"
-                android:clickable="false"
-                android:focusable="false" />
-
+                android:src="@drawable/unloop_play" />
+             
+             
             <ImageView
                 android:id="@+id/img_play"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_centerVertical="true"
+                android:visibility="gone"
                 android:layout_marginRight="5dp"
-                android:layout_toRightOf="@+id/view_split"
                 android:src="@drawable/ls_play_3" />
 
-            <ImageView
-                android:id="@+id/img_record_play"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/img_play"
-                android:background="@drawable/slow_play_2" />
-        </RelativeLayout>
+          
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

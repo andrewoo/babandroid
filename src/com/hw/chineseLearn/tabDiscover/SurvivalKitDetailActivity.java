@@ -42,15 +42,6 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 
 	List<item> data = new ArrayList<item>();
 
-	private void initData() {
-		try {
-			data=MyDao.getDao(item.class).queryBuilder().where().eq("cid", cate.getId()).query();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -187,6 +178,15 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 		iv_title_right.setVisibility(imgRight);
 		iv_title_right.setImageResource(imgRightDrawable);
 
+	}
+	
+	private void initData() {
+		try {
+			data=MyDao.getDao(item.class).queryBuilder().where().eq("cid", cate.getId()).query();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**

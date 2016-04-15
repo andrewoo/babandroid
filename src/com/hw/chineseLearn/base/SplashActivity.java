@@ -216,7 +216,7 @@ public class SplashActivity extends BaseActivity {
 		tb.setComplete_dl(1);
 		try {
 			MyDao.getDaoMy(TbMyCategory.class).update(tb);//初始化TbMyCategory表
-			FileTools.unZip(this, "downsound/cssc_1.zip", DatabaseHelperMy.CACHE_DIR_DOWNLOAD+"/kit");//解压第一个文件CACHE_DIR_DOWNLOAD
+			FileTools.unZip(this, "downsound/cssc_1.zip", DatabaseHelperMy.SOUND_PATH);//解压第一个文件CACHE_DIR_DOWNLOAD
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
