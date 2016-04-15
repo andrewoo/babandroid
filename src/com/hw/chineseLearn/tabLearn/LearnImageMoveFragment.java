@@ -596,7 +596,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 						// 拖到了米字格的区域
 						// UiUtil.showToast(context,
 						// "拖到了" + "id:" + model.getWordId());
-						// choosedSubLGModelMap.put(imageView, model);
+						 choosedSubLGModelMap.put(imageView, model);
 
 					} else {
 						// UiUtil.showToast(context, "木拖到");
@@ -650,6 +650,12 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		Log.d(TAG,
 				"---------------------------------------------------------------");
 
+		if (choosedSubLGModelMap.size()>0) {
+			
+		}else{
+			
+		}
+		
 		for (Map.Entry<ImageView, SubLGModel> entry : choosedSubLGModelMap
 				.entrySet()) {
 			SubLGModel model = entry.getValue();

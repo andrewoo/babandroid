@@ -310,7 +310,14 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 	}
 
 	private void initTestDatas() {
+
+		if (builder != null) {
+			builder.dismiss();
+			builder = null;
+		}
+
 		lin_pander_life = (LinearLayout) findViewById(R.id.lin_pander_life);
+		lin_pander_life.setVisibility(View.GONE);
 		txt_lesson_score = (TextView) findViewById(R.id.txt_lesson_score);
 		lin_lesson_progress = (LinearLayout) findViewById(R.id.lin_lesson_progress);
 		lin_lesson_score = (LinearLayout) findViewById(R.id.lin_lesson_score);
@@ -391,9 +398,6 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 
 			case R.id.btn_check:
 
-				if (btn_check.getVisibility() == View.VISIBLE) {
-					btn_check.setVisibility(View.GONE);
-				}
 				isCurrentTestRight = baseFragment.isRight();
 				if (isCurrentTestRight) {
 					setProgressViewBg(exerciseIndex,// 设置进度快的背景
@@ -550,8 +554,6 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 		super.closeWindowSoftInput(contentView);
 	}
 
-	RelativeLayout rel_op;
-
 	/**
 	 * check的对话框
 	 * 
@@ -567,47 +569,37 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			wrongCount++;
 		}
 
-		Button btn_report_bug = (Button) checkView
-				.findViewById(R.id.btn_report_bug);
 		ImageView img_is_right = (ImageView) checkView
 				.findViewById(R.id.img_is_right);
+		int screenWidth = CustomApplication.app.displayMetrics.widthPixels;
+		LayoutParams layoutParams = new LayoutParams(screenWidth * 4 / 10,
+				screenWidth * 4 / 10);
+		img_is_right.setLayoutParams(layoutParams);
 		Button btn_next = (Button) checkView.findViewById(R.id.btn_next);
 		TextView tv_answer = (TextView) checkView.findViewById(R.id.tv_answer);
 		tv_answer.setText(modelWord.getAnswerText());
 
-		rel_op = (RelativeLayout) checkView.findViewById(R.id.rel_op);
-		rel_op.setOnTouchListener(onTouchListener);
-		LinearLayout lin_color_bg = (LinearLayout) checkView
-				.findViewById(R.id.lin_color_bg);
 		TextView tv_tip = (TextView) checkView.findViewById(R.id.tv_tip);
 
 		if (isRight) {
-			btn_report_bug.setBackground(context.getResources().getDrawable(
-					R.drawable.bugreport_img_right));
 			img_is_right.setBackground(context.getResources().getDrawable(
 					R.drawable.test_correct_3));
-			lin_color_bg.setBackgroundColor(context.getResources().getColor(
-					R.color.chinese_skill_blue));
 			tv_tip.setVisibility(View.VISIBLE);
-			btn_next.setTextColor(context.getResources().getColor(
-					R.color.chinese_skill_blue));
+			// btn_next.setTextColor(context.getResources().getColor(
+			// R.color.chinese_skill_blue));
 		} else {
 
-			btn_report_bug.setBackground(context.getResources().getDrawable(
-					R.drawable.bugreport_img_wrong));
 			img_is_right.setBackground(context.getResources().getDrawable(
 					R.drawable.test_wrong_3));
-			lin_color_bg.setBackgroundColor(context.getResources().getColor(
-					R.color.chinese_skill_yellow));
-			btn_next.setTextColor(context.getResources().getColor(
-					R.color.chinese_skill_yellow));
+			// btn_next.setTextColor(context.getResources().getColor(
+			// R.color.chinese_skill_yellow));
 			tv_tip.setVisibility(View.INVISIBLE);
 		}
 
 		if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
-			btn_next.setText("Finish");
+			btn_next.setText("FINISH");
 		} else {
-			btn_next.setText("Next");
+			btn_next.setText("CONTINUE");
 		}
 
 		if (builder == null) {
@@ -617,45 +609,32 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 		builder.show();
 		builder.setCancelable(false);
 		builder.setOnKeyListener(onKeyListener);
-		btn_report_bug.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				//
-			}
-		});
 
 		btn_next.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				btn_check.setVisibility(View.VISIBLE);
 
 				if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
 
 					Intent intent = new Intent(
 							LessonReviewExerciseActivity.this,
-							LessonReviewResultActivity.class);
+							LessonResultActivity.class);
 					intent.putExtra("loseAllPanders", "");
 					intent.putExtra("secondCount", secondCount);// 用时秒数
 					intent.putExtra("score", score);// 得分
 					intent.putExtra("exerciseCount", exerciseCount);// 总练习题目数
 					intent.putExtra("rightCount", rightCount);// 正确个数
 					intent.putExtra("wrongCount", wrongCount);// 错误个数
+					intent.putExtra("LessonId", lessonId);// 传递lessonid确定哪个lesson做完
 					startActivityForResult(intent, 100);
 				}
+				builder.dismiss();
 				// learn表中regex第一位 对应View关系
 				if (exerciseIndex < exerciseCount - 1) {
 					exerciseIndex++;
-					if (regexes.size() != 0) {
-						regexToView(regexes.get(exerciseIndex));
-					} else {
-						Log.e(TAG, "regexes.size()==0");
-					}
-
+					regexToView(regexes.get(exerciseIndex));
 				}
-
-				builder.dismiss();
 			}
 
 		});
@@ -724,80 +703,6 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 	private int startx;
 	private int starty;
 
-	OnTouchListener onTouchListener = new View.OnTouchListener() {
-
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			// TODO Auto-generated method stub
-			switch (v.getId()) {
-
-			// 如果手指放在imageView上拖动
-			case R.id.iv_dv_view:
-				// event.getRawX(); //获取手指第一次接触屏幕在x方向的坐标
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:// 获取手指第一次接触屏幕
-					startx = (int) event.getRawX();
-					starty = (int) event.getRawY();
-					break;
-				case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动对应的事件
-					int x = (int) event.getRawX();
-					int y = (int) event.getRawY();
-
-					// if (y < 400) {
-					// // 设置TextView在窗体的下面
-					// tv_drag_view.layout(tv_drag_view.getLeft(), 420,
-					// tv_drag_view.getRight(), 440);
-					// } else {
-					// tv_drag_view.layout(tv_drag_view.getLeft(), 60,
-					// tv_drag_view.getRight(), 80);
-					// }
-
-					// 获取手指移动的距离
-					int dx = x - startx;
-					int dy = y - starty;
-					// 得到imageView最开始的各顶点的坐标
-					int l = rel_op.getLeft();
-					int r = rel_op.getRight();
-					int t = rel_op.getTop();
-					int b = rel_op.getBottom();
-
-					int newl = l + dx;
-					int newt = t + dy;
-					int newr = r + dx;
-					int newb = b + dy;
-					// 更改imageView在窗体的位置
-					rel_op.layout(newl, newt, newr, newb);
-
-					// 获取移动后的位置
-					startx = (int) event.getRawX();
-					starty = (int) event.getRawY();
-
-					int screenWidth = CustomApplication.app.displayMetrics.widthPixels;
-					int screenHeight = CustomApplication.app.displayMetrics.heightPixels;
-
-					if ((newl < 20) || (newt < 20) || (newr > screenWidth / 2)
-							|| (newb > screenHeight / 2)) {
-						break;
-					}
-
-					break;
-				case MotionEvent.ACTION_UP:// 手指离开屏幕对应事件
-					// Log.i(TAG, "手指离开屏幕");
-					// 记录最后view在窗体的位置
-					int lasty = rel_op.getTop();
-					int lastx = rel_op.getLeft();
-					// Editor editor = sp.edit();
-					// editor.putInt("lasty", lasty);
-					// editor.putInt("lastx", lastx);
-					// editor.commit();
-					break;
-				}
-				break;
-
-			}
-			return true;// 不会中断触摸事件的返回
-		}
-	};
 	private LessonRepeatRegex lessonRepeatRegex;
 	private String question;
 	private LGModelWord modelWord;
@@ -976,7 +881,8 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			LGModel_Sentence_050 sentence050 = (LGModel_Sentence_050) MyDao
 					.getDao(LGModel_Sentence_050.class).queryBuilder().where()
 					.eq("SentenceId", lgTableId).queryForFirst();
-			String[] splitAnswer = UiUtil.getListFormString(sentence050.getAnswer());
+			String[] splitAnswer = UiUtil.getListFormString(sentence050
+					.getAnswer());
 			StringBuffer buffer = new StringBuffer();
 			Dao dao = MyDao.getDao(LGWord.class);
 			for (int i = 0; i < splitAnswer.length; i++) {
@@ -1187,7 +1093,8 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			modelWord.setVoicePath(dirCode);
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			String sentence = lgSentence.getSentence();
-			String[] options = UiUtil.getListFormString(sentence030.getOptions());
+			String[] options = UiUtil.getListFormString(sentence030
+					.getOptions());
 			for (int i = 0; i < options.length; i++) {
 				SubLGModel subLGModel = modelWord.new SubLGModel();
 				String[] option = options[i].split("=");
@@ -1235,7 +1142,8 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			modelWord.setVoicePath(dirCode);
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			int answer = sentence010.getAnswer();
-			String[] options = UiUtil.getListFormString(sentence010.getOptions());
+			String[] options = UiUtil.getListFormString(sentence010
+					.getOptions());
 			for (int i = 0; i < options.length; i++) {
 				String[] option = options[i].split("=");
 				SubLGModel subLGModel = modelWord.new SubLGModel();
@@ -1279,7 +1187,8 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			String dirCode = lgWord1.getDirCode();// 得到mp3文件名
 			dirCode = "w-" + lgTableId + "-" + dirCode + ".mp3";
 			modelWord.setVoicePath(dirCode);
-			String[] splitWordId = UiUtil.getListFormString(word_060.getOptions());
+			String[] splitWordId = UiUtil.getListFormString(word_060
+					.getOptions());
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			for (int i = 0; i < splitWordId.length; i++) {
 				SubLGModel subLGModel = modelWord.new SubLGModel();
@@ -1338,7 +1247,8 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 
 			question = "Select" + "\"" + lgWord1.getTranslations() + "\"";
 			modelWord.setTitle(question);// 拿到title
-			String[] splitWordId = UiUtil.getListFormString(word_020.getOptions());
+			String[] splitWordId = UiUtil.getListFormString(word_020
+					.getOptions());
 			List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
 			for (int i = 0; i < splitWordId.length; i++) {
 				LGWord lgWord = (LGWord) MyDao.getDao(LGWord.class).queryForId(
@@ -1457,4 +1367,23 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 		return randomSubject;
 	}
 
+	/**
+	 * checkbtn是否可点击
+	 */
+	public void isCheckBtnActived(boolean isActived) {
+		if (isActived) {
+			btn_check.setEnabled(true);
+			btn_check.setBackgroundColor(context.getResources().getColor(
+					R.color.chinese_skill_blue));
+			btn_check.setTextColor(context.getResources().getColor(
+					R.color.white));
+
+		} else {
+			btn_check.setEnabled(false);
+			btn_check.setBackgroundColor(context.getResources().getColor(
+					R.color.min_grey));
+			btn_check.setTextColor(context.getResources().getColor(
+					R.color.chinese_skill_blue));
+		}
+	}
 }

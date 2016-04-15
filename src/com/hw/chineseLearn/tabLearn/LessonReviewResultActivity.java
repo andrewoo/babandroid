@@ -45,7 +45,7 @@ public class LessonReviewResultActivity extends BaseActivity {
 	private int secondCount;
 	private int score;
 	private int exerciseCount;
-	private ImageView tv_lose_all, img_lose_all;
+	private TextView tv_lose_all;
 	int characterCount = 0, wordsCount = 0, sentenceCount = 0;
 	int rightCount = 0, wrongCount = 0;
 
@@ -101,10 +101,7 @@ public class LessonReviewResultActivity extends BaseActivity {
 	public void init() {
 		LayoutParams lp = new LayoutParams(width, height);
 
-		tv_lose_all = (ImageView) findViewById(R.id.tv_lose_all);
-		img_lose_all = (ImageView) findViewById(R.id.img_lose_all);
-		tv_lose_all.setLayoutParams(lp);
-		img_lose_all.setLayoutParams(lp);
+		tv_lose_all = (TextView) findViewById(R.id.tv_lose_all);
 
 		btn_redo = (TextView) contentView.findViewById(R.id.btn_redo);
 		btn_redo.setVisibility(View.GONE);

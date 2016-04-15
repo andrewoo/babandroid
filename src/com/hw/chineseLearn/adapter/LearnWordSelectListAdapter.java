@@ -23,13 +23,12 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 
 	private int width, height;
-	private int selectPosition=-1;
+	private int selectPosition = -1;
 	private Resources resources = null;
 	int colorWhite = -1;
 	int colorBlack = -1;
 
-	public LearnWordSelectListAdapter(Context context,
-			LGModelWord lgModelWord) {
+	public LearnWordSelectListAdapter(Context context, LGModelWord lgModelWord) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
 		this.lgModelWord = lgModelWord;
@@ -43,7 +42,8 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return lgModelWord.getSubLGModelList() == null ? 0 : lgModelWord.getSubLGModelList().size();
+		return lgModelWord.getSubLGModelList() == null ? 0 : lgModelWord
+				.getSubLGModelList().size();
 	}
 
 	@Override
@@ -80,8 +80,6 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 					.findViewById(R.id.tv_child_pinyin);
 			holder.tv_child_en = (TextView) convertView
 					.findViewById(R.id.tv_child_en);
-			holder.view_split = (View) convertView
-					.findViewById(R.id.view_split);
 
 			convertView.setTag(holder);
 		} else {
@@ -90,24 +88,21 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 		if (lgModelWord.getSubLGModelList() == null) {
 			return convertView;
 		}
-		
+
 		SubLGModel subLGModel = lgModelWord.getSubLGModelList().get(position);
+		if (subLGModel == null) {
+			return convertView;
+		}
 		holder.tv_child_char.setText("" + subLGModel.getOption());
 
 		if (selectPosition == position) {// 选中
 			convertView.setBackground(resources
-					.getDrawable(R.drawable.btn_bg_blue));
-			holder.tv_child_no.setBackground(resources
-					.getDrawable(R.drawable.strokes_order_lv_index_bg_grey));
-			holder.view_split.setVisibility(View.INVISIBLE);
+					.getDrawable(R.drawable.btn_blue_bg_n1));
 			holder.tv_child_char.setTextColor(context.getResources().getColor(
 					R.color.white));
 		} else {// 未选中
 			convertView.setBackground(resources
-					.getDrawable(R.drawable.btn_touming_no_corners));
-			holder.tv_child_no.setBackground(resources
-					.getDrawable(R.drawable.strokes_order_lv_index_bg_black));
-			holder.view_split.setVisibility(View.VISIBLE);
+					.getDrawable(R.drawable.bg_white1));
 			holder.tv_child_char.setTextColor(context.getResources().getColor(
 					R.color.black));
 		}
@@ -116,11 +111,9 @@ public class LearnWordSelectListAdapter extends BaseAdapter {
 	}
 
 	public class ViewHolder {
-
 		public TextView tv_child_no;
 		public TextView tv_child_char;
 		public TextView tv_child_pinyin;
 		public TextView tv_child_en;
-		public View view_split;
 	}
 }

@@ -134,6 +134,7 @@ public class LearnWordSelectFragment extends BaseFragment implements
 		listView = (ListView) contentView.findViewById(R.id.list_view);
 		adapter = new LearnWordSelectListAdapter(context, modelWorld);
 		btn_play_normal = (Button) contentView.findViewById(R.id.btn_play_normal);
+		btn_play_normal.setVisibility(View.GONE);
 		btn_play_normal.setOnClickListener(new OnClickListener() {
 			
 			@Override

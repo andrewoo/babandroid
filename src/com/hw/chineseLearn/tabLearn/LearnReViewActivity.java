@@ -10,12 +10,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -31,23 +36,10 @@ import com.hw.chineseLearn.dao.bean.TbMyWord;
  * 
  * @author yh
  */
-public class LearnReViewActivity extends BaseActivity implements
-		OnItemSelectedListener {
+public class LearnReViewActivity extends BaseActivity {
 
 	private String TAG = "==LearnReViewActivity==";
 	public Context context;
-	private ImageButton btn_play_characters;
-	private ImageButton btn_play_words;
-	private ImageButton btn_play_sentence;
-
-	private TextView tv_character_count;
-	private TextView tv_words_count;
-	private TextView tv_sentence_count;
-
-	private LinearLayout lin_review_characters;
-	private LinearLayout lin_review_words;
-	private LinearLayout lin_review_sentence;
-	private LinearLayout lin_botton_view;
 	private Resources resources;
 	private int width;
 	private int height;
@@ -56,6 +48,16 @@ public class LearnReViewActivity extends BaseActivity implements
 	int characterCount = 0;
 	int wordsCount = 0;
 	int sentenceCount = 0;
+	int chooseCount = 0;
+
+	private Button btn_go;
+	private TextView tv_character_count;
+	private TextView tv_words_count;
+	private TextView tv_sentence_count;
+
+	private RelativeLayout lin_review_characters;
+	private RelativeLayout lin_review_words;
+	private RelativeLayout lin_review_sentence;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class LearnReViewActivity extends BaseActivity implements
 		context = this;
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
+		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 6;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
 		resources = context.getResources();
 		init();
@@ -79,25 +81,35 @@ public class LearnReViewActivity extends BaseActivity implements
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Review", View.GONE, View.VISIBLE,
-				R.drawable.btn_bg_flashcard_without_point);
+				"Review", View.GONE, View.GONE, 0);
 
-		btn_play_characters = (ImageButton) contentView
-				.findViewById(R.id.btn_play_characters);
-		btn_play_characters.setImageDrawable(resources
-				.getDrawable(R.drawable.character_play));
-		btn_play_words = (ImageButton) contentView
-				.findViewById(R.id.btn_play_words);
-		btn_play_characters.setImageDrawable(resources
-				.getDrawable(R.drawable.word_play));
+		btn_go = (Button) contentView.findViewById(R.id.btn_go);
+		LayoutParams py = btn_go.getLayoutParams();
+		py.width = width;
+		py.height = width;
+		btn_go.setLayoutParams(py);
+		btn_go.setOnClickListener(onClickListener);
 
-		btn_play_sentence = (ImageButton) contentView
-				.findViewById(R.id.btn_play_sentence);
-		btn_play_characters.setImageDrawable(resources
-				.getDrawable(R.drawable.sentence_play));
+		new Thread() {
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					runOnUiThread(new Runnable() {
+						public void run() {
+							playHeartbeatAnimation();
+						}
+					});
+				}
+			};
+		}.start();
 
 		tv_character_count = (TextView) contentView
-				.findViewById(R.id.tv_characters_count);
+				.findViewById(R.id.tv_character_count);
 		tv_words_count = (TextView) contentView
 				.findViewById(R.id.tv_words_count);
 		tv_sentence_count = (TextView) contentView
@@ -129,24 +141,14 @@ public class LearnReViewActivity extends BaseActivity implements
 		tv_words_count.setText("" + wordsCount);
 		tv_sentence_count.setText("" + sentenceCount);
 
-		lin_review_characters = (LinearLayout) contentView
-				.findViewById(R.id.lin_review_characters);
-		lin_review_words = (LinearLayout) contentView
-				.findViewById(R.id.lin_review_words);
-		lin_review_sentence = (LinearLayout) contentView
-				.findViewById(R.id.lin_review_sentence);
-
-		btn_play_characters.setOnClickListener(onClickListener);
-		btn_play_words.setOnClickListener(onClickListener);
-		btn_play_sentence.setOnClickListener(onClickListener);
+		lin_review_characters = (RelativeLayout) findViewById(R.id.lin_review_characters);
+		lin_review_words = (RelativeLayout) findViewById(R.id.lin_review_words);
+		lin_review_sentence = (RelativeLayout) findViewById(R.id.lin_review_sentence);
 
 		lin_review_characters.setOnClickListener(onClickListener);
 		lin_review_words.setOnClickListener(onClickListener);
 		lin_review_sentence.setOnClickListener(onClickListener);
 
-		lin_botton_view = (LinearLayout) contentView
-				.findViewById(R.id.lin_botton_view);
-		lin_botton_view.setVisibility(View.INVISIBLE);
 	}
 
 	/**
@@ -192,13 +194,8 @@ public class LearnReViewActivity extends BaseActivity implements
 				.findViewById(R.id.iv_title_right);
 		iv_title_right.setVisibility(imgRight);
 		iv_title_right.setImageResource(imgRightDrawable);
-		iv_title_right.setOnClickListener(onClickListener);
 
 	}
-
-	boolean isPlayingCharacters = false;
-	boolean isPlayingWords = false;
-	boolean isPlayingSentence = false;
 
 	OnClickListener onClickListener = new OnClickListener() {
 
@@ -211,95 +208,11 @@ public class LearnReViewActivity extends BaseActivity implements
 				CustomApplication.app.finishActivity(LearnReViewActivity.this);
 				break;
 
-			case R.id.iv_title_right://
-				startActivity(new Intent(LearnReViewActivity.this,
-						LessonFlashCardActivity.class));
-				break;
+			case R.id.btn_go:
 
-			case R.id.btn_play_characters:
-
-				if (isPlayingCharacters) {// 正在播放时的操作
-					lin_botton_view.setVisibility(View.INVISIBLE);
-					btn_play_characters.setImageDrawable(resources
-							.getDrawable(R.drawable.character_play));
-					isPlayingCharacters = false;
-				} else {// 暂停状态
-					lin_botton_view.setVisibility(View.VISIBLE);
-					lin_botton_view.setBackgroundColor(resources
-							.getColor(R.color.chinese_skill_red));
-					btn_play_characters.setImageDrawable(resources
-							.getDrawable(R.drawable.character_pause));
-					isPlayingCharacters = true;
-
-					if (isPlayingWords) {
-						btn_play_words.setImageDrawable(resources
-								.getDrawable(R.drawable.word_play));
-						isPlayingWords = false;
-					}
-					if (isPlayingSentence) {
-						btn_play_sentence.setImageDrawable(resources
-								.getDrawable(R.drawable.sentence_play));
-						isPlayingSentence = false;
-					}
-				}
-
-				break;
-			case R.id.btn_play_words:
-
-				if (isPlayingWords) {// 正在播放时的操作
-					lin_botton_view.setVisibility(View.INVISIBLE);
-					btn_play_words.setImageDrawable(resources
-							.getDrawable(R.drawable.word_play));
-					isPlayingWords = false;
-				} else {// 暂停状态
-					lin_botton_view.setVisibility(View.VISIBLE);
-					lin_botton_view.setBackgroundColor(resources
-							.getColor(R.color.chinese_skill_green));
-					btn_play_words.setImageDrawable(resources
-							.getDrawable(R.drawable.word_pause));
-					isPlayingWords = true;
-
-					if (isPlayingCharacters) {
-						btn_play_characters.setImageDrawable(resources
-								.getDrawable(R.drawable.character_play));
-						isPlayingCharacters = false;
-					}
-					if (isPlayingSentence) {
-						btn_play_sentence.setImageDrawable(resources
-								.getDrawable(R.drawable.sentence_play));
-						isPlayingSentence = false;
-					}
-
-				}
-
-				break;
-			case R.id.btn_play_sentence:
-
-				if (isPlayingSentence) {// 正在播放时的操作
-					lin_botton_view.setVisibility(View.INVISIBLE);
-					btn_play_sentence.setImageDrawable(resources
-							.getDrawable(R.drawable.sentence_play));
-					isPlayingSentence = false;
-				} else {// 暂停状态
-					lin_botton_view.setVisibility(View.VISIBLE);
-					lin_botton_view.setBackgroundColor(resources
-							.getColor(R.color.chinese_skill_yellow));
-					btn_play_sentence.setImageDrawable(resources
-							.getDrawable(R.drawable.sentence_pause));
-					isPlayingSentence = true;
-
-					if (isPlayingWords) {
-						btn_play_words.setImageDrawable(resources
-								.getDrawable(R.drawable.word_play));
-						isPlayingWords = false;
-					}
-					if (isPlayingCharacters) {
-						btn_play_characters.setImageDrawable(resources
-								.getDrawable(R.drawable.character_play));
-						isPlayingCharacters = false;
-					}
-				}
-
+				Intent intent = new Intent(LearnReViewActivity.this,
+						LessonFlashCardOpActivity.class);
+				startActivity(intent);
 				break;
 
 			case R.id.lin_review_characters:
@@ -332,16 +245,44 @@ public class LearnReViewActivity extends BaseActivity implements
 		}
 	};
 
-	@Override
-	public void onItemSelected(AdapterView<?> arg0, View convertView,
-			int position, long arg3) {
-		// TODO Auto-generated method stub
-	}
+	/**
+	 * 按钮模拟心脏跳动
+	 */
+	private void playHeartbeatAnimation() {
+		AnimationSet animationSet = new AnimationSet(true);
+		animationSet.addAnimation(new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f));
+		animationSet.addAnimation(new AlphaAnimation(1.0f, 0.4f));
+		animationSet.setDuration(1000);
+		animationSet.setInterpolator(new AccelerateInterpolator());
+		animationSet.setFillAfter(true);
+		animationSet.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
 
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
 
+			@Override
+			public void onAnimationEnd(Animation animation) {
+
+				AnimationSet animationSet = new AnimationSet(true);
+				animationSet.addAnimation(new ScaleAnimation(1.1f, 1.0f, 1.1f,
+						1.0f, Animation.RELATIVE_TO_SELF, 0.5f,
+						Animation.RELATIVE_TO_SELF, 0.5f));
+				animationSet.addAnimation(new AlphaAnimation(0.4f, 1.0f));
+				animationSet.setDuration(2000);
+				animationSet.setInterpolator(new DecelerateInterpolator());
+				animationSet.setFillAfter(false);
+				// 实现心跳的View
+				btn_go.startAnimation(animationSet);
+			}
+		});
+		// 实现心跳的View
+		btn_go.startAnimation(animationSet);
 	}
 
 }

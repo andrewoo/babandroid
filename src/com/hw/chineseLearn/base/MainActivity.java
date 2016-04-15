@@ -218,7 +218,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				navigateToNoAnimWithId(discoverFragment, R.id.container3);
 			}
 			setTitle(View.GONE, View.GONE, 0, "Discover", View.GONE,
-					View.VISIBLE, R.drawable.img_share);
+					View.GONE, R.drawable.img_share);
 			break;
 		case R.id.lin_3:
 			selectIndex = 3;

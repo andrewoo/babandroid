@@ -95,7 +95,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 
 		initView();
-		initBottomViews();
+		initBottomMoveViews();
 		initBottomGreyViews();
 	}
 
@@ -206,8 +206,8 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		}
 	}
 
-	int viewLeftRightPadding = 20;
-	int viewTopBottomPadding = 10;
+	int viewLeftRightPadding = 30;
+	int viewTopBottomPadding = 20;
 
 	private String[] textSplits;
 
@@ -225,7 +225,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 	private MediaPlayerHelper mediaPlayerHelper;
 
-	private void initBottomViews() {
+	private void initBottomMoveViews() {
 
 		for (int i = 0; i < subLGModelList.size(); i++) {
 
@@ -559,7 +559,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	 */
 	private void refeshTopView() {
 		int x = 0;
-		int y = UiUtil.dip2px(context, 23);// topView y坐标的初始位置
+		int y = UiUtil.dip2px(context, 13);// topView y坐标的初始位置
 		Log.d(TAG, "topViewList.size()：" + topViewList.size());
 		for (int i = 0; i < topViewList.size(); i++) {
 			TextView textView = topViewList.get(i);
