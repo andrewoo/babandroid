@@ -118,7 +118,7 @@
                 android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/recorder_animate_bg"
-                android:src="@drawable/loop_play" />
+                android:src="@drawable/unloop_play" />
              
              
             <ImageView

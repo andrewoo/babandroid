@@ -66,14 +66,14 @@ public class TasksCompletedView extends View {
 	private void initVariable() {
 		mCirclePaint = new Paint();
 		mCirclePaint.setAntiAlias(true);
-		mCirclePaint.setColor(mRingColor);
+		mCirclePaint.setColor(mCircleColor);//mRingColor
 		mCirclePaint.setStyle(Paint.Style.STROKE);
 		mCirclePaint.setStrokeWidth(mStrokeWidth);
 		
 		mRingPaint = new Paint();
 		mRingPaint.setAntiAlias(true);
 		mRingPaint.setColor(mCircleColor);
-		mRingPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+		mRingPaint.setStyle(Paint.Style.FILL);
 //		mRingPaint.setStrokeWidth(mStrokeWidth);
 		
 //		mTextPaint = new Paint();

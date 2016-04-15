@@ -67,7 +67,6 @@ public class SurvivalKitActivity extends BaseActivity {
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 
 //		if (CustomApplication.app.favouriteList.size() != 0) {
@@ -91,6 +90,7 @@ public class SurvivalKitActivity extends BaseActivity {
 //		}
 		initDBDatas();
 		initModel();
+		//重新从数据库拿处数据 查表 如果对应是2  则写下载的方法 整个集合都执行下载
 		if(adapter!=null){
 			adapter.notifyDataSetChanged();
 		}

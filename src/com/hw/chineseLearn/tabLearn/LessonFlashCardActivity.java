@@ -45,6 +45,7 @@ import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.SlideSwitch;
 import com.util.weight.SlideSwitch.SlideListener;
@@ -105,12 +106,15 @@ public class LessonFlashCardActivity extends BaseActivity {
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
 		resources = context.getResources();
 		init();
+
 	}
 
 	boolean isCharacterChecked = false;
 	boolean isSentenceChecked = false;
 	boolean isWordChecked = false;
 	boolean isAutoPlay = true;
+
+	
 
 	/**
 	 * 初始化
@@ -188,6 +192,29 @@ public class LessonFlashCardActivity extends BaseActivity {
 		forgot = (TextView) contentView.findViewById(R.id.forgot);
 		dont_know = (TextView) contentView.findViewById(R.id.dont_know);
 
+		String chooseCountStr = CustomApplication.app.preferencesUtil.getValue(
+				"count", "0");
+		// chooseCount = Integer.parseInt(chooseCountStr);
+		isCharacterChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCharacterChecked");
+		isSentenceChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isSentenceChecked");
+		isWordChecked = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isWordChecked");
+		isAutoPlay = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isAutoPlay");
+
+		if (isCharacterChecked) {
+			chooseCount = chooseCount + characterCount;
+		}
+		if (isSentenceChecked) {
+			chooseCount = chooseCount + sentenceCount;
+		}
+		if (isWordChecked) {
+			chooseCount = chooseCount + wordsCount;
+		}
+
+		defaultNumber = chooseCount;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -327,7 +354,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 				.findViewById(R.id.iv_almost_remembered);
 		iv_forgot = (ImageView) contentView.findViewById(R.id.iv_forgot);
 		iv_dont_know = (ImageView) contentView.findViewById(R.id.iv_dont_know);
-		
+
 		setRectValueAnim(iv_remember_prefectly, rememberPrefectlyCount);
 		setRectValueAnim(iv_remembered, rememberedCount);
 		setRectValueAnim(iv_barely_remembered, barelyRememberedCount);
@@ -342,7 +369,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 	 * @param maxValue
 	 */
 	private void setRectValueAnim(final ImageView imageView, int maxValue) {
-		value = ValueAnimator.ofInt(0, maxValue * 5);
+		value = ValueAnimator.ofInt(0, maxValue * 10);
 		value.addUpdateListener(new AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator animation) {
@@ -362,24 +389,12 @@ public class LessonFlashCardActivity extends BaseActivity {
 
 	public void showPopupWindowMenu() {
 
-		String chooseCountStr = CustomApplication.app.preferencesUtil.getValue(
-				"count", "0");
-		// chooseCount = Integer.parseInt(chooseCountStr);
-		isCharacterChecked = CustomApplication.app.preferencesUtil
-				.getValuesBoolean("isCharacterChecked");
-		isSentenceChecked = CustomApplication.app.preferencesUtil
-				.getValuesBoolean("isSentenceChecked");
-		isWordChecked = CustomApplication.app.preferencesUtil
-				.getValuesBoolean("isWordChecked");
-		isAutoPlay = CustomApplication.app.preferencesUtil
-				.getValuesBoolean("isAutoPlay");
-
 		View view = LayoutInflater.from(this).inflate(
 				R.layout.layout_title_menu1, null);
 
 		tv_default_number = (TextView) view
 				.findViewById(R.id.tv_default_number);
-		tv_default_number.setText("" + 0);
+		tv_default_number.setText("" + defaultNumber);
 
 		tv_chooseCount = (TextView) view.findViewById(R.id.tv_max);
 		tv_chooseCount.setText("" + chooseCount);
@@ -446,6 +461,7 @@ public class LessonFlashCardActivity extends BaseActivity {
 			}
 		});
 		seekBar = (SeekBar) view.findViewById(R.id.seekBar);
+		seekBar.setProgress(defaultNumber);
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() // 监听器
 		{
 			public void onProgressChanged(SeekBar arg0, int progress,
@@ -472,11 +488,9 @@ public class LessonFlashCardActivity extends BaseActivity {
 		ck_Character.setChecked(isCharacterChecked);
 		ck_Character.setOnCheckedChangeListener(onCheckedChangeListener);
 		if (ck_Character.isChecked()) {
-			chooseCount = chooseCount + characterCount;
 			isCharacterChecked = true;
 
 		} else {
-			// chooseCount = chooseCount - characterCount;
 			isCharacterChecked = false;
 		}
 
@@ -484,10 +498,8 @@ public class LessonFlashCardActivity extends BaseActivity {
 		ck_Word.setChecked(isWordChecked);
 		ck_Word.setOnCheckedChangeListener(onCheckedChangeListener);
 		if (ck_Word.isChecked()) {
-			chooseCount = chooseCount + wordsCount;
 			isWordChecked = true;
 		} else {
-			// chooseCount = chooseCount - wordsCount;
 			isWordChecked = false;
 		}
 
@@ -496,13 +508,10 @@ public class LessonFlashCardActivity extends BaseActivity {
 		ck_Sentence.setOnCheckedChangeListener(onCheckedChangeListener);
 		if (ck_Sentence.isChecked()) {
 			isSentenceChecked = true;
-			chooseCount = chooseCount + sentenceCount;
 		} else {
-			// chooseCount = chooseCount - sentenceCount;
 			isSentenceChecked = false;
 
 		}
-		tv_chooseCount.setText("" + chooseCount);
 		seekBar.setMax(chooseCount);
 		popupWindow.setTouchable(true);
 		popupWindow.setTouchInterceptor(new OnTouchListener() {
@@ -533,7 +542,6 @@ public class LessonFlashCardActivity extends BaseActivity {
 				Log.d(TAG, "isSentenceChecked:" + isSentenceChecked);
 				Log.d(TAG, "isWordChecked:" + isWordChecked);
 				Log.d(TAG, "isAutoPlay:" + isAutoPlay);
-				chooseCount = 0;
 			}
 		});
 	}

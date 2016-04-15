@@ -11,16 +11,16 @@ import android.media.SoundPool.OnLoadCompleteListener;
 
 import com.hw.chineseLearn.base.CustomApplication;
 
-public class MediaPlayerHelper {
+public class MediaPlayerHelperLoop {
 
 	private SoundPool soundPool;
 	private int sound;
 	boolean loaded = false;
 	public boolean isStop = false;
 
-	public MediaPlayerHelper(String assetsPath) {
+	public MediaPlayerHelperLoop(String assetsPath,String filePath) {
 		if (soundPool == null) {
-			soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 5);
+			soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 5);
 		}
 		AssetManager am = CustomApplication.app.getAssets();
 		AssetFileDescriptor afd = null;
@@ -29,11 +29,8 @@ public class MediaPlayerHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (afd != null) {
-			sound = soundPool.load(afd, 1);
-		} else {
-			sound = soundPool.load(assetsPath, 1);
-		}
+		sound = soundPool.load(afd, 1);
+		sound = soundPool.load(filePath, 1);
 		soundPool.setOnLoadCompleteListener(new OnLoadCompleteListener() {
 			@Override
 			public void onLoadComplete(SoundPool soundPool, int sampleId,

@@ -58,6 +58,13 @@ public class MediaPlayUtil {
 			return 0;
 		}
 	}
+	
+	public void release(){
+		if (mMediaPlayer != null) {
+			mMediaPlayUtil=null;
+			mMediaPlayer.release();
+		}
+	}
 
 	public boolean isPlaying() {
 		if (mMediaPlayer != null) {
@@ -66,10 +73,12 @@ public class MediaPlayUtil {
 			return false;
 		}
 	}
-	
-	public void setPlayOnCompleteListener(MediaPlayer.OnCompletionListener playOnCompleteListener) {
+
+	public void setPlayOnCompleteListener(
+			MediaPlayer.OnCompletionListener playOnCompleteListener) {
 		if (mMediaPlayer != null) {
 			mMediaPlayer.setOnCompletionListener(playOnCompleteListener);
 		}
 	}
+
 }

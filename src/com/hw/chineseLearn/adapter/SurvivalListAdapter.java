@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -48,9 +49,8 @@ public class SurvivalListAdapter extends BaseAdapter {
 	private String lastRecFileName = "kitrecoder";
 	private  String filePath = DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName+ ".amr";
 	private AudioRecorder mr;
-	Thread thread = null;
+	private boolean isLoop=false;
 	
-	int vmValue = 0;
 
 	public SurvivalListAdapter(Context context, ArrayList<item> data) {
 		this.context = context;
@@ -63,38 +63,16 @@ public class SurvivalListAdapter extends BaseAdapter {
 	}
 
 	public void setSelection(int position) {
+		
+		//选中时停止录音 并且改变背景颜色
+		if(mr!=null){
+			mr.reset();
+		}
+		isRecord=false;
+		notifyDataSetChanged();
 		this.selectPosition = position;
 	}
 
-	// @Override
-	// public View getGroupView(int groupPosition, boolean isExpanded,
-	// View convertView, ViewGroup parent) {
-	//
-	// if (convertView == null) {
-	// convertView = groupInflater.inflate(
-	// R.layout.expend_listview_item_father_survivla_kit, null);
-	// gvHolder = new GroupViewHolder();
-	// gvHolder.tv_father_title = (TextView) convertView
-	// .findViewById(R.id.tv_father_title);
-	// gvHolder.board_selector = (TextView) convertView
-	// .findViewById(R.id.board_selector);
-	//
-	// convertView.setTag(this.gvHolder);
-	// } else {
-	// gvHolder = (GroupViewHolder) convertView.getTag();
-	// }
-	// gvHolder.tv_father_title.setText(getGroup(groupPosition).getUnitName());
-	//
-	// if (isExpanded) {
-	// gvHolder.board_selector
-	// .setBackgroundResource(R.drawable.strokes_order_lv_arrow_noclick);
-	// } else {
-	// gvHolder.board_selector
-	// .setBackgroundResource(R.drawable.strokes_order_lv_arrow_onclick);
-	// }
-	//
-	// return convertView;
-	// }
 
 	@Override
 	public int getCount() {
@@ -105,7 +83,7 @@ public class SurvivalListAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return null;
+		return data.get(position);
 	}
 
 	@Override
@@ -139,13 +117,12 @@ public class SurvivalListAdapter extends BaseAdapter {
 					.findViewById(R.id.img_loop);// 是否循环按钮
 			cvHolder.img_record_play = (ImageView) convertView
 					.findViewById(R.id.img_record_play);// 慢速播放按钮
-			
 			initEvent(position);// checkbox 录音 慢速 循环的点击事件
 			convertView.setTag(cvHolder);
 		} else {
 			this.cvHolder = (ViewHolder) convertView.getTag();
 		}
-
+		cvHolder.img_record.setBackgroundDrawable(resources.getDrawable(R.drawable.recorder_animate_bg));
 		if (data == null) {
 			return convertView;
 		}
@@ -180,8 +157,9 @@ public class SurvivalListAdapter extends BaseAdapter {
 			public void onClick(View v) { 
 				//点击后录音 再次点击停止录音 并播放正确录音
 					isRecord = !isRecord;
-				setRecoedBg((ImageView) v);
+				setRecoedBg((ImageView) v,position);
 			}
+
 		});
 
 		cvHolder.img_record_play.setOnClickListener(new OnClickListener() {// 慢速
@@ -198,6 +176,13 @@ public class SurvivalListAdapter extends BaseAdapter {
 					@Override
 					public void onClick(View v) {
 						//设置是否循环 点击后图标改变 停止正在循环的录音 判断当前语音是否循环
+						isLoop=!isLoop;//R.drawable.loop_play
+						if(isLoop){
+							((ImageView)v).setImageResource(R.drawable.loop_play);
+						}else{
+							((ImageView)v).setImageResource(R.drawable.unloop_play);
+						}
+						
 					}
 				});
 
@@ -212,7 +197,11 @@ public class SurvivalListAdapter extends BaseAdapter {
 						// LearnUnitBaseModel modelBase = new
 						// LearnUnitBaseModel();
 						// CustomApplication.app.favouriteList.add(modelBase);
-						arg0.setChecked(checked);
+						if(checked){
+							arg0.setChecked(checked);
+						}else{
+							arg0.setChecked(!checked);
+						}
 						// checked=!checked;
 						// } else {
 						// cvHolder.ck_collect.setChecked(checked);
@@ -244,7 +233,7 @@ public class SurvivalListAdapter extends BaseAdapter {
 
 	}
 
-	protected void setRecoedBg(ImageView imageView) {
+	protected void setRecoedBg(final ImageView imageView,int position) {
 		if (isRecord) {
 			imageView.setBackgroundDrawable(resources.getDrawable(R.drawable.recorder_animate_bg_click));
 			flag = "talk";
@@ -258,9 +247,11 @@ public class SurvivalListAdapter extends BaseAdapter {
 					public int onVMChanged(int value) {
 
 						int volume = mr.recorder.getMaxAmplitude();
-						vmValue = 15 * volume / 32768;
-						thread = new Thread(new VmChangeRunAble());
-						thread.start();
+						int vmValue = 15 * volume / 32768;
+						Message msg=Message.obtain();
+						msg.what=vmValue;
+						msg.obj=imageView;
+						handler.sendMessage(msg);
 						return 0;
 					}
 				});
@@ -271,215 +262,153 @@ public class SurvivalListAdapter extends BaseAdapter {
 		} else {
 
 			flag = "listen";
-			try {
 				if (mr != null) {
-					mr.stop();
+					mr.reset();
 					mr = null;
 				}
-				MediaPlayUtil.getInstance().play(filePath);
+				playRecoder(position);//播放录制的声音
 				imageView.setBackgroundDrawable(resources.getDrawable(R.drawable.recorder_animate_bg));
 				imageView.setImageDrawable(resources.getDrawable(R.drawable.recorder_animate_01));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
-	
-	class VmChangeRunAble implements Runnable {
-		@Override
-		public void run() {
-			Looper.prepare();
-			while (true) {
-				try {
-					Looper mainLooper = Looper.getMainLooper();
-					MyHandler handler = new MyHandler(mainLooper);
-					Object obj = null;
-					Message msg = Message.obtain();
-					switch (vmValue) {
-					case 0:
-						msg.what = 0;
-						msg.obj = obj;
-						break;
-					case 1:
-						msg.what = 1;
-						msg.obj = obj;
-						break;
-					case 2:
-						msg.what = 2;
-						msg.obj = obj;
-						break;
-					case 3:
-						msg.what = 3;
-						msg.obj = obj;
 
-						break;
-					case 4:
-						msg.what = 4;
-						msg.obj = obj;
-						break;
-					case 5:
-						msg.what = 5;
-						msg.obj = obj;
-						break;
-					case 6:
-						msg.what = 6;
-						msg.obj = obj;
-						break;
-					case 7:
-						msg.what = 7;
-						msg.obj = obj;
-						break;
-					case 8:
-						msg.what = 8;
-						msg.obj = obj;
-						break;
-					case 9:
-						msg.what = 9;
-						msg.obj = obj;
-						break;
-					case 10:
-						msg.what = 10;
-						msg.obj = obj;
-						break;
-					case 11:
-						msg.what = 11;
-						msg.obj = obj;
-						break;
-					case 12:
-						msg.what = 12;
-						msg.obj = obj;
-						break;
-					case 13:
-						msg.what = 13;
-						msg.obj = obj;
-						break;
-					case 14:
-						msg.what = 14;
-						msg.obj = obj;
-						break;
-					case 15:
-						msg.what = 15;
-						msg.obj = obj;
-						break;
-					}
-					handler.sendMessage(msg);
-					Thread.sleep(1000);// 1秒钟
-
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	/**
-	 * 用来处理消息,改变图片
-	 */
-	private class MyHandler extends Handler {
-
-		public MyHandler(Looper looper) {
-			super(looper);
-		}
-
-		@Override
-		public void handleMessage(Message msg) // 处理消息
-		{
+	 Handler handler=new Handler(){
+		public void handleMessage(Message msg) {
+			ImageView imageView=(ImageView) msg.obj;
 			switch (msg.what) {
 
+			case 100:
+				playVoice(msg.arg1);
+				break;
+			
 			case 0:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_01));
 				break;
 
 			case 1:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_01));
 				break;
 
 			case 2:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_02));
 				break;
 
 			case 3:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_03));
 				break;
 
 			case 4:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_04));
 				break;
 
 			case 5:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_05));
 				break;
 
 			case 6:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_06));
 				break;
 
 			case 7:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_07));
 				break;
 			case 8:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_08));
 				break;
 			case 9:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_09));
 				break;
 			case 10:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_10));
 				break;
 			case 11:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_11));
 				break;
 			case 12:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_12));
 				break;
 			case 13:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_13));
 				break;
 			case 14:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_14));
 				break;
 			case 15:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_15));
 				break;
 
 			default:
-				cvHolder.img_record.setImageDrawable(resources
+				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_01));
 			}
 
-		}
+		};
+	};
+	
+	private void playRecoder(final int position) {
+		final MediaPlayUtil instance = MediaPlayUtil.getInstance();
+		instance.setPlayOnCompleteListener(new OnCompletionListener() {
+			
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				MediaPlayUtil.getInstance().release();//释放之前的mediaplayer
+				playVoice(position);//不然这里播放完会重复执行这个监听
+//				Message msg=Message.obtain();
+//				msg.arg1=position;
+//				msg.what=100;
+//				handler.sendMessage(msg);
+			}
+		});
+		instance.play(filePath);
+		
 	}
 	
-	
-	private void playSlowVoice(final int position) {
-		String fileName = data.get(position).getSlow_pron_file_name();
-		int cid = data.get(position).getCid();
-		String slowPath=DatabaseHelperMy.SOUND_PATH+"/"+cid+"/"+fileName;
+	/**
+	 * 播放正确的声音
+	 * @param position
+	 */
+	private void playVoice(final int position) {
+		String voicePath=DatabaseHelperMy.SOUND_PATH+"/"+data.get(position).getCid()+"/"+data.get(position).getPron_file_name();
 		MediaPlayUtil instance = MediaPlayUtil.getInstance();
 		instance.setPlayOnCompleteListener(new OnCompletionListener() {
 			
 			@Override
 			public void onCompletion(MediaPlayer mp) {
-				mp.release();
+				if(isLoop){
+					MediaPlayUtil.getInstance().release();
+					playRecoder(position);
+				}
 			}
 		});
+		instance.play(voicePath);
+	}
+	
+	/**
+	 * 播放慢速语音
+	 * @param position
+	 */
+	private void playSlowVoice(final int position) {
+		String fileName = data.get(position).getSlow_pron_file_name();
+		int cid = data.get(position).getCid();
+		String slowPath=DatabaseHelperMy.SOUND_PATH+"/"+cid+"/"+fileName;
+		MediaPlayUtil instance = MediaPlayUtil.getInstance();
+		
 		instance.play(slowPath);//播放慢速路径
 	}
 	

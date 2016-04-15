@@ -527,7 +527,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			break;
 		case MotionEvent.ACTION_MOVE:
 			moveViewWithFinger(imageView, event.getRawX(), event.getRawY());// 动态设置view的位置，拖动效果
-
+			Log.e(TAG, "Width:" + imageView.getWidth() + "    Height:"
+					+ imageView.getHeight());
 			break;
 		case MotionEvent.ACTION_UP:
 
@@ -593,12 +594,12 @@ public class LearnImageMoveFragment extends BaseFragment implements
 							&& (y + mizigeHeight - b1) < (mizigeY
 									+ mizigeHeight + relTopHeight)) {
 						// 拖到了米字格的区域
-						UiUtil.showToast(context,
-								"拖到了" + "id:" + model.getWordId());
-						choosedSubLGModelMap.put(imageView, model);
+						// UiUtil.showToast(context,
+						// "拖到了" + "id:" + model.getWordId());
+						// choosedSubLGModelMap.put(imageView, model);
 
 					} else {
-						UiUtil.showToast(context, "木拖到");
+						// UiUtil.showToast(context, "木拖到");
 						moveToOrignPosition(imageView);
 						if (choosedSubLGModelMap.containsKey(imageView)) {
 							choosedSubLGModelMap.remove(imageView);

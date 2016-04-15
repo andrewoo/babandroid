@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rel_root"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-     >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/rel_top"
@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/iv_dv_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:background="@drawable/blue_trumpet_1" />
@@ -24,15 +24,15 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iv_dv_view"
-            android:text="[ta]he/him"
             android:singleLine="true"
+            android:text="[ta]he/him"
             android:textColor="@color/deep_grey"
             android:textSize="@dimen/text_s26" />
 
         <Button
             android:id="@+id/btn_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/btn_bg_blue"
@@ -42,145 +42,7 @@
             android:paddingTop="5dp"
             android:text="Hint"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_s22" />
+            android:textSize="@dimen/text_s18" />
     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="100dip"
-                android:layout_height="100dip"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/input_white_p" />
-
-            <ImageView
-                android:layout_width="100dip"
-                android:layout_height="100dip"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/input_white_p" />
-
-            <ImageView
-                android:layout_width="100dip"
-                android:layout_height="100dip"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/input_white_p" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:orientation="vertical" >
-
-                <ImageView
-                    android:layout_width="100dip"
-                    android:layout_height="100dip"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/input_white_p" />
-
-                <ImageView
-                    android:layout_width="100dip"
-                    android:layout_height="100dip"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/input_white_p" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="200dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_dv_view"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:layout_width="100dip"
-                    android:layout_height="100dip"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/input_white_p"
-                    android:src="@drawable/pp_19" />
-
-                <ImageView
-                    android:layout_width="100dip"
-                    android:layout_height="100dip"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/input_white_p"
-                    android:src="@drawable/pp_20" />
-
-                <ImageView
-                    android:layout_width="100dip"
-                    android:layout_height="100dip"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/input_white_p"
-                    android:src="@drawable/pp_21" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:orientation="vertical" >
-
-                    <ImageView
-                        android:layout_width="100dip"
-                        android:layout_height="100dip"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/input_white_p"
-                        android:src="@drawable/pp_22" />
-
-                    <ImageView
-                        android:layout_width="100dip"
-                        android:layout_height="100dip"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/input_white_p"
-                        android:src="@drawable/pp_23" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="200dip"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/mizige" />
-            </LinearLayout>
-        </LinearLayout>
-    </FrameLayout>
 
 </RelativeLayout>
