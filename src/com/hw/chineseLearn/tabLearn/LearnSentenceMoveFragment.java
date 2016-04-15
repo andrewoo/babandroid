@@ -63,9 +63,6 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	ArrayList<Integer> orignViewY = new ArrayList<Integer>();
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 
-	static Random random = new Random();
-	static String[] words = "the of and a to in is be that was he for it with as his I on have at by not they this had are but from or she an which you one we all were her would there their will when who him been has more if no out do so can what up said about other into than its time only could new them man some these then two first may any like now my such make over our even most me state after also made many did must before back see through way where get much go well your know should down work year because come people just say each those take day good how long Mr own too little use US very great still men here life both between old under last never place same another think house while high right might came off find states since used give against three himself look few general hand school part small American home during number again Mrs around thought went without however govern don't does got public United point end become head once course fact upon need system set every war put form water took"
-			.split(" ");
 	// 初始化bottomView的初始位置
 	private int x = 0;
 	private int y = 0;
@@ -82,7 +79,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	// 手指按下时记录的左边值
 	float downX, downY;
 	float upX, upY;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -106,17 +103,18 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		contentView = LayoutInflater.from(context).inflate(
 				R.layout.fragment_lesson_sentence_move, null);
 		task = new ThreadWithDialogTask();
-		rlRoot = (RelativeLayout) contentView.findViewById(R.id.rl_root); 
+		rlRoot = (RelativeLayout) contentView.findViewById(R.id.rl_root);
 		lin_play_and_text = (LinearLayout) contentView
 				.findViewById(R.id.lin_play_and_text);
 		// lin_play_and_text.setVisibility(View.GONE);
 		lin_line = (LinearLayout) contentView.findViewById(R.id.lin_line);
 		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
 		txt_name.setText(title);
-		
-		btn_play_normal = (Button) contentView.findViewById(R.id.btn_play_normal);
+
+		btn_play_normal = (Button) contentView
+				.findViewById(R.id.btn_play_normal);
 		btn_play_normal.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				if (mediaPlayerHelper != null) {
@@ -131,18 +129,20 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	}
 
 	private void play() {
-		if(mediaPlayerHelper==null){
-			mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH+voicePath);
+		if (mediaPlayerHelper == null) {
+			mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
+					+ voicePath);
 		}
 		mediaPlayerHelper.play();
-		
+
 	}
 
 	private void initData() {
 		Bundle bundle = getArguments();
-		if(bundle!=null){
-			if(bundle.containsKey("modelWord")){
-				LGModelWord modelWord=(LGModelWord) bundle.getSerializable("modelWord");
+		if (bundle != null) {
+			if (bundle.containsKey("modelWord")) {
+				LGModelWord modelWord = (LGModelWord) bundle
+						.getSerializable("modelWord");
 				title = modelWord.getTitle();// 得到title
 				subLGModelList = modelWord.getSubLGModelList();
 				answerList = modelWord.getAnswerList();
@@ -224,7 +224,6 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	private Button btn_play_normal;
 
 	private MediaPlayerHelper mediaPlayerHelper;
-
 
 	private void initBottomViews() {
 
@@ -692,10 +691,10 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 	}
-	
+
 	@Override
 	public void onStop() {
-		if(mediaPlayerHelper!=null){
+		if (mediaPlayerHelper != null) {
 			mediaPlayerHelper.stop();
 		}
 		super.onStop();
@@ -709,7 +708,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 		String topViewStrings = getTopViewStrings();
 		String stringFilter = UiUtil.StringFilter(topViewStrings);
-		
+
 		for (int i = 0; i < answerList.size(); i++) {
 			if (answerList.get(i).equals(stringFilter)) {
 				return true;

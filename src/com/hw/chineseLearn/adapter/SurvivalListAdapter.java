@@ -24,11 +24,9 @@ public class SurvivalListAdapter extends BaseAdapter {
 	private TextView txt_sentence_cn;
 	private TextView txt_sentence_en;
 
-
-
 	public SurvivalListAdapter(Context context,
 			ArrayList<item> data) { 
-		this.context = context;
+		this.context = context; 
 		this.data = data;
 	}
 	

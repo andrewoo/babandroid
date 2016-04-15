@@ -527,7 +527,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			break;
 		case MotionEvent.ACTION_MOVE:
 			moveViewWithFinger(imageView, event.getRawX(), event.getRawY());// 动态设置view的位置，拖动效果
-
+			Log.e(TAG, "Width:" + imageView.getWidth() + "    Height:"
+					+ imageView.getHeight());
 			break;
 		case MotionEvent.ACTION_UP:
 

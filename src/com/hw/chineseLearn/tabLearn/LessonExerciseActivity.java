@@ -1425,7 +1425,9 @@ public class LessonExerciseActivity extends BaseActivity {
 						splitOptions[i]);
 				String mainPicName = lGWord.getWordId() + "-"
 						+ lGWord.getMainPic();// 把数据库名字和文件中图片名字对应
-				String optionName = lGWord.getWord() + "/" + lGWord.getPinyin();
+				// String optionName = lGWord.getWord() + "/" +
+				// lGWord.getPinyin();
+				String optionName = lGWord.getWord();
 				// 拿到所有图片和选项的名字
 				SubLGModel subLGModel = modelWord.new SubLGModel();
 				subLGModel.setImageName(mainPicName);// 拿到图片名字

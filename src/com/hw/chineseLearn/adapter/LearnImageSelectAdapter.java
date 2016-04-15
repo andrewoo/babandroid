@@ -49,7 +49,7 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 		colorBlack = resources.getColor(R.color.black);
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		height = CustomApplication.app.displayMetrics.heightPixels / 3 * 4;
-		
+
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 			holder.iv_img = (ImageView) convertView
 					.findViewById(R.id.iv_unit_img);
 			holder.iv_tag = (ImageView) convertView.findViewById(R.id.iv_tag);
-
+			holder.iv_tag.setVisibility(View.GONE);
 			holder.txt_word_name = (TextView) convertView
 					.findViewById(R.id.txt_word_name);
 			holder.lin_content = (LinearLayout) convertView
@@ -106,28 +106,24 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 			return convertView;
 		}
 
-		// String unitName = model.getWord()+"/"+model.getPinyin();
-		// String imageName = model.getMainPic();
 		String imageName = subLGModelList.get(position).getImageName();
 		String option = subLGModelList.get(position).getOption();
 		holder.txt_word_name.setText("" + option);
 		Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGWORD_PATH
 				+ imageName);
 		holder.iv_img.setImageBitmap(bitmap);
-		// holder.iv_img.setImageResource(resources.getIdentifier(imageName,
-		// "drawable", context.getPackageName()));
 
 		if (selectPosition == position) {// 选中
 			holder.lin_content.setBackground(resources
 					.getDrawable(R.drawable.bg_blue));
-			holder.txt_word_name.setTextColor(colorWhite);
+			// holder.txt_word_name.setTextColor(colorWhite);
 			holder.iv_tag.setImageDrawable(resources
 					.getDrawable(R.drawable.word_model1_sel));
-			
+
 		} else {// 未选中
 			holder.lin_content.setBackground(resources
 					.getDrawable(R.drawable.bg_white1));
-			holder.txt_word_name.setTextColor(colorBlack);
+			// holder.txt_word_name.setTextColor(colorBlack);
 			holder.iv_tag.setImageDrawable(resources
 					.getDrawable(R.drawable.word_model1_unsel));
 		}
