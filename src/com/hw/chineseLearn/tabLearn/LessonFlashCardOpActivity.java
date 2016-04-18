@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -22,12 +23,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
+import com.hw.chineseLearn.adapter.FlashCardOpGalleryAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
@@ -35,11 +38,13 @@ import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
 import com.hw.chineseLearn.dao.bean.LGSentence;
 import com.hw.chineseLearn.dao.bean.LGWord;
+import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
+import com.util.weight.MyGallery;
 import com.util.weight.SlideSwitch;
 import com.util.weight.SlideSwitch.SlideListener;
 
@@ -48,7 +53,8 @@ import com.util.weight.SlideSwitch.SlideListener;
  * 
  * @author yh
  */
-public class LessonFlashCardOpActivity extends BaseActivity {
+public class LessonFlashCardOpActivity extends BaseActivity implements
+		OnItemSelectedListener {
 
 	private String TAG = "==LessonFlashCardOpActivity==";
 	public Context context;
@@ -95,6 +101,9 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	boolean isWordChecked = false;
 	boolean isAutoPlay = true;
 
+	private MyGallery gallery;// CoverFlow
+	private FlashCardOpGalleryAdapter adapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -115,8 +124,9 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	 */
 	public void init() {
 
-		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"FlashCard", View.GONE, View.VISIBLE, R.drawable.img_setting);
+		setTitle(View.GONE, View.VISIBLE,
+				R.drawable.btn_selector_top_left_white, "FlashCard", View.GONE,
+				View.VISIBLE, R.drawable.img_setting_white);
 		lin_1 = (LinearLayout) contentView.findViewById(R.id.lin_1);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				screenWidth - UiUtil.dip2px(getApplicationContext(), 60),
@@ -343,6 +353,20 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 			chooseCount = chooseCount + wordsCount;
 		}
 		defaultNumber = chooseCount;
+		if (adapter == null) {
+			adapter = new FlashCardOpGalleryAdapter(this, datas, datas.size());
+		}
+		adapter.notifyDataSetChanged();
+		gallery = (MyGallery) findViewById(R.id.flash_gallery);
+		gallery.setAdapter(adapter);
+		gallery.setAnimationDuration(1500);
+		gallery.setSpacing(screenWidth / 10 * 1);
+		gallery.setSelection(index);
+		gallery.setFocusable(false);
+		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+				screenWidth, screenHeight * 5 / 10);
+		gallery.setLayoutParams(param);
+
 	}
 
 	int id = -1;
@@ -414,6 +438,7 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 		case 1:// redo
 			index = 0;
 			setText();
+			gallery.setSelection(index);// 选中当前页面
 			break;
 
 		default:
@@ -443,6 +468,8 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 			String title, int textRight, int imgRight, int imgRightDrawable) {
 
 		View view_title = (View) this.findViewById(R.id.view_title);
+		view_title.setBackgroundColor(context.getResources().getColor(
+				R.color.chinese_skill_red));
 		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
 		tv_title.setText(title);
 		TextView tv_title_left = (TextView) view_title
@@ -600,6 +627,7 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 				startActivityForResult(intent, 1);
 			} else {
 				setText();
+				gallery.setSelection(index);// 选中当前页面
 			}
 
 		}
@@ -693,6 +721,8 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 				tv_default_number.setText("" + progress);
 				defaultNumber = progress;
 				setText();
+				adapter.setCount(defaultNumber);
+				adapter.notifyDataSetChanged();
 			}
 
 			@Override
@@ -829,6 +859,27 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 		}
 
 	};
+
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View convertView,
+			final int position, long arg3) {
+		// TODO Auto-generated method stub
+
+		index = position;
+		adapter.setSelection(position);
+		setText();
+
+		if (convertView == null) {
+			convertView = View.inflate(this, R.layout.layout_falsh_card_item,
+					null);
+		}
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+
+	}
 
 	@Override
 	protected void onDestroy() {

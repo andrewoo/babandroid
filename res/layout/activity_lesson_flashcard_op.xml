@@ -11,11 +11,6 @@
         android:id="@+id/view_title"
         layout="@layout/main_title_view" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/min_grey" />
-
     <TextView
         android:id="@+id/tv_no"
         android:layout_width="match_parent"
@@ -27,6 +22,12 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_s14" />
 
+    <com.util.weight.MyGallery
+        android:id="@+id/flash_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2" />
+
     <LinearLayout
         android:id="@+id/lin_1"
         android:layout_width="match_parent"
@@ -35,7 +36,8 @@
         android:layout_marginRight="30dp"
         android:layout_weight="2"
         android:background="@drawable/bg_touming_has_corners"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="match_parent"
