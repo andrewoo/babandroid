@@ -1,10 +1,12 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,9 +21,11 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnImageSelectAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
+import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 
 /**
@@ -173,15 +177,36 @@ public class LearnImageSelectFragment extends BaseFragment implements
 				isRight = false;
 			}
 
-			meidiaPlayer = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
-					+ modelWord.getSubLGModelList().get(position)
-							.getSubVoicePath());
-//			meidiaPlayer.setLoad(ASSETS_SOUNDS_PATH
-//					+ modelWord.getSubLGModelList().get(position)
-//							.getSubVoicePath());
-			meidiaPlayer.play();
+			// meidiaPlayer = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
+			// + modelWord.getSubLGModelList().get(position)
+			// .getSubVoicePath());
+			// meidiaPlayer.play();
+
+			String voiceP = modelWord.getSubLGModelList().get(position)
+					.getSubVoicePath();
+			try {
+				AssetFileDescriptor afd = CustomApplication.app.getAssets()
+						.openFd(ASSETS_SOUNDS_PATH + voiceP);
+				MediaPlayUtil.getInstance().play(afd);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			learnImageSelectAdapter.notifyDataSetChanged();
+
+			if (getActivity() instanceof LessonExerciseActivity) {
+				LessonExerciseActivity lessonExerciseActivity = (LessonExerciseActivity) getActivity();
+				lessonExerciseActivity.isCheckBtnActived(true);
+			}
+			if (getActivity() instanceof LessonReviewExerciseActivity) {
+				LessonReviewExerciseActivity lessonReviewExerciseActivity = (LessonReviewExerciseActivity) getActivity();
+				lessonReviewExerciseActivity.isCheckBtnActived(true);
+			}
+			if (getActivity() instanceof LessonTestOutTestActivity) {
+				LessonTestOutTestActivity lessonTestOutTestActivity = (LessonTestOutTestActivity) getActivity();
+				lessonTestOutTestActivity.isCheckBtnActived(true);
+			}
 		}
 	};
 
@@ -193,6 +218,13 @@ public class LearnImageSelectFragment extends BaseFragment implements
 
 	public boolean isRight() {
 		return isRight;
+	}
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		MediaPlayUtil.getInstance().stop();
+		MediaPlayUtil.getInstance().release();
 	}
 
 }

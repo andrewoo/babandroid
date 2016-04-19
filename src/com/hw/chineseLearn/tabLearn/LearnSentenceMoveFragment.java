@@ -614,6 +614,34 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		answerString = buffer.toString();
 		buffer = null;
 		Log.d(TAG, answerString);
+		if (!"".equals(answerString)) {
+			if (getActivity() instanceof LessonExerciseActivity) {
+				LessonExerciseActivity lessonExerciseActivity = (LessonExerciseActivity) getActivity();
+				lessonExerciseActivity.isCheckBtnActived(true);
+			}
+			if (getActivity() instanceof LessonReviewExerciseActivity) {
+				LessonReviewExerciseActivity lessonReviewExerciseActivity = (LessonReviewExerciseActivity) getActivity();
+				lessonReviewExerciseActivity.isCheckBtnActived(true);
+			}
+			if (getActivity() instanceof LessonTestOutTestActivity) {
+				LessonTestOutTestActivity lessonTestOutTestActivity = (LessonTestOutTestActivity) getActivity();
+				lessonTestOutTestActivity.isCheckBtnActived(true);
+			}
+
+		} else {
+			if (getActivity() instanceof LessonExerciseActivity) {
+				LessonExerciseActivity lessonExerciseActivity = (LessonExerciseActivity) getActivity();
+				lessonExerciseActivity.isCheckBtnActived(false);
+			}
+			if (getActivity() instanceof LessonReviewExerciseActivity) {
+				LessonReviewExerciseActivity lessonReviewExerciseActivity = (LessonReviewExerciseActivity) getActivity();
+				lessonReviewExerciseActivity.isCheckBtnActived(false);
+			}
+			if (getActivity() instanceof LessonTestOutTestActivity) {
+				LessonTestOutTestActivity lessonTestOutTestActivity = (LessonTestOutTestActivity) getActivity();
+				lessonTestOutTestActivity.isCheckBtnActived(false);
+			}
+		}
 		return answerString;
 	}
 

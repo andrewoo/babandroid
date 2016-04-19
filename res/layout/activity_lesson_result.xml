@@ -3,7 +3,7 @@
     xmlns:android_custom="http://schemas.android.com/apk/res/com.hw.chineseLearn"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#F7F7F7"
+    android:background="@color/white"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
@@ -14,244 +14,222 @@
         android:orientation="vertical" >
 
         <LinearLayout
+            android:id="@+id/lin_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical" >
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="40dp" >
 
             <com.util.weight.RoundProgressBar
                 android:id="@+id/roundProgressBar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal|top"
                 android_custom:roundColor="#D1D1D1"
                 android_custom:roundProgressColor="@color/chinese_skill_blue"
-                android_custom:roundWidth="25dip"
+                android_custom:roundWidth="20dip"
                 android_custom:textColor="@color/chinese_skill_blue"
-                android_custom:textSize="@dimen/text_s18" />
-
-            <TextView
-                android:id="@+id/tv_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:paddingBottom="5dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:paddingTop="5dp"
-                android:text="Congratulations!You defeated 97% ChineseSkill learns!"
-                android:textColor="@color/deep_grey"
-                android:textSize="@dimen/text_s12" />
+                android_custom:textSize="@dimen/text_s26" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="5dp"
+            android:text="Congratulations!You defeated 97% Babble learns!"
+            android:textColor="@color/chinese_skill_blue"
+            android:textSize="@dimen/text_s12" />
+
         <LinearLayout
+            android:id="@+id/lin_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical" >
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/min_grey" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical" >
+                android:orientation="horizontal" >
 
                 <LinearLayout
-                    android:id="@+id/lin_1"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
+                    android:gravity="center"
                     android:orientation="horizontal" >
 
                     <LinearLayout
-                        android:id="@+id/lin_1_1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="30dp"
-                        android:paddingRight="30dp"
-                        android:paddingTop="10dp" >
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp" >
+
+                        <ImageView
+                            android:id="@+id/img_right"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/test_correct_3" />
 
                         <TextView
-                            android:id="@+id/tv_score"
+                            android:id="@+id/tv_right_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1460"
-                            android:textColor="@color/chinese_skill_blue"
-                            android:textSize="@dimen/text_s28" />
+                            android:layout_marginTop="10dp"
+                            android:text="17"
+                            android:textColor="@color/chinese_skill_green"
+                            android:textSize="@dimen/text_s14"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="scores"
-                            android:textColor="@color/chinese_skill_blue"
+                            android:text="RIGHT"
+                            android:textColor="@color/chinese_skill_green"
                             android:textSize="@dimen/text_s14" />
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="40dp"
+                        android:background="@color/min_grey" />
+
                     <LinearLayout
-                        android:id="@+id/lin_1_2"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:gravity="center"
-                        android:orientation="vertical" >
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp" >
 
-                        <RelativeLayout
-                            android:id="@+id/rel_1_2_right"
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:id="@+id/img_wrong"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/test_wrong_3" />
+
+                        <TextView
+                            android:id="@+id/tv_wrong_count"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
-                            android:paddingBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:paddingTop="5dp" >
+                            android:layout_marginTop="10dp"
+                            android:text="0"
+                            android:textColor="@color/chinese_skill_red"
+                            android:textSize="@dimen/text_s14"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="Right"
-                                android:textColor="@color/chinese_skill_green"
-                                android:textSize="@dimen/text_s14" />
-
-                            <TextView
-                                android:id="@+id/tv_right_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toLeftOf="@+id/img_green_arrow"
-                                android:text="17"
-                                android:textColor="@color/chinese_skill_green"
-                                android:textSize="@dimen/text_s14" />
-
-                            <ImageView
-                                android:id="@+id/img_green_arrow"
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="10dp"
-                                android:src="@drawable/review_green_arrow" />
-                        </RelativeLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/min_grey" />
-
-                        <RelativeLayout
-                            android:id="@+id/rel_1_2_wrong"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:paddingBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:paddingTop="5dp" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="Wrong"
-                                android:textColor="@color/chinese_skill_red"
-                                android:textSize="@dimen/text_s14" />
-
-                            <TextView
-                                android:id="@+id/tv_wrong_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toLeftOf="@+id/img_red_arrow"
-                                android:text="0"
-                                android:textColor="@color/chinese_skill_red"
-                                android:textSize="@dimen/text_s14" />
-
-                            <ImageView
-                                android:id="@+id/img_red_arrow"
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="10dp"
-                                android:src="@drawable/review_red_arrow" />
-                        </RelativeLayout>
+                            android:text="WRONG"
+                            android:textColor="@color/chinese_skill_red"
+                            android:textSize="@dimen/text_s14" />
                     </LinearLayout>
-                </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/min_grey" />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="40dp"
+                        android:background="@color/min_grey" />
 
-                <LinearLayout
-                    android:id="@+id/lin_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="Time"
-                        android:textColor="@color/mid_grey"
-                        android:textSize="@dimen/text_s14" />
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp" >
 
-                    <TextView
-                        android:id="@+id/tv_time_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="02&apos;37&apos;&apos;"
-                        android:textColor="@color/mid_grey"
-                        android:textSize="@dimen/text_s14" />
+                        <com.util.weight.RoundProgressBar
+                            android:id="@+id/roundProgressBar_accuracy"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android_custom:roundColor="#D1D1D1"
+                            android_custom:roundProgressColor="@color/chinese_skill_yellow"
+                            android_custom:roundWidth="15dip"
+                            android_custom:textColor="@color/chinese_skill_blue"
+                            android_custom:textSize="@dimen/text_s18" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="Accuracy"
-                        android:textColor="@color/chinese_skill_yellow"
-                        android:textSize="@dimen/text_s14" />
+                        <TextView
+                            android:id="@+id/tv_accuracy_percent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="100.0%"
+                            android:textColor="@color/chinese_skill_yellow"
+                            android:textSize="@dimen/text_s14"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tv_accuracy_percent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="100.0%"
-                        android:textColor="@color/chinese_skill_yellow"
-                        android:textSize="@dimen/text_s14" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="ACCURACY"
+                            android:textColor="@color/chinese_skill_yellow"
+                            android:textSize="@dimen/text_s14" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/min_grey" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingTop="10dp" >
+
+                <TextView
+                    android:id="@+id/tv_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1460"
+                    android:textColor="@color/chinese_skill_blue"
+                    android:textSize="@dimen/text_s30"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="scores"
+                    android:textColor="@color/chinese_skill_blue"
+                    android:textSize="@dimen/text_s14" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_time_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_border_grey1"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:text="02&apos;37&apos;&apos;"
+                android:textColor="@color/mid_grey"
+                android:textSize="@dimen/text_s14" />
         </LinearLayout>
     </LinearLayout>
 
@@ -262,9 +240,8 @@
         android:background="@color/chinese_skill_blue"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingTop="5dp"
         android:paddingBottom="5dp"
-         >
+        android:paddingTop="5dp" >
 
         <TextView
             android:id="@+id/btn_redo"

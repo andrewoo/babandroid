@@ -72,6 +72,11 @@ public class RoundProgressBar extends View {
 	 */
 	private float accuracy;
 
+	/**
+	 * 是否画文字
+	 */
+	private boolean isDrawText = true;
+
 	public static final int STROKE = 0;
 	public static final int FILL = 1;
 
@@ -117,6 +122,10 @@ public class RoundProgressBar extends View {
 		this.accuracy = accuracy;
 	}
 
+	public void isDrawText(boolean isDrawText) {
+		this.isDrawText = isDrawText;
+	}
+
 	@SuppressLint("DrawAllocation")
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -130,7 +139,7 @@ public class RoundProgressBar extends View {
 		paint.setStyle(Paint.Style.STROKE); // 设置空心
 		paint.setStrokeWidth(roundWidth); // 设置圆环的宽度
 		paint.setAntiAlias(true); // 消除锯齿
-		canvas.drawCircle(centre , centre , radius, paint); // 画出圆环
+		canvas.drawCircle(centre, centre, radius, paint); // 画出圆环
 		// Log.e("log", "centre：" + centre);
 
 		/**
@@ -145,8 +154,11 @@ public class RoundProgressBar extends View {
 		float textWidth = paint.measureText(percentP + "%"); // 测量字体宽度，我们需要根据字体的宽度设置在圆环中间
 
 		if (textIsDisplayable && percentP != 0 && style == STROKE) {
-			canvas.drawText(percentP + "%", centre - textWidth / 2, centre
-					+ textSize / 2, paint); // 画出进度百分比
+			if (isDrawText) {
+				canvas.drawText(percentP + "%", centre - textWidth / 2, centre
+						+ textSize / 2, paint); // 画出进度百分比
+			}
+
 		}
 
 		/**

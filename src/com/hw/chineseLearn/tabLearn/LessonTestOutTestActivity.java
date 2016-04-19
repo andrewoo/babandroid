@@ -256,7 +256,6 @@ public class LessonTestOutTestActivity extends BaseActivity {
 	}
 
 	private void initTestDatas() {
-
 		if (builder != null) {
 			builder.dismiss();
 			builder = null;
@@ -557,9 +556,10 @@ public class LessonTestOutTestActivity extends BaseActivity {
 				btn_check.setVisibility(View.VISIBLE);
 
 				if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
-					CustomApplication.app
-							.finishActivity(LessonTestOutTestActivity.class);
+					
 					setResult(100);
+					CustomApplication.app.finishActivity(LessonTestOutTestActivity.class);
+					
 				}
 				builder.dismiss();
 				// learn表中regex第一位 对应View关系
@@ -646,6 +646,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 	 * @param lessonRepeatRegex
 	 */
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
+		isCheckBtnActived(false);
 		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
 		if (lgTable == 0) {// word

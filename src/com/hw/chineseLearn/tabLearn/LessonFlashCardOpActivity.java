@@ -1,10 +1,12 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -23,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -38,10 +40,10 @@ import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
 import com.hw.chineseLearn.dao.bean.LGSentence;
 import com.hw.chineseLearn.dao.bean.LGWord;
-import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.MyGallery;
@@ -104,6 +106,14 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 	private MyGallery gallery;// CoverFlow
 	private FlashCardOpGalleryAdapter adapter;
 
+	int id = -1;
+	String chinese = "";
+	String english = "";
+	String pinyin = "";
+	int index = 0;
+	private String voicePath;
+	private static final String ASSETS_SOUNDS_PATH = "sounds/";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -295,7 +305,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 					String pinyin = "";
 					String english = sentence.getTranslations();
 					String dirCode = sentence.getDirCode();
-					String voicePath = "c-" + id + "-" + dirCode + ".mp3";
+					String voicePath = "s-" + id + "-" + dirCode + ".mp3";
 
 					lGModelFlashCard.setId(id);
 					lGModelFlashCard.setChinese(chinese);
@@ -337,7 +347,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 					String pinyin = word.getPinyin();
 					String english = word.getTranslations();
 					String dirCode = word.getDirCode();
-					String voicePath = "c-" + id + "-" + dirCode + ".mp3";
+					String voicePath = "w-" + id + "-" + dirCode + ".mp3";
 
 					lGModelFlashCard.setId(id);
 					lGModelFlashCard.setChinese(chinese);
@@ -371,6 +381,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		adapter.notifyDataSetChanged();
 		gallery = (MyGallery) findViewById(R.id.flash_gallery);
 		gallery.setAdapter(adapter);
+		gallery.setOnItemSelectedListener(this);
 		gallery.setAnimationDuration(1500);
 		gallery.setSpacing(screenWidth / 10 * 1);
 		gallery.setSelection(index);
@@ -380,27 +391,24 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		gallery.setLayoutParams(param);
 
 	}
-
-	int id = -1;
-	String chinese = "";
-	String english = "";
-	String pinyin = "";
-	int index = 0;
-	private String voicePath;
-	private MediaPlayerHelper mediaPlayerHelperAsset;
-	private static final String ASSETS_SOUNDS_PATH = "sounds/";
-
+	
 	/**
 	 * 播放asset里的声音文件
 	 */
 	public void assetPlay() {
-		if (mediaPlayerHelperAsset == null) {
-			mediaPlayerHelperAsset = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
-					+ voicePath);
+
+		try {
+			AssetFileDescriptor afd = CustomApplication.app.getAssets().openFd(
+					ASSETS_SOUNDS_PATH + voicePath);
+			Log.d(TAG, "voicePath:"+voicePath);
+			if (isAutoPlay) {
+				MediaPlayUtil.getInstance().play(afd);
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		mediaPlayerHelperAsset.setLoad(ASSETS_SOUNDS_PATH + voicePath);
-		Log.d(TAG, "voicePath:" + voicePath);
-		mediaPlayerHelperAsset.play();
 
 	}
 
@@ -418,7 +426,6 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 					pinyin = lGModelFlashCard.getPinyin();
 					voicePath = lGModelFlashCard.getVoicePath();
 					Log.d(TAG, "voicePath:" + voicePath);
-					assetPlay();
 					tv_no.setText("" + (index + 1) + "/" + defaultNumber);
 					tv_translation.setText("" + english);
 					tv_word.setText(chinese);
@@ -452,6 +459,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		case 1:// redo
 			index = 0;
 			setText();
+			assetPlay();
 			gallery.setSelection(index);// 选中当前页面
 			break;
 
@@ -641,8 +649,10 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 						LessonFlashCardResultActivity.class);
 				startActivityForResult(intent, 1);
 			} else {
-				setText();
 				gallery.setSelection(index);// 选中当前页面
+				setText();
+				assetPlay();
+				
 			}
 
 		}
@@ -883,7 +893,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		index = position;
 		adapter.setSelection(position);
 		setText();
-
+		assetPlay();
 		if (convertView == null) {
 			convertView = View.inflate(this, R.layout.layout_falsh_card_item,
 					null);
@@ -910,6 +920,8 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		MediaPlayUtil.getInstance().stop();
+		MediaPlayUtil.getInstance().release();
 	}
 
 }

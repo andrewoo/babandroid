@@ -11,6 +11,7 @@ import java.util.Random;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -39,6 +40,7 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.base.MainActivity;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.LGCharacterPart;
@@ -61,6 +63,7 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.j256.ormlite.dao.Dao;
+import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
 
@@ -310,7 +313,6 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 	}
 
 	private void initTestDatas() {
-
 		if (builder != null) {
 			builder.dismiss();
 			builder = null;
@@ -619,7 +621,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 
 					Intent intent = new Intent(
 							LessonReviewExerciseActivity.this,
-							LessonResultActivity.class);
+							LessonReviewResultActivity.class);
 					intent.putExtra("loseAllPanders", "");
 					intent.putExtra("secondCount", secondCount);// 用时秒数
 					intent.putExtra("score", score);// 得分
@@ -714,6 +716,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 	 * @param lessonRepeatRegex
 	 */
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
+		isCheckBtnActived(false);
 		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
 		if (lgTable == 0) {// word
@@ -1386,4 +1389,5 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 					R.color.chinese_skill_blue));
 		}
 	}
+
 }
