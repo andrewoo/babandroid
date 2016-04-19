@@ -1,6 +1,8 @@
 package com.util.tool;
 
+import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
 
 public class MediaPlayUtil {
 	private static MediaPlayUtil mMediaPlayUtil;
@@ -17,6 +19,33 @@ public class MediaPlayUtil {
 		mMediaPlayer = new MediaPlayer();
 	}
 
+//	AssetFileDescriptor afd = am.openFd("shit.mp3");  
+//    m2 = new MediaPlayer();  
+//    m2.setDataSource(afd.getFileDescriptor());  
+//    m2.prepare();
+	public void play(AssetFileDescriptor afd) {
+		if (mMediaPlayer == null) {
+			return;
+		}
+		try {
+			mMediaPlayer.reset();
+			mMediaPlayer.setDataSource(afd.getFileDescriptor(),  afd.getStartOffset(),afd.getLength());
+			mMediaPlayer.prepare();
+			mMediaPlayer.setOnPreparedListener(new OnPreparedListener() {
+				
+				@Override
+				public void onPrepared(MediaPlayer mp) {
+					mMediaPlayer.start();
+				}
+			});
+		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void play(String soundFilePath) {
 		if (mMediaPlayer == null) {
 			return;
@@ -25,7 +54,15 @@ public class MediaPlayUtil {
 			mMediaPlayer.reset();
 			mMediaPlayer.setDataSource(soundFilePath);
 			mMediaPlayer.prepare();
-			mMediaPlayer.start();
+			mMediaPlayer.setOnPreparedListener(new OnPreparedListener() {
+				
+				@Override
+				public void onPrepared(MediaPlayer mp) {
+					mMediaPlayer.start();
+				}
+			});
+		
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

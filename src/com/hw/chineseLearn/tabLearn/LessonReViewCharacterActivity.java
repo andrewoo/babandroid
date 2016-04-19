@@ -10,10 +10,12 @@ import java.util.TimerTask;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.media.AudioManager;
-import android.media.SoundPool;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -42,7 +44,7 @@ import com.hw.chineseLearn.db.DatabaseHelper;
 import com.util.tool.AudioRecorder;
 import com.util.tool.AudioRecorder.VMChangeListener;
 import com.util.tool.BitmapLoader;
-import com.util.tool.MediaPlayerHelper;
+import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelperLoop;
 import com.util.tool.UiUtil;
 import com.util.tool.UtilMedthod;
@@ -71,8 +73,8 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	ArrayList<TbMyCharacter> tbMyCharList;
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 	private String voicePath;
-	private MediaPlayerHelper mediaPlayerHelperAsset;
-	private MediaPlayerHelper mediaPlayerHelperRecord;
+	private MediaPlayUtil mediaPlayerHelperAsset;
+	private MediaPlayUtil mediaPlayerHelperRecord;
 	private MediaPlayerHelperLoop mediaPlayerHelperLoop;
 	boolean isRecord = false;
 	String lastRecFileName = "";
@@ -121,38 +123,68 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	 * 播放asset里的声音文件
 	 */
 	private void assetPlay() {
-		if (mediaPlayerHelperAsset == null) {
-			mediaPlayerHelperAsset = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
-					+ voicePath);
-		}
-		if (loop) {
-			mediaPlayerHelperAsset.stop();
-		} else {
-			mediaPlayerHelperAsset.play();
-		}
-
+//		if (mediaPlayerHelperAsset == null) {
+//			mediaPlayerHelperAsset = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
+//					+ voicePath);
+//		}
+//		if (loop) {
+//			mediaPlayerHelperAsset.stop();
+//		} else {
+//			mediaPlayerHelperAsset.play();
+//		}
+		MediaPlayUtil instance = MediaPlayUtil.getInstance();
+		instance.setPlayOnCompleteListener(new OnCompletionListener() {
+			
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				if(loop){
+					MediaPlayUtil.getInstance().release();
+					recordPlay();
+				}
+			}
+		});
+		 AssetManager am = getAssets();
+		 try {
+			AssetFileDescriptor afd = am.openFd(ASSETS_SOUNDS_PATH+ voicePath);
+			instance.play(afd);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} ;
 	}
 
 	/**
 	 * 播放录音文件
 	 */
 	private void recordPlay() {
-		if (mediaPlayerHelperRecord == null) {
-			mediaPlayerHelperRecord = new MediaPlayerHelper(filePath);
-		}
-		mediaPlayerHelperRecord.play();
+//		if (mediaPlayerHelperRecord == null) {
+//			mediaPlayerHelperRecord = new MediaPlayerHelper(filePath);
+//		}
+//		mediaPlayerHelperRecord.play();
+		filePath = DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName
+				+ ".amr";
+		MediaPlayUtil instance = MediaPlayUtil.getInstance();
+		instance.setPlayOnCompleteListener(new OnCompletionListener() {
+			
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+//				deleteRecord();
+				 MediaPlayUtil.getInstance().release();
+				 assetPlay();
+			}
+		});
+		instance.play(filePath);
 	}
 
 	/**
 	 * 播放
 	 */
-	private void Loop() {
-		if (mediaPlayerHelperLoop == null) {
-			mediaPlayerHelperLoop = new MediaPlayerHelperLoop(voicePath,
-					filePath);
-		}
-		mediaPlayerHelperLoop.play();
-	}
+//	private void Loop() {
+//		if (mediaPlayerHelperLoop == null) {
+//			mediaPlayerHelperLoop = new MediaPlayerHelperLoop(voicePath,
+//					filePath);
+//		}
+//		mediaPlayerHelperLoop.play();
+//	}
 
 	TimerTask task = new TimerTask() {
 		@Override
@@ -358,12 +390,14 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 					mr.stop();
 					mr = null;
 				}
-				Loop();
-				img_loop.setVisibility(View.VISIBLE);
 				img_record.setBackground(resources
 						.getDrawable(R.drawable.recorder_animate_bg));
 				img_record.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_01));
+//				Loop();
+				recordPlay();
+				img_loop.setVisibility(View.VISIBLE);
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
