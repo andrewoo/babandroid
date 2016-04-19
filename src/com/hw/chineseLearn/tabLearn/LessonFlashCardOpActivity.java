@@ -250,11 +250,15 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 					String chinese = character.getCharacter();
 					String pinyin = character.getPinyin();
 					String english = character.getTranslation();
+					String dirCode = character.getDirCode();
+					String voicePath = "c-" + id + "-" + dirCode + ".mp3";
 
 					lGModelFlashCard.setId(id);
 					lGModelFlashCard.setChinese(chinese);
 					lGModelFlashCard.setPinyin(pinyin);
 					lGModelFlashCard.setEnglish(english);
+					lGModelFlashCard.setVoicePath(voicePath);
+
 					datas.add(lGModelFlashCard);
 
 				} catch (SQLException e) {
@@ -290,11 +294,15 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 					String chinese = sentence.getSentence();
 					String pinyin = "";
 					String english = sentence.getTranslations();
+					String dirCode = sentence.getDirCode();
+					String voicePath = "c-" + id + "-" + dirCode + ".mp3";
 
 					lGModelFlashCard.setId(id);
 					lGModelFlashCard.setChinese(chinese);
 					lGModelFlashCard.setPinyin(pinyin);
 					lGModelFlashCard.setEnglish(english);
+					lGModelFlashCard.setVoicePath(voicePath);
+
 					datas.add(lGModelFlashCard);
 
 				} catch (SQLException e) {
@@ -328,11 +336,15 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 					String chinese = word.getWord();
 					String pinyin = word.getPinyin();
 					String english = word.getTranslations();
+					String dirCode = word.getDirCode();
+					String voicePath = "c-" + id + "-" + dirCode + ".mp3";
 
 					lGModelFlashCard.setId(id);
 					lGModelFlashCard.setChinese(chinese);
 					lGModelFlashCard.setPinyin(pinyin);
 					lGModelFlashCard.setEnglish(english);
+					lGModelFlashCard.setVoicePath(voicePath);
+
 					datas.add(lGModelFlashCard);
 
 				} catch (SQLException e) {
@@ -381,11 +393,13 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 	/**
 	 * 播放asset里的声音文件
 	 */
-	private void assetPlay() {
+	public void assetPlay() {
 		if (mediaPlayerHelperAsset == null) {
 			mediaPlayerHelperAsset = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
 					+ voicePath);
 		}
+		mediaPlayerHelperAsset.setLoad(ASSETS_SOUNDS_PATH + voicePath);
+		Log.d(TAG, "voicePath:" + voicePath);
 		mediaPlayerHelperAsset.play();
 
 	}
@@ -472,6 +486,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 				R.color.chinese_skill_red));
 		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
 		tv_title.setText(title);
+		tv_title.setTextColor(context.getResources().getColor(R.color.white));
 		TextView tv_title_left = (TextView) view_title
 				.findViewById(R.id.tv_title_left);
 		tv_title_left.setVisibility(textLeft);
@@ -873,6 +888,16 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 			convertView = View.inflate(this, R.layout.layout_falsh_card_item,
 					null);
 		}
+		ImageView img_play = (ImageView) convertView
+				.findViewById(R.id.img_play);
+		img_play.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				assetPlay();
+			}
+		});
 	}
 
 	@Override
