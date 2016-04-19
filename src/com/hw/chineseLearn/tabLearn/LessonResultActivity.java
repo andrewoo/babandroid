@@ -38,7 +38,7 @@ public class LessonResultActivity extends BaseActivity {
 
 	private String TAG = "==LessonResultActivity==";
 	public Context context;
-	private Resources resources; 
+	private Resources resources;
 	private int width;
 	private int height;
 	View contentView;
@@ -66,16 +66,16 @@ public class LessonResultActivity extends BaseActivity {
 	private int secondCount;
 	private int score;
 	private int exerciseCount;
-	private ImageView tv_lose_all, img_lose_all;
+	private TextView tv_lose_all;
 	int characterCount = 0, wordsCount = 0, sentenceCount = 0;
 	int rightCount = 0, wrongCount = 0;
-	private int lessonId;//确定当前lesson
+	private int lessonId;// 确定当前lesson
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = this;
-		//到此界面说明题做完 解锁下个lesson或unit
+		// 到此界面说明题做完 解锁下个lesson或unit
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			if (bundle.containsKey("loseAllPanders")) {
@@ -124,67 +124,75 @@ public class LessonResultActivity extends BaseActivity {
 		resources = context.getResources();
 		init();
 	}
-	
 
 	/**
 	 * 解锁下个lesson或unit
 	 * 
 	 */
 	private void unLockLesson() {
-		//知道当前lessonid 得到下个lessonid 更新表 确定数据
-		List<Unit> unitList =CustomApplication.app.unitList;
-		//遍历unit表找到对应lessonid 并解锁
+		// 知道当前lessonid 得到下个lessonid 更新表 确定数据
+		List<Unit> unitList = CustomApplication.app.unitList;
+		// 遍历unit表找到对应lessonid 并解锁
 		for (int i = 0; i < unitList.size(); i++) {
-			 String lessonList = unitList.get(i).getLessonList();
-			if(lessonList.endsWith(";")){
-				lessonList=lessonList.substring(0, lessonList.length()-1);		
+			String lessonList = unitList.get(i).getLessonList();
+			if (lessonList.endsWith(";")) {
+				lessonList = lessonList.substring(0, lessonList.length() - 1);
 			}
-			String[] lessonIdAarray = unitList.get(i).getLessonList().split(";");//所有的lessonid
+			String[] lessonIdAarray = unitList.get(i).getLessonList()
+					.split(";");// 所有的lessonid
 			for (int j = 0; j < lessonIdAarray.length; j++) {
-				if("".equals(lessonIdAarray[j])){
+				if ("".equals(lessonIdAarray[j])) {
 					continue;
 				}
-				int id=Integer.valueOf(lessonIdAarray[j]);
-				if(id==lessonId){//找到对应id后 把后边一个lessonid存入表 解锁
-					int idLast=Integer.valueOf(lessonIdAarray[lessonIdAarray.length-1]);//最后一个
-					TbLessonMaterialStatus msCurrent=new TbLessonMaterialStatus();
-					msCurrent.setLessonId(lessonId); 
-					msCurrent.setStatus(2);//把当前表的lessonid对应状态改为2
+				int id = Integer.valueOf(lessonIdAarray[j]);
+				if (id == lessonId) {// 找到对应id后 把后边一个lessonid存入表 解锁
+					int idLast = Integer
+							.valueOf(lessonIdAarray[lessonIdAarray.length - 1]);// 最后一个
+					TbLessonMaterialStatus msCurrent = new TbLessonMaterialStatus();
+					msCurrent.setLessonId(lessonId);
+					msCurrent.setStatus(2);// 把当前表的lessonid对应状态改为2
 					try {
-						MyDao.getDaoMy(TbLessonMaterialStatus.class).update(msCurrent);
+						MyDao.getDaoMy(TbLessonMaterialStatus.class).update(
+								msCurrent);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					if(id==idLast){//如果是最后一个就解锁下个unit的第一个lesson
-						if(i<unitList.size()-1){
-							String firstId = unitList.get(i+1).getLessonList().split(";")[0];//下一个unit的第一个lessonid
-							TbLessonMaterialStatus materialStatus=new TbLessonMaterialStatus();
-							materialStatus.setLessonId(Integer.valueOf(firstId));
+					if (id == idLast) {// 如果是最后一个就解锁下个unit的第一个lesson
+						if (i < unitList.size() - 1) {
+							String firstId = unitList.get(i + 1)
+									.getLessonList().split(";")[0];// 下一个unit的第一个lessonid
+							TbLessonMaterialStatus materialStatus = new TbLessonMaterialStatus();
+							materialStatus
+									.setLessonId(Integer.valueOf(firstId));
 							materialStatus.setStatus(1);
 							try {
-								MyDao.getDaoMy(TbLessonMaterialStatus.class).createOrUpdate(materialStatus);//更新status 解锁
+								MyDao.getDaoMy(TbLessonMaterialStatus.class)
+										.createOrUpdate(materialStatus);// 更新status
+																		// 解锁
 							} catch (SQLException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
-						
-					}else{//不是最后一个就解锁下个lesson
-						TbLessonMaterialStatus materialStatus=new TbLessonMaterialStatus();
+
+					} else {// 不是最后一个就解锁下个lesson
+						TbLessonMaterialStatus materialStatus = new TbLessonMaterialStatus();
 						try {
-							materialStatus.setLessonId(Integer.valueOf(lessonIdAarray[j+1]));
+							materialStatus.setLessonId(Integer
+									.valueOf(lessonIdAarray[j + 1]));
 							materialStatus.setStatus(1);
-							MyDao.getDaoMy(TbLessonMaterialStatus.class).createOrUpdate(materialStatus);
+							MyDao.getDaoMy(TbLessonMaterialStatus.class)
+									.createOrUpdate(materialStatus);
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
 					}
-					
+
 				}
 			}
 		}
-		
+
 	}
 
 	/**
@@ -228,7 +236,7 @@ public class LessonResultActivity extends BaseActivity {
 				@Override
 				public void run() {
 					while (progress <= progressCount) {
-						progress += progressAdd*2;
+						progress += progressAdd * 2;
 						mRoundProgressBar.setProgress(progress);
 						try {
 							Thread.sleep(50);
@@ -268,10 +276,7 @@ public class LessonResultActivity extends BaseActivity {
 			}
 
 		} else {
-			tv_lose_all = (ImageView) findViewById(R.id.tv_lose_all);
-			img_lose_all = (ImageView) findViewById(R.id.img_lose_all);
-			tv_lose_all.setLayoutParams(lp);
-			img_lose_all.setLayoutParams(lp);
+			// tv_lose_all = (TextView) findViewById(R.id.tv_lose_all);
 		}
 
 		btn_redo = (TextView) contentView.findViewById(R.id.btn_redo);

@@ -1,35 +1,30 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/btn_report_bug"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/bugreport_img_right" />
-
-    <RelativeLayout
-        android:id="@+id/rel_op"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
         android:orientation="vertical" >
 
+        <ImageView
+            android:id="@+id/img_is_right"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/test_correct_3" />
+
         <LinearLayout
-            android:id="@+id/lin_color_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:background="@color/chinese_skill_blue"
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingBottom="20dp"
-            android:paddingTop="20dp" >
+            android:paddingTop="40dp" >
 
             <TextView
                 android:id="@+id/tv_tip"
@@ -51,33 +46,19 @@
                 android:text="color = 颜色"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s14" />
-
-            <Button
-                android:id="@+id/btn_next"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/btn_bg_white"
-                android:gravity="center"
-                android:padding="10dip"
-                android:text="Next"
-                android:textColor="@color/chinese_skill_blue"
-                android:textSize="@dimen/text_s18" />
         </LinearLayout>
+    </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/chinese_skill_blue"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="CONTINUE"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_s18" />
 
-            <ImageView
-                android:id="@+id/img_is_right"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/test_correct_3" />
-        </FrameLayout>
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>

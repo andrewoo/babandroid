@@ -62,8 +62,8 @@ public class LessonViewActivity extends BaseActivity implements
 	private List<TbLessonMaterialStatus> lessonStatusList;// tbLesson表
 	private Unit mUnit;// 当前Unit列
 	private List<Lesson> lessonList;// lesson表
-	private List<Integer> statusList=new ArrayList<Integer>();//存放是否解锁状态的集合
-	private List<String> descList=new ArrayList<String>();//存放gallery每个页面描述的集合
+	private List<Integer> statusList = new ArrayList<Integer>();// 存放是否解锁状态的集合
+	private List<String> descList = new ArrayList<String>();// 存放gallery每个页面描述的集合
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,7 @@ public class LessonViewActivity extends BaseActivity implements
 				mUnit = (Unit) bundle.getSerializable("unit");
 			}
 		}
-		getStatusAndLessonDesc();//拿到状态传给下个界面
+		getStatusAndLessonDesc();// 拿到状态传给下个界面
 		init();// 初始化gallery和动画
 
 		CustomApplication.app.addActivity(this);
@@ -95,13 +95,14 @@ public class LessonViewActivity extends BaseActivity implements
 	private void getStatusAndLessonDesc() {
 		descList.clear();
 		statusList.clear();
-		if (mUnit!=null) {
-			//拿到每个lessonid查询materiallesson表 得到对应选项的状态
-			//加入到集合 传递
+		if (mUnit != null) {
+			// 拿到每个lessonid查询materiallesson表 得到对应选项的状态
+			// 加入到集合 传递
 			try {
-				String[] lessonIdArray = UiUtil.getListFormString(mUnit.getLessonList());
+				String[] lessonIdArray = UiUtil.getListFormString(mUnit
+						.getLessonList());
 				for (int i = 0; i < lessonIdArray.length; i++) {
-					if ("".equals(lessonIdArray[i])) { //如果为空就跳过此次
+					if ("".equals(lessonIdArray[i])) { // 如果为空就跳过此次
 						continue;
 					}
 					Lesson lesson = (Lesson) MyDao.getDao(Lesson.class)
@@ -110,11 +111,11 @@ public class LessonViewActivity extends BaseActivity implements
 							.getDaoMy(TbLessonMaterialStatus.class).queryForId(
 									lesson.getLessonId());
 					if (msLong != null) {
-						statusList.add(msLong.getStatus());//拿到是否解锁的状态
+						statusList.add(msLong.getStatus());// 拿到是否解锁的状态
 					} else {
-						statusList.add(0);//若没找到就加入0 表示未解锁
+						statusList.add(0);// 若没找到就加入0 表示未解锁
 					}
-					descList.add(lesson.getDescription());//拿到描述文本
+					descList.add(lesson.getDescription());// 拿到描述文本
 				}
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
@@ -191,7 +192,7 @@ public class LessonViewActivity extends BaseActivity implements
 		setTitle(View.GONE, View.VISIBLE,
 				R.drawable.btn_selector_top_left_white, mUnit.getUnitName(),
 				View.GONE, View.GONE, 0);
-		adapter = new GalleryAdapter(this, mUnit, statusList,descList);
+		adapter = new GalleryAdapter(this, mUnit, statusList, descList);
 		gallery = (MyGallery) findViewById(R.id.gallery);
 		gallery.setOnItemClickListener(onItemclickListener);
 		gallery.setAdapter(adapter);
@@ -200,8 +201,9 @@ public class LessonViewActivity extends BaseActivity implements
 		gallery.setOnItemSelectedListener(this);
 		gallery.setSelection(selection);
 		iv_unit_img = (ImageView) findViewById(R.id.iv_unit_img);
-		iv_unit_img.setImageResource(getResources().getIdentifier("lu1_"+mUnit.getIconResSuffix(),
-				 "drawable", context.getPackageName()));
+		iv_unit_img.setImageResource(getResources().getIdentifier(
+				"lu1_" + mUnit.getIconResSuffix(), "drawable",
+				context.getPackageName()));
 
 		// 创建一个AnimationSet对象（AnimationSet是存放多个Animations的集合）
 		animationSet = new AnimationSet(true);
@@ -233,7 +235,7 @@ public class LessonViewActivity extends BaseActivity implements
 		animationSet.setRepeatCount(3);
 		animationSet.setRepeatMode(Animation.REVERSE);
 		// 使用ImageView的startAnimation方法开始执行动画
-		iv_unit_img.startAnimation(animationSet);
+		// iv_unit_img.startAnimation(animationSet);
 	}
 
 	/**
@@ -366,8 +368,9 @@ public class LessonViewActivity extends BaseActivity implements
 
 			@Override
 			public void onClick(View arg0) {
-//				startActivity(new Intent(context, LessonReViewActivity.class));
-				//review 就是start
+				// startActivity(new Intent(context,
+				// LessonReViewActivity.class));
+				// review 就是start
 				Intent intent = new Intent(context,
 						LessonExerciseActivity.class);
 				intent.putExtra("utilId", position);
@@ -375,7 +378,7 @@ public class LessonViewActivity extends BaseActivity implements
 				intent.putExtra("LessonId", lesson.getLessonId());
 				startActivityForResult(intent, 0);
 				Log.d("GalleryAdapter", "utilId:" + position);
-				
+
 			}
 		});
 
@@ -394,7 +397,7 @@ public class LessonViewActivity extends BaseActivity implements
 			break;
 		case 1:// LessonExerciseActivity通过课程或者 continue要继续练习
 			getStatusAndLessonDesc();
-			if(adapter!=null){
+			if (adapter != null) {
 				adapter.notifyDataSetChanged();
 			}
 			if (selection == 1) {

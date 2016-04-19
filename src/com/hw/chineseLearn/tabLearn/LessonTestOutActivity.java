@@ -184,7 +184,7 @@ public class LessonTestOutActivity extends BaseActivity implements
 
 		View view_title = (View) this.findViewById(R.id.view_title);
 		view_title.setBackgroundColor(context.getResources().getColor(
-				R.color.chinese_skill_orange));
+				R.color.chinese_skill_red));
 		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
 		tv_title.setText(title);
 		tv_title.setTextColor(context.getResources().getColor(R.color.white));

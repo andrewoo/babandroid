@@ -8,16 +8,29 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RadioGroup;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
+import com.hw.chineseLearn.adapter.FlashCardOpGalleryAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
@@ -25,24 +38,28 @@ import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
 import com.hw.chineseLearn.dao.bean.LGSentence;
 import com.hw.chineseLearn.dao.bean.LGWord;
+import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
+import com.util.weight.MyGallery;
+import com.util.weight.SlideSwitch;
+import com.util.weight.SlideSwitch.SlideListener;
 
 /**
  * FlashCard操作页面
  * 
  * @author yh
  */
-public class LessonFlashCardOpActivity extends BaseActivity {
+public class LessonFlashCardOpActivity extends BaseActivity implements
+		OnItemSelectedListener {
 
 	private String TAG = "==LessonFlashCardOpActivity==";
 	public Context context;
 
 	private LinearLayout lin_1;
-	private Button btn_go;
 	private TextView tv_no;
 	private ImageView img_play;
 	private TextView tv_translation;
@@ -70,7 +87,9 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	int characterCount = 0;
 	int wordsCount = 0;
 	int sentenceCount = 0;
+
 	int chooseCount = 0;
+	int defaultNumber = 0;
 
 	private ArrayList<LGModelFlashCard> datas = new ArrayList<LGModelFlashCard>();
 	ArrayList<TbMyCharacter> tbMyCharacterList;
@@ -81,7 +100,9 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	boolean isSentenceChecked = false;
 	boolean isWordChecked = false;
 	boolean isAutoPlay = true;
-	int defaultNumber = 0;
+
+	private MyGallery gallery;// CoverFlow
+	private FlashCardOpGalleryAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,12 +116,6 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 		screenWidth = CustomApplication.app.displayMetrics.widthPixels;
 		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 		resources = context.getResources();
-		Bundle bundle = getIntent().getExtras();
-		if (bundle != null) {
-			if (bundle.containsKey("defaultNumber")) {
-				defaultNumber = bundle.getInt("defaultNumber", 0);
-			}
-		}
 		init();
 	}
 
@@ -109,12 +124,13 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 	 */
 	public void init() {
 
-		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"FlashCard", View.GONE, View.GONE, 0);
+		setTitle(View.GONE, View.VISIBLE,
+				R.drawable.btn_selector_top_left_white, "FlashCard", View.GONE,
+				View.VISIBLE, R.drawable.img_setting_white);
 		lin_1 = (LinearLayout) contentView.findViewById(R.id.lin_1);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				screenWidth - UiUtil.dip2px(getApplicationContext(), 60),
-				screenHeight * 7 / 10);
+				screenHeight * 5 / 10);
 		lin_1.setLayoutParams(params);
 
 		img_play = (ImageView) contentView.findViewById(R.id.img_play);
@@ -133,6 +149,11 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 		lin_remember_level = (LinearLayout) contentView
 				.findViewById(R.id.lin_remember_level);
 		lin_remember_level.setVisibility(View.GONE);
+
+		int width = screenWidth / 3;
+		LinearLayout.LayoutParams ly = new LinearLayout.LayoutParams(width,
+				width);
+
 		btn_remembered_perfectly = (TextView) contentView
 				.findViewById(R.id.btn_remembered_perfectly);
 		btn_remembered = (TextView) contentView
@@ -159,15 +180,24 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 		btn_forgot.setOnClickListener(onClickListenerOp);
 		btn_dont_know.setOnClickListener(onClickListenerOp);
 
+		btn_remembered_perfectly.setLayoutParams(ly);
+		btn_remembered.setLayoutParams(ly);
+		btn_barely_remembered.setLayoutParams(ly);
+
+		btn_remembered_almost.setLayoutParams(ly);
+		btn_forgot.setLayoutParams(ly);
+		btn_dont_know.setLayoutParams(ly);
+
 		initDatas();
 		setText();
 	}
 
 	@SuppressWarnings("unchecked")
 	private void initDatas() {
-		String chooseCountStr = CustomApplication.app.preferencesUtil.getValue(
-				"count", "0");
-		chooseCount = Integer.parseInt(chooseCountStr);
+		// String chooseCountStr =
+		// CustomApplication.app.preferencesUtil.getValue(
+		// "count", "0");
+		// chooseCount = Integer.parseInt(chooseCountStr);
 		isCharacterChecked = CustomApplication.app.preferencesUtil
 				.getValuesBoolean("isCharacterChecked");
 		isSentenceChecked = CustomApplication.app.preferencesUtil
@@ -176,7 +206,6 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 				.getValuesBoolean("isWordChecked");
 		isAutoPlay = CustomApplication.app.preferencesUtil
 				.getValuesBoolean("isAutoPlay");
-
 		try {
 			tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao.getDaoMy(
 					TbMyCharacter.class).queryForAll();
@@ -310,9 +339,34 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
 		}
+
+		chooseCount = 0;
+		if (isCharacterChecked) {
+			chooseCount = chooseCount + characterCount;
+		}
+		if (isSentenceChecked) {
+			chooseCount = chooseCount + sentenceCount;
+		}
+		if (isWordChecked) {
+			chooseCount = chooseCount + wordsCount;
+		}
+		defaultNumber = chooseCount;
+		if (adapter == null) {
+			adapter = new FlashCardOpGalleryAdapter(this, datas, datas.size());
+		}
+		adapter.notifyDataSetChanged();
+		gallery = (MyGallery) findViewById(R.id.flash_gallery);
+		gallery.setAdapter(adapter);
+		gallery.setAnimationDuration(1500);
+		gallery.setSpacing(screenWidth / 10 * 1);
+		gallery.setSelection(index);
+		gallery.setFocusable(false);
+		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+				screenWidth, screenHeight * 5 / 10);
+		gallery.setLayoutParams(param);
+
 	}
 
 	int id = -1;
@@ -338,27 +392,36 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 
 	private void setText() {
 
-		if (datas.size() != 0) {
-			LGModelFlashCard lGModelFlashCard = datas.get(index);
-			if (lGModelFlashCard != null) {
+		if (defaultNumber != 0) {
 
-				id = lGModelFlashCard.getCharId();
-				chinese = lGModelFlashCard.getChinese();
-				english = lGModelFlashCard.getEnglish();
-				pinyin = lGModelFlashCard.getPinyin();
-				voicePath = lGModelFlashCard.getVoicePath();
-				Log.d(TAG, "voicePath:" + voicePath);
-				assetPlay();
-				tv_no.setText("" + (index + 1) + "/" + defaultNumber);
-				tv_translation.setText("" + english);
-				tv_word.setText(chinese);
-				tv_pinyin.setText(pinyin);
-				lin_is_gorget.setVisibility(View.VISIBLE);
+			if (datas.size() != 0 && index < datas.size()) {
+				LGModelFlashCard lGModelFlashCard = datas.get(index);
+				if (lGModelFlashCard != null) {
+
+					id = lGModelFlashCard.getCharId();
+					chinese = lGModelFlashCard.getChinese();
+					english = lGModelFlashCard.getEnglish();
+					pinyin = lGModelFlashCard.getPinyin();
+					voicePath = lGModelFlashCard.getVoicePath();
+					Log.d(TAG, "voicePath:" + voicePath);
+					assetPlay();
+					tv_no.setText("" + (index + 1) + "/" + defaultNumber);
+					tv_translation.setText("" + english);
+					tv_word.setText(chinese);
+					tv_pinyin.setText(pinyin);
+					lin_is_gorget.setVisibility(View.VISIBLE);
+				} else {
+					Log.e(TAG, "lGModelFlashCard==null");
+				}
 			} else {
-				Log.e(TAG, "lGModelFlashCard==null");
+				Log.e(TAG, "datas.size() == 0");
 			}
 		} else {
-			Log.e(TAG, "datas.size() == 0");
+			tv_no.setText("");
+			tv_translation.setText("");
+			tv_word.setText("");
+			tv_pinyin.setText("");
+			lin_is_gorget.setVisibility(View.GONE);
 		}
 	}
 
@@ -375,6 +438,7 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 		case 1:// redo
 			index = 0;
 			setText();
+			gallery.setSelection(index);// 选中当前页面
 			break;
 
 		default:
@@ -404,6 +468,8 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 			String title, int textRight, int imgRight, int imgRightDrawable) {
 
 		View view_title = (View) this.findViewById(R.id.view_title);
+		view_title.setBackgroundColor(context.getResources().getColor(
+				R.color.chinese_skill_red));
 		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
 		tv_title.setText(title);
 		TextView tv_title_left = (TextView) view_title
@@ -442,7 +508,7 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 				break;
 
 			case R.id.iv_title_right://
-
+				showPopupWindowMenu();
 				break;
 
 			case R.id.btn_remember:
@@ -561,9 +627,258 @@ public class LessonFlashCardOpActivity extends BaseActivity {
 				startActivityForResult(intent, 1);
 			} else {
 				setText();
+				gallery.setSelection(index);// 选中当前页面
 			}
 
 		}
+	}
+
+	SeekBar seekBar;
+	TextView tv_default_number;
+	TextView tv_chooseCount;
+	View view;
+
+	public void showPopupWindowMenu() {
+
+		view = LayoutInflater.from(this).inflate(R.layout.layout_title_menu1,
+				null);
+
+		tv_default_number = (TextView) view
+				.findViewById(R.id.tv_default_number);
+		tv_default_number.setText("" + defaultNumber);
+
+		tv_chooseCount = (TextView) view.findViewById(R.id.tv_max);
+		tv_chooseCount.setText("" + chooseCount);
+
+		int width = CustomApplication.app.displayMetrics.widthPixels / 10 * 6;
+		final PopupWindow popupWindow = new PopupWindow(view,
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, true);
+
+		LinearLayout lin_content = (LinearLayout) view
+				.findViewById(R.id.lin_content);
+		LayoutParams ly = lin_content.getLayoutParams();
+		ly.width = width;
+		lin_content.setLayoutParams(ly);
+
+		LinearLayout lin_aa = (LinearLayout) view.findViewById(R.id.lin_aa);
+		lin_aa.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				popupWindow.dismiss();
+			}
+		});
+		RadioGroup rg_display = (RadioGroup) view.findViewById(R.id.rg_display);
+		rg_display.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup arg0, int checkedId) {
+				// TODO Auto-generated method stub
+				switch (checkedId) {
+
+				case R.id.rb_Chinese://
+
+					break;
+				case R.id.rb_Settings:
+
+					break;
+				case R.id.rb_Pinyin:
+
+					break;
+
+				}
+			}
+		});
+
+		SlideSwitch ck_auto_play = (SlideSwitch) view
+				.findViewById(R.id.ck_auto_play);
+		ck_auto_play.setState(isAutoPlay);
+		ck_auto_play.setSlideListener(new SlideListener() {
+			@Override
+			public void open() {
+				// TODO Auto-generated method stub
+				isAutoPlay = true;
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isAutoPlay", isAutoPlay);
+			}
+
+			@Override
+			public void close() {
+				// TODO Auto-generated method stub
+				isAutoPlay = false;
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isAutoPlay", isAutoPlay);
+			}
+		});
+		seekBar = (SeekBar) view.findViewById(R.id.seekBar);
+		seekBar.setProgress(defaultNumber);
+		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() // 监听器
+		{
+			public void onProgressChanged(SeekBar arg0, int progress,
+					boolean fromUser) {
+				seekBar.setProgress(progress);
+				tv_default_number.setText("" + progress);
+				defaultNumber = progress;
+				setText();
+				adapter.setCount(defaultNumber);
+				adapter.notifyDataSetChanged();
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		CheckBox ck_Character = (CheckBox) view.findViewById(R.id.ck_Character);
+		ck_Character.setChecked(isCharacterChecked);
+		ck_Character.setOnCheckedChangeListener(onCheckedChangeListener);
+		if (ck_Character.isChecked()) {
+			isCharacterChecked = true;
+
+		} else {
+			isCharacterChecked = false;
+		}
+
+		CheckBox ck_Word = (CheckBox) view.findViewById(R.id.ck_Word);
+		ck_Word.setChecked(isWordChecked);
+		ck_Word.setOnCheckedChangeListener(onCheckedChangeListener);
+		if (ck_Word.isChecked()) {
+			isWordChecked = true;
+		} else {
+			isWordChecked = false;
+		}
+
+		CheckBox ck_Sentence = (CheckBox) view.findViewById(R.id.ck_Sentence);
+		ck_Sentence.setChecked(isSentenceChecked);
+		ck_Sentence.setOnCheckedChangeListener(onCheckedChangeListener);
+		if (ck_Sentence.isChecked()) {
+			isSentenceChecked = true;
+		} else {
+			isSentenceChecked = false;
+
+		}
+		seekBar.setMax(chooseCount);
+		popupWindow.setTouchable(true);
+		popupWindow.setTouchInterceptor(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				Log.i("mengdd", "onTouch : ");
+				return false;
+				// 这里如果返回true的话，touch事件将被拦截
+				// 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+			}
+		});
+		// 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+		// 我觉得这里是API的一个bug
+		popupWindow.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.bg_touming));
+
+		// popupWindow.showAsDropDown(iv_title_right, 0, 0);
+		popupWindow.showAtLocation(contentView, Gravity.RIGHT, 0, 60);
+
+		popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+			@Override
+			public void onDismiss() {
+				// TODO Auto-generated method stub
+
+				Log.d(TAG, "chooseCount:" + chooseCount);
+				Log.d(TAG, "isCharacterChecked:" + isCharacterChecked);
+				Log.d(TAG, "isSentenceChecked:" + isSentenceChecked);
+				Log.d(TAG, "isWordChecked:" + isWordChecked);
+				Log.d(TAG, "isAutoPlay:" + isAutoPlay);
+			}
+		});
+	}
+
+	CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			// TODO Auto-generated method stub
+
+			switch (buttonView.getId()) {
+			case R.id.ck_Character:
+
+				if (isChecked) {
+					chooseCount = chooseCount + characterCount;
+					isCharacterChecked = true;
+
+				} else {
+					chooseCount = chooseCount - characterCount;
+					isCharacterChecked = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isCharacterChecked", isCharacterChecked);
+
+				break;
+			case R.id.ck_Word:
+				if (isChecked) {
+					chooseCount = chooseCount + wordsCount;
+					isWordChecked = true;
+				} else {
+					chooseCount = chooseCount - wordsCount;
+					isWordChecked = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isWordChecked", isWordChecked);
+				break;
+			case R.id.ck_Sentence:
+				if (isChecked) {
+					isSentenceChecked = true;
+					chooseCount = chooseCount + sentenceCount;
+				} else {
+
+					isSentenceChecked = false;
+					chooseCount = chooseCount - sentenceCount;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isSentenceChecked", isSentenceChecked);
+				break;
+			default:
+				break;
+			}
+			initDatas();
+			setText();
+
+			tv_chooseCount.setText("" + chooseCount);
+			seekBar.setMax(chooseCount);
+			CustomApplication.app.preferencesUtil.setValue("count", ""
+					+ chooseCount);
+			Log.d(TAG, "chooseCount:" + chooseCount);
+		}
+
+	};
+
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View convertView,
+			final int position, long arg3) {
+		// TODO Auto-generated method stub
+
+		index = position;
+		adapter.setSelection(position);
+		setText();
+
+		if (convertView == null) {
+			convertView = View.inflate(this, R.layout.layout_falsh_card_item,
+					null);
+		}
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

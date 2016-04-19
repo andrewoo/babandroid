@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_centerVertical="true"
-    android:background="@drawable/bg_touming"
+    android:background="@drawable/bg_white1"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="10dp" >
@@ -11,18 +11,14 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:background="@drawable/btn_touming_no_corners"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp" >
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/tv_child_no"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:background="@drawable/strokes_order_lv_index_bg_grey"
+            android:background="@drawable/img_right"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s12" />
@@ -31,7 +27,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal" >
 
             <TextView
@@ -61,11 +57,5 @@
                 android:layout_gravity="right" />
         </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:id="@+id/view_split"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/mid_grey" />
 
 </LinearLayout>
