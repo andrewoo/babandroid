@@ -30,8 +30,6 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.AppConstants;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
-import com.hw.chineseLearn.model.SimpleModel;
-import com.hw.chineseLearn.tabLearn.LessonViewActivity;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.AppFinal;
 import com.util.tool.ImageLoader;
@@ -55,7 +53,6 @@ public class MyAccountActivity extends BaseActivity {
 	private TextView btn_logout;
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
-	SimpleModel simpleModel;
 	String emailString = "";
 
 	@Override

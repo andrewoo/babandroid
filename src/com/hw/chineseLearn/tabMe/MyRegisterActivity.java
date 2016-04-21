@@ -12,7 +12,6 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
-import com.hw.chineseLearn.model.SimpleModel;
 import com.util.thread.ThreadWithDialogTask;
 
 /**
@@ -28,7 +27,6 @@ public class MyRegisterActivity extends BaseActivity {
 	TextView btn_login;
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
-	SimpleModel simpleModel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

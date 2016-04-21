@@ -10,15 +10,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
-import com.hw.chineseLearn.model.SimpleModel;
-import com.hw.chineseLearn.tabLearn.LessonExerciseActivity;
 import com.util.thread.ThreadWithDialogTask;
 
 /**
@@ -36,7 +33,6 @@ public class MyChangePswActivity extends BaseActivity {
 
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
-	SimpleModel simpleModel;
 	View contentView;
 
 	@Override

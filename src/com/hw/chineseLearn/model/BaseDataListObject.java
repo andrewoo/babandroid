@@ -8,41 +8,51 @@ import java.util.List;
  * @author
  */
 public class BaseDataListObject extends BaseObject {
-    private int state;//
-    private int page;//
+	private boolean success;
+	private String message;
+	private int error_code;
 
-    public BaseDataListObject() {
-        super();
-    }
+	public BaseDataListObject() {
+		super();
+	}
 
-    public BaseDataListObject(String statusCode, int state, String message,
-            BaseObject map, int page, BaseObject queryBean) {
-        super();
-        this.state = state;
-        this.page = page;
-    }
+	public BaseDataListObject(boolean success, String message, int error_code) {
+		super();
+		this.success = success;
+		this.message = message;
+		this.error_code = error_code;
+	}
 
-    public BaseDataListObject(String statusCode, int state, String message,
-            BaseObject map, int page, BaseObject queryBean,
-            List<BaseObject> data) {
-        super();
-        this.state = state;
-        this.page = page;
-    }
+	public BaseDataListObject(boolean success, String message, int error_code,
+			List<BaseObject> data) {
+		super();
+		this.success = success;
+		this.message = message;
+		this.error_code = error_code;
+	}
 
-    public int getStatus() {
-        return state;
-    }
+	public boolean isSuccess() {
+		return success;
+	}
 
-    public void setStatus(int state) {
-        this.state = state;
-    }
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
 
-    public int getPage() {
-        return page;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setPage(int page) {
-        this.page = page;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public int getError_code() {
+		return error_code;
+	}
+
+	public void setError_code(int error_code) {
+		this.error_code = error_code;
+	}
+
 }

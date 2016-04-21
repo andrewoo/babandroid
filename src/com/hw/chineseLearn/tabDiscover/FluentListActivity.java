@@ -1,10 +1,11 @@
 package com.hw.chineseLearn.tabDiscover;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +20,8 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.FluentNowAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbMyFluentNow;
 
 /**
  * 流畅练习
@@ -33,7 +35,7 @@ public class FluentListActivity extends BaseActivity {
 	View contentView;
 	ListView lv_fluent_list;
 	FluentNowAdapter adapter;
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
+	ArrayList<TbMyFluentNow> listBase = new ArrayList<TbMyFluentNow>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,22 +71,33 @@ public class FluentListActivity extends BaseActivity {
 						FluentAddLessonActivity.class));
 			}
 		});
-
-		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-		modelBase1.setIconResSuffix("ls_catt_16");
-		modelBase1.setUnitName("你好！");
-		modelBase1.setDescription("Hello!");
-		listBase.add(modelBase1);
-
-		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
-		modelBase2.setIconResSuffix("ls_catt_8");
-		modelBase2.setUnitName("请问邮局在哪儿？");
-		modelBase2.setDescription("Where is the post office?");
-		listBase.add(modelBase2);
-
-		adapter = new FluentNowAdapter(context, listBase);
+		initDatas();
+		if (adapter == null) {
+			adapter = new FluentNowAdapter(context, listBase);
+		}
 		lv_fluent_list.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		initDatas();
+		adapter.list = listBase;
+		adapter.notifyDataSetChanged();
+	};
+
+	@SuppressWarnings("unchecked")
+	private void initDatas() {
+		try {			
+			listBase = (ArrayList<TbMyFluentNow>) MyDao.getDaoMy(
+					TbMyFluentNow.class).queryBuilder().where().eq("Downloaded",1).query();
+			
+			Log.d(TAG, "listBase.size():" + listBase.size());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {
@@ -114,7 +127,6 @@ public class FluentListActivity extends BaseActivity {
 
 			startActivity(new Intent(FluentListActivity.this,
 					FluentDetailActivity.class));
-
 		}
 	};
 

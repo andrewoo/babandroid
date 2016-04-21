@@ -18,8 +18,6 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.AppConstants;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
-import com.hw.chineseLearn.model.SimpleModel;
-import com.hw.chineseLearn.tabLearn.LessonViewActivity;
 import com.util.thread.ThreadWithDialogTask;
 
 /**
@@ -36,7 +34,6 @@ public class MyLoginActivity extends BaseActivity {
 	private EditText txt_username, et_pwd;
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
-	SimpleModel simpleModel;
 	View contentView;
 
 	@Override
