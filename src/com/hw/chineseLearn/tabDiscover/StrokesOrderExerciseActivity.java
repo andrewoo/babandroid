@@ -23,6 +23,7 @@ import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.CharPart;
 import com.hw.chineseLearn.dao.bean.Character;
+import com.hw.chineseLearn.dao.bean.TbMyFluentNow;
 import com.util.svgandroid.HwAnim;
 import com.util.svgandroid.HwWriting;
 import com.util.svgandroid.SVGParser;
@@ -39,6 +40,7 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 	private String TAG = "==StrokesOrderExerciseActivity==";
 	private Context context;
 	private String title = "";
+	private Character model;
 	View contentView;
 	List<Path> charPartList = new ArrayList<Path>();
 	List<Path> directionList = new ArrayList<Path>();
@@ -46,6 +48,12 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 	com.util.tool.PathView pv;
 	private LinearLayout root_view;
 	private Button btn_play, btn_write, btn_visible;
+
+	LinearLayout lin_mizige;
+	int screenWidth, screenHeight;
+	boolean isStartHwViewAnim = true;
+	boolean isStartHwViewWrite = false;
+	String charId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,22 +63,24 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 		setContentView(contentView);
 		CustomApplication.app.addActivity(this);
 		context = this;
-		Bundle budle = this.getIntent().getExtras();
-		if (budle != null) {
-			if (budle.containsKey("title")) {
-				title = budle.getString("title");
+
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			if (bundle.containsKey("model")) {
+				model = (Character) bundle.getSerializable("model");
 			}
 		}
+
+		if (model != null) {
+			title = model.getCEE();
+			charId = model.getCharId();
+		}
+		Log.d(TAG, "title:" + title);
+		Log.d(TAG, "charId:" + charId);
 		screenWidth = CustomApplication.app.displayMetrics.widthPixels;
 		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 		init();
 	}
-
-	LinearLayout lin_mizige;
-	int screenWidth, screenHeight;
-	boolean isStartHwViewAnim = true;
-	boolean isStartHwViewWrite = false;
-	int charId = 113;
 
 	/**
 	 * 初始化

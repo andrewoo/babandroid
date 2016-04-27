@@ -1,5 +1,8 @@
 package com.hw.chineseLearn.tabDiscover;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +18,9 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.MyExpandableListAdapterStrokes;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.CharGroup;
+import com.hw.chineseLearn.dao.bean.Character;
 import com.util.tool.UiUtil;
 
 /**
@@ -29,47 +35,8 @@ public class StrokesOrderActivity extends BaseActivity {
 	View contentView;
 	private ExpandableListView expandableListView;
 	private MyExpandableListAdapterStrokes adapter;
-	public String[] groups = { "一", "人", "八", "么", "儿", "儿", "儿", "儿", "儿",
-			"儿", "儿", "儿", "儿", "儿", "儿", "儿", "儿", "儿", "儿", "儿" };
-	public String[][] children = {
-			{ "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14" },
-			{ "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-					"B24" },
-			{ "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-					"C11" },
-			{ "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-					"A14", "B23" },
-			{ "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-					"B24", "B23", "B23" },
-			{ "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-					"C11" },
-			{ "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-					"A14" },
-			{ "B21", "B22", "B23", "B24", "B24", "B24" },
-			{ "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-					"C11" },
-			{ "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-					"A14" },
-			{ "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-					"B24" },
-			{ "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-					"C11" },
-			{ "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-					"A14" },
-			{ "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-					"B24" },
-			{ "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-					"C11" },
-			{ "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-					"A14" },
-			{ "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-					"B24" },
-			{ "C31", "C32", "C44", "C55", "C66", "C77", "C88", "C99", "C10",
-					"C11" },
-			{ "A11", "A12", "A13", "A14", "A14", "A14", "A14", "A14", "A14",
-					"A14" },
-			{ "B21", "B22", "B23", "B24", "B24", "B24", "B24", "B24", "B24",
-					"B24" } };
+	ArrayList<CharGroup> charGroupList = new ArrayList<CharGroup>();
+	ArrayList<ArrayList<Character>> characterLists = new ArrayList<ArrayList<Character>>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +53,13 @@ public class StrokesOrderActivity extends BaseActivity {
 	 * 初始化
 	 */
 	public void init() {
+		initDatasFromDb();
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Strokes Order", View.GONE, View.GONE, 0);
 		expandableListView = (ExpandableListView) contentView
 				.findViewById(R.id.expandableListView);
-		adapter = new MyExpandableListAdapterStrokes(context, groups, children);
+		adapter = new MyExpandableListAdapterStrokes(context, charGroupList,
+				characterLists);
 		expandableListView.setAdapter(adapter);
 		// 监听父列表的弹出事件
 		expandableListView
@@ -101,6 +70,49 @@ public class StrokesOrderActivity extends BaseActivity {
 		// 监听子列表
 		expandableListView
 				.setOnChildClickListener(new ExpandableListViewListenerA());
+	}
+
+	/**
+	 * 从数据库中取出数据
+	 */
+	@SuppressWarnings("unchecked")
+	private void initDatasFromDb() {
+
+		try {
+			charGroupList = (ArrayList<CharGroup>) MyDao
+					.getDao(CharGroup.class).queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (charGroupList != null && charGroupList.size() != 0) {
+			for (int i = 0; i < charGroupList.size(); i++) {
+				CharGroup charGroup = charGroupList.get(i);
+				if (charGroup == null) {
+					continue;
+				}
+				String partGroupListStr = charGroup.getPartGroupList();
+				String[] partGroupList = UiUtil
+						.getListFormString(partGroupListStr);
+				if (partGroupList != null) {
+					ArrayList<Character> characterList = new ArrayList<Character>();
+					for (int j = 0; j < partGroupList.length; j++) {
+						String charId = partGroupList[j];
+						try {
+							Character character = (Character) MyDao.getDao(
+									Character.class).queryForId(charId);
+							characterList.add(character);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					characterLists.add(characterList);
+				}
+			}
+		}
+
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {
@@ -181,14 +193,11 @@ public class StrokesOrderActivity extends BaseActivity {
 		public boolean onChildClick(ExpandableListView parent, View v,
 				int groupPosition, int childPosition, long id) {
 			// TODO Auto-generated method stub
-			setTitle(children[groupPosition][childPosition]);
-
-			// UiUtil.showToast(context, "Item clicked!" + childPosition);
 			Intent intent = new Intent(StrokesOrderActivity.this,
 					StrokesOrderExerciseActivity.class);
-			String title = adapter.getChild(groupPosition, childPosition)
-					.toString();
-			intent.putExtra("title", title);
+			Character character = adapter
+					.getChild(groupPosition, childPosition);
+			intent.putExtra("model", character);
 			startActivity(intent);
 			return false;
 		}
@@ -206,7 +215,6 @@ public class StrokesOrderActivity extends BaseActivity {
 		@Override
 		public void onGroupCollapse(int groupPosition) {
 			// TODO Auto-generated method stub
-			setTitle(groups[groupPosition] + "关闭");
 		}
 	}
 
@@ -221,7 +229,6 @@ public class StrokesOrderActivity extends BaseActivity {
 		@Override
 		public void onGroupExpand(int groupPosition) {
 			// TODO Auto-generated method stub
-			setTitle(groups[groupPosition] + "弹出");
 		}
 	}
 

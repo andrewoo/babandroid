@@ -1,11 +1,13 @@
 package com.hw.chineseLearn.dao.bean;
 
+import java.io.Serializable;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 
 @DatabaseTable(tableName = "Character")
-public class Character   {
+public class Character implements Serializable  {
 	@DatabaseField(columnName = "CEE")
 	private String CEE;
 	@DatabaseField(columnName = "CEJ")

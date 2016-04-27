@@ -1,5 +1,7 @@
 package com.hw.chineseLearn.adapter;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +10,17 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
+import com.hw.chineseLearn.dao.bean.CharGroup;
+import com.hw.chineseLearn.dao.bean.Character;
 
 public class MyExpandableListAdapterStrokes extends BaseExpandableListAdapter {
-	private String[] groups;
-	private String[][] children;
+
+	ArrayList<CharGroup> charGroupList = new ArrayList<CharGroup>();
+	ArrayList<ArrayList<Character>> characterLists = new ArrayList<ArrayList<Character>>();
 	private Context context;
 	private LayoutInflater childInflater;
 	private LayoutInflater groupInflater;
-
 	private GroupViewHolder gvHolder;
-
 	private ChildViewHolder cvHolder;
 
 	class ChildViewHolder {
@@ -34,17 +37,18 @@ public class MyExpandableListAdapterStrokes extends BaseExpandableListAdapter {
 		TextView tv_child_count;
 	}
 
-	public MyExpandableListAdapterStrokes(Context context, String[] groups,
-			String[][] children) {
-		this.groups = groups;
-		this.children = children;
+	public MyExpandableListAdapterStrokes(Context context,
+			ArrayList<CharGroup> charGroupList,
+			ArrayList<ArrayList<Character>> characterLists) {
+		this.charGroupList = charGroupList;
+		this.characterLists = characterLists;
 		this.context = context;
 		this.childInflater = LayoutInflater.from(context);
 		this.groupInflater = LayoutInflater.from(context);
 	}
 
-	public Object getChild(int groupPosition, int childPosition) {
-		return children[groupPosition][childPosition];
+	public Character getChild(int groupPosition, int childPosition) {
+		return characterLists.get(groupPosition).get(childPosition);
 	}
 
 	public long getChildId(int groupPosition, int childPosition) {
@@ -52,7 +56,7 @@ public class MyExpandableListAdapterStrokes extends BaseExpandableListAdapter {
 	}
 
 	public int getChildrenCount(int groupPosition) {
-		return children[groupPosition].length;
+		return characterLists.get(groupPosition).size();
 	}
 
 	public View getChildView(int groupPosition, int childPosition,
@@ -76,20 +80,25 @@ public class MyExpandableListAdapterStrokes extends BaseExpandableListAdapter {
 		} else {
 			this.cvHolder = (ChildViewHolder) convertView.getTag();
 		}
-		String child = getChild(groupPosition, childPosition).toString();
+		Character child = getChild(groupPosition, childPosition);
+		String pinyin = child.getPinyin();
+		String wCharacter = child.getWCharacter();
+		String cee = child.getCEE();
+
 		cvHolder.tv_child_no.setText("" + (childPosition + 1));
-		cvHolder.tv_child_char.setText(child);
-		cvHolder.tv_child_en.setText("English");
+		cvHolder.tv_child_char.setText(wCharacter);
+		cvHolder.tv_child_pinyin.setText("" + pinyin);
+		cvHolder.tv_child_en.setText("" + cee);
 
 		return convertView;
 	}
 
 	public Object getGroup(int groupPosition) {
-		return groups[groupPosition];
+		return charGroupList.get(groupPosition);
 	}
 
 	public int getGroupCount() {
-		return groups.length;
+		return charGroupList.size();
 	}
 
 	public long getGroupId(int groupPosition) {
@@ -114,7 +123,10 @@ public class MyExpandableListAdapterStrokes extends BaseExpandableListAdapter {
 		} else {
 			gvHolder = (GroupViewHolder) convertView.getTag();
 		}
-		String title = getGroup(groupPosition).toString();
+
+		CharGroup charGroup = charGroupList.get(groupPosition);
+
+		String title = charGroup.getPartGroupName();
 		gvHolder.tv_father_title.setText(title);
 		gvHolder.tv_child_count.setText("" + getChildrenCount(groupPosition));
 

@@ -75,7 +75,16 @@ public class FluentDetailActivity extends BaseActivity {
 	String title = "Title";
 	String fluentIdStr, awsId;
 	TbMyFluentNow model = null;
-
+	boolean isRecord = false;// 是否正在录音
+	private MediaPlayerHelper mediaPlayerHelper;
+	private String flag = "listen";// 录音按钮 默认为听的状态
+	private String lastRecFileName = "kitrecoder";
+	private String filePath = DatabaseHelper.CACHE_DIR_SOUND + "/"
+			+ lastRecFileName + ".amr";
+	private AudioRecorder mr;
+	private boolean isLoop = false;
+	private Resources resources = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -313,16 +322,6 @@ public class FluentDetailActivity extends BaseActivity {
 
 		}
 	};
-
-	boolean isRecord = false;// 是否正在录音
-	private MediaPlayerHelper mediaPlayerHelper;
-	private String flag = "listen";// 录音按钮 默认为听的状态
-	private String lastRecFileName = "kitrecoder";
-	private String filePath = DatabaseHelper.CACHE_DIR_SOUND + "/"
-			+ lastRecFileName + ".amr";
-	private AudioRecorder mr;
-	private boolean isLoop = false;
-	private Resources resources = null;
 
 	@SuppressWarnings("deprecation")
 	protected void setRecoedBg(final ImageView imageView, int position) {
