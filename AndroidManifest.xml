@@ -169,6 +169,14 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
+        
+         <!-- 拼写练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.StrokesOrderExerciseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
 
         <!-- 流畅练习列表页面 -->
         <activity

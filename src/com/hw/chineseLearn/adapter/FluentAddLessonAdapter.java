@@ -137,32 +137,31 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 			fileName = audioContent.getFileName();// audio fileName
 		}
 
-		if (!"".equals(fileName) && fileName != null) {
-			try {
-				TbFileDownload tbFileDownload = (TbFileDownload) MyDao
-						.getDaoMy(TbFileDownload.class).queryBuilder().where()
-						.eq("fileName", fileName).queryForFirst();
-				if (tbFileDownload != null) {// 下载过了
-					int dlStatus = tbFileDownload.getDlStatus();
-					Log.d(TAG, "dlStatus:" + dlStatus);
-					if (dlStatus == 0) {
-						holder.img_add_lesson.setVisibility(View.GONE);
-						holder.img_remove_lesson.setVisibility(View.VISIBLE);
-					} else {
-						holder.img_add_lesson.setVisibility(View.VISIBLE);
-						holder.img_remove_lesson.setVisibility(View.GONE);
-					}
-
-				} else {// 没下载过
-					Log.d(TAG, "没下载过");
+		try {
+			Log.d(TAG, "fileName:" + fileName);
+			TbFileDownload tbFileDownload = (TbFileDownload) MyDao
+					.getDaoMy(TbFileDownload.class).queryBuilder().where()
+					.eq("fileName", fileName).queryForFirst();
+			if (tbFileDownload != null) {// 下载过了
+				int dlStatus = tbFileDownload.getDlStatus();
+				Log.d(TAG, "dlStatus:" + dlStatus);
+				if (dlStatus == 0) {
+					holder.img_add_lesson.setVisibility(View.GONE);
+					holder.img_remove_lesson.setVisibility(View.VISIBLE);
+				} else {
 					holder.img_add_lesson.setVisibility(View.VISIBLE);
 					holder.img_remove_lesson.setVisibility(View.GONE);
 				}
 
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} else {// 没下载过
+				Log.e(TAG, "没下载过");
+				holder.img_add_lesson.setVisibility(View.VISIBLE);
+				holder.img_remove_lesson.setVisibility(View.GONE);
 			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		holder.img_add_lesson.setOnClickListener(new View.OnClickListener() {
@@ -213,21 +212,22 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 	}
 
 	String dlAudioFileName = "";
-	String dlDirId = "";
+	int baseModelId;
 
 	@SuppressWarnings("unchecked")
 	private void downLoadAudioFiles(final int position,
 			final FlunetListBaseModel listBaseModel) {
-		Log.d(TAG, "downLoadAudioFiles");
+
 		if (listBaseModel != null) {
-			dlDirId = listBaseModel.getDirId();
+
+			baseModelId = listBaseModel.getId();
 			FlunetAudioContentBaseModel audioContent = listBaseModel
 					.getAudioContent();
 			if (audioContent != null) {
 				dlAudioFileName = audioContent.getFileName();// audio fileName
 			}
 		}
-
+		Log.d(TAG, "dlAudioFileName:" + dlAudioFileName);
 		HttpUtils http = new HttpUtils();
 		final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/"
 				+ dlAudioFileName;
@@ -235,13 +235,13 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 		HttpHandler handler = http.download(fileUrl, filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
 				true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 				new RequestCallBack<File>() {
-					TbFileDownload tbFileDownload;
+					TbFileDownload tbFileDownload = new TbFileDownload();
 					View convertView = mapView.get(position);
-					RoundProgressBar progress_download;
+					RoundProgressBar progress_download = (RoundProgressBar) convertView
+							.findViewById(R.id.progress_download);
 
 					@Override
 					public void onStart() {
-
 					}
 
 					@Override
@@ -249,50 +249,22 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 							boolean isUploading) {
 
 						Log.d(TAG, "total:" + total + "current:" + current);
-						// 在数据库中插入记录
-						// 先查询 有了就更新 没有了再new
-						try {
-							if (tbFileDownload != null) {// 如果数据库存在
-								tbFileDownload = (TbFileDownload) MyDao
-										.getDaoMy(TbFileDownload.class)
-										.queryBuilder().where()
-										.eq("fileName", dlAudioFileName)
-										.queryForFirst();
-								tbFileDownload.setCurFileContentSize(current);
-								tbFileDownload.setFileContentSize(total);
-								MyDao.getDaoMy(TbFileDownload.class)
-										.createOrUpdate(tbFileDownload);
-							} else {// 如果数据库不存在 就插入
-								tbFileDownload = new TbFileDownload();
-								tbFileDownload.setCwsId(Integer
-										.parseInt(dlDirId));
-								tbFileDownload.setCurFileContentSize(current);
-								tbFileDownload.setFileContentSize(total);// cssc_"+(position+1)+".zip
-								tbFileDownload.setFileName(dlAudioFileName);
-								tbFileDownload.setFilePath(filePath);
-								tbFileDownload.setFileURL(fileUrl);
-								tbFileDownload.setType(3);
-								tbFileDownload.setDlStatus(0);
-								MyDao.getDaoMy(TbFileDownload.class)
-										.createOrUpdate(tbFileDownload);
-							}
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-						// 把下载的值通过集合传过去
-						// modelList.get(position).setCount(
-						// tbFileDownload.getFileContentSize());
-						// modelList.get(position).setCurrentSize(
-						// tbFileDownload.getCurFileContentSize());
 
-						progress_download = (RoundProgressBar) convertView
-								.findViewById(R.id.progress_download);
+						tbFileDownload.setId(baseModelId);
+						tbFileDownload.setCurFileContentSize(current);
+						tbFileDownload.setFileContentSize(total);//
+						tbFileDownload.setFileName(dlAudioFileName);
+						tbFileDownload.setFilePath(filePath);
+						tbFileDownload.setFileURL(fileUrl);
+						tbFileDownload.setType(3);
+						tbFileDownload.setDlStatus(0);
+
 						progress_download.setVisibility(View.VISIBLE);
 						progress_download.setMax((float) total);
 						progress_download.setProgress((float) current);
 						progress_download.setAccurally(1.0f);
 						progress_download.isDrawText(false);
-						notifyDataSetChanged();
+						progress_download.invalidate();
 					}
 
 					@Override
@@ -300,17 +272,12 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 						Log.d(TAG, "onSuccess");
 						try {
 							tbFileDownload.setDlStatus(1);
-							MyDao.getDaoMy(TbFileDownload.class)
-									.createOrUpdate(tbFileDownload);
+							int T = MyDao.getDaoMy(TbFileDownload.class)
+									.create(tbFileDownload);
+							Log.d(TAG, "T:" + T);
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
-						// 下载完后更变state和图片颜色
-						// modelList.get(position).setState(FINISH);
-						// String imageName = modelList.get(position)
-						// .getImageName() + "_hit";
-						// modelList.get(position).setImageName(imageName);
-						notifyDataSetChanged();
 						progress_download.setVisibility(View.GONE);
 						// 下载完后解压到音频目录
 						new Thread() {
@@ -320,17 +287,16 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 							};
 						}.start();
 
-						String dirId = listBaseModel.getDirId();
 						String title_CN = listBaseModel.getTitleCn();
 						String title_EN = listBaseModel.getTitleEn();
 						int diffLevel = listBaseModel.getDiffLevel();
 						int showOrder = listBaseModel.getShowOrder();
+						String aWS_ID = listBaseModel.getDirId();
 
 						TbMyFluentNow tbMyFluentNow = new TbMyFluentNow();
 						tbMyFluentNow.setDownloaded(1);
-						int id = Integer.parseInt(dirId);
-						Log.d(TAG, "id:" + id);
-						tbMyFluentNow.setFluentID(id);
+						tbMyFluentNow.setFluentID(baseModelId);
+						tbMyFluentNow.setAWS_ID(Integer.parseInt(aWS_ID));
 						tbMyFluentNow.setLevel(diffLevel);
 						tbMyFluentNow.setTitle_CN(title_CN);
 						tbMyFluentNow.setTitle_EN(title_EN);
@@ -343,13 +309,10 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						notifyDataSetChanged();
 					}
 
 					@Override
 					public void onFailure(HttpException error, String msg) {
-						// modelList.get(position).setState(0);
-						notifyDataSetChanged();
 					}
 				});
 
@@ -362,7 +325,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 			final FlunetListBaseModel listBaseModel) {
 		Log.d(TAG, "downLoadContentFiles");
 		if (listBaseModel != null) {
-			dlDirId = listBaseModel.getDirId();
+			baseModelId = listBaseModel.getId();
 			FlunetTextContentBaseModel textContent = listBaseModel
 					.getTxtContent();
 			if (textContent != null) {
@@ -378,7 +341,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 		HttpHandler handler = http.download(fileUrl, filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
 				true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 				new RequestCallBack<File>() {
-					TbFileDownload tbFileDownload;
+					TbFileDownload tbFileDownload = new TbFileDownload();
 
 					@Override
 					public void onStart() {
@@ -388,50 +351,26 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 					@Override
 					public void onLoading(long total, long current,
 							boolean isUploading) {
-
-						// 在数据库中插入记录
-						// 先查询 有了就更新 没有了再new
-						try {
-							if (tbFileDownload != null) {// 如果数据库存在
-								tbFileDownload = (TbFileDownload) MyDao
-										.getDaoMy(TbFileDownload.class)
-										.queryBuilder().where()
-										.eq("fileName", dlTextFileName)
-										.queryForFirst();
-								tbFileDownload.setCurFileContentSize(current);
-								tbFileDownload.setFileContentSize(total);
-								MyDao.getDaoMy(TbFileDownload.class)
-										.createOrUpdate(tbFileDownload);
-							} else {// 如果数据库不存在 就插入
-								tbFileDownload = new TbFileDownload();
-								tbFileDownload.setCwsId(Integer
-										.parseInt(dlDirId));
-								tbFileDownload.setCurFileContentSize(current);
-								tbFileDownload.setFileContentSize(total);// cssc_"+(position+1)+".zip
-								tbFileDownload.setFileName(dlTextFileName);
-								tbFileDownload.setFilePath(filePath);
-								tbFileDownload.setFileURL(fileUrl);
-								tbFileDownload.setType(3);
-								tbFileDownload.setDlStatus(0);
-								MyDao.getDaoMy(TbFileDownload.class)
-										.createOrUpdate(tbFileDownload);
-							}
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-
+						tbFileDownload.setId(baseModelId);
+						tbFileDownload.setCurFileContentSize(current);
+						tbFileDownload.setFileContentSize(total);//
+						tbFileDownload.setFileName(dlAudioFileName);
+						tbFileDownload.setFilePath(filePath);
+						tbFileDownload.setFileURL(fileUrl);
+						tbFileDownload.setType(4);
+						tbFileDownload.setDlStatus(0);
 					}
 
 					@Override
 					public void onSuccess(ResponseInfo<File> responseInfo) {
 						try {
 							tbFileDownload.setDlStatus(1);
-							MyDao.getDaoMy(TbFileDownload.class)
-									.createOrUpdate(tbFileDownload);
+							int T = MyDao.getDaoMy(TbFileDownload.class)
+									.create(tbFileDownload);
+							Log.d(TAG, "T:" + T);
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
-						notifyDataSetChanged();
 						// 下载完后解压到音频目录
 						new Thread() {
 							public void run() {

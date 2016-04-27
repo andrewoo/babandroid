@@ -83,6 +83,7 @@ public class FluentNowAdapter extends BaseAdapter {
 					.findViewById(R.id.txt_sentence_en);
 			holder.txt_time = (TextView) convertView
 					.findViewById(R.id.txt_time);
+			holder.txt_time.setVisibility(View.GONE);
 			holder.img_level = (ImageView) convertView
 					.findViewById(R.id.img_level);
 

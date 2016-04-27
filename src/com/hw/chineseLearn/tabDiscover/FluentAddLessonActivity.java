@@ -107,7 +107,6 @@ public class FluentAddLessonActivity extends BaseActivity {
 		pullToRefreshView = (PullToRefreshView) contentView
 				.findViewById(R.id.pullToRefreshView);
 		lv_add_lesson = (ListView) contentView.findViewById(R.id.lv_add_lesson);
-		// lv_add_lesson.setOnItemClickListener(onItemclickListener);
 
 		pullToRefreshView
 				.setOnFooterRefreshListener(new OnFooterRefreshListener() {
@@ -188,91 +187,6 @@ public class FluentAddLessonActivity extends BaseActivity {
 			default:
 				break;
 			}
-		}
-	};
-
-	OnItemClickListener onItemclickListener = new OnItemClickListener() {
-
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View convertView,
-				int arg2, long arg3) {
-			// TODO Auto-generated method stub
-
-			boolean isDownloaded = false;
-			String fileName = "";
-			String dirId = "";
-			FlunetListBaseModel listBaseModel = datas.get(arg2);
-
-			if (listBaseModel != null) {
-				dirId = listBaseModel.getDirId();
-				FlunetAudioContentBaseModel audioContent = listBaseModel
-						.getAudioContent();
-				if (audioContent != null) {
-					fileName = audioContent.getFileName();// audio fileName
-				}
-			}
-
-			if (!"".equals(fileName) && fileName != null) {
-				try {
-					TbFileDownload tbFileDownload = (TbFileDownload) MyDao
-							.getDaoMy(TbFileDownload.class).queryBuilder()
-							.where().eq("fileName", fileName).queryForFirst();
-					if (tbFileDownload != null) {// 下载过了
-						isDownloaded = true;
-					} else {// 没下载过
-						isDownloaded = false;
-						// int cwsId = Integer.parseInt(dirId);
-						// tbFileDownload.setCwsId(cwsId);
-						// tbFileDownload.setType(3);
-						// tbFileDownload.setFileName(fileName);
-					}
-
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
-			if (!isDownloaded) {
-				downLoadAudioFiles(listBaseModel);
-			}
-
-			convertView = adapter.mapView.get(arg2);
-			ImageView img_add_lesson = (ImageView) convertView
-					.findViewById(R.id.img_add_lesson);
-			final RoundProgressBar progress_download = (RoundProgressBar) convertView
-					.findViewById(R.id.progress_download);
-			img_add_lesson.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					// img_add_lesson.setVisibility(View.GONE);
-
-					new Thread(new Runnable() {
-						private int progress = 0;
-
-						@Override
-						public void run() {
-							while (progress <= 100) {
-								progress += 3;
-								System.out.println(progress);
-								progress_download.setProgress(progress);
-								try {
-									Thread.sleep(100);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-
-						}
-					}).start();
-				}
-			});
-
-			// startActivity(new Intent(FluentAddLessonActivity.this,
-			// FluentDetailActivity.class));
-
 		}
 	};
 

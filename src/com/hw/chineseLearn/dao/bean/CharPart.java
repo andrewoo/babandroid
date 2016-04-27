@@ -3,7 +3,6 @@ package com.hw.chineseLearn.dao.bean;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "Character")
 public class CharPart {
 	// CharId INT,
 	// PartDirection VARCHAR( 1024 ),
@@ -14,14 +13,19 @@ public class CharPart {
 
 	@DatabaseField(columnName = "CharId")
 	private String CharId;
+	
 	@DatabaseField(columnName = "PartDirection")
 	private String PartDirection;
+	
 	@DatabaseField(columnName = "PartId", id = true)
 	private int PartId;
+	
 	@DatabaseField(columnName = "PartIndex")
 	private int PartIndex;
+	
 	@DatabaseField(columnName = "PartPath")
 	private String PartPath;
+	
 	@DatabaseField(columnName = "Version")
 	private int Version;
 

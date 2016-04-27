@@ -6,13 +6,13 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "Character")
 public class Character   {
-	@DatabaseField(columnName = "CEE", id = true)
+	@DatabaseField(columnName = "CEE")
 	private String CEE;
 	@DatabaseField(columnName = "CEJ")
 	private String CEJ;
 	@DatabaseField(columnName = "CEK")
 	private String CEK;
-	@DatabaseField(columnName = "CharId")
+	@DatabaseField(columnName = "CharId", id = true)
 	private String CharId;
 	@DatabaseField(columnName = "CharPath") 
 	private String CharPath;

@@ -212,6 +212,9 @@ public class FileTools {
 		}
 	}
 
+	/**
+	 * @param dbName
+	 */
 	public static void copyDb(String dbName) {
 		try {
 			InputStream inputStream = CustomApplication.app.getAssets().open(
@@ -237,6 +240,14 @@ public class FileTools {
 		}
 	}
 
+	/**
+	 * 解压zip文件
+	 * 
+	 * @param context
+	 * @param assetName
+	 * @param outputDirectory
+	 * @throws IOException
+	 */
 	public static void unZip(Context context, String assetName,
 			String outputDirectory) throws IOException {
 		// 创建解压目标目录
@@ -318,4 +329,55 @@ public class FileTools {
 		}
 	}
 
+	/**
+	 * @param context
+	 * @param assetsPath
+	 * @return
+	 */
+	public static String getJsonFromFile(Context context, String filename) {
+		try {
+
+			FileInputStream fis = new FileInputStream(filename);
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader br = new BufferedReader(isr);
+
+			String line;
+			StringBuilder stringBuilder = new StringBuilder();
+			while ((line = br.readLine()) != null) {
+				stringBuilder.append(line);
+			}
+			br.close();
+			fis.close();
+			return stringBuilder.toString();
+		} catch (Exception e) {
+			Log.e("getJsonFromFlie", "get json failed!");
+		}
+		return "";
+	}
+
+	/**
+	 * @param context
+	 * @param assetsPath
+	 * @return
+	 */
+	public static String getJsonFromAsset(Context context, String assetsPath) {
+		try {
+
+			InputStreamReader inputStreamReader = new InputStreamReader(context
+					.getAssets().open(assetsPath), "UTF-8");
+			BufferedReader bufferedReader = new BufferedReader(
+					inputStreamReader);
+			String line;
+			StringBuilder stringBuilder = new StringBuilder();
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuilder.append(line);
+			}
+			bufferedReader.close();
+			inputStreamReader.close();
+			return stringBuilder.toString();
+		} catch (Exception e) {
+			Log.e("getJsonFromAsset", "get json failed!");
+		}
+		return "";
+	}
 }
