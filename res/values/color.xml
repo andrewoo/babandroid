@@ -358,5 +358,6 @@
     <color name="almost_remembered">#EACED5</color>
     <color name="forgot">#DDAEBA</color>
     <color name="dont_know">#F48B91</color>
+     <color name="pinyinchart">#3a8e98</color>
 
 </resources>

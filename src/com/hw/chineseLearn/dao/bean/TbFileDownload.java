@@ -15,7 +15,7 @@ public class TbFileDownload {
 	// fileURL VARCHAR( 1000 ) DEFAULT NULL,
 	// dlStatus INTEGER
 
-	@DatabaseField(columnName = "id", id = true)
+	 @DatabaseField(generatedId = true)  
 	private int id;
 	@DatabaseField(columnName = "cwsId")
 	private int cwsId;
@@ -25,13 +25,13 @@ public class TbFileDownload {
 	private long curFileContentSize;
 	@DatabaseField(columnName = "fileContentSize")
 	private long fileContentSize;
-	@DatabaseField(columnName = "fileName")
+	@DatabaseField(columnName = "fileName",unique=true)
 	private String fileName;
 	@DatabaseField(columnName = "filePath")
 	private String filePath;
 	@DatabaseField(columnName = "fileExtent")
 	private String fileExtent;
-	@DatabaseField(columnName = "fileURL")
+	@DatabaseField(columnName = "fileURL",unique=true)
 	private String fileURL;
 	@DatabaseField(columnName = "dlStatus")
 	private int dlStatus;

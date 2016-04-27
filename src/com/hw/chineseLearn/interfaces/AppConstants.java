@@ -38,6 +38,7 @@ public class AppConstants {
 
 	public static final String LOGIN_USERNAME = "Login_Username";
 	public static final String LOGIN_PWD = "Login_Pwd";
+	public static final String LOGIN_TOKEN = "Login_Token";
 
 	// 查询
 	public static String URL_SEARCHDEVICE = BASE_URL + "/";

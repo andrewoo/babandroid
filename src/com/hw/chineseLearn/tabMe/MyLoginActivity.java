@@ -1,5 +1,8 @@
 package com.hw.chineseLearn.tabMe;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,12 +15,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.AppConstants;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 import com.util.thread.ThreadWithDialogTask;
 
 /**
@@ -173,13 +183,51 @@ public class MyLoginActivity extends BaseActivity {
 		} else {
 			// sign in
 			CustomApplication.app.isLogin = true;
-			CustomApplication.app.finishActivity(this);
-			// 保存账户和密码
-			CustomApplication.app.preferencesUtil.setValue(
-					AppConstants.LOGIN_USERNAME, emailString);
-			CustomApplication.app.preferencesUtil.setValue(
-					AppConstants.LOGIN_PWD, pswString);
-			closeWindowSoftInput();
+			RequestParams params = new RequestParams();
+			params.addBodyParameter("username", emailString);
+			params.addBodyParameter("password", pswString);
+			HttpUtils http = new HttpUtils();
+			String url="http://58.67.154.138:8088/babbel-api-app/v1/users/login";
+			http.send(HttpRequest.HttpMethod.POST,
+				url,
+			    params,
+			    new RequestCallBack<String>() {
+
+			        @Override
+			        public void onStart() {}
+
+			        @Override
+			        public void onLoading(long total, long current, boolean isUploading) {}
+
+			        @Override
+			        public void onSuccess(ResponseInfo<String> responseInfo) {
+			        	//"success":false,"message":"Username already exists","error_code":20002,"results":{}}
+			        	//{"success":true,"message":"","error_code":0,"results":{}}
+			        	try { 
+							JSONObject jsobject=new JSONObject(responseInfo.result);
+							Boolean success = jsobject.optBoolean("success");
+							JSONObject results = jsobject.optJSONObject("results");
+							String token = results.optString("token");
+							if(success){
+								System.out.println("token"+token);
+								CustomApplication.app.preferencesUtil.setValue(AppConstants.LOGIN_USERNAME, emailString);
+								CustomApplication.app.preferencesUtil.setValue(AppConstants.LOGIN_PWD, pswString);
+								CustomApplication.app.preferencesUtil.setValue(AppConstants.LOGIN_TOKEN, token);
+								closeWindowSoftInput();
+								CustomApplication.app.finishActivity(MyLoginActivity.this);
+								return;
+							}
+							Toast.makeText(MyLoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+			        }
+
+			        @Override
+			        public void onFailure(HttpException error, String msg) {
+			        	Toast.makeText(MyLoginActivity.this, "login failed", Toast.LENGTH_SHORT).show();
+			        }
+			});
 		}
 	}
 

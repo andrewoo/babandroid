@@ -1,18 +1,35 @@
 package com.hw.chineseLearn.tabMe;
 
+import java.io.File;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.interfaces.AppConstants;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.Utility;
 
 /**
  * 注册
@@ -46,6 +63,11 @@ public class MyRegisterActivity extends BaseActivity {
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Sign up", View.GONE, View.GONE, 0);
+		
+		txt_username = (EditText) findViewById(R.id.txt_username);
+		et_pwd = (EditText) findViewById(R.id.et_pwd);
+		et_confirm_pwd = (EditText) findViewById(R.id.et_confirm_pwd);
+		
 		btn_login = (TextView) findViewById(R.id.btn_login);
 		btn_login.setOnClickListener(onClickListener);
 
@@ -110,13 +132,95 @@ public class MyRegisterActivity extends BaseActivity {
 				break;
 
 			case R.id.btn_login:
+				
+				checkAndLogin();
+				
 				break;
 
 			default:
 				break;
 			}
 		}
+
 	};
+	
+	private void checkAndLogin() {
+		text = txt_username.getText().toString().trim();
+		pwd = et_pwd.getText().toString().trim();
+		String confirm_pwd = et_confirm_pwd.getText().toString().trim();
+		if(!Utility.isEmail(text)){
+			Toast.makeText(this, "Please enter the correct email format", Toast.LENGTH_SHORT).show();
+			return;
+		}else if(pwd.length()<6 || confirm_pwd.length()<6){
+			Toast.makeText(this, "at lease 6 characters", Toast.LENGTH_SHORT).show();
+			return;
+		}else if(!pwd.equals(confirm_pwd)){
+			Toast.makeText(this, "Two passwords are not consistent please re-enter", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		RequestParams params = new RequestParams();
+//		params.addHeader("name", "value");
+//		params.addQueryStringParameter("name", "value");
+
+		// 只包含字符串参数时默认使用BodyParamsEntity，
+		// 类似于UrlEncodedFormEntity（"application/x-www-form-urlencoded"）。
+		params.addBodyParameter("username", text);
+		params.addBodyParameter("password", pwd);
+
+		HttpUtils http = new HttpUtils();
+		String url="http://58.67.154.138:8088/babbel-api-app/v1/users/register";
+		http.send(HttpRequest.HttpMethod.POST,
+			url,
+		    params,
+		    new RequestCallBack<String>() {
+
+		        @Override
+		        public void onStart() {
+		        }
+
+		        @Override
+		        public void onLoading(long total, long current, boolean isUploading) {
+		        }
+
+		        @Override
+		        public void onSuccess(ResponseInfo<String> responseInfo) {
+		        	//"success":false,"message":"Username already exists","error_code":20002,"results":{}}
+		        	//{"success":true,"message":"","error_code":0,"results":{}}
+		        	try {
+						JSONObject jsobject=new JSONObject(responseInfo.result);
+						Boolean success = jsobject.optBoolean("success");
+						if(success){
+							
+							CustomApplication.app.preferencesUtil.setValue(AppConstants.LOGIN_USERNAME, text);
+							CustomApplication.app.preferencesUtil.setValue(AppConstants.LOGIN_PWD, pwd);
+							
+							Intent intent=new Intent(MyRegisterActivity.this,MyAccountActivity.class);
+							startActivity(intent);
+							
+							return;
+						}
+						String message = jsobject.optString("message");
+						Toast.makeText(MyRegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+						
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+		        }
+
+		        @Override
+		        public void onFailure(HttpException error, String msg) {
+		        	Toast.makeText(MyRegisterActivity.this, "register failed", Toast.LENGTH_SHORT).show();
+		        }
+		});
+		
+	}
+
+	private EditText txt_username;
+	private EditText et_pwd;
+	private EditText et_confirm_pwd;
+	private String text;
+	private String pwd;
 
 	// public class LoginOut implements ThreadWithDialogListener {
 	//

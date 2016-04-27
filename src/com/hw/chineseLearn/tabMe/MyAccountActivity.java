@@ -2,6 +2,8 @@ package com.hw.chineseLearn.tabMe;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -28,6 +30,8 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.interfaces.AppConstants;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
 import com.util.thread.ThreadWithDialogTask;
@@ -62,9 +66,16 @@ public class MyAccountActivity extends BaseActivity {
 		context = this;
 		tdt = new ThreadWithDialogTask();
 		interfaces = new HttpInterfaces(this);
+		initData();
 		init();
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
+	}
+
+	private void initData() {
+		
+		emailString = CustomApplication.app.preferencesUtil.getValue(
+				AppConstants.LOGIN_USERNAME, "");
 	}
 
 	/**
@@ -164,6 +175,7 @@ public class MyAccountActivity extends BaseActivity {
 
 				break;
 			case R.id.rel_reset_progress:
+				resetProgress();
 
 				break;
 
@@ -175,7 +187,27 @@ public class MyAccountActivity extends BaseActivity {
 				break;
 			}
 		}
+		
 	};
+	
+	private void resetProgress() {
+		
+		try {
+			List<TbLessonMaterialStatus> list = MyDao.getDaoMy(
+					TbLessonMaterialStatus.class).queryForAll();
+			List<Integer> idList = new ArrayList<Integer>();
+			if(list.size()>3){
+				for (int i = 3; i < list.size(); i++) {
+					idList.add(list.get(i).getLessonId());
+				}
+				MyDao.getDaoMy(TbLessonMaterialStatus.class).deleteIds(idList);
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
 
 	/**
 	 * 退出登录对话框
@@ -201,13 +233,12 @@ public class MyAccountActivity extends BaseActivity {
 
 				// tdt.RunWithMsg(MySettingActivity.this, new LoginOut(),
 				// "正在退出...");
-
+				//登出
 				CustomApplication.app.isLogin = false;
 				CustomApplication.app.finishAllActivity();
-				startActivity(new Intent(MyAccountActivity.this,
-						MyLoginActivity.class));
-				CustomApplication.app.preferencesUtil.setValue(
-						AppConstants.LOGIN_PWD, "");
+				CustomApplication.app.preferencesUtil.setValue(AppConstants.LOGIN_PWD, "");
+				CustomApplication.app.preferencesUtil.setValue(AppConstants.LOGIN_TOKEN, "");
+				startActivity(new Intent(MyAccountActivity.this,MyLoginActivity.class));
 			}
 		});
 		cancel.setOnClickListener(new OnClickListener() {
@@ -340,7 +371,7 @@ public class MyAccountActivity extends BaseActivity {
 	@Override
 	public void onSaveInstanceState(Bundle bundle) {
 		bundle.putString("save_camera_fileName", camera_fileName);
-		isBundleSaved = true;
+		isBundleSaved = true; 
 		super.onSaveInstanceState(bundle);
 	}
 
@@ -362,7 +393,7 @@ public class MyAccountActivity extends BaseActivity {
 	 * 
 	 * @param uri
 	 */
-	public void startPhotoZoom(Uri uri) {
+	public void startPhotoZoom(Uri uri) { 
 		Log.d(TAG, "裁剪图片宽高:" + CustomApplication.app.displayMetrics.widthPixels);
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, AppFinal.IMAGE_UNSPECIFIED);
@@ -386,7 +417,7 @@ public class MyAccountActivity extends BaseActivity {
 		// intent.putExtra("return-data", true);
 
 		// uritempFile为Uri类变量，实例化uritempFile
-		imgName = System.currentTimeMillis() + ".jpg";
+		imgName = System.currentTimeMillis() + ".jpg";  
 		uritempFile = Uri.parse("file://" + "/"
 				+ AppFinal.CACHE_DIR_UPLOADING_IMG + "/" + imgName);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);

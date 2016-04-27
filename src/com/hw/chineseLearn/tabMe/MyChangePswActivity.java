@@ -1,7 +1,11 @@
 package com.hw.chineseLearn.tabMe;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,12 +15,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.interfaces.AppConstants;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.Utility;
 
 /**
  * 修改密码
@@ -127,15 +140,70 @@ public class MyChangePswActivity extends BaseActivity {
 				break;
 
 			case R.id.btn_confirm:
-				if ("".equals(et_old_psw.getText().toString())) {
-					showNothingInputDialog(R.id.et_old_psw);
-				} else if ("".equals(et_new_psw.getText().toString())) {
-					showNothingInputDialog(R.id.et_new_psw);
-				} else if ("".equals(et_confirm_new_psw.getText().toString())) {
-					showNothingInputDialog(R.id.et_confirm_new_psw);
-				} else {
-
+//				if ("".equals(et_old_psw.getText().toString())) {
+////					showNothingInputDialog(R.id.et_old_psw);
+//				} else if ("".equals(et_new_psw.getText().toString())) {
+//					showNothingInputDialog(R.id.et_new_psw);
+//				} else if ("".equals(et_confirm_new_psw.getText().toString())) {
+//					showNothingInputDialog(R.id.et_confirm_new_psw);
+//				} else {
+//
+//				}
+				String oldPwd = et_old_psw.getText().toString().trim();
+				String newPwd = et_new_psw.getText().toString().trim();
+				String newCPwd= et_confirm_new_psw.getText().toString().trim();
+				if(oldPwd.length()<6 || newPwd.length()<6 || newCPwd.length()<6){
+					Toast.makeText(MyChangePswActivity.this, "at lease 6 characters", Toast.LENGTH_SHORT).show();
+					return;
+				}else if(!newPwd.equals(newCPwd)){
+					Toast.makeText(MyChangePswActivity.this, "Two passwords are not consistent please re-enter", Toast.LENGTH_SHORT).show();
+					return;
 				}
+				String token = CustomApplication.app.preferencesUtil.getValue(
+						AppConstants.LOGIN_TOKEN, "");
+				RequestParams params = new RequestParams();
+				params.addBodyParameter("oldPwd", oldPwd);
+				params.addBodyParameter("newPwd", newPwd);
+				params.addBodyParameter("token", token);//token
+				HttpUtils http = new HttpUtils();
+				String url="http://58.67.154.138:8088/babbel-api-app/v1/users/password/reset";
+				http.send(HttpRequest.HttpMethod.POST,
+					url,
+				    params,
+				    new RequestCallBack<String>() {
+
+				        @Override
+				        public void onStart() {}
+
+				        @Override
+				        public void onLoading(long total, long current, boolean isUploading) {}
+
+				        @Override
+				        public void onSuccess(ResponseInfo<String> responseInfo) {
+				        	try { 
+								JSONObject jsobject=new JSONObject(responseInfo.result);
+								Boolean success = jsobject.optBoolean("success");
+								if(success){
+									CustomApplication.app.preferencesUtil.setValue(AppConstants.LOGIN_PWD, "");
+									CustomApplication.app.preferencesUtil.setValue(AppConstants.LOGIN_TOKEN, "");
+									closeWindowSoftInput();
+									startActivity(new Intent(context,MyLoginActivity.class));
+									CustomApplication.app.finishActivity(MyChangePswActivity.this);
+									return;
+								}
+								Toast.makeText(MyChangePswActivity.this, "Changer failed", Toast.LENGTH_SHORT).show();
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+				        }
+
+				        @Override
+				        public void onFailure(HttpException error, String msg) {
+				        	Toast.makeText(context, "network error", Toast.LENGTH_SHORT).show();
+				        }
+				});
+				
+				
 				closeWindowSoftInput();
 				break;
 
