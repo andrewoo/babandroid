@@ -14,7 +14,6 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
-import com.hw.chineseLearn.model.SimpleModel;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.weight.NumberPicker;
 import com.util.weight.NumberPicker.Formatter;
@@ -34,7 +33,6 @@ public class MySettingRemindersActivity extends BaseActivity implements
 
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
-	SimpleModel simpleModel;
 	TextView txt_time;
 	LinearLayout lin_time_picker;
 	NumberPicker hourPicker, minutePicker;

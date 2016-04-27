@@ -161,6 +161,34 @@ public class LearnWordInputFragment extends BaseFragment implements
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				answerChanged = s.toString();
+				if (!"".equals(answerChanged)) {
+					if (getActivity() instanceof LessonExerciseActivity) {
+						LessonExerciseActivity lessonExerciseActivity = (LessonExerciseActivity) getActivity();
+						lessonExerciseActivity.isCheckBtnActived(true);
+					}
+					if (getActivity() instanceof LessonReviewExerciseActivity) {
+						LessonReviewExerciseActivity lessonReviewExerciseActivity = (LessonReviewExerciseActivity) getActivity();
+						lessonReviewExerciseActivity.isCheckBtnActived(true);
+					}
+					if (getActivity() instanceof LessonTestOutTestActivity) {
+						LessonTestOutTestActivity lessonTestOutTestActivity = (LessonTestOutTestActivity) getActivity();
+						lessonTestOutTestActivity.isCheckBtnActived(true);
+					}
+
+				} else {
+					if (getActivity() instanceof LessonExerciseActivity) {
+						LessonExerciseActivity lessonExerciseActivity = (LessonExerciseActivity) getActivity();
+						lessonExerciseActivity.isCheckBtnActived(false);
+					}
+					if (getActivity() instanceof LessonReviewExerciseActivity) {
+						LessonReviewExerciseActivity lessonReviewExerciseActivity = (LessonReviewExerciseActivity) getActivity();
+						lessonReviewExerciseActivity.isCheckBtnActived(false);
+					}
+					if (getActivity() instanceof LessonTestOutTestActivity) {
+						LessonTestOutTestActivity lessonTestOutTestActivity = (LessonTestOutTestActivity) getActivity();
+						lessonTestOutTestActivity.isCheckBtnActived(false);
+					}
+				}
 			}
 
 			@Override

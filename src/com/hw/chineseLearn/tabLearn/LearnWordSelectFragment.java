@@ -169,6 +169,18 @@ public class LearnWordSelectFragment extends BaseFragment implements
 			} else {
 				isRight = false;
 			}
+			if (getActivity() instanceof LessonExerciseActivity) {
+				LessonExerciseActivity lessonExerciseActivity = (LessonExerciseActivity) getActivity();
+				lessonExerciseActivity.isCheckBtnActived(true);
+			}
+			if (getActivity() instanceof LessonReviewExerciseActivity) {
+				LessonReviewExerciseActivity lessonReviewExerciseActivity = (LessonReviewExerciseActivity) getActivity();
+				lessonReviewExerciseActivity.isCheckBtnActived(true);
+			}
+			if (getActivity() instanceof LessonTestOutTestActivity) {
+				LessonTestOutTestActivity lessonTestOutTestActivity = (LessonTestOutTestActivity) getActivity();
+				lessonTestOutTestActivity.isCheckBtnActived(true);
+			}
 		}
 	};
 

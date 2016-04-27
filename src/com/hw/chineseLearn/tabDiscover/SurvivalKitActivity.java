@@ -281,7 +281,7 @@ public class SurvivalKitActivity extends BaseActivity {
 			TbFileDownload tbFileDownload;
 				@Override
 		        public void onStart() {
-					
+					  
 		        }
 
 		        @Override

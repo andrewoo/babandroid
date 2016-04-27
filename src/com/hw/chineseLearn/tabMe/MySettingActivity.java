@@ -17,7 +17,6 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
-import com.hw.chineseLearn.model.SimpleModel;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.weight.SlideSwitch;
 import com.util.weight.SlideSwitch.SlideListener;
@@ -36,7 +35,6 @@ public class MySettingActivity extends BaseActivity {
 	private RelativeLayout rel_logout;
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
-	SimpleModel simpleModel;
 	SlideSwitch ck_sound_effect;
 	SlideSwitch ck_character_test;
 	SlideSwitch ck_check_tone_when_test;

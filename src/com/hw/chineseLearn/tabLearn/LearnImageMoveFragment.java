@@ -7,8 +7,8 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -596,7 +596,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 						// 拖到了米字格的区域
 						// UiUtil.showToast(context,
 						// "拖到了" + "id:" + model.getWordId());
-						 choosedSubLGModelMap.put(imageView, model);
+						choosedSubLGModelMap.put(imageView, model);
 
 					} else {
 						// UiUtil.showToast(context, "木拖到");
@@ -650,12 +650,34 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		Log.d(TAG,
 				"---------------------------------------------------------------");
 
-		if (choosedSubLGModelMap.size()>0) {
-			
-		}else{
-			
+		if (choosedSubLGModelMap.size() > 0) {
+			if (getActivity() instanceof LessonExerciseActivity) {
+				LessonExerciseActivity lessonExerciseActivity = (LessonExerciseActivity) getActivity();
+				lessonExerciseActivity.isCheckBtnActived(true);
+			}
+			if (getActivity() instanceof LessonReviewExerciseActivity) {
+				LessonReviewExerciseActivity lessonReviewExerciseActivity = (LessonReviewExerciseActivity) getActivity();
+				lessonReviewExerciseActivity.isCheckBtnActived(true);
+			}
+			if (getActivity() instanceof LessonTestOutTestActivity) {
+				LessonTestOutTestActivity lessonTestOutTestActivity = (LessonTestOutTestActivity) getActivity();
+				lessonTestOutTestActivity.isCheckBtnActived(true);
+			}
+		} else {
+			if (getActivity() instanceof LessonExerciseActivity) {
+				LessonExerciseActivity lessonExerciseActivity = (LessonExerciseActivity) getActivity();
+				lessonExerciseActivity.isCheckBtnActived(false);
+			}
+			if (getActivity() instanceof LessonReviewExerciseActivity) {
+				LessonReviewExerciseActivity lessonReviewExerciseActivity = (LessonReviewExerciseActivity) getActivity();
+				lessonReviewExerciseActivity.isCheckBtnActived(false);
+			}
+			if (getActivity() instanceof LessonTestOutTestActivity) {
+				LessonTestOutTestActivity lessonTestOutTestActivity = (LessonTestOutTestActivity) getActivity();
+				lessonTestOutTestActivity.isCheckBtnActived(false);
+			}
 		}
-		
+
 		for (Map.Entry<ImageView, SubLGModel> entry : choosedSubLGModelMap
 				.entrySet()) {
 			SubLGModel model = entry.getValue();

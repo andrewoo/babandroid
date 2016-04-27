@@ -4,22 +4,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -145,6 +142,8 @@ public class SurvivalListAdapter extends BaseAdapter {
 		} else {
 			cvHolder.lin_bg.setVisibility(View.GONE);
 		}
+		
+		
 
 		return convertView;
 	}
@@ -424,5 +423,4 @@ public class SurvivalListAdapter extends BaseAdapter {
 		TextView txt_sentence_cn;
 		TextView txt_sentence_en;
 	}
-
 }

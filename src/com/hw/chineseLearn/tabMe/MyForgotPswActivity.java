@@ -16,8 +16,6 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
-import com.hw.chineseLearn.model.SimpleModel;
-import com.hw.chineseLearn.tabLearn.LessonViewActivity;
 import com.util.thread.ThreadWithDialogTask;
 
 /**
@@ -35,7 +33,6 @@ public class MyForgotPswActivity extends BaseActivity {
 
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
-	SimpleModel simpleModel;
 	View contentView;
 
 	@Override

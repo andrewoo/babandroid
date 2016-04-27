@@ -36,6 +36,7 @@ public class DatabaseHelperMy extends OrmLiteSqliteOpenHelper {
 	public static Boolean isFirstRunForApplication = false;
 	
 	public static final String SOUND_PATH;
+	public static final String CONTENT_JSON_PATH;
 	
 	static {
 		if (Environment.MEDIA_MOUNTED.equals(Environment
@@ -56,6 +57,7 @@ public class DatabaseHelperMy extends OrmLiteSqliteOpenHelper {
 		CACHE_DIR_MAPPKGS = CACHE_DIR + "/mapPkgs";
 		
 		SOUND_PATH = CACHE_DIR_DOWNLOAD+"/kit";//kit界面 解压后声音存放位置
+		CONTENT_JSON_PATH= CACHE_DIR_DOWNLOAD+"/contentJson";//解压fluent内容zip后存放的路径
 
 		File file = new File(CACHE_DIR);
 		if (!file.exists()) {

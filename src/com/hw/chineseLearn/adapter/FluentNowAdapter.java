@@ -6,23 +6,22 @@ import java.util.HashMap;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.bean.TbFileDownload;
+import com.hw.chineseLearn.dao.bean.TbMyFluentNow;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
 public class FluentNowAdapter extends BaseAdapter {
 	private Context context;
-	public ArrayList<LearnUnitBaseModel> list;
+	public ArrayList<TbMyFluentNow> list;
 	private LayoutInflater inflater;
 
 	private int width, height;
@@ -31,7 +30,7 @@ public class FluentNowAdapter extends BaseAdapter {
 	int colorWhite = -1;
 	int colorBlack = -1;
 
-	public FluentNowAdapter(Context context, ArrayList<LearnUnitBaseModel> list) {
+	public FluentNowAdapter(Context context, ArrayList<TbMyFluentNow> list) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
 		this.list = list;
@@ -91,33 +90,32 @@ public class FluentNowAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		LearnUnitBaseModel model = list.get(position);
+		TbMyFluentNow model = list.get(position);
 		if (model == null) {
 			return convertView;
 		}
 
-		String sentenceCn = model.getUnitName();
-		String sentenceEn = model.getDescription();
-		String imageName = "" + model.getIconResSuffix();
+		String sentenceCn = model.getTitle_CN();
+		String sentenceEn = model.getTitle_EN();
+		int level = model.getLevel();
 
 		holder.txt_sentence_cn.setText("" + sentenceCn);
 		holder.txt_sentence_en.setText("" + sentenceEn);
-		holder.iv_tag.setImageResource(resources.getIdentifier(imageName,
-				"drawable", context.getPackageName()));
-
-		// if (selectPosition == position) {// 选中
-		// holder.lin_content.setBackground(resources
-		// .getDrawable(R.drawable.bg_blue));
-		// holder.txt_word_name.setTextColor(colorWhite);
-		// holder.iv_tag.setImageDrawable(resources
-		// .getDrawable(R.drawable.word_model1_sel));
-		// } else {// 未选中
-		// holder.lin_content.setBackground(resources
-		// .getDrawable(R.drawable.bg_white1));
-		// holder.txt_word_name.setTextColor(colorBlack);
-		// holder.iv_tag.setImageDrawable(resources
-		// .getDrawable(R.drawable.word_model1_unsel));
-		// }
+		holder.iv_tag.setImageDrawable(resources
+				.getDrawable(R.drawable.ls_catt_16));
+		if (level == 1) {
+			holder.img_level.setImageDrawable(resources
+					.getDrawable(R.drawable.ls_diff_img_0));
+		} else if (level == 2) {
+			holder.img_level.setImageDrawable(resources
+					.getDrawable(R.drawable.ls_diff_img_1));
+		} else if (level == 3) {
+			holder.img_level.setImageDrawable(resources
+					.getDrawable(R.drawable.ls_diff_img_2));
+		} else {
+			holder.img_level.setImageDrawable(resources
+					.getDrawable(R.drawable.ls_diff_img_0));
+		}
 
 		return convertView;
 	}

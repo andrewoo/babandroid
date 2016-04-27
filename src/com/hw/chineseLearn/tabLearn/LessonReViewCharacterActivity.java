@@ -73,9 +73,6 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	ArrayList<TbMyCharacter> tbMyCharList;
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 	private String voicePath;
-	private MediaPlayUtil mediaPlayerHelperAsset;
-	private MediaPlayUtil mediaPlayerHelperRecord;
-	private MediaPlayerHelperLoop mediaPlayerHelperLoop;
 	boolean isRecord = false;
 	String lastRecFileName = "";
 	private AudioRecorder mr;
@@ -103,12 +100,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		lastRecFileName = "babbel_record";
 		filePath = DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName
 				+ ".amr";
-		deleteRecord();
 		init();
-		if (timer == null) {
-			timer = new Timer();
-		}
-		timer.schedule(task, 0, 1000);
 	}
 
 	private void deleteRecord() {
@@ -123,81 +115,44 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 	 * 播放asset里的声音文件
 	 */
 	private void assetPlay() {
-//		if (mediaPlayerHelperAsset == null) {
-//			mediaPlayerHelperAsset = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
-//					+ voicePath);
-//		}
-//		if (loop) {
-//			mediaPlayerHelperAsset.stop();
-//		} else {
-//			mediaPlayerHelperAsset.play();
-//		}
-		MediaPlayUtil instance = MediaPlayUtil.getInstance();
-		instance.setPlayOnCompleteListener(new OnCompletionListener() {
-			
-			@Override
-			public void onCompletion(MediaPlayer mp) {
-				if(loop){
-					MediaPlayUtil.getInstance().release();
-					recordPlay();
-				}
-			}
-		});
-		 AssetManager am = getAssets();
-		 try {
-			AssetFileDescriptor afd = am.openFd(ASSETS_SOUNDS_PATH+ voicePath);
-			instance.play(afd);
+		MediaPlayUtil.getInstance().setPlayOnCompleteListener(
+				new OnCompletionListener() {
+
+					@Override
+					public void onCompletion(MediaPlayer mp) {
+						if (loop) {
+							MediaPlayUtil.getInstance().release();
+							recordPlay();
+						}
+					}
+				});
+		AssetManager am = getAssets();
+		try {
+			AssetFileDescriptor afd = am.openFd(ASSETS_SOUNDS_PATH + voicePath);
+			MediaPlayUtil.getInstance().play(afd);
 		} catch (IOException e) {
 			e.printStackTrace();
-		} ;
+		}
 	}
 
 	/**
 	 * 播放录音文件
 	 */
 	private void recordPlay() {
-//		if (mediaPlayerHelperRecord == null) {
-//			mediaPlayerHelperRecord = new MediaPlayerHelper(filePath);
-//		}
-//		mediaPlayerHelperRecord.play();
 		filePath = DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName
 				+ ".amr";
-		MediaPlayUtil instance = MediaPlayUtil.getInstance();
-		instance.setPlayOnCompleteListener(new OnCompletionListener() {
-			
-			@Override
-			public void onCompletion(MediaPlayer mp) {
-//				deleteRecord();
-				 MediaPlayUtil.getInstance().release();
-				 assetPlay();
-			}
-		});
-		instance.play(filePath);
+		MediaPlayUtil.getInstance().setPlayOnCompleteListener(
+				new OnCompletionListener() {
+
+					@Override
+					public void onCompletion(MediaPlayer mp) {
+						// deleteRecord();
+						MediaPlayUtil.getInstance().release();
+						assetPlay();
+					}
+				});
+		MediaPlayUtil.getInstance().play(filePath);
 	}
-
-	/**
-	 * 播放
-	 */
-//	private void Loop() {
-//		if (mediaPlayerHelperLoop == null) {
-//			mediaPlayerHelperLoop = new MediaPlayerHelperLoop(voicePath,
-//					filePath);
-//		}
-//		mediaPlayerHelperLoop.play();
-//	}
-
-	TimerTask task = new TimerTask() {
-		@Override
-		public void run() {
-
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					// Loop();
-				}
-			});
-		}
-	};
 
 	/**
 	 * 初始化
@@ -350,7 +305,6 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		}
 	};
 	Thread thread = null;
-	private Timer timer = null;
 
 	@SuppressLint("NewApi")
 	private void setRecoedBg() {
@@ -394,10 +348,9 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 						.getDrawable(R.drawable.recorder_animate_bg));
 				img_record.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_01));
-//				Loop();
 				recordPlay();
 				img_loop.setVisibility(View.VISIBLE);
-				
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -405,37 +358,13 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		}
 	}
 
-	/**
-	 * 
-	 */
-	public void mediaStop() {
-		if (mediaPlayerHelperAsset != null) {
-			mediaPlayerHelperAsset.stop();
-		}
-		if (mediaPlayerHelperRecord != null) {
-			mediaPlayerHelperRecord.stop();
-		}
-
-	}
-
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		mediaStop();
-		mediaPlayerHelperAsset = null;
-		mediaPlayerHelperRecord = null;
-		if (thread != null) {
-			thread = null;
-		}
-		if (timer != null) {
-			timer.cancel();
-			timer = null;
-		}
-		if (task != null) {
-			task.cancel();
-			task = null;
-		}
+		MediaPlayUtil.getInstance().stop();
+		MediaPlayUtil.getInstance().release();
+		deleteRecord();
 	}
 
 	/**
@@ -520,7 +449,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 						break;
 					}
 					handler.sendMessage(msg);
-					Thread.sleep(1000);// 1秒钟
+					Thread.sleep(500);// 
 
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -629,7 +558,6 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View convertView,
 				int position, long arg3) {
 			// TODO Auto-generated method stub
-
 			reviewListAdapter.setSelection(position);
 			reviewListAdapter.notifyDataSetChanged();
 			setPartAnswer(position);
@@ -682,7 +610,9 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 				int lgTableId = model.getCharId();
 				String dirCode = model.getDirCode();
 				voicePath = "c-" + lgTableId + "-" + dirCode + ".mp3";
+				deleteRecord();
 				assetPlay();
+				img_loop.setVisibility(View.GONE);
 			}
 
 		} else {

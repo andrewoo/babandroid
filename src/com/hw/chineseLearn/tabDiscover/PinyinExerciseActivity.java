@@ -1,6 +1,7 @@
 package com.hw.chineseLearn.tabDiscover;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,15 +13,22 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -32,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
+import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbFileDownload;
 import com.hw.chineseLearn.db.DatabaseHelper;
@@ -44,16 +53,19 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.util.tool.AudioRecorder;
 import com.util.tool.FileTools;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.Utility;
+import com.util.tool.AudioRecorder.VMChangeListener;
 import com.util.weight.CHScrollView;
 
 /**
  * 
  * 带滑动表头与固定列的ListView
  */
-public class PinyinExerciseActivity extends Activity implements OnCheckedChangeListener {
+public class PinyinExerciseActivity extends Activity implements
+		OnCheckedChangeListener {
 	private ListView mListView;
 	// 方便测试，直接写的public
 	public HorizontalScrollView mTouchView;
@@ -80,21 +92,31 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 	private int height;
 	private int popWidth;
 	private int popHeight;
+	private int geHeight;
 	int tone = 0;
 
-	int soundIndex = 0;// 默认播放的索引
+	// int soundIndex = 0;// 默认播放的索引
+	boolean isRecord = false;// 是否正在录音
+
+	private String lastRecFileName = "kitrecoder";
+	private String filePath = DatabaseHelper.CACHE_DIR_SOUND + "/"
+			+ lastRecFileName + ".amr";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.scroll);
-		// https://d2kox946o1unj2.cloudfront.net/cssc_%d.zip
-		downLoad(1);
 		
-		String jsonFromAssets = Utility.getJsonFromAssets(PinyinExerciseActivity.this,
-				"pinyin.json");
-		String no_exist = Utility.getJsonFromAssets(PinyinExerciseActivity.this,
-				"no_exist_tone.json");
+		CustomApplication.app.addActivity(this);
+		http = new HttpUtils();
+		for (int i = 1; i <= 6; i++) {
+			downLoad(i);
+		}
+
+		String jsonFromAssets = Utility.getJsonFromAssets(
+				PinyinExerciseActivity.this, "pinyin.json");
+		String no_exist = Utility.getJsonFromAssets(
+				PinyinExerciseActivity.this, "no_exist_tone.json");
 		try {
 			jsonObj = new JSONObject(jsonFromAssets);
 			no_existObject = new JSONObject(no_exist);
@@ -107,6 +129,8 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 		height = (int) (Utility.getScreenWidthHeight(this) * ((float) 1 / 10));
 		popWidth = (int) (Utility.getScreenWidth(this) * ((float) 7 / 8));
 		popHeight = (int) (Utility.getScreenWidthHeight(this) * ((float) 2 / 5));
+		geHeight = (int) (Utility.getScreenWidthHeight(this) * ((float)  7/ 8));
+		
 		initArrayToList();
 		initFirstRow();
 		initData();
@@ -182,7 +206,8 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 						}
 					}
 				}
-				String optString = jsonObj.optString(firstColoum[i]+ firstRow[j]);
+				String optString = jsonObj.optString(firstColoum[i]
+						+ firstRow[j]);
 				if (!"".equals(optString)) {
 					if (tone == 0) {
 						List<Integer> checkToneList = new ArrayList<Integer>();
@@ -244,9 +269,20 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 	private void initViews() {
 		List<Map<String, String>> datas = new ArrayList<Map<String, String>>();
 		Map<String, String> data = null;
+		//设置表格的宽和高
+		
+//		LinearLayout ll_root_pinchar = (LinearLayout) findViewById(R.id.ll_root_pinchar);
+//		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(popWidth,geHeight);
+//		ll_root_pinchar.setLayoutParams(params);
+		
 		rg_shengdiao = (RadioGroup) findViewById(R.id.rg_shengdiao);
 		rg_shengdiao.setOnCheckedChangeListener(this);
 		mListView = (ListView) findViewById(R.id.scroll_list);
+		
+		setTitle(View.GONE, View.VISIBLE,
+				R.drawable.back_btn, "Pinyin Exercise",
+				View.GONE, View.GONE, 0);
+		
 		myAdapter = new MyAdapter();
 		mListView.setAdapter(myAdapter);
 
@@ -304,8 +340,9 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 				mSuList = getColoumList((Integer) ((TextView) v).getTag());
 			}
 
-			Toast.makeText(PinyinExerciseActivity.this, ((TextView) v).getTag() + "",
-					Toast.LENGTH_SHORT).show();
+			// Toast.makeText(PinyinExerciseActivity.this, ((TextView)
+			// v).getTag() + "",
+			// Toast.LENGTH_SHORT).show();
 
 			if (!"".equals(((TextView) v).getText())) {// 不是""的时候才弹出对话框
 				showDialogAndPlay();
@@ -334,7 +371,7 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 		return suList;
 	}
 
-	int currentIndex;
+	int currentIndex = 0;
 
 	/**
 	 * 得到所有的列集合
@@ -351,10 +388,10 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 			if (list.get(row) instanceof PinyinModel) {
 				if (!TextUtils.isEmpty(((PinyinModel) list.get(row))
 						.getPinyin())) {
-					if (row == i) {
+					suList.add(list.get(row));
+					if (coloum == i) {
 						currentIndex = suList.size() - 1;
 					}
-					suList.add(list.get(row));
 				}
 			}
 		}
@@ -393,8 +430,8 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 
 			if (convertView == null) {
 				vh = new ViewHolder();
-				convertView = LayoutInflater.from(PinyinExerciseActivity.this).inflate(
-						R.layout.item, null);
+				convertView = LayoutInflater.from(PinyinExerciseActivity.this)
+						.inflate(R.layout.item, null);
 				vh.tv = (TextView) convertView.findViewById(R.id.item_title);
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 						width, height);
@@ -465,7 +502,7 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 
 	}
 
-	int currentPosition = -1;
+	int currentPosition = 0;
 
 	class ViewHolder {
 		public LinearLayout ll;
@@ -557,7 +594,7 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 				} else {
 					iv_pinchar_left
 							.setBackgroundResource(R.drawable.pinyin_last0);
-					iv_pinchar_right.setEnabled(false);
+					iv_pinchar_left.setEnabled(false);
 				}
 				playPre();
 			}
@@ -585,13 +622,15 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 			}
 		});
 
+		// 点击后根据回调改变图片颜色 并且开始录音 录音结束后 播放当前音频
 		iv_record.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				isRecord = !isRecord;
+				setRecoedBg((ImageView) v);
 			}
 		});
-		
+
 		play();
 
 		mModifyDialog.show();
@@ -599,52 +638,114 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 		mModifyDialog.setContentView(view);
 	}
 
-	private void play() {
-		if(mSuList.get(currentIndex) instanceof PinyinModel){
-			PinyinModel pinyinModel=(PinyinModel) mSuList.get(currentIndex);
+	private AudioRecorder mr;
+
+	public void setRecoedBg(final ImageView imageView) {
+
+		if (isRecord) {
+			imageView.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.recorder_animate_bg_click));
+			// flag = "talk";
+			try {
+				String fileName = lastRecFileName;
+				mr = new AudioRecorder(fileName);
+				mr.start();
+				// 音量变化调节
+				mr.setVMChangeListener(new VMChangeListener() {
+					@Override
+					public int onVMChanged(int value) {
+
+						int volume = mr.recorder.getMaxAmplitude();
+						int vmValue = 15 * volume / 32768;
+						Message msg = Message.obtain();
+						msg.what = vmValue;
+						msg.obj = imageView;
+						hand.sendMessage(msg);
+						return 0;
+					}
+				});
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		} else {
+			// flag = "listen";
+			if (mr != null) {
+				mr.reset();
+				mr = null;
+			}
+			playRecoder();// 播放录制的声音
+			imageView.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.recorder_animate_bg));
+			imageView.setImageDrawable(getResources().getDrawable(
+					R.drawable.recorder_animate_01));
+		}
+
+	}
+
+	private void playRecoder() {
+		MediaPlayUtil instance = MediaPlayUtil.getInstance();
+		instance.setPlayOnCompleteListener(new OnCompletionListener() {
+
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+					MediaPlayUtil.getInstance().release();
+					play();
+			}
+		});
+		instance.play(filePath);
+	}
+
+	private void play() { 
+		if (mSuList.get(currentIndex) instanceof PinyinModel) {
+			PinyinModel pinyinModel = (PinyinModel) mSuList.get(currentIndex);
 			String voicePath = pinyinModel.getVoicePath();
-			MediaPlayUtil.getInstance().play(DatabaseHelperMy.SOUND_PATH+"/pinchar/"+voicePath);
-		}else{
+			MediaPlayUtil.getInstance().play(
+					DatabaseHelperMy.SOUND_PATH + "/pinchar/" + voicePath);
+		} else {
 			PinyinListModel model = (PinyinListModel) mSuList.get(currentIndex);
 			String voicePath = model.pinyinList.get(0).getVoicePath();
-			MediaPlayUtil.getInstance().play(DatabaseHelperMy.SOUND_PATH+"/pinchar/"+voicePath);
+			MediaPlayUtil.getInstance().play(
+					DatabaseHelperMy.SOUND_PATH + "/pinchar/" + voicePath);
 		}
 	}
 
 	public void playNext() {
-		if (soundIndex < mSuList.size()-1) {
-			soundIndex++;
-			if(mSuList.get(currentIndex) instanceof PinyinListModel){
-				PinyinListModel model = (PinyinListModel) mSuList.get(currentIndex);
-				MediaPlayUtil.getInstance().play(DatabaseHelperMy.SOUND_PATH+"/pinchar/"+model.pinyinList.get(0).getVoicePath());
-			}else{
-				PinyinModel model = (PinyinModel) mSuList.get(currentIndex);
-				MediaPlayUtil.getInstance().play(DatabaseHelperMy.SOUND_PATH+"/pinchar/"+model.getVoicePath());
-			}
-			
-		}
+		// if (soundIndex < mSuList.size()-1) {
+		// soundIndex++;
+		// if(mSuList.get(currentIndex) instanceof PinyinListModel){
+		// PinyinListModel model = (PinyinListModel) mSuList.get(currentIndex);
+		// MediaPlayUtil.getInstance().play(DatabaseHelperMy.SOUND_PATH+"/pinchar/"+model.pinyinList.get(0).getVoicePath());
+		// }else{
+		// PinyinModel model = (PinyinModel) mSuList.get(currentIndex);
+		// MediaPlayUtil.getInstance().play(DatabaseHelperMy.SOUND_PATH+"/pinchar/"+model.getVoicePath());
+		// }
+		//
+		// }
+		play();
 	}
-	
+
 	public void playPre() {
-		if (soundIndex > 0) {
-			soundIndex--;
-			if(mSuList.get(currentIndex) instanceof PinyinListModel){
-				PinyinListModel model = (PinyinListModel) mSuList.get(currentIndex);
-				MediaPlayUtil.getInstance().play(DatabaseHelperMy.SOUND_PATH+"/pinchar/"+model.pinyinList.get(0).getVoicePath());
-			}else{
-				PinyinModel model = (PinyinModel) mSuList.get(currentIndex);
-				MediaPlayUtil.getInstance().play(DatabaseHelperMy.SOUND_PATH+"/pinchar/"+model.getVoicePath());
-			}
-		}
+		// if (soundIndex > 0) {
+		// soundIndex--;
+		// if(mSuList.get(currentIndex) instanceof PinyinListModel){
+		// PinyinListModel model = (PinyinListModel) mSuList.get(currentIndex);
+		// MediaPlayUtil.getInstance().play(DatabaseHelperMy.SOUND_PATH+"/pinchar/"+model.pinyinList.get(0).getVoicePath());
+		// }else{
+		// PinyinModel model = (PinyinModel) mSuList.get(currentIndex);
+		// MediaPlayUtil.getInstance().play(DatabaseHelperMy.SOUND_PATH+"/pinchar/"+model.getVoicePath());
+		// }
+		// }
+		play();
 	}
 
 	private void downLoad(final int index) {
 
-		HttpUtils http = new HttpUtils();
-		final String urlName="https://d2kox946o1unj2.cloudfront.net/CPY_Part"+index+ ".zip";
-		final String filePath=DatabaseHelperMy.CACHE_DIR_DOWNLOAD+"/CPY_Part"+index+ ".zip";
-		HttpHandler handler = http.download(
-				urlName,filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
+		final String urlName = "https://d2kox946o1unj2.cloudfront.net/CPY_Part"
+				+ index + ".zip";
+		final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD
+				+ "/CPY_Part" + index + ".zip";
+		HttpHandler handler = http.download(urlName, filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
 				true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 				new RequestCallBack<File>() {
 					@Override
@@ -653,38 +754,38 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 					}
 
 					@Override
-					public void onLoading(long total, long current,boolean isUploading) {
-						
-						System.out.println("current"+downIndex+"--"+(float)current/total);
+					public void onLoading(long total, long current,
+							boolean isUploading) {
+
+						System.out.println("current" + index + "--"
+								+ (float) current / total);
 					}
 
 					@Override
 					public void onSuccess(ResponseInfo<File> responseInfo) {
-						//下载成功后 存表 解压
-						TbFileDownload fileDown=new TbFileDownload();
+						// 下载成功后 存表 解压
+						TbFileDownload fileDown = new TbFileDownload();
 						fileDown.setType(2);
 						fileDown.setDlStatus(1);
-						fileDown.setFileName("CPY_Part"+index+ ".zip");
+						fileDown.setFileName("CPY_Part" + index + ".zip");
 						fileDown.setFileURL(urlName);
 						try {
-							MyDao.getDaoMy(TbFileDownload.class).createOrUpdate(fileDown);
+							MyDao.getDaoMy(TbFileDownload.class)
+									.createOrUpdate(fileDown);
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						System.out.println("onSuccess--"+downIndex);
-						//一个一个下载
-						if(downIndex<6){
-							downIndex++;
-							downLoad(downIndex);
-						}
-						//下载完后解压到音频目录
-			        	new Thread(){
-			        		public void run() {
-			        			FileTools.unZip(filePath, DatabaseHelperMy.SOUND_PATH+"/pinchar/");
-			        		};
-			        	}.start();
-						
+						System.out.println("onSuccess--" + downIndex);
+						// 下载完后解压到音频目录
+						new Thread() {
+							public void run() {
+								FileTools.unZip(filePath,
+										DatabaseHelperMy.SOUND_PATH
+												+ "/pinchar/");
+							};
+						}.start();
+
 					}
 
 					@Override
@@ -694,5 +795,140 @@ public class PinyinExerciseActivity extends Activity implements OnCheckedChangeL
 				});
 
 	};
-	int downIndex=1;
+
+	int downIndex = 1;
+	private HttpUtils http;
+
+	Handler hand = new Handler() {
+		public void handleMessage(Message msg) {
+			Resources resources = PinyinExerciseActivity.this.getResources();
+			ImageView imageView = (ImageView) msg.obj;
+			switch (msg.what) {
+			case 0:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_01));
+				break;
+
+			case 1:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_01));
+				break;
+
+			case 2:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_02));
+				break;
+
+			case 3:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_03));
+				break;
+
+			case 4:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_04));
+				break;
+
+			case 5:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_05));
+				break;
+
+			case 6:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_06));
+				break;
+
+			case 7:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_07));
+				break;
+			case 8:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_08));
+				break;
+			case 9:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_09));
+				break;
+			case 10:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_10));
+				break;
+			case 11:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_11));
+				break;
+			case 12:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_12));
+				break;
+			case 13:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_13));
+				break;
+			case 14:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_14));
+				break;
+			case 15:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_15));
+				break;
+
+			default:
+				imageView.setImageDrawable(resources
+						.getDrawable(R.drawable.recorder_animate_01));
+			}
+
+		};
+	};
+	
+	public void setTitle(int textLeft, int imgLeft, int imgLeftDrawable,
+			String title, int textRight, int imgRight, int imgRightDrawable) {
+
+		View view_title = (View) this.findViewById(R.id.view_title);
+		view_title.setBackgroundColor(getResources().getColor(R.color.pinyinchart));
+		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
+		tv_title.setTextColor(Color.WHITE);
+		tv_title.setText(title);
+
+		TextView tv_title_left = (TextView) view_title
+				.findViewById(R.id.tv_title_left);
+		tv_title_left.setVisibility(textLeft);
+
+		ImageView iv_title_left = (ImageView) view_title
+				.findViewById(R.id.iv_title_left);
+		iv_title_left.setVisibility(imgLeft);
+		iv_title_left.setOnClickListener(onClickListener);
+		iv_title_left.setImageResource(imgLeftDrawable);
+
+		TextView tv_title_right = (TextView) view_title
+				.findViewById(R.id.tv_title_right);
+		tv_title_right.setVisibility(textRight);
+//		tv_title_right.setOnClickListener(onClickListener);
+
+		ImageView iv_title_right = (ImageView) view_title
+				.findViewById(R.id.iv_title_right);
+		iv_title_right.setVisibility(imgRight);
+		iv_title_right.setImageResource(imgRightDrawable);
+
+	}
+	OnClickListener onClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			switch (arg0.getId()) {
+
+			case R.id.iv_title_left:// 返回
+
+				CustomApplication.app.finishActivity(PinyinExerciseActivity.this);
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
 }

@@ -1,10 +1,11 @@
 package com.hw.chineseLearn.tabDiscover;
 
+import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
-
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,12 +16,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.google.gson.Gson;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.FluentAddLessonAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbFileDownload;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
+import com.hw.chineseLearn.model.FluentListModel;
+import com.hw.chineseLearn.model.FluentModel;
+import com.hw.chineseLearn.model.FlunetAudioContentBaseModel;
+import com.hw.chineseLearn.model.FlunetListBaseModel;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.HttpHandler;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
+import com.util.tool.FileTools;
 import com.util.weight.PullToRefreshView;
 import com.util.weight.PullToRefreshView.OnFooterRefreshListener;
 import com.util.weight.PullToRefreshView.OnRefreshTouchListener;
@@ -38,7 +52,6 @@ public class FluentAddLessonActivity extends BaseActivity {
 	View contentView;
 	ListView lv_add_lesson;
 	FluentAddLessonAdapter adapter;
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
 	// 列表-上下拉刷新
 	private PullToRefreshView pullToRefreshView;
 	private int colorWhite = 0;
@@ -94,23 +107,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 		pullToRefreshView = (PullToRefreshView) contentView
 				.findViewById(R.id.pullToRefreshView);
 		lv_add_lesson = (ListView) contentView.findViewById(R.id.lv_add_lesson);
-		lv_add_lesson.setOnItemClickListener(onItemclickListener);
-
-		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
-		modelBase1.setIconResSuffix("ls_catt_16");
-		modelBase1.setUnitName("你好！");
-		modelBase1.setDescription("Hello!");
-		listBase.add(modelBase1);
-
-		LearnUnitBaseModel modelBase2 = new LearnUnitBaseModel();
-		modelBase2.setIconResSuffix("ls_catt_8");
-		modelBase2.setUnitName("请问邮局在哪儿？");
-		modelBase2.setDescription("Where is the post office?");
-		listBase.add(modelBase2);
-
-		adapter = new FluentAddLessonAdapter(context, listBase);
-		lv_add_lesson.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
+		// lv_add_lesson.setOnItemClickListener(onItemclickListener);
 
 		pullToRefreshView
 				.setOnFooterRefreshListener(new OnFooterRefreshListener() {
@@ -135,6 +132,10 @@ public class FluentAddLessonActivity extends BaseActivity {
 
 					}
 				});
+		getDataFromServer("" + (selectIndex + 1));
+		adapter = new FluentAddLessonAdapter(context, datas);
+		lv_add_lesson.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
 
 	}
 
@@ -151,7 +152,6 @@ public class FluentAddLessonActivity extends BaseActivity {
 				mBtnList[i].setSelected(false);
 			}
 		}
-
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {
@@ -169,17 +169,20 @@ public class FluentAddLessonActivity extends BaseActivity {
 
 			case R.id.lin_level1:
 				selectIndex = 0;
-				setLeftBtnColor(0);
+				setLeftBtnColor(selectIndex);
+				getDataFromServer("" + (selectIndex + 1));
 				break;
 
 			case R.id.lin_level2:
 				selectIndex = 1;
-				setLeftBtnColor(1);
+				setLeftBtnColor(selectIndex);
+				getDataFromServer("" + (selectIndex + 1));
 				break;
 
 			case R.id.lin_level3:
 				selectIndex = 2;
-				setLeftBtnColor(2);
+				setLeftBtnColor(selectIndex);
+				getDataFromServer("" + (selectIndex + 1));
 				break;
 
 			default:
@@ -194,42 +197,81 @@ public class FluentAddLessonActivity extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View convertView,
 				int arg2, long arg3) {
 			// TODO Auto-generated method stub
-			// convertView = adapter.mapView.get(arg2);
-			// ImageView img_add_lesson = (ImageView) convertView
-			// .findViewById(R.id.img_add_lesson);
-			// final RoundProgressBar progress_download = (RoundProgressBar)
-			// convertView
-			// .findViewById(R.id.progress_download);
-			// img_add_lesson.setOnClickListener(new View.OnClickListener() {
-			//
-			// @Override
-			// public void onClick(View arg0) {
-			// // TODO Auto-generated method stub
-			// // img_add_lesson.setVisibility(View.GONE);
-			// progress_download.setVisibility(View.VISIBLE);
-			// new Thread(new Runnable() {
-			// private int progress = 0;
-			//
-			// @Override
-			// public void run() {
-			// while (progress <= 100) {
-			// progress += 3;
-			// System.out.println(progress);
-			// progress_download.setProgress(progress);
-			// try {
-			// Thread.sleep(100);
-			// } catch (InterruptedException e) {
-			// e.printStackTrace();
-			// }
-			// }
-			//
-			// }
-			// }).start();
-			// }
-			// });
 
-			startActivity(new Intent(FluentAddLessonActivity.this,
-					FluentDetailActivity.class));
+			boolean isDownloaded = false;
+			String fileName = "";
+			String dirId = "";
+			FlunetListBaseModel listBaseModel = datas.get(arg2);
+
+			if (listBaseModel != null) {
+				dirId = listBaseModel.getDirId();
+				FlunetAudioContentBaseModel audioContent = listBaseModel
+						.getAudioContent();
+				if (audioContent != null) {
+					fileName = audioContent.getFileName();// audio fileName
+				}
+			}
+
+			if (!"".equals(fileName) && fileName != null) {
+				try {
+					TbFileDownload tbFileDownload = (TbFileDownload) MyDao
+							.getDaoMy(TbFileDownload.class).queryBuilder()
+							.where().eq("fileName", fileName).queryForFirst();
+					if (tbFileDownload != null) {// 下载过了
+						isDownloaded = true;
+					} else {// 没下载过
+						isDownloaded = false;
+						// int cwsId = Integer.parseInt(dirId);
+						// tbFileDownload.setCwsId(cwsId);
+						// tbFileDownload.setType(3);
+						// tbFileDownload.setFileName(fileName);
+					}
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			if (!isDownloaded) {
+				downLoadAudioFiles(listBaseModel);
+			}
+
+			convertView = adapter.mapView.get(arg2);
+			ImageView img_add_lesson = (ImageView) convertView
+					.findViewById(R.id.img_add_lesson);
+			final RoundProgressBar progress_download = (RoundProgressBar) convertView
+					.findViewById(R.id.progress_download);
+			img_add_lesson.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					// img_add_lesson.setVisibility(View.GONE);
+
+					new Thread(new Runnable() {
+						private int progress = 0;
+
+						@Override
+						public void run() {
+							while (progress <= 100) {
+								progress += 3;
+								System.out.println(progress);
+								progress_download.setProgress(progress);
+								try {
+									Thread.sleep(100);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+
+						}
+					}).start();
+				}
+			});
+
+			// startActivity(new Intent(FluentAddLessonActivity.this,
+			// FluentDetailActivity.class));
 
 		}
 	};
@@ -278,6 +320,167 @@ public class FluentAddLessonActivity extends BaseActivity {
 				.findViewById(R.id.iv_title_right);
 		iv_title_right.setVisibility(imgRight);
 		iv_title_right.setImageResource(imgRightDrawable);
+
+	}
+
+	ArrayList<FlunetListBaseModel> datas = new ArrayList<FlunetListBaseModel>();
+
+	/**
+	 * @param diffLevel难度级别
+	 */
+	private void getDataFromServer(String diffLevel) {
+
+		HttpUtils http = new HttpUtils();
+		http.send(HttpRequest.HttpMethod.GET,
+				"http://58.67.154.138:8088/babbel-api-app/v1/dialogues?diffLevel="
+						+ diffLevel, new RequestCallBack<String>() {
+
+					Gson gson = new Gson();
+
+					@Override
+					public void onLoading(long total, long current,
+							boolean isUploading) {
+						// Log.d(TAG, "" + current + "/" + total);
+					}
+
+					@Override
+					public void onSuccess(ResponseInfo<String> responseInfo) {
+						// Log.d(TAG, "" + responseInfo.result);
+
+						FluentModel dataObject = gson.fromJson(
+								responseInfo.result, FluentModel.class);
+						if (dataObject == null) {
+							Log.e(TAG, "请求失败");
+						} else {
+							boolean isScuess = dataObject.isSuccess();
+							Log.d(TAG, "isScuess:" + isScuess);
+							if (isScuess) {
+
+							}
+							FluentListModel fluentListModel = dataObject
+									.getResults();
+							if (fluentListModel != null) {
+								datas = fluentListModel.getList();
+								if (datas != null) {
+									Log.d(TAG, "" + datas);
+									adapter.list = datas;
+									adapter.notifyDataSetChanged();
+								}
+							} else {
+								Log.e(TAG, "fluentListModel==null");
+							}
+						}
+					}
+
+					@Override
+					public void onStart() {
+					}
+
+					@Override
+					public void onFailure(HttpException error, String msg) {
+					}
+				});
+	}
+
+	String dlFileName = "";
+	String dlDirId = "";
+
+	private void downLoadAudioFiles(final FlunetListBaseModel listBaseModel) {
+
+		if (listBaseModel != null) {
+			dlDirId = listBaseModel.getDirId();
+			FlunetAudioContentBaseModel audioContent = listBaseModel
+					.getAudioContent();
+			if (audioContent != null) {
+				dlFileName = audioContent.getFileName();// audio fileName
+			}
+		}
+
+		HttpUtils http = new HttpUtils();
+		final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/"
+				+ dlFileName;
+		final String fileUrl = "http://58.67.154.138:8088/" + dlFileName;
+		HttpHandler handler = http.download(fileUrl, filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
+				true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
+				new RequestCallBack<File>() {
+					TbFileDownload tbFileDownload;
+
+					@Override
+					public void onStart() {
+
+					}
+
+					@Override
+					public void onLoading(long total, long current,
+							boolean isUploading) {
+						// 在数据库中插入记录
+						// 先查询 有了就更新 没有了再new
+						try {
+							if (tbFileDownload != null) {// 如果数据库存在
+								tbFileDownload = (TbFileDownload) MyDao
+										.getDaoMy(TbFileDownload.class)
+										.queryBuilder().where()
+										.eq("fileName", dlFileName)
+										.queryForFirst();
+								tbFileDownload.setCurFileContentSize(current);
+								tbFileDownload.setFileContentSize(total);
+								MyDao.getDaoMy(TbFileDownload.class)
+										.createOrUpdate(tbFileDownload);
+							} else {// 如果数据库不存在 就插入
+								tbFileDownload = new TbFileDownload();
+								tbFileDownload.setCwsId(Integer
+										.parseInt(dlDirId));
+								tbFileDownload.setCurFileContentSize(current);
+								tbFileDownload.setFileContentSize(total);// cssc_"+(position+1)+".zip
+								tbFileDownload.setFileName(dlFileName);
+								tbFileDownload.setFilePath(filePath);
+								tbFileDownload.setFileURL(fileUrl);
+								tbFileDownload.setType(1);
+								tbFileDownload.setDlStatus(0);
+								MyDao.getDaoMy(TbFileDownload.class)
+										.createOrUpdate(tbFileDownload);
+							}
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+						// 把下载的值通过集合传过去
+						// modelList.get(position).setCount(
+						// tbFileDownload.getFileContentSize());
+						// modelList.get(position).setCurrentSize(
+						// tbFileDownload.getCurFileContentSize());
+						adapter.notifyDataSetChanged();
+					}
+
+					@Override
+					public void onSuccess(ResponseInfo<File> responseInfo) {
+						try {
+							tbFileDownload.setDlStatus(1);
+							MyDao.getDaoMy(TbFileDownload.class)
+									.createOrUpdate(tbFileDownload);
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+						// 下载完后更变state和图片颜色
+						// modelList.get(position).setState(FINISH);
+						// String imageName = modelList.get(position)
+						// .getImageName() + "_hit";
+						// modelList.get(position).setImageName(imageName);
+						adapter.notifyDataSetChanged();
+						// 下载完后解压到音频目录
+						new Thread() {
+							public void run() {
+								FileTools.unZip(filePath,
+										DatabaseHelperMy.SOUND_PATH);
+							};
+						}.start();
+					}
+
+					@Override
+					public void onFailure(HttpException error, String msg) {
+						// modelList.get(position).setState(0);
+						adapter.notifyDataSetChanged();
+					}
+				});
 
 	}
 }

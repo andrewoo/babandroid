@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -25,8 +25,8 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.hw.chineseLearn.dao.bean.Unit;
-import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus;
 import com.util.tool.DateUtil;
+import com.util.tool.UiUtil;
 import com.util.weight.RoundProgressBar;
 
 /**
@@ -43,13 +43,10 @@ public class LessonResultActivity extends BaseActivity {
 	private int height;
 	View contentView;
 
-	private RoundProgressBar mRoundProgressBar;
+	private RoundProgressBar mRoundProgressBar, roundProgressBar_accuracy;
 	private TextView tv_score;
-	private RelativeLayout rel_1_2_1;
 	private TextView tv_right_count;
-	private RelativeLayout rel_1_2_2;
 	private TextView tv_wrong_count;
-
 	private TextView tv_time_count;
 	/**
 	 * 正确率
@@ -70,6 +67,8 @@ public class LessonResultActivity extends BaseActivity {
 	int characterCount = 0, wordsCount = 0, sentenceCount = 0;
 	int rightCount = 0, wrongCount = 0;
 	private int lessonId;// 确定当前lesson
+	int screenWidth = 0;
+	int screenHeigth = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +118,10 @@ public class LessonResultActivity extends BaseActivity {
 		setContentView(contentView);
 		unLockLesson();
 		CustomApplication.app.addActivity(this);
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 5;
-		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 3;
+		screenWidth = CustomApplication.app.displayMetrics.widthPixels;
+		screenHeigth = CustomApplication.app.displayMetrics.heightPixels;
+		width = screenWidth / 10 * 5;
+		height = width;
 		resources = context.getResources();
 		init();
 	}
@@ -200,26 +201,24 @@ public class LessonResultActivity extends BaseActivity {
 	 */
 	@SuppressWarnings("unchecked")
 	public void init() {
-		LayoutParams lp = new LayoutParams(width, height);
 
 		if ("".equals(loseAllPanders)) {
 
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width,
+					height);
 			mRoundProgressBar = (RoundProgressBar) findViewById(R.id.roundProgressBar);
 			mRoundProgressBar.setLayoutParams(lp);
 			mRoundProgressBar.setMax(progressCount);
 			progressAdd = progressCount / 100;
 			mRoundProgressBar.setAccurally(progressAdd);
+			mRoundProgressBar.isDrawText(true);
+			mRoundProgressBar.bringToFront();
 			tv_score = (TextView) contentView.findViewById(R.id.tv_score);
 			tv_score.setText("" + score);
 
-			rel_1_2_1 = (RelativeLayout) contentView
-					.findViewById(R.id.rel_1_2_right);
-			rel_1_2_1.setOnClickListener(onClickListener);
 			tv_right_count = (TextView) contentView
 					.findViewById(R.id.tv_right_count);
-			rel_1_2_2 = (RelativeLayout) contentView
-					.findViewById(R.id.rel_1_2_wrong);
-			rel_1_2_2.setOnClickListener(onClickListener);
+
 			tv_wrong_count = (TextView) contentView
 					.findViewById(R.id.tv_wrong_count);
 
@@ -231,6 +230,21 @@ public class LessonResultActivity extends BaseActivity {
 			tv_accuracy_percent = (TextView) contentView
 					.findViewById(R.id.tv_accuracy_percent);
 
+			ImageView img_right = (ImageView) contentView
+					.findViewById(R.id.img_right);
+			ImageView img_wrong = (ImageView) contentView
+					.findViewById(R.id.img_wrong);
+
+			roundProgressBar_accuracy = (RoundProgressBar) findViewById(R.id.roundProgressBar_accuracy);
+			roundProgressBar_accuracy.setMax(progressCount);
+			roundProgressBar_accuracy.setAccurally(progressAdd);
+			roundProgressBar_accuracy.isDrawText(false);
+			LayoutParams layoutParams = new LayoutParams(screenWidth * 1 / 5,
+					screenWidth * 1 / 5);
+			img_right.setLayoutParams(layoutParams);
+			img_wrong.setLayoutParams(layoutParams);
+			roundProgressBar_accuracy.setLayoutParams(layoutParams);
+
 			new Thread(new Runnable() {
 
 				@Override
@@ -238,6 +252,7 @@ public class LessonResultActivity extends BaseActivity {
 					while (progress <= progressCount) {
 						progress += progressAdd * 2;
 						mRoundProgressBar.setProgress(progress);
+						roundProgressBar_accuracy.setProgress(progress);
 						try {
 							Thread.sleep(50);
 						} catch (InterruptedException e) {
@@ -292,13 +307,6 @@ public class LessonResultActivity extends BaseActivity {
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
 			switch (arg0.getId()) {
-
-			case R.id.rel_1_2_right://
-
-				break;
-			case R.id.rel_1_2_wrong://
-
-				break;
 
 			case R.id.btn_redo:
 				setResult(0);

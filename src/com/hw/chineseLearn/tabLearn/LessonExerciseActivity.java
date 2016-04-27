@@ -739,6 +739,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	 */
 	@SuppressWarnings("unchecked")
 	private void regexToView(LessonRepeatRegex lessonRepeatRegex) {
+		isCheckBtnActived(false);
 		this.lessonRepeatRegex = lessonRepeatRegex;
 		int lgTable = lessonRepeatRegex.getLgTable();
 		if (lgTable == 0) {// word

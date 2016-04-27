@@ -58,7 +58,7 @@ public class MediaPlayUtil {
 				
 				@Override
 				public void onPrepared(MediaPlayer mp) {
-					mMediaPlayer.start();
+					 mp.start();
 				}
 			});
 		
