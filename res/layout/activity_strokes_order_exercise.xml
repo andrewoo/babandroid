@@ -11,26 +11,20 @@
         android:id="@+id/view_title"
         layout="@layout/main_title_view" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/min_grey" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
 
         <ImageView
             android:id="@+id/img_play"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/recorder_animate_bg"
-            android:src="@drawable/recorder_animate_01" />
+            android:background="@drawable/strokes_order_play_sound_noclick" />
 
         <TextView
             android:id="@+id/tv_english"
@@ -48,8 +42,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/recorder_animate_bg"
-            android:src="@drawable/loop_play" />
+            android:background="@drawable/strokes_order_info_noclick" />
     </LinearLayout>
 
     <LinearLayout
@@ -57,9 +50,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:background="@drawable/mizige"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:visibility="visible" >
 
         <com.util.tool.PathView
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -67,43 +62,204 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:visibility="visible"
             app:pathWidth="1dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" >
 
-        <Button
-            android:id="@+id/btn_play"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/bg_circle_blue"
-            android:text="Play" />
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btn_play"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/strokes_order_replay_onclick" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_write"
             android:layout_width="80dp"
-            android:layout_height="40dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="@drawable/bg_circle_blue"
-            android:text="Write" />
+            android:background="@drawable/strokes_order_write_noclick" />
 
-        <Button
-            android:id="@+id/btn_visible"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btn_visible"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/strokes_order_dismiss_bg_onclick" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_is_gorget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp" >
+
+        <TextView
+            android:id="@+id/btn_remember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg_btn_remembered"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_s12" />
+
+        <TextView
+            android:id="@+id/btn_forget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/bg_btn_forgot"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_s12"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_remember_level"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
+        <TextView
+            android:id="@+id/btn_remembered_perfectly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:background="@drawable/bg_circle_blue"
-            android:text="Visible" />
+            android:gravity="center"
+            android:lines="2"
+            android:text="@string/pemembered_perfectly"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/deep_grey" />
+
+        <TextView
+            android:id="@+id/btn_remembered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:lines="1"
+            android:text="Remembered"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/deep_grey" />
+
+        <TextView
+            android:id="@+id/btn_barely_remembered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:lines="2"
+            android:text="Barely Remembered"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_forgot_level"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
+        <TextView
+            android:id="@+id/btn_remembered_almost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:lines="2"
+            android:text="Almost Remembered"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/deep_grey" />
+
+        <TextView
+            android:id="@+id/btn_forgot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:lines="1"
+            android:text="Forgot"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/deep_grey" />
+
+        <TextView
+            android:id="@+id/btn_dont_know"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:lines="2"
+            android:text="Don&apos;t konw"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s12" />
     </LinearLayout>
 
 </LinearLayout>

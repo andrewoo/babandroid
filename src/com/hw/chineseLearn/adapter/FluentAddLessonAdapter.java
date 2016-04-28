@@ -83,11 +83,13 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 	int count = 1;
 	// 存放view的集合
 	public HashMap<Integer, View> mapView = new HashMap<Integer, View>();
+	ViewHolder holder = null;
 
+	@SuppressWarnings("unchecked")
 	@SuppressLint("NewApi")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		ViewHolder holder = null;
+
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = inflater.inflate(
@@ -109,68 +111,55 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 			holder.progress_download = (RoundProgressBar) convertView
 					.findViewById(R.id.progress_download);
 			holder.progress_download.setVisibility(View.GONE);
-			mapView.put(position, convertView);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+		mapView.put(position, convertView);
 		final FlunetListBaseModel model = list.get(position);
 		if (model == null) {
 			return convertView;
 		}
-
 		String sentenceCn = model.getTitleCn();
 		String sentenceEn = model.getTitleEn();
-
 		holder.txt_sentence_cn.setText("" + sentenceCn);
 		holder.txt_sentence_en.setText("" + sentenceEn);
-
 		holder.iv_tag.setImageDrawable(resources
 				.getDrawable(R.drawable.ls_catt_16));
 
-		String fileName = "";
-		String dirId = "";
-
-		dirId = model.getDirId();
-		FlunetAudioContentBaseModel audioContent = model.getAudioContent();
-		if (audioContent != null) {
-			fileName = audioContent.getFileName();// audio fileName
-		}
-
-		try {
-			Log.d(TAG, "fileName:" + fileName);
-			TbFileDownload tbFileDownload = (TbFileDownload) MyDao
-					.getDaoMy(TbFileDownload.class).queryBuilder().where()
-					.eq("fileName", fileName).queryForFirst();
-			if (tbFileDownload != null) {// 下载过了
-				int dlStatus = tbFileDownload.getDlStatus();
-				Log.d(TAG, "dlStatus:" + dlStatus);
-				if (dlStatus == 0) {
-					holder.img_add_lesson.setVisibility(View.GONE);
-					holder.img_remove_lesson.setVisibility(View.VISIBLE);
-				} else {
-					holder.img_add_lesson.setVisibility(View.VISIBLE);
-					holder.img_remove_lesson.setVisibility(View.GONE);
-				}
-
-			} else {// 没下载过
-				Log.e(TAG, "没下载过");
+		boolean isDownLoaded = checkIsDownLoaded(model);// 这一列是否下载过
+		if (isDownLoaded) {// 下载过
+			int DownLoadStatue = getDownLoadStatue(model.getId());// 获取标记的状态
+			if (DownLoadStatue == 0) {// 标记删除
 				holder.img_add_lesson.setVisibility(View.VISIBLE);
 				holder.img_remove_lesson.setVisibility(View.GONE);
+			} else {// 未标记删除
+				holder.img_add_lesson.setVisibility(View.GONE);
+				holder.img_remove_lesson.setVisibility(View.VISIBLE);
 			}
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} else {// 没下载过
+			holder.img_add_lesson.setVisibility(View.VISIBLE);
+			holder.img_remove_lesson.setVisibility(View.GONE);
 		}
 
 		holder.img_add_lesson.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				downLoadAudioFiles(position, model);
-				downLoadContentFiles(position, model);
+
+				boolean isDownLoaded = checkIsDownLoaded(model);
+				if (isDownLoaded) {
+					holder.img_add_lesson.setVisibility(View.GONE);
+					holder.img_remove_lesson.setVisibility(View.VISIBLE);
+					setDownLoaded(1, model.getId());
+				} else {
+					Log.e(TAG, "没下载过");
+					holder.img_add_lesson.setVisibility(View.VISIBLE);
+					holder.img_remove_lesson.setVisibility(View.GONE);
+					downLoadAudioFiles(position, model);
+					downLoadContentFiles(position, model);
+				}
 			}
 		});
 
@@ -180,24 +169,97 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				String dirId = model.getDirId();
-				try {
-					TbMyFluentNow tbMyFluentNow = (TbMyFluentNow) MyDao
-							.getDaoMy(TbMyFluentNow.class).queryForId(dirId);
-					if (tbMyFluentNow != null) {
-						tbMyFluentNow.setDownloaded(0);
-					}
-					MyDao.getDaoMy(TbMyFluentNow.class).createOrUpdate(
-							tbMyFluentNow);
+				// String dirId = model.getDirId();
+				holder.img_add_lesson.setVisibility(View.VISIBLE);
+				holder.img_remove_lesson.setVisibility(View.GONE);
+				setDownLoaded(0, model.getId());
 
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 		});
 
 		return convertView;
+	}
+
+	/**
+	 * 获取标记的状态
+	 * 
+	 * @param fluentId
+	 * @return DownLoadStatue 0标记删除，1
+	 */
+	@SuppressWarnings("unchecked")
+	private int getDownLoadStatue(int fluentId) {
+		Log.d(TAG, "getDownLoadStatue()--fluentId:" + fluentId);
+		int DownLoadStatue = 0;
+		try {
+			TbMyFluentNow tbMyFluentNow = (TbMyFluentNow) MyDao.getDaoMy(
+					TbMyFluentNow.class).queryForId(fluentId);
+			if (tbMyFluentNow == null) {
+				Log.e(TAG, "tbMyFluentNow == null,没有查询到数据");
+				return DownLoadStatue;
+			}
+			DownLoadStatue = tbMyFluentNow.getDownloaded();
+			Log.d(TAG, "DownLoadStatue:" + DownLoadStatue);
+			return DownLoadStatue;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Log.d(TAG, "DownLoadStatue:" + DownLoadStatue);
+		return DownLoadStatue;
+	}
+
+	/**
+	 * 是否标记删除
+	 * 
+	 * @param downLoadStatue
+	 */
+	@SuppressWarnings("unchecked")
+	private void setDownLoaded(int downLoadStatue, int fluentId) {
+		try {
+			TbMyFluentNow tbMyFluentNow = (TbMyFluentNow) MyDao.getDaoMy(
+					TbMyFluentNow.class).queryForId(fluentId);
+			if (tbMyFluentNow != null) {
+				tbMyFluentNow.setDownloaded(downLoadStatue);
+			} else {
+				Log.e(TAG, "tbMyFluentNow == null");
+			}
+			int T = MyDao.getDaoMy(TbMyFluentNow.class).update(tbMyFluentNow);
+			Log.d(TAG, "T:" + T);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.d(TAG, "更新异常");
+		}
+		notifyDataSetChanged();
+	}
+
+	/**
+	 * 是否下载过此列数据
+	 * 
+	 * @param model
+	 * @return
+	 */
+	private boolean checkIsDownLoaded(FlunetListBaseModel model) {
+		FlunetAudioContentBaseModel audioContent = model.getAudioContent();
+		String fileName = "";
+		if (audioContent != null) {
+			fileName = audioContent.getFileName();// audio fileName
+		}
+		try {
+			TbFileDownload tbFileDownload = (TbFileDownload) MyDao
+					.getDaoMy(TbFileDownload.class).queryBuilder().where()
+					.eq("fileName", fileName).queryForFirst();
+			if (tbFileDownload != null) {// 下载过了
+				return true;
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 
 	public class ViewHolder {
@@ -217,15 +279,18 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 	@SuppressWarnings("unchecked")
 	private void downLoadAudioFiles(final int position,
 			final FlunetListBaseModel listBaseModel) {
+		View convertView = mapView.get(position);
+		final RoundProgressBar progress_download = (RoundProgressBar) convertView
+				.findViewById(R.id.progress_download);
 
-		if (listBaseModel != null) {
+		final ImageView img_add_lesson = (ImageView) convertView
+				.findViewById(R.id.img_add_lesson);
 
-			baseModelId = listBaseModel.getId();
-			FlunetAudioContentBaseModel audioContent = listBaseModel
-					.getAudioContent();
-			if (audioContent != null) {
-				dlAudioFileName = audioContent.getFileName();// audio fileName
-			}
+		baseModelId = listBaseModel.getId();
+		FlunetAudioContentBaseModel audioContent = listBaseModel
+				.getAudioContent();
+		if (audioContent != null) {
+			dlAudioFileName = audioContent.getFileName();// audio fileName
 		}
 		Log.d(TAG, "dlAudioFileName:" + dlAudioFileName);
 		HttpUtils http = new HttpUtils();
@@ -236,12 +301,10 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 				true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 				new RequestCallBack<File>() {
 					TbFileDownload tbFileDownload = new TbFileDownload();
-					View convertView = mapView.get(position);
-					RoundProgressBar progress_download = (RoundProgressBar) convertView
-							.findViewById(R.id.progress_download);
 
 					@Override
 					public void onStart() {
+						img_add_lesson.setVisibility(View.GONE);
 					}
 
 					@Override
@@ -260,6 +323,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 						tbFileDownload.setDlStatus(0);
 
 						progress_download.setVisibility(View.VISIBLE);
+						img_add_lesson.setVisibility(View.GONE);
 						progress_download.setMax((float) total);
 						progress_download.setProgress((float) current);
 						progress_download.setAccurally(1.0f);
@@ -269,12 +333,11 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 
 					@Override
 					public void onSuccess(ResponseInfo<File> responseInfo) {
-						Log.d(TAG, "onSuccess");
 						try {
 							tbFileDownload.setDlStatus(1);
 							int T = MyDao.getDaoMy(TbFileDownload.class)
 									.create(tbFileDownload);
-							Log.d(TAG, "T:" + T);
+							Log.d(TAG, "onSuccess()-T:" + T);
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
@@ -294,7 +357,6 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 						String aWS_ID = listBaseModel.getDirId();
 
 						TbMyFluentNow tbMyFluentNow = new TbMyFluentNow();
-						tbMyFluentNow.setDownloaded(1);
 						tbMyFluentNow.setFluentID(baseModelId);
 						tbMyFluentNow.setAWS_ID(Integer.parseInt(aWS_ID));
 						tbMyFluentNow.setLevel(diffLevel);
@@ -309,6 +371,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						notifyDataSetChanged();
 					}
 
 					@Override
