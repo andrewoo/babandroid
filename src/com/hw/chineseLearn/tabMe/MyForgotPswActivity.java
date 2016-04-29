@@ -3,10 +3,14 @@ package com.hw.chineseLearn.tabMe;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,10 +56,40 @@ public class MyForgotPswActivity extends BaseActivity {
 	/**
 	 * 初始化
 	 */
-	public void init() {
-		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Forgot Password", View.GONE, View.GONE, 0);
+	public void init() {//iv_close
+		iv_close = (ImageView) findViewById(R.id.iv_close); 
+		iv_close.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				
+				CustomApplication.app.finishActivity(MyForgotPswActivity.class);
+				return false;
+			}
+		});
+		tv_email = (TextView) findViewById(R.id.tv_email);
 		et_email = (EditText) findViewById(R.id.et_email);
+		et_email.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				if (count == 0) {
+					tv_email.setVisibility(View.INVISIBLE);
+				}else{
+					tv_email.setVisibility(View.VISIBLE);
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
 
 		btn_confirm = (TextView) findViewById(R.id.btn_confirm);
 		btn_confirm.setOnClickListener(onClickListener);
@@ -136,6 +170,8 @@ public class MyForgotPswActivity extends BaseActivity {
 			}
 		}
 	};
+	private TextView tv_email;
+	private ImageView iv_close;
 
 	/**
 	 * 对话框

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -36,7 +37,10 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 
 	public static MineFragment fragment;
 
-	private TextView text_name;
+	private TextView text_name; 
+	
+	private RelativeLayout rel_reminders;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,12 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 		case R.id.rel_settings:
 			startActivity(new Intent(getActivity(), MySettingActivity.class));
 			break;
+			
+		case R.id.rel_reminders:
+			startActivity(new Intent(getActivity(),
+					MySettingRemindersActivity.class));
+
+			break;
 
 		default:
 			break;
@@ -130,8 +140,16 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 	public void init() {
 		lin_personal_info = (LinearLayout) contentView
 				.findViewById(R.id.lin_personal_info);
+		
+		//设置头像背景的高度为屏幕的1/4
+		int heigh = CustomApplication.app.getScreenSize().heightPixels;
+		
+		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heigh/4);
+		lin_personal_info.setLayoutParams(params);
 
 		text_name = (TextView) contentView.findViewById(R.id.text_name);
+		rel_reminders = (RelativeLayout)contentView.findViewById(R.id.rel_reminders);
+		rel_reminders.setOnClickListener(this);
 		rg_chinese_display = (RadioGroup) contentView
 				.findViewById(R.id.rg_chinese_display);
 		rg_chinese_display

@@ -31,8 +31,8 @@ public class MySettingActivity extends BaseActivity {
 	private String TAG = "==MySettingActivity==";
 	private Context context;
 
-	private RelativeLayout rel_reminders;
-	private RelativeLayout rel_logout;
+//	private RelativeLayout rel_reminders;
+//	private RelativeLayout rel_logout;
 	private ThreadWithDialogTask tdt;
 	HttpInterfaces interfaces;
 	SlideSwitch ck_sound_effect;
@@ -58,11 +58,12 @@ public class MySettingActivity extends BaseActivity {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Settings", View.GONE, View.GONE, 0);
 
-		rel_reminders = (RelativeLayout) findViewById(R.id.rel_reminders);
-		rel_logout = (RelativeLayout) findViewById(R.id.rel_logout);
-		rel_logout.setVisibility(View.GONE);
-		rel_reminders.setOnClickListener(onClickListener);
-		rel_logout.setOnClickListener(onClickListener);
+//		rel_reminders = (RelativeLayout) findViewById(R.id.rel_reminders);
+//		rel_logout = (RelativeLayout) findViewById(R.id.rel_logout);
+//		rel_logout.setVisibility(View.GONE);
+		
+//		rel_reminders.setOnClickListener(onClickListener);
+//		rel_logout.setOnClickListener(onClickListener);
 
 		ck_sound_effect = (SlideSwitch) findViewById(R.id.ck_sound_effect);
 		ck_sound_effect.setSlideListener(new SlideListener() {
@@ -168,15 +169,9 @@ public class MySettingActivity extends BaseActivity {
 				CustomApplication.app.finishActivity(MySettingActivity.this);
 				break;
 
-			case R.id.rel_reminders:
-				startActivity(new Intent(MySettingActivity.this,
-						MySettingRemindersActivity.class));
-
-				break;
-
-			case R.id.rel_logout:
-				showLogOutDialog();
-				break;
+//			case R.id.rel_logout:
+//				showLogOutDialog();
+//				break;
 
 			default:
 				break;

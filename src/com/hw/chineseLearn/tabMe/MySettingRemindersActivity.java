@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,16 +57,21 @@ public class MySettingRemindersActivity extends BaseActivity implements
 	/**
 	 * 初始化
 	 */
-	public void init() {
+	public void init() { 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Reminders", View.GONE, View.GONE, 0);
+		ll_xingqi_bg = (LinearLayout) findViewById(R.id.ll_xingqi_bg);
+		int heightPixels = CustomApplication.app.getScreenSize().heightPixels;
+		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,heightPixels/4) ;
+		ll_xingqi_bg.setLayoutParams(params);
+		
 		txt_time = (TextView) findViewById(R.id.txt_time);
 		txt_time.setOnClickListener(onClickListener);
-
+ 
 		btn_ok = (Button) findViewById(R.id.btn_ok);
 		btn_cancel = (Button) findViewById(R.id.btn_cancel);
-		btn_ok.setOnClickListener(onClickListener);
-		btn_cancel.setOnClickListener(onClickListener);
+		btn_ok.setOnClickListener(onClickListener); 
+		btn_cancel.setOnClickListener(onClickListener);  
 
 		lin_time_picker = (LinearLayout) findViewById(R.id.lin_time_picker);
 		lin_time_picker.setVisibility(View.GONE);
@@ -179,6 +185,7 @@ public class MySettingRemindersActivity extends BaseActivity implements
 			}
 		}
 	};
+	private LinearLayout ll_xingqi_bg;
 
 	@Override
 	public String format(int value) {

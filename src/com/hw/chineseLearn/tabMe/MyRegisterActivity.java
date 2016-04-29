@@ -7,9 +7,16 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,7 +55,7 @@ public class MyRegisterActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_register);
+		setContentView(R.layout.activity_register2);
 		context = this;
 		tdt = new ThreadWithDialogTask();
 		interfaces = new HttpInterfaces(this);
@@ -61,14 +68,45 @@ public class MyRegisterActivity extends BaseActivity {
 	 * 初始化
 	 */
 	public void init() {
-		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Sign up", View.GONE, View.GONE, 0);
-		
+		iv_close = (ImageView) findViewById(R.id.iv_close);  
+		iv_close.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				
+				CustomApplication.app.finishActivity(MyRegisterActivity.class);
+				return false;
+			}
+		});//showOrhideTextView()
+		//your_name
+		et_your_name = (EditText) findViewById(R.id.et_your_name);
+		tv_your_name = (TextView) findViewById(R.id.tv_your_name);
+		showOrhideTextView(et_your_name,tv_your_name);
+		//email
 		txt_username = (EditText) findViewById(R.id.txt_username);
+		tv_username = (TextView) findViewById(R.id.tv_username);
+		showOrhideTextView(txt_username,tv_username);
+		//pwd tv_password
 		et_pwd = (EditText) findViewById(R.id.et_pwd);
+		changeEyeIcon(et_pwd);
+		tv_password = (TextView) findViewById(R.id.tv_password);
+		showOrhideTextView(et_pwd,tv_password);
+		//et_confirm_pwd
 		et_confirm_pwd = (EditText) findViewById(R.id.et_confirm_pwd);
-		
+		tv_confirm_pwd = (TextView) findViewById(R.id.tv_confirm_pwd);
+		showOrhideTextView(et_confirm_pwd,tv_confirm_pwd);
+		changeEyeIcon(et_confirm_pwd);
 		btn_login = (TextView) findViewById(R.id.btn_login);
+		btn_forgot_psw = (TextView) findViewById(R.id.btn_forgot_psw);
+		btn_forgot_psw.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MyRegisterActivity.this,
+						MyForgotPswActivity.class));
+				CustomApplication.app.finishActivity(MyRegisterActivity.class);				
+			}
+		});
 		btn_login.setOnClickListener(onClickListener);
 
 	}
@@ -197,7 +235,7 @@ public class MyRegisterActivity extends BaseActivity {
 							
 							Intent intent=new Intent(MyRegisterActivity.this,MyAccountActivity.class);
 							startActivity(intent);
-							
+							CustomApplication.app.finishActivity(MyRegisterActivity.class);
 							return;
 						}
 						String message = jsobject.optString("message");
@@ -215,12 +253,70 @@ public class MyRegisterActivity extends BaseActivity {
 		});
 		
 	}
+	
+	private void showOrhideTextView(EditText et,final TextView tv) {
+		et.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				if(s.length()==0){
+					tv.setVisibility(View.INVISIBLE);
+				}else{
+					tv.setVisibility(View.VISIBLE);
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+			
+			@Override
+			public void afterTextChanged(Editable s) {}});
+	}
+	
+	public void changeEyeIcon(final EditText et){
+		et.setOnTouchListener(new OnTouchListener() {//此监听做两件事1 改变password/text 2 改变点击图标
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // et.getCompoundDrawables()得到一个长度为4的数组，分别表示左右上下四张图片
+                Drawable drawable = et.getCompoundDrawables()[2];
+                //如果右边没有图片，不再处理
+                if (drawable == null)
+                    return false;
+                //如果不是按下事件，不再处理
+                if (event.getAction() != MotionEvent.ACTION_UP)
+                    return false;
+                if (event.getX() > et.getWidth()- et.getPaddingRight()- drawable.getIntrinsicWidth()){
+                	if(et.getInputType()==EditorInfo.TYPE_CLASS_TEXT){//InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
+                		et.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
+                		et.setSelection(et.getText().length());
+                		Drawable image = context.getResources().getDrawable(R.drawable.viewpassword );
+                		et.setCompoundDrawablesWithIntrinsicBounds(null, null,image, null);
+                		
+                	}else{
+                		Drawable image = context.getResources().getDrawable(R.drawable.hidepassword); 
+                		et.setCompoundDrawablesWithIntrinsicBounds(null, null,image, null);
+                		et.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+                		et.setSelection(et.getText().length());
+                	}
+                }
+                    return false;
+            }
+        });
+	}
 
 	private EditText txt_username;
 	private EditText et_pwd;
 	private EditText et_confirm_pwd;
 	private String text;
 	private String pwd;
+	private ImageView 		iv_close;
+	private EditText et_your_name;
+	private TextView tv_your_name;
+	private TextView tv_username;
+	private TextView tv_password;
+	private TextView tv_confirm_pwd;
+	private TextView btn_forgot_psw;
 
 	// public class LoginOut implements ThreadWithDialogListener {
 	//
