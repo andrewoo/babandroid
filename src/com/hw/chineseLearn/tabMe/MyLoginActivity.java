@@ -6,11 +6,19 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -63,12 +71,72 @@ public class MyLoginActivity extends BaseActivity {
 	/**
 	 * 初始化
 	 */
-	public void init() {
-		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Sign In", View.GONE, View.GONE, 0);
-
+	public void init() {//line_password
+		iv_close = (ImageView) findViewById(R.id.iv_close); 
+		iv_close.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				
+				CustomApplication.app.finishActivity(MyLoginActivity.class);
+				return false;
+			}
+		});
+		line_password = (View) findViewById(R.id.line_password);
+		tv_noty_error = (TextView) findViewById(R.id.tv_noty_error);
+		tv_username = (TextView) findViewById(R.id.tv_username);
+		tv_password = (TextView) findViewById(R.id.tv_password);
 		txt_username = (EditText) findViewById(R.id.txt_username);
 		et_pwd = (EditText) findViewById(R.id.et_pwd);
+		showOrhideTextView();
+		
+		et_pwd.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				if(count==0){
+					tv_password.setVisibility(View.INVISIBLE);
+				}else{
+					tv_password.setVisibility(View.VISIBLE);
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+			
+			@Override
+			public void afterTextChanged(Editable s) {}});
+		
+		et_pwd.setOnTouchListener(new OnTouchListener() {//此监听做两件事1 改变password/text 2 改变点击图标
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // et.getCompoundDrawables()得到一个长度为4的数组，分别表示左右上下四张图片
+                Drawable drawable = et_pwd.getCompoundDrawables()[2];
+                //如果右边没有图片，不再处理
+                if (drawable == null)
+                    return false;
+                //如果不是按下事件，不再处理
+                if (event.getAction() != MotionEvent.ACTION_UP)
+                    return false;
+                if (event.getX() > et_pwd.getWidth()- et_pwd.getPaddingRight()- drawable.getIntrinsicWidth()){
+                	if(et_pwd.getInputType()==EditorInfo.TYPE_CLASS_TEXT){//InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
+                		et_pwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
+                		et_pwd.setSelection(et_pwd.getText().length());
+                		Drawable image = context.getResources().getDrawable(R.drawable.viewpassword );
+                		et_pwd.setCompoundDrawablesWithIntrinsicBounds(null, null,image, null);
+                		
+                	}else{
+                		Drawable image = context.getResources().getDrawable(R.drawable.hidepassword  ); 
+                		et_pwd.setCompoundDrawablesWithIntrinsicBounds(null, null,image, null);
+                		et_pwd.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+                		et_pwd.setSelection(et_pwd.getText().length());
+                	}
+                }
+                    return false;
+            }
+        });
+		//inputType = TYPE_CLASS_TEXT | TYPE_TEXT_VARIATION_VISIBLE_PASSWORD 
 
 		btn_login = (TextView) findViewById(R.id.btn_login);
 		btn_forgot_psw = (TextView) findViewById(R.id.btn_forgot_psw);
@@ -81,9 +149,28 @@ public class MyLoginActivity extends BaseActivity {
 		pswString = CustomApplication.app.preferencesUtil.getValue(
 				AppConstants.LOGIN_PWD, "");
 
-		txt_username.setText(emailString);
+		txt_username.setText(emailString); 
 		et_pwd.setText(pswString);
 
+	}
+
+	private void showOrhideTextView() {
+		txt_username.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				if(s.length()==0){
+					tv_username.setVisibility(View.INVISIBLE);
+				}else{
+					tv_username.setVisibility(View.VISIBLE);
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+			
+			@Override
+			public void afterTextChanged(Editable s) {}});
 	}
 
 	/**
@@ -111,9 +198,9 @@ public class MyLoginActivity extends BaseActivity {
 		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
 		tv_title.setText(title);
 
-		TextView tv_title_left = (TextView) view_title
+		TextView tv_title_left = (TextView) view_title 
 				.findViewById(R.id.tv_title_left);
-		tv_title_left.setVisibility(textLeft);
+		tv_title_left.setVisibility(textLeft); 
 
 		ImageView iv_title_left = (ImageView) view_title
 				.findViewById(R.id.iv_title_left);
@@ -150,15 +237,16 @@ public class MyLoginActivity extends BaseActivity {
 
 			case R.id.btn_login://
 				signIn();
-
 				break;
 			case R.id.btn_forgot_psw:
 				startActivity(new Intent(MyLoginActivity.this,
 						MyForgotPswActivity.class));
+				CustomApplication.app.finishActivity(MyLoginActivity.class);
 				break;
 			case R.id.btn_sign_up:
 				startActivity(new Intent(MyLoginActivity.this,
 						MyRegisterActivity.class));
+				CustomApplication.app.finishActivity(MyLoginActivity.class);
 				break;
 
 			default:
@@ -168,6 +256,11 @@ public class MyLoginActivity extends BaseActivity {
 	};
 	String emailString = "";
 	String pswString = "";
+	private TextView tv_username;
+	private TextView tv_password;
+	private TextView tv_noty_error;
+	private View line_password;
+	private ImageView iv_close;
 
 	/**
 	 * 登录
@@ -217,7 +310,8 @@ public class MyLoginActivity extends BaseActivity {
 								CustomApplication.app.finishActivity(MyLoginActivity.this);
 								return;
 							}
-							Toast.makeText(MyLoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+							tv_noty_error.setVisibility(View.VISIBLE);
+							line_password.setBackgroundColor(Color.RED);
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
@@ -278,6 +372,15 @@ public class MyLoginActivity extends BaseActivity {
 		});
 		mModifyDialog.show();
 		mModifyDialog.setContentView(view);
+	}
+	
+	@Override
+	protected void onResume() {
+		if(tv_noty_error!=null && line_password!=null ){
+			tv_noty_error.setVisibility(View.INVISIBLE);
+			line_password.setBackgroundColor(getResources().getColor(R.color.min_grey));
+		}
+		super.onResume();
 	}
 
 	// public class LoginOut implements ThreadWithDialogListener {

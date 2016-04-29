@@ -320,7 +320,7 @@ public class MyAccountActivity extends BaseActivity {
 				.findViewById(R.id.tv_show_cancle);
 
 		final CustomDialog builder = new CustomDialog(this, R.style.my_dialog)
-				.create(pview, true, 1f, 0.216f, 1);
+				.create(pview, true, 1f, 0.3f, 1);
 		builder.show();
 
 		tv_show_cancle.setOnClickListener(new OnClickListener() {

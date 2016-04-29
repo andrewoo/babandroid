@@ -3,7 +3,7 @@
     xmlns:slideswitch="http://schemas.android.com/apk/res/com.hw.chineseLearn"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/light_grey_white"
+    android:background="@color/white"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
@@ -25,11 +25,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/min_grey" />
-
                 <RelativeLayout
                     android:id="@+id/rel_sound_effect"
                     android:layout_width="match_parent"
@@ -42,19 +37,11 @@
                     android:paddingRight="15dp"
                     android:paddingTop="10dp" >
 
-                    <ImageView
-                        android:id="@+id/img_icon"
-                        android:layout_width="17dp"
-                        android:layout_height="17dp"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/setting_sound_img" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/img_icon"
                         android:text="Sound Effect"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
@@ -70,10 +57,6 @@
                         slideswitch:themeColor="@color/chinese_skill_blue" />
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/min_grey" />
 
                 <RelativeLayout
                     android:id="@+id/rel_character_test"
@@ -87,20 +70,12 @@
                     android:paddingRight="15dp"
                     android:paddingTop="10dp" >
 
-                    <ImageView
-                        android:id="@+id/img_icon"
-                        android:layout_width="17dp"
-                        android:layout_height="17dp"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/setting_char_img" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/img_icon"
-                        android:text="Character test"
+                        android:text="Character test Model"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -115,10 +90,6 @@
                         slideswitch:themeColor="@color/chinese_skill_blue" />
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/min_grey" />
 
                 <RelativeLayout
                     android:id="@+id/rel_check_tone_when_test"
@@ -132,19 +103,11 @@
                     android:paddingRight="15dp"
                     android:paddingTop="10dp" >
 
-                    <ImageView
-                        android:id="@+id/img_icon"
-                        android:layout_width="17dp"
-                        android:layout_height="17dp"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/setting_tone_img" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/img_icon"
                         android:text="Check TONE when test"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
@@ -159,89 +122,112 @@
                         slideswitch:shape="circle"
                         slideswitch:themeColor="@color/chinese_skill_blue" />
                 </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/min_grey" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/min_grey" />
-
+                
                 <RelativeLayout
-                    android:id="@+id/rel_reminders"
+                    android:id="@+id/rel_chinese_display"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_white_to_grey"
-                    android:descendantFocusability="blocksDescendants"
                     android:gravity="center_vertical"
-                    android:padding="15dp" >
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="10dp" >
 
-                    <ImageView
-                        android:id="@+id/img_icon"
-                        android:layout_width="17dp"
-                        android:layout_height="17dp"
+                    <TextView
+                        android:id="@+id/txt_chinese_display"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/setting_reminder_img" />
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/img_chinese_display"
+                        android:text="Chinese Display"
+                        android:textColor="@color/deep_grey"
+                        android:textSize="@dimen/text_s14" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_chinese_display"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/shape_grey_corner_bg"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="2dp" >
+
+                        <RadioButton
+                            android:id="@+id/rb_character"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/btn_radio_selector_left1"
+                            android:button="@null"
+                            android:checked="true"
+                            android:padding="8dp"
+                            android:text="Character"
+                            android:textColor="@drawable/text_style_grey_to_white"
+                            android:textSize="@dimen/text_s10" />
+
+                        <RadioButton
+                            android:id="@+id/rb_Pinyin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/btn_radio_selector_right1"
+                            android:button="@null"
+                            android:padding="8dp"
+                            android:text="Pinyin"
+                            android:textColor="@drawable/text_style_grey_to_white"
+                            android:textSize="@dimen/text_s10" />
+
+                        <RadioButton
+                            android:id="@+id/rb_Both"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/btn_radio_selector_right1"
+                            android:button="@null"
+                            android:padding="8dp"
+                            android:text="Both"
+                            android:textColor="@drawable/text_style_grey_to_white"
+                            android:textSize="@dimen/text_s10" />
+                    </RadioGroup>
+                </RelativeLayout>
+                
+                <RelativeLayout
+                    android:id="@+id/rel_check_tone_when_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0.5dp"
+                    android:background="@drawable/bg_white_to_grey"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="10dp" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/img_icon"
-                        android:text="Reminders"
+                        android:text="The Spring Festival Theme"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 
                     <com.util.weight.SlideSwitch
+                        android:id="@+id/ck_check_tone_when_test"
                         android:layout_width="55dp"
                         android:layout_height="27dp"
-                        android:layout_centerInParent="true"
-                        android:layout_centerVertical="true"
-                        android:visibility="invisible"
-                        slideswitch:isOpen="false"
-                        slideswitch:shape="circle"
-                        slideswitch:themeColor="@color/chinese_skill_blue" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/arrow" />
+                        slideswitch:isOpen="true"
+                        slideswitch:shape="circle"
+                        slideswitch:themeColor="@color/chinese_skill_blue" />
                 </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/min_grey" />
             </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/rel_logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/bg_white_to_grey"
-                android:gravity="center_vertical"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="5dp"
-                    android:text="Logou out"
-                    android:textColor="@color/chinese_skill_blue"
-                    android:textSize="@dimen/text_s14" />
-            </RelativeLayout>
         </LinearLayout>
     </com.util.weight.ElasticScrollView>
 

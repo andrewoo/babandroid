@@ -30,19 +30,6 @@
         android:textSize="@dimen/text_s16" />
 
     <TextView
-        android:id="@+id/tv_pick_from_self"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@drawable/bg_white_to_grey"
-        android:gravity="center"
-        android:padding="10dip"
-        android:text="从私人相册选取"
-        android:textColor="@color/deep_grey"
-        android:textSize="@dimen/text_s16"
-        android:visibility="gone" />
-
-    <TextView
         android:id="@+id/tv_show_cancle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
