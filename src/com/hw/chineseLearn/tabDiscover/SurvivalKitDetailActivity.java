@@ -24,6 +24,7 @@ import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbMyCategory;
 import com.hw.chineseLearn.dao.bean.category;
 import com.hw.chineseLearn.dao.bean.item;
+import com.util.tool.MediaPlayUtil;
 
 /**
  * 救生练习页面
@@ -37,7 +38,7 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	View contentView;
 	// private String title = "Title";
 	private category cate;
-//	private ExpandableListView expandableListView;
+	// private ExpandableListView expandableListView;
 	private SurvivalListAdapter adapter;
 
 	List<item> data = new ArrayList<item>();
@@ -57,6 +58,17 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 			}
 		}
 		init();
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		if (MediaPlayUtil.getInstance()!=null) {
+			MediaPlayUtil.getInstance().stop();
+			MediaPlayUtil.getInstance().release();
+		}
+		
 	}
 
 	/**
@@ -87,7 +99,7 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 
 	private void initView() {
 		listView = (ListView) contentView.findViewById(R.id.listview);
-		adapter=new SurvivalListAdapter(this,(ArrayList<item>) data);
+		adapter = new SurvivalListAdapter(this, (ArrayList<item>) data);
 		listView.setAdapter(adapter);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -95,11 +107,11 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				
+
 				adapter.setSelection(position);
 				adapter.notifyDataSetChanged();
 			}
-			
+
 		});
 	}
 
@@ -179,14 +191,15 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 		iv_title_right.setImageResource(imgRightDrawable);
 
 	}
-	
+
 	private void initData() {
 		try {
-			data=MyDao.getDao(item.class).queryBuilder().where().eq("cid", cate.getId()).query();
+			data = MyDao.getDao(item.class).queryBuilder().where()
+					.eq("cid", cate.getId()).query();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -195,21 +208,21 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	 * @author Administrator
 	 * 
 	 */
-//	public class ExpandableListViewListenerA implements
-//			ExpandableListView.OnChildClickListener {
-//
-//		@Override
-//		public boolean onChildClick(ExpandableListView parent, View view,
-//				int groupPosition, int childPosition, long id) {
-//			// TODO Auto-generated method stub
-//
-//			adapter.setSelection(groupPosition, childPosition);
-//			adapter.notifyDataSetChanged();
-//			Log.d(TAG, "groupPosition:" + groupPosition);
-//			Log.d(TAG, "childPosition:" + childPosition);
-//			return true;
-//		}
-//	}
+	// public class ExpandableListViewListenerA implements
+	// ExpandableListView.OnChildClickListener {
+	//
+	// @Override
+	// public boolean onChildClick(ExpandableListView parent, View view,
+	// int groupPosition, int childPosition, long id) {
+	// // TODO Auto-generated method stub
+	//
+	// adapter.setSelection(groupPosition, childPosition);
+	// adapter.notifyDataSetChanged();
+	// Log.d(TAG, "groupPosition:" + groupPosition);
+	// Log.d(TAG, "childPosition:" + childPosition);
+	// return true;
+	// }
+	// }
 
 	/**
 	 * 监听父级列表的关闭事件事件
@@ -217,15 +230,15 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	 * @author Administrator
 	 * 
 	 */
-//	public class ExpandableListViewListenerB implements
-//			ExpandableListView.OnGroupCollapseListener {
-//
-//		@Override
-//		public void onGroupCollapse(int groupPosition) {
-//			// TODO Auto-generated method stub
-//			Log.d(TAG, "关闭");
-//		}
-//	}
+	// public class ExpandableListViewListenerB implements
+	// ExpandableListView.OnGroupCollapseListener {
+	//
+	// @Override
+	// public void onGroupCollapse(int groupPosition) {
+	// // TODO Auto-generated method stub
+	// Log.d(TAG, "关闭");
+	// }
+	// }
 
 	/**
 	 * 监听父级列表的弹出事件
@@ -233,13 +246,13 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 	 * @author Administrator
 	 * 
 	 */
-//	public class ExpandableListViewListenerC implements
-//			ExpandableListView.OnGroupExpandListener {
-//		@Override
-//		public void onGroupExpand(int groupPosition) {
-//			// TODO Auto-generated method stub
-//			Log.d(TAG, "弹出");
-//		}
-//	}
+	// public class ExpandableListViewListenerC implements
+	// ExpandableListView.OnGroupExpandListener {
+	// @Override
+	// public void onGroupExpand(int groupPosition) {
+	// // TODO Auto-generated method stub
+	// Log.d(TAG, "弹出");
+	// }
+	// }
 
 }
