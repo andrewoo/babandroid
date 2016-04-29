@@ -72,6 +72,7 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 			break;
 		case R.id.rel_download_mererials:
 			// startActivity(new Intent(getActivity(), MyLoginActivity.class));
+			startActivity(new Intent(getActivity(), DownloadMererialsActivity.class));
 			break;
 		case R.id.rel_like_us_on_facebook:
 			Intent intentFacebook = new Intent();

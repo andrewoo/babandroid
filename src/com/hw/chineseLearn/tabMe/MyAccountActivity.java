@@ -2,6 +2,7 @@ package com.hw.chineseLearn.tabMe;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +21,10 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -32,6 +35,7 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
+import com.hw.chineseLearn.dao.bean.TbSetting;
 import com.hw.chineseLearn.interfaces.AppConstants;
 import com.hw.chineseLearn.interfaces.HttpInterfaces;
 import com.util.thread.ThreadWithDialogTask;
@@ -62,7 +66,7 @@ public class MyAccountActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_account);
+		setContentView(R.layout.activity_account2);
 		context = this;
 		tdt = new ThreadWithDialogTask();
 		interfaces = new HttpInterfaces(this);
@@ -82,8 +86,19 @@ public class MyAccountActivity extends BaseActivity {
 	 * 初始化
 	 */
 	public void init() {
-		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Account", View.GONE, View.GONE, 0);
+//		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
+//				"Account", View.GONE, View.GONE, 0);
+		
+		iv_close = (ImageView) findViewById(R.id.iv_close);
+		iv_close.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+
+				CustomApplication.app.finishActivity(MyAccountActivity.class);
+				return false;
+			}
+		});
 
 		img_photo = (RoundImageView) findViewById(R.id.img_photo);
 		img_photo.setOnClickListener(onClickListener);
@@ -176,7 +191,7 @@ public class MyAccountActivity extends BaseActivity {
 				break;
 			case R.id.rel_reset_progress:
 				resetProgress();
-
+				updateDB();
 				break;
 
 			case R.id.btn_logout:
@@ -189,6 +204,18 @@ public class MyAccountActivity extends BaseActivity {
 		}
 		
 	};
+	
+	private void updateDB() {
+		TbSetting tb=new TbSetting();
+		tb.setSettingName("Unlock");
+		tb.setSettingValue(0);
+		try {
+			MyDao.getDaoMy(TbSetting.class).createOrUpdate(tb);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	private void resetProgress() {
 		
@@ -387,6 +414,7 @@ public class MyAccountActivity extends BaseActivity {
 
 	Uri uritempFile;
 	String imgName;
+	private ImageView iv_close;
 
 	/**
 	 * 裁剪图片方法实现

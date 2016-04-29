@@ -448,5 +448,4 @@ public class MainWebActivity extends BaseActivity {
 		}
 
 	}
-
 }

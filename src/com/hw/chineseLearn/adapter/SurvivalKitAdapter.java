@@ -98,15 +98,15 @@ public class SurvivalKitAdapter extends BaseAdapter {
 
 		String unitName = survivalKitModel.getItemName();
 		 String imageName = survivalKitModel.getImageName();
-		 if(survivalKitModel.getState()==0){
+		 if(survivalKitModel.getState()==0){//未下载
 			 holder.circleView.setVisibility(View.GONE);
 			 holder.iv_arrow.setVisibility(View.VISIBLE);
 			 holder.iv_arrow .setBackgroundResource(R.drawable.ls_dl_btn);
-		 }else if(survivalKitModel.getState()==1){
+		 }else if(survivalKitModel.getState()==1){//完成
 			 holder.circleView.setVisibility(View.GONE);
 			 holder.iv_arrow.setVisibility(View.VISIBLE);
 			 holder.iv_arrow .setBackgroundResource(R.drawable.arrow);
-		 }else if(survivalKitModel.getState()==2){ 
+		 }else if(survivalKitModel.getState()==2){ //正在下载
 			 holder.iv_arrow .setVisibility(View.GONE);
 			 holder.circleView.setVisibility(View.VISIBLE);
 			 if(survivalKitModel.getPositionTag()==position){
