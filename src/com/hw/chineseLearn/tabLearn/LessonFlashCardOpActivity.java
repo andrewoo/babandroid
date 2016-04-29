@@ -113,7 +113,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 	int index = 0;
 	private String voicePath;
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -391,7 +391,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		gallery.setLayoutParams(param);
 
 	}
-	
+
 	/**
 	 * 播放asset里的声音文件
 	 */
@@ -400,11 +400,11 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		try {
 			AssetFileDescriptor afd = CustomApplication.app.getAssets().openFd(
 					ASSETS_SOUNDS_PATH + voicePath);
-			Log.d(TAG, "voicePath:"+voicePath);
+			Log.d(TAG, "voicePath:" + voicePath);
 			if (isAutoPlay) {
 				MediaPlayUtil.getInstance().play(afd);
 			}
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -652,7 +652,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 				gallery.setSelection(index);// 选中当前页面
 				setText();
 				assetPlay();
-				
+
 			}
 
 		}
@@ -675,7 +675,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		tv_chooseCount = (TextView) view.findViewById(R.id.tv_max);
 		tv_chooseCount.setText("" + chooseCount);
 
-		int width = CustomApplication.app.displayMetrics.widthPixels / 10 * 6;
+		int width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		final PopupWindow popupWindow = new PopupWindow(view,
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, true);
 
@@ -808,8 +808,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 				R.drawable.bg_touming));
 
 		// popupWindow.showAsDropDown(iv_title_right, 0, 0);
-		popupWindow.showAtLocation(contentView, Gravity.RIGHT, 0, 60);
-
+		popupWindow.showAtLocation(contentView, Gravity.CENTER, 0, 0);
 		popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
 			@Override

@@ -4,13 +4,14 @@
     android:id="@+id/lin_aa"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
+    android:background="@color/chinese_skill_touming_bg"
+    android:gravity="center"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical" >
 
@@ -19,15 +20,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginRight="23dp"
-            android:src="@drawable/popup_anchor" />
+            android:src="@drawable/popup_anchor"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/lin_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@drawable/popup_body"
-            android:orientation="vertical" >
+            android:layout_gravity="center"
+            android:background="@drawable/bg_white"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,8 +49,10 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
+                android:background="@drawable/shape_grey_corner_bg"
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:padding="2dp" >
 
                 <RadioButton
                     android:id="@+id/rb_Chinese"
@@ -57,7 +63,7 @@
                     android:button="@null"
                     android:checked="true"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="Chinese"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
@@ -70,7 +76,7 @@
                     android:background="@drawable/btn_radio_selector_left1"
                     android:button="@null"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="Settings"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
@@ -83,7 +89,7 @@
                     android:background="@drawable/btn_radio_selector_right1"
                     android:button="@null"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="Pinyin"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />

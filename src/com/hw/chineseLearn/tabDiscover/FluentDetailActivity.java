@@ -84,7 +84,7 @@ public class FluentDetailActivity extends BaseActivity {
 	private AudioRecorder mr;
 	private boolean isLoop = false;
 	private Resources resources = null;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -275,6 +275,7 @@ public class FluentDetailActivity extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View convertView,
 				final int position, long arg3) {
 			// TODO Auto-generated method stub
+			adapter.setIsControl(false);
 			adapter.setSelection(position);
 			adapter.notifyDataSetChanged();
 
@@ -287,6 +288,7 @@ public class FluentDetailActivity extends BaseActivity {
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
 					playVoice(position);
+					adapter.setIsControl(false);
 				}
 			});
 			ImageView img_record = (ImageView) convertView
@@ -301,7 +303,7 @@ public class FluentDetailActivity extends BaseActivity {
 					setRecoedBg((ImageView) v, position);
 				}
 			});
-			ImageView img_loop = (ImageView) convertView
+			final ImageView img_loop = (ImageView) convertView
 					.findViewById(R.id.img_loop);
 			img_loop.setOnClickListener(new View.OnClickListener() {
 
@@ -309,14 +311,16 @@ public class FluentDetailActivity extends BaseActivity {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					// 设置是否循环 点击后图标改变 停止正在循环的录音 判断当前语音是否循环
-					isLoop = !isLoop;// R.drawable.loop_play
 					if (isLoop) {
-						v.setBackgroundResource(R.drawable.loop_play);
+						img_loop.setImageResource(R.drawable.loop_play);
 						Log.d(TAG, "isLoop==true");
 					} else {
-						v.setBackgroundResource(R.drawable.unloop_play);
+						img_loop.setImageResource(R.drawable.unloop_play);
 						Log.d(TAG, "isLoop==false");
 					}
+					isLoop = !isLoop;
+					adapter.setIsControl(false);
+					adapter.notifyDataSetChanged();
 				}
 			});
 
@@ -568,6 +572,9 @@ public class FluentDetailActivity extends BaseActivity {
 	String font_size = "17";
 
 	public void showPopupWindowMenu() {
+
+		adapter.setIsControl(true);
+
 		display_state = CustomApplication.app.preferencesUtil.getValue(
 				"display_state", "0");
 		font_size = CustomApplication.app.preferencesUtil.getValue("font_size",
@@ -617,6 +624,7 @@ public class FluentDetailActivity extends BaseActivity {
 					break;
 
 				}
+				adapter.setDisplayAndFont(display_state, font_size);
 				adapter.notifyDataSetChanged();
 			}
 		});
@@ -653,6 +661,7 @@ public class FluentDetailActivity extends BaseActivity {
 							"22");
 					break;
 				}
+				adapter.setDisplayAndFont(display_state, font_size);
 				adapter.notifyDataSetChanged();
 			}
 		});
