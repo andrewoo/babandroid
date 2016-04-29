@@ -37,9 +37,7 @@
                 android:id="@+id/txt_sentence_en"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_marginTop="5dp"
-                android:singleLine="true"
                 android:text="Hello！"
                 android:textColor="@color/mid_grey"
                 android:textSize="@dimen/text_s14" />
@@ -68,17 +66,19 @@
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/recorder_animate_bg"
                 android:src="@drawable/recorder_animate_01" />
 
             <ImageView
-                android:id="@+id/img_record_play"
+                android:id="@+id/img_loop"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/img_record"
-                android:background="@drawable/ls_record_play_grey" />
+                android:background="@drawable/recorder_animate_bg"
+                android:src="@drawable/unloop_play" />
         </RelativeLayout>
     </LinearLayout>
 

@@ -5,7 +5,10 @@ import java.util.List;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Region;
@@ -15,12 +18,12 @@ import com.util.svgandroid.HwSVGDrawer.HwPoint;
 import com.util.tool.PathView;
 
 public class HwAnim {
-	private static final int AffectDistanceInPx = 50;
+	private static final int AffectDistanceInPx = 80;
 	protected int mAffectDistance;
 	protected Canvas mAnimCanvas = null;
 	protected List<HwPoint> mAnimHistoryPoints = new ArrayList<HwPoint>();
 	protected int mHwAnimPartIndex = 0;
-	protected boolean mHwAnimRunning = false;
+	public boolean mHwAnimRunning = false;
 	protected OnAnimListener mListener = null;
 	protected PathMeasure mMeasure = null;
 	protected ValueAnimator mValueAnim = null;
@@ -29,11 +32,18 @@ public class HwAnim {
 
 	public HwAnim(PathView paramHwView, double paramDouble) {
 		this.mView = paramHwView;
-		this.mAffectDistance = ((int) (50.0D * paramDouble));
+		this.mAffectDistance = ((int) (80.0D * paramDouble));
 		this.mAnimCanvas = new Canvas(mView.mHwBmp);
 		this.mAnimCanvas.scale(mView.mRatio, mView.mRatio);
 	}
-
+    public void reset() {
+        mAnimHistoryPoints.clear();
+        mHwAnimPartIndex = 0x0;
+        mHwAnimRunning = false;
+        if(mValueAnim != null) {
+            mValueAnim.cancel();
+        }
+    }
 	private void setAnim() {
 		if (!this.mHwAnimRunning) {
 			return;
@@ -43,104 +53,94 @@ public class HwAnim {
 			this.mMeasure = new PathMeasure();
 		}
 		this.mMeasure.setPath(
-				(mView.mPartDirection.get(mHwAnimPartIndex)).path, false);
+				(mView.directionPaths.get(mHwAnimPartIndex)), false);
 		float[] arrayOfFloat = new float[2];
 		arrayOfFloat[0] = 0.0F;
 		arrayOfFloat[1] = this.mMeasure.getLength();
-		this.mValueAnim = ValueAnimator.ofFloat(arrayOfFloat);
-		this.mValueAnim
-				.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-					protected float[] animPos = new float[2];
-
-					public void onAnimationUpdate(
-							ValueAnimator paramAnonymousValueAnimator) {
-						float f = ((Float) paramAnonymousValueAnimator
-								.getAnimatedValue()).floatValue();
-						mMeasure.getPosTan(f, this.animPos, null);
-						mAnimHistoryPoints.add(new HwPoint(this.animPos[0],
-								this.animPos[1]));
-						mAnimCanvas.save();
-						preDraw(mAnimCanvas);
-						mView.invalidate();
-						Log.d("onAnimationUpdate", "mView.invalidate()");
-					}
-				});
-		this.mValueAnim.addListener(new Animator.AnimatorListener() {
+		mValueAnim = ValueAnimator.ofFloat(arrayOfFloat);
+		mValueAnim.setDuration(1500);        
+		//值动画每走一次更新在mAnimHistoryPoints中添加最新的两个点作为线的连接点
+		mValueAnim.addUpdateListener(new AnimatorUpdateListener() {
+			protected float[] animPos = new float[2];
+			public void onAnimationUpdate(ValueAnimator paramAnonymousValueAnimator) {
+				float f = ((Float) paramAnonymousValueAnimator.getAnimatedValue()).floatValue();
+				mMeasure.getPosTan(f, this.animPos, null);
+				mAnimHistoryPoints.add(new HwPoint(this.animPos[0],this.animPos[1]));
+				mAnimCanvas.save();
+				preDraw(mAnimCanvas);
+				mView.invalidate();
+			}
+		});	
+		mValueAnim.addListener(new Animator.AnimatorListener() {
 			public void onAnimationCancel(Animator paramAnonymousAnimator) {
 			}
-
 			public void onAnimationEnd(Animator paramAnonymousAnimator) {
-				HwAnim localHwAnim = HwAnim.this;
-				localHwAnim.mHwAnimPartIndex = (1 + localHwAnim.mHwAnimPartIndex);
-				if (mHwAnimPartIndex < mView.mPartPolygon.size()) {
-					setAnim();
-					mView.postDelayed(new Runnable() {
-						public void run() {
-							mValueAnim.start();
-						}
-					}, timeGap);
-				}
-//				do {
-//					// return;
-//					mHwAnimRunning = false;
-//					mView.invalidate();
-//				} while (mListener == null);
+				Log.d("onAnimationEnd", "onAnimationEnd");
+
+//				mAnimPartIndex=mAnimPartIndex+1;
+				Log.d("------------------", mHwAnimPartIndex+"");
+				Log.d("partPaths.size()", mView.partPaths.size()+"");
+				mHwAnimPartIndex=mHwAnimPartIndex+1;
 				
-				mListener.onEnd();
-				Log.d("HwAnim", "onAnimationEnd");
-
+				   if(mHwAnimPartIndex < mView.partPaths.size()) {
+						//继续画下一个笔画
+	                    mView.postDelayed(new Runnable() {
+	                        public void run() {
+	                        	setAnim();
+	                        }
+	                    }, (long)timeGap);
+	                    return;
+	                }
+					//动画全部做完；操作
+				    mHwAnimRunning = false;
+	                mView.invalidate();
+	                if(mListener != null) {
+	                    mListener.onEnd();
+	                }
 			}
-
 			public void onAnimationRepeat(Animator paramAnonymousAnimator) {
 			}
-
 			public void onAnimationStart(Animator paramAnonymousAnimator) {
 			}
+			
 		});
-		long l = (long) (this.mMeasure.getLength() / this.mAffectDistance * this.timeGap);
-		this.mValueAnim.setDuration(l);
+		mValueAnim.start();   
 	}
 
 	public void drawAnim(Canvas paramCanvas) {
-
-		Log.d("drawAnim", "mHwAnimPartIndex:" + mHwAnimPartIndex);
-		if (this.mHwAnimPartIndex == this.mView.mPartPolygon.size()) {
-			paramCanvas.drawBitmap(this.mView.mFgCharBmp, 0.0F, 0.0F, null);
-			Log.d("", "paramCanvas.drawBitmap(mFgCharBmp");
-		}
-		while ((!this.mHwAnimRunning)
-				|| (this.mHwAnimPartIndex > this.mView.mPartPolygon.size())) {
-			Log.e("drawAnim", "return");
-			return;
-		}
-		paramCanvas.drawBitmap(this.mView.mHwBmp, 0.0F, 0.0F, null);
-		Log.d("drawAnim", "paramCanvas.drawBitmap(mHwBmp");
+		 if(mHwAnimPartIndex == mView.partPaths.size()) {
+	            return;
+	        }
+	        if((mHwAnimRunning) && (mHwAnimPartIndex < mView.partPaths.size())) {
+	        	paramCanvas.drawBitmap(mView.mHwBmp, 0.0f, 0.0f, null);
+	        }
 	}
-
+	
 	protected void preDraw(Canvas paramCanvas) {
-		int count = mView.mPartPolygon.size();
+		int count = mView.partPaths.size();
 		Log.e("preDraw", "mHwAnimPartIndex:" + mHwAnimPartIndex);
 		Log.e("preDraw", "mPartPolygon.size():" + count);
 
-		if ((this.mHwAnimRunning)
-				&& (this.mHwAnimPartIndex < this.mView.mPartPolygon.size())) {
+		if ((this.mHwAnimRunning) && (this.mHwAnimPartIndex < this.mView.partPaths.size())) {
 			Path localPath = new Path();
 			for (int i = 0; i < this.mAnimHistoryPoints.size(); i++) {
 				HwPoint localHwPoint = (HwPoint) this.mAnimHistoryPoints.get(i);
 				localPath.addCircle(localHwPoint.x, localHwPoint.y,
-						this.mAffectDistance, Path.Direction.CW);// CW
-																	// 创建顺时针方向的矩形路径
+						this.mAffectDistance, Path.Direction.CW);
 			}
-			paramCanvas.clipPath((Path) this.mView.mPartPolygon
-					.get(this.mHwAnimPartIndex));
+			Path part1=this.mView.partPaths.get(mHwAnimPartIndex);
+			//当前写的这个笔画的路径区域 结合 当前已经绘制的部分的交集；
+			paramCanvas.clipPath(part1);
 			paramCanvas.clipPath(localPath, Region.Op.INTERSECT);
-			for (int j = 0; j < this.mHwAnimPartIndex; j++) {
-				paramCanvas.clipPath((Path) this.mView.mPartPolygon.get(j),
-						Region.Op.UNION);
-			}
-			paramCanvas.drawBitmap(this.mView.mFgCharBmp, 0.0F, 0.0F, null);
-			paramCanvas.restore();
-			Log.d("HwAnim", "preDraw()");
+	        for(int i = 0x0; i < mHwAnimPartIndex; i = i + 0x1) {
+	        	paramCanvas.clipPath(mView.partPaths.get(i), Region.Op.UNION);
+	        }
+			
+			Paint dpaint = new Paint(1);;
+			dpaint.setStyle(Paint.Style.FILL_AND_STROKE);
+			dpaint.setColor(Color.BLACK);
+			paramCanvas.drawPath(mView.charPath, dpaint);				
+	        paramCanvas.restore();
 		}
 	}
 

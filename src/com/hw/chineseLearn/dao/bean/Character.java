@@ -1,18 +1,20 @@
 package com.hw.chineseLearn.dao.bean;
 
+import java.io.Serializable;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 
 @DatabaseTable(tableName = "Character")
-public class Character   {
-	@DatabaseField(columnName = "CEE", id = true)
+public class Character implements Serializable  {
+	@DatabaseField(columnName = "CEE")
 	private String CEE;
 	@DatabaseField(columnName = "CEJ")
 	private String CEJ;
 	@DatabaseField(columnName = "CEK")
 	private String CEK;
-	@DatabaseField(columnName = "CharId")
+	@DatabaseField(columnName = "CharId", id = true)
 	private String CharId;
 	@DatabaseField(columnName = "CharPath") 
 	private String CharPath;

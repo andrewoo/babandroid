@@ -1,17 +1,22 @@
 package com.hw.chineseLearn.adapter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,11 +25,19 @@ import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.hw.chineseLearn.db.DatabaseHelper;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
+import com.hw.chineseLearn.model.FluentDetailListModel;
+import com.hw.chineseLearn.model.FluentDetailListWordsModel;
+import com.util.tool.AudioRecorder;
+import com.util.tool.AudioRecorder.VMChangeListener;
+import com.util.tool.MediaPlayUtil;
+import com.util.tool.MediaPlayerHelper;
 
 public class FluentDetailAdapter extends BaseAdapter {
+	String TAG = "FluentDetailAdapter";
 	private Context context;
-	public ArrayList<LearnUnitBaseModel> list;
+	public ArrayList<FluentDetailListModel> list;
 	private LayoutInflater inflater;
 
 	private int width, height;
@@ -32,12 +45,18 @@ public class FluentDetailAdapter extends BaseAdapter {
 	private Resources resources = null;
 	int colorWhite = -1;
 	int colorBlack = -1;
+	boolean isRecord = false;// 是否正在录音
+	private MediaPlayerHelper mediaPlayerHelper;
+	private String awsId;
+	private String fluentId;
 
 	public FluentDetailAdapter(Context context,
-			ArrayList<LearnUnitBaseModel> list) {
+			ArrayList<FluentDetailListModel> list, String fluentId, String awsId) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
 		this.list = list;
+		this.fluentId = fluentId;
+		this.awsId = awsId;
 		resources = context.getResources();
 		colorWhite = resources.getColor(R.color.white);
 		colorBlack = resources.getColor(R.color.black);
@@ -70,12 +89,14 @@ public class FluentDetailAdapter extends BaseAdapter {
 	int count = 1;
 	// 存放view的集合
 	HashMap<Integer, View> mapView = new HashMap<Integer, View>();
+	String display_state = "0";
+	String font_size = "14";
+	ViewHolder holder = null;
 
 	@SuppressLint("NewApi")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		ViewHolder holder = null;
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = inflater.inflate(
@@ -95,41 +116,85 @@ public class FluentDetailAdapter extends BaseAdapter {
 					.findViewById(R.id.img_play);
 			holder.img_record = (ImageView) convertView
 					.findViewById(R.id.img_record);
-			holder.img_record_play = (ImageView) convertView
-					.findViewById(R.id.img_record_play);
+			holder.img_loop = (ImageView) convertView
+					.findViewById(R.id.img_loop);
 
+			holder.txt_sentence_cn.setTextSize(14.0f);
+			holder.txt_sentence_en.setTextSize(14.0f);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		LearnUnitBaseModel model = list.get(position);
+		FluentDetailListModel model = list.get(position);
 		if (model == null) {
 			return convertView;
 		}
+		display_state = CustomApplication.app.preferencesUtil.getValue(
+				"display_state", "0");
+		font_size = CustomApplication.app.preferencesUtil.getValue("font_size",
+				"14");
 
-		if (position % 2 == 0) {
-			holder.lin_bg.setBackground(context.getResources().getDrawable(
-					R.drawable.chat_from_bg_normal));
-			holder.lin_content.setGravity(Gravity.LEFT);
-		} else {
-			holder.lin_bg.setBackground(context.getResources().getDrawable(
-					R.drawable.chat_to_bg_normal));
-			holder.lin_content.setGravity(Gravity.RIGHT);
+		String STRE = model.getSTRE();
+		ArrayList<FluentDetailListWordsModel> words = model.getWords();
+
+		if (words != null) {
+
+			StringBuffer bufferSW = new StringBuffer();
+			StringBuffer bufferPY = new StringBuffer();
+			StringBuffer bufferTW = new StringBuffer();
+
+			for (int i = 0; i < words.size(); i++) {
+				FluentDetailListWordsModel listWordsModel = words.get(i);
+				if (i == 0) {
+					if ("A".equals(listWordsModel.getSW())) {
+						holder.lin_bg.setBackground(context.getResources()
+								.getDrawable(R.drawable.chat_from_bg_normal));
+						holder.lin_content.setGravity(Gravity.LEFT);
+					} else {
+						holder.lin_bg.setBackground(context.getResources()
+								.getDrawable(R.drawable.chat_to_bg_normal));
+						holder.lin_content.setGravity(Gravity.RIGHT);
+					}
+				} else {
+					String SW = listWordsModel.getSW();
+					String PY = listWordsModel.getPY();
+					String TW = listWordsModel.getTW();
+
+					bufferSW = bufferSW.append(SW);
+					bufferPY = bufferPY.append(" " + PY);
+					bufferTW = bufferTW.append(TW);
+				}
+			}
+
+			if ("0".equals(display_state)) {
+				holder.txt_sentence_cn.setText("" + bufferSW.toString());
+				holder.txt_sentence_en.setText("" + STRE);
+			} else if ("1".equals(display_state)) {
+				holder.txt_sentence_cn.setText("" + bufferSW.toString());
+				holder.txt_sentence_en.setText("" + bufferPY.toString());
+			} else {
+				holder.txt_sentence_cn.setText("" + STRE);
+				holder.txt_sentence_en.setText("" + bufferPY.toString());
+			}
+
+			if ("10".equals(font_size)) {
+				holder.txt_sentence_cn.setTextSize(10.0f);
+				holder.txt_sentence_en.setTextSize(10.0f);
+			} else if ("14".equals(font_size)) {
+				holder.txt_sentence_cn.setTextSize(14.0f);
+				holder.txt_sentence_en.setTextSize(14.0f);
+			} else {// 22
+				holder.txt_sentence_cn.setTextSize(22.0f);
+				holder.txt_sentence_en.setTextSize(22.0f);
+			}
 		}
-
-		String sentenceCn = model.getUnitName();
-		String sentenceEn = model.getDescription();
-		String imageName = "" + model.getIconResSuffix();
-
-		holder.txt_sentence_cn.setText("" + sentenceCn);
-		holder.txt_sentence_en.setText("" + sentenceEn);
 
 		if (selectPosition == position) {// 选中
 			holder.rel_funcations.setVisibility(View.VISIBLE);
 			holder.lin_content.setGravity(Gravity.CENTER);
+			playVoice(position);
 		} else {// 未选中
 			holder.rel_funcations.setVisibility(View.GONE);
-
 			if (position % 2 == 0) {
 				holder.lin_content.setGravity(Gravity.LEFT);
 			} else {
@@ -138,6 +203,26 @@ public class FluentDetailAdapter extends BaseAdapter {
 		}
 
 		return convertView;
+	}
+ 
+	/**
+	 * 播放声音
+	 * 
+	 * @param position
+	 */
+	private void playVoice(final int position) {
+		String soundPath = DatabaseHelperMy.SOUND_PATH + "/" + awsId + "/"
+				+ awsId + "-" + (position + 1) + ".mp3";
+		Log.d(TAG, "soundPath:" + soundPath);
+		MediaPlayUtil instance = MediaPlayUtil.getInstance();
+		instance.setPlayOnCompleteListener(new OnCompletionListener() {
+
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				MediaPlayUtil.getInstance().release();
+			}
+		});
+		instance.play(soundPath);
 	}
 
 	public class ViewHolder {
@@ -148,6 +233,6 @@ public class FluentDetailAdapter extends BaseAdapter {
 		private TextView txt_sentence_en;
 		private ImageView img_play;
 		private ImageView img_record;
-		private ImageView img_record_play;
+		private ImageView img_loop;
 	}
 }

@@ -89,10 +89,11 @@ public class FluentListActivity extends BaseActivity {
 
 	@SuppressWarnings("unchecked")
 	private void initDatas() {
-		try {			
-			listBase = (ArrayList<TbMyFluentNow>) MyDao.getDaoMy(
-					TbMyFluentNow.class).queryBuilder().where().eq("Downloaded",1).query();
-			
+		try {
+			listBase = (ArrayList<TbMyFluentNow>) MyDao
+					.getDaoMy(TbMyFluentNow.class).queryBuilder().where()
+					.eq("Downloaded", 1).query();
+
 			Log.d(TAG, "listBase.size():" + listBase.size());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -124,9 +125,11 @@ public class FluentListActivity extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			// TODO Auto-generated method stub
-
-			startActivity(new Intent(FluentListActivity.this,
-					FluentDetailActivity.class));
+			TbMyFluentNow model = listBase.get(arg2);
+			Intent intent = new Intent(FluentListActivity.this,
+					FluentDetailActivity.class);
+			intent.putExtra("model", model);
+			startActivity(intent);
 		}
 	};
 
