@@ -104,14 +104,14 @@ public class PinyinToneActivity extends BaseActivity {
 				long arg3) {
 			// TODO Auto-generated method stub
 
-			LearnUnitBaseModel learnUnitBaseModel = listBase.get(arg2);
-			if (learnUnitBaseModel != null) {
-				boolean isEnable = learnUnitBaseModel.isEnable();
-				if (isEnable) {
-					startActivity(new Intent(PinyinToneActivity.this,
-							LessonViewActivity.class));
-				}
-			}
+			// LearnUnitBaseModel learnUnitBaseModel = listBase.get(arg2);
+			// if (learnUnitBaseModel != null) {
+			// boolean isEnable = learnUnitBaseModel.isEnable();
+			// if (isEnable) {
+			// startActivity(new Intent(PinyinToneActivity.this,
+			// LessonViewActivity.class));
+			// }
+			// }
 		}
 	};
 

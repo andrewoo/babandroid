@@ -27,8 +27,8 @@ public class LessonTestOutResultActivity extends BaseActivity {
 	private String TAG = "==LessonTestOutResultActivity==";
 	public Context context;
 	private Resources resources;
-	private int width;
-	private int height;
+	private int screenWidth;
+	private int screenHeight;
 	View contentView;
 	/**
 	 * 正确率
@@ -46,6 +46,7 @@ public class LessonTestOutResultActivity extends BaseActivity {
 	private int score;
 	private int exerciseCount;
 	private TextView tv_lose_all;
+	private ImageView iv_is_failed;
 	int characterCount = 0, wordsCount = 0, sentenceCount = 0;
 	int rightCount = 0, wrongCount = 0;
 
@@ -88,8 +89,8 @@ public class LessonTestOutResultActivity extends BaseActivity {
 		setContentView(contentView);
 
 		CustomApplication.app.addActivity(this);
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 5;
-		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 3;
+		screenWidth = CustomApplication.app.displayMetrics.widthPixels;
+		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 		resources = context.getResources();
 		init();
 	}
@@ -98,9 +99,13 @@ public class LessonTestOutResultActivity extends BaseActivity {
 	 * 初始化
 	 */
 	public void init() {
-		LayoutParams lp = new LayoutParams(width, height);
 
 		tv_lose_all = (TextView) findViewById(R.id.tv_lose_all);
+		iv_is_failed = (ImageView) findViewById(R.id.iv_is_failed);
+		int width = screenWidth * 6 / 10;
+		int height = width / 77 * 100;
+		LayoutParams layoutParams = new LayoutParams(width, height);
+		iv_is_failed.setLayoutParams(layoutParams);
 
 		btn_redo = (TextView) contentView.findViewById(R.id.btn_redo);
 		btn_redo.setVisibility(View.GONE);

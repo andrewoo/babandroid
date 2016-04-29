@@ -19,14 +19,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginRight="23dp"
-            android:src="@drawable/popup_anchor" />
+            android:src="@drawable/popup_anchor"
+            android:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/lin_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:background="@drawable/popup_body"
+            android:background="@drawable/bg_white"
             android:orientation="vertical"
             android:paddingBottom="10dp" >
 
@@ -46,8 +47,10 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
+                android:background="@drawable/shape_grey_corner_bg"
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:padding="2dp" >
 
                 <RadioButton
                     android:id="@+id/rb_CN_EG"
@@ -58,7 +61,7 @@
                     android:button="@null"
                     android:checked="true"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="CN_EG"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
@@ -68,10 +71,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_radio_selector_center1"
+                    android:background="@drawable/btn_radio_selector_left1"
                     android:button="@null"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="CN_aa"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
@@ -84,7 +87,7 @@
                     android:background="@drawable/btn_radio_selector_right1"
                     android:button="@null"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="EN_aa"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
@@ -113,8 +116,10 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
+                android:background="@drawable/shape_grey_corner_bg"
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:padding="2dp" >
 
                 <RadioButton
                     android:id="@+id/rb_Small"
@@ -124,7 +129,7 @@
                     android:background="@drawable/btn_radio_selector_left1"
                     android:button="@null"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="Small"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
@@ -134,11 +139,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_radio_selector_center1"
+                    android:background="@drawable/btn_radio_selector_left1"
                     android:button="@null"
                     android:checked="true"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="Medium"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
@@ -151,7 +156,7 @@
                     android:background="@drawable/btn_radio_selector_right1"
                     android:button="@null"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="Large"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />

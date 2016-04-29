@@ -62,6 +62,11 @@ public class FluentDetailAdapter extends BaseAdapter {
 		colorBlack = resources.getColor(R.color.black);
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		height = CustomApplication.app.displayMetrics.heightPixels / 3 * 4;
+
+		display_state = CustomApplication.app.preferencesUtil.getValue(
+				"display_state", "0");
+		font_size = CustomApplication.app.preferencesUtil.getValue("font_size",
+				"17");
 	}
 
 	@Override
@@ -84,6 +89,17 @@ public class FluentDetailAdapter extends BaseAdapter {
 
 	public void setSelection(int position) {
 		this.selectPosition = position;
+	}
+
+	boolean isControl = false;
+
+	public void setDisplayAndFont(String display_state, String font_size) {
+		this.display_state = display_state;
+		this.font_size = font_size;
+	}
+
+	public void setIsControl(boolean isControl) {
+		this.isControl = isControl;
 	}
 
 	int count = 1;
@@ -118,9 +134,6 @@ public class FluentDetailAdapter extends BaseAdapter {
 					.findViewById(R.id.img_record);
 			holder.img_loop = (ImageView) convertView
 					.findViewById(R.id.img_loop);
-
-			holder.txt_sentence_cn.setTextSize(14.0f);
-			holder.txt_sentence_en.setTextSize(14.0f);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -133,6 +146,16 @@ public class FluentDetailAdapter extends BaseAdapter {
 				"display_state", "0");
 		font_size = CustomApplication.app.preferencesUtil.getValue("font_size",
 				"14");
+		if ("10".equals(font_size)) {
+			holder.txt_sentence_cn.setTextSize(10.0f);
+			holder.txt_sentence_en.setTextSize(10.0f);
+		} else if ("14".equals(font_size)) {
+			holder.txt_sentence_cn.setTextSize(14.0f);
+			holder.txt_sentence_en.setTextSize(14.0f);
+		} else {// 22
+			holder.txt_sentence_cn.setTextSize(22.0f);
+			holder.txt_sentence_en.setTextSize(22.0f);
+		}
 
 		String STRE = model.getSTRE();
 		ArrayList<FluentDetailListWordsModel> words = model.getWords();
@@ -192,7 +215,10 @@ public class FluentDetailAdapter extends BaseAdapter {
 		if (selectPosition == position) {// 选中
 			holder.rel_funcations.setVisibility(View.VISIBLE);
 			holder.lin_content.setGravity(Gravity.CENTER);
-			playVoice(position);
+			if (!isControl) {
+				playVoice(position);
+			}
+
 		} else {// 未选中
 			holder.rel_funcations.setVisibility(View.GONE);
 			if (position % 2 == 0) {
@@ -204,7 +230,7 @@ public class FluentDetailAdapter extends BaseAdapter {
 
 		return convertView;
 	}
- 
+
 	/**
 	 * 播放声音
 	 * 

@@ -13,10 +13,10 @@
 
         <ImageView
             android:id="@+id/img_is_right"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/test_correct_3" />
+            android:background="@drawable/correct_graphic" />
 
         <LinearLayout
             android:layout_width="match_parent"
