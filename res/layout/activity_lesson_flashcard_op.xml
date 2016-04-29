@@ -26,9 +26,8 @@
         android:id="@+id/flash_gallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2" 
-        android:visibility="gone"
-        />
+        android:layout_weight="2"
+        android:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/lin_1"

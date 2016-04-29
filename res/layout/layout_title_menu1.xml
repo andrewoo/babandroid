@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_radio_selector_center1"
+                    android:background="@drawable/btn_radio_selector_left1"
                     android:button="@null"
                     android:gravity="center"
                     android:padding="5dp"

@@ -54,7 +54,7 @@
         android:background="@drawable/mizige"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <com.util.tool.PathView
             xmlns:app="http://schemas.android.com/apk/res-auto"

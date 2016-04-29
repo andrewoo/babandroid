@@ -499,20 +499,23 @@ public class LessonTestOutTestActivity extends BaseActivity {
 	 * @param isRight
 	 */
 	private void showCheckDialog(boolean isRight) {
-
+		int screenWidth = CustomApplication.app.displayMetrics.widthPixels;
+		int width = screenWidth * 6 / 10;
+		int height = width / 78 * 100;
 		if (isRight) {
 			status = 1;
 			rightCount++;
+			height = width / 95 * 100;
 		} else {
 			status = 0;
 			wrongCount++;
+			height = width / 78 * 100;
 		}
 
 		ImageView img_is_right = (ImageView) checkView
 				.findViewById(R.id.img_is_right);
-		int screenWidth = CustomApplication.app.displayMetrics.widthPixels;
-		LayoutParams layoutParams = new LayoutParams(screenWidth * 4 / 10,
-				screenWidth * 4 / 10);
+
+		LayoutParams layoutParams = new LayoutParams(width, height);
 		img_is_right.setLayoutParams(layoutParams);
 		Button btn_next = (Button) checkView.findViewById(R.id.btn_next);
 		TextView tv_answer = (TextView) checkView.findViewById(R.id.tv_answer);
@@ -522,14 +525,14 @@ public class LessonTestOutTestActivity extends BaseActivity {
 
 		if (isRight) {
 			img_is_right.setBackground(context.getResources().getDrawable(
-					R.drawable.test_correct_3));
+					R.drawable.correct_graphic));
 			tv_tip.setVisibility(View.VISIBLE);
 			// btn_next.setTextColor(context.getResources().getColor(
 			// R.color.chinese_skill_blue));
 		} else {
 
 			img_is_right.setBackground(context.getResources().getDrawable(
-					R.drawable.test_wrong_3));
+					R.drawable.incorrect_graphic));
 			// btn_next.setTextColor(context.getResources().getColor(
 			// R.color.chinese_skill_yellow));
 			tv_tip.setVisibility(View.INVISIBLE);
@@ -556,10 +559,17 @@ public class LessonTestOutTestActivity extends BaseActivity {
 				btn_check.setVisibility(View.VISIBLE);
 
 				if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
-					
-					setResult(100);
-					CustomApplication.app.finishActivity(LessonTestOutTestActivity.class);
-					
+
+					Intent intent = new Intent(LessonTestOutTestActivity.this,
+							LessonResultActivity.class);
+					intent.putExtra("loseAllPanders", "");
+					intent.putExtra("secondCount", secondCount);// 用时秒数
+					intent.putExtra("score", score);// 得分
+					intent.putExtra("exerciseCount", exerciseCount);// 总练习题目数
+					intent.putExtra("rightCount", rightCount);// 正确个数
+					intent.putExtra("wrongCount", wrongCount);// 错误个数
+					intent.putExtra("LessonId", lessonId);// 传递lessonid确定哪个lesson做完
+					startActivityForResult(intent, 100);
 				}
 				builder.dismiss();
 				// learn表中regex第一位 对应View关系
