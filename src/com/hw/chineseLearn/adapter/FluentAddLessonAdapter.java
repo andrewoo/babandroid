@@ -132,14 +132,17 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 			int DownLoadStatue = getDownLoadStatue(model.getId());// 获取标记的状态
 			if (DownLoadStatue == 0) {// 标记删除
 				holder.img_add_lesson.setVisibility(View.VISIBLE);
+				holder.progress_download.setVisibility(View.GONE);
 				holder.img_remove_lesson.setVisibility(View.GONE);
 			} else {// 未标记删除
 				holder.img_add_lesson.setVisibility(View.GONE);
+				holder.progress_download.setVisibility(View.GONE);
 				holder.img_remove_lesson.setVisibility(View.VISIBLE);
 			}
 
 		} else {// 没下载过
 			holder.img_add_lesson.setVisibility(View.VISIBLE);
+			holder.progress_download.setVisibility(View.GONE);
 			holder.img_remove_lesson.setVisibility(View.GONE);
 		}
 
@@ -151,11 +154,13 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 				boolean isDownLoaded = checkIsDownLoaded(model);
 				if (isDownLoaded) {
 					holder.img_add_lesson.setVisibility(View.GONE);
+					
 					holder.img_remove_lesson.setVisibility(View.VISIBLE);
 					setDownLoaded(1, model.getId());
 				} else {
 					Log.e(TAG, "没下载过");
 					holder.img_add_lesson.setVisibility(View.VISIBLE);
+					holder.progress_download.setVisibility(View.GONE);
 					holder.img_remove_lesson.setVisibility(View.GONE);
 					downLoadAudioFiles(position, model);
 					downLoadContentFiles(position, model);
@@ -171,6 +176,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 				// TODO Auto-generated method stub
 				// String dirId = model.getDirId();
 				holder.img_add_lesson.setVisibility(View.VISIBLE);
+				holder.progress_download.setVisibility(View.VISIBLE);
 				holder.img_remove_lesson.setVisibility(View.GONE);
 				setDownLoaded(0, model.getId());
 

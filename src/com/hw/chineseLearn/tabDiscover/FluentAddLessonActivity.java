@@ -357,11 +357,6 @@ public class FluentAddLessonActivity extends BaseActivity {
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
-						// 把下载的值通过集合传过去
-						// modelList.get(position).setCount(
-						// tbFileDownload.getFileContentSize());
-						// modelList.get(position).setCurrentSize(
-						// tbFileDownload.getCurFileContentSize());
 						adapter.notifyDataSetChanged();
 					}
 
@@ -374,11 +369,6 @@ public class FluentAddLessonActivity extends BaseActivity {
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
-						// 下载完后更变state和图片颜色
-						// modelList.get(position).setState(FINISH);
-						// String imageName = modelList.get(position)
-						// .getImageName() + "_hit";
-						// modelList.get(position).setImageName(imageName);
 						adapter.notifyDataSetChanged();
 						// 下载完后解压到音频目录
 						new Thread() {

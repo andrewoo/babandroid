@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,6 +43,10 @@ public class MySettingRemindersActivity extends BaseActivity implements
 	private String timeString;
 	private int hour = 9;
 	private int minute = 30;
+	private CheckBox ck_sunday, ck_monday, ck_tuesday, ck_wednesday,
+			ck_thursday, ck_friday, ck_saturday;
+	private boolean isCheckedSun, isCheckedMon, isCheckedTue, isCheckedWen,
+			isCheckedThu, isCheckedFri, isCheckedSat;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,21 +63,60 @@ public class MySettingRemindersActivity extends BaseActivity implements
 	/**
 	 * 初始化
 	 */
-	public void init() { 
+	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Reminders", View.GONE, View.GONE, 0);
 		ll_xingqi_bg = (LinearLayout) findViewById(R.id.ll_xingqi_bg);
 		int heightPixels = CustomApplication.app.getScreenSize().heightPixels;
-		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,heightPixels/4) ;
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, heightPixels / 4);
 		ll_xingqi_bg.setLayoutParams(params);
-		
+
 		txt_time = (TextView) findViewById(R.id.txt_time);
 		txt_time.setOnClickListener(onClickListener);
- 
+		isCheckedSun = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCheckedSun");
+		isCheckedMon = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCheckedMon");
+		isCheckedTue = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCheckedTue");
+		isCheckedWen = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCheckedWen");
+		isCheckedThu = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCheckedThu");
+		isCheckedFri = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCheckedFri");
+		isCheckedSat = CustomApplication.app.preferencesUtil
+				.getValuesBoolean("isCheckedSat");
+		
+		ck_sunday = (CheckBox) findViewById(R.id.ck_sunday);
+		ck_monday = (CheckBox) findViewById(R.id.ck_monday);
+		ck_tuesday = (CheckBox) findViewById(R.id.ck_tuesday);
+		ck_wednesday = (CheckBox) findViewById(R.id.ck_wednesday);
+		ck_thursday = (CheckBox) findViewById(R.id.ck_thursday);
+		ck_friday = (CheckBox) findViewById(R.id.ck_friday);
+		ck_saturday = (CheckBox) findViewById(R.id.ck_saturday);
+		
+		ck_sunday.setChecked(isCheckedSun);
+		ck_monday.setChecked(isCheckedMon);
+		ck_tuesday.setChecked(isCheckedTue);
+		ck_wednesday.setChecked(isCheckedWen);
+		ck_thursday.setChecked(isCheckedThu);
+		ck_friday.setChecked(isCheckedFri);
+		ck_saturday.setChecked(isCheckedSat);
+
+		ck_sunday.setOnCheckedChangeListener(onCheckedChangeListener);
+		ck_monday.setOnCheckedChangeListener(onCheckedChangeListener);
+		ck_tuesday.setOnCheckedChangeListener(onCheckedChangeListener);
+		ck_wednesday.setOnCheckedChangeListener(onCheckedChangeListener);
+		ck_thursday.setOnCheckedChangeListener(onCheckedChangeListener);
+		ck_friday.setOnCheckedChangeListener(onCheckedChangeListener);
+		ck_saturday.setOnCheckedChangeListener(onCheckedChangeListener);
+
 		btn_ok = (Button) findViewById(R.id.btn_ok);
 		btn_cancel = (Button) findViewById(R.id.btn_cancel);
-		btn_ok.setOnClickListener(onClickListener); 
-		btn_cancel.setOnClickListener(onClickListener);  
+		btn_ok.setOnClickListener(onClickListener);
+		btn_cancel.setOnClickListener(onClickListener);
 
 		lin_time_picker = (LinearLayout) findViewById(R.id.lin_time_picker);
 		lin_time_picker.setVisibility(View.GONE);
@@ -247,6 +292,86 @@ public class MySettingRemindersActivity extends BaseActivity implements
 
 		return timeString = hourString + ":" + minuteString;
 	}
+
+	CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			// TODO Auto-generated method stub
+
+			switch (buttonView.getId()) {
+			case R.id.ck_sunday:
+
+				if (isChecked) {
+					isCheckedSun = true;
+
+				} else {
+					isCheckedSun = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isCheckedSun", isCheckedSun);
+
+				break;
+			case R.id.ck_monday:
+				if (isChecked) {
+					isCheckedMon = true;
+				} else {
+					isCheckedMon = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isCheckedMon", isCheckedMon);
+				break;
+			case R.id.ck_tuesday:
+				if (isChecked) {
+					isCheckedTue = true;
+				} else {
+					isCheckedTue = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isCheckedTue", isCheckedTue);
+				break;
+			case R.id.ck_wednesday:
+				if (isChecked) {
+					isCheckedWen = true;
+				} else {
+					isCheckedWen = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isCheckedWen", isCheckedWen);
+				break;
+			case R.id.ck_thursday:
+				if (isChecked) {
+					isCheckedThu = true;
+				} else {
+					isCheckedThu = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isCheckedThu", isCheckedThu);
+				break;
+			case R.id.ck_friday:
+				if (isChecked) {
+					isCheckedFri = true;
+				} else {
+					isCheckedFri = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isCheckedFri", isCheckedFri);
+				break;
+			case R.id.ck_saturday:
+				if (isChecked) {
+					isCheckedSat = true;
+				} else {
+					isCheckedSat = false;
+				}
+				CustomApplication.app.preferencesUtil.setBooleanValue(
+						"isCheckedSat", isCheckedSat);
+				break;
+			default:
+				break;
+			}
+		}
+
+	};
 
 	@Override
 	protected void onDestroy() {
