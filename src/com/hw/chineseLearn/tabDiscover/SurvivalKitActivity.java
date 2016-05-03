@@ -398,8 +398,7 @@ public class SurvivalKitActivity extends BaseActivity {
 						// 下载完后解压到音频目录
 						new Thread() {
 							public void run() {
-								FileTools.unZip(filePath,
-										DatabaseHelperMy.SOUND_PATH);
+								FileTools.unZip(filePath,DatabaseHelperMy.SOUND_PATH);
 							};
 						}.start();
 					}
