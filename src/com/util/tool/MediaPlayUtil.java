@@ -98,8 +98,8 @@ public class MediaPlayUtil {
 	
 	public void release(){
 		if (mMediaPlayer != null) {
-			mMediaPlayUtil=null;
 			mMediaPlayer.release();
+			mMediaPlayUtil=null;
 		}
 	}
 

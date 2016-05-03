@@ -214,7 +214,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 					intent.putExtra("unit", unit);
 					intent.putExtra("position", position);
 					startActivity(intent);
-				}
+				} 
 			}
 		}
 	};
