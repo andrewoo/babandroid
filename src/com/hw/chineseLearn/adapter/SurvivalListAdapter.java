@@ -3,6 +3,8 @@ package com.hw.chineseLearn.adapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -47,6 +49,7 @@ public class SurvivalListAdapter extends BaseAdapter {
 	private  String filePath = DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName+ ".amr";
 	private AudioRecorder mr;
 	private boolean isLoop=false;
+	private Map<Integer, Boolean> startMap=new HashMap<Integer, Boolean>();
 	
 
 	public SurvivalListAdapter(Context context, ArrayList<item> data) {
@@ -90,7 +93,7 @@ public class SurvivalListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
 			convertView = View.inflate(context,
 					R.layout.expend_listview_item_child_survival_kit, null);
@@ -119,6 +122,14 @@ public class SurvivalListAdapter extends BaseAdapter {
 		} else {
 			this.cvHolder = (ViewHolder) convertView.getTag();
 		}
+		cvHolder.ck_collect.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				startMap.put(position, isChecked);
+			}
+		});
+		
 		cvHolder.img_record.setBackgroundDrawable(resources.getDrawable(R.drawable.recorder_animate_bg));
 		if (data == null) {
 			return convertView;
@@ -133,17 +144,12 @@ public class SurvivalListAdapter extends BaseAdapter {
 		if (selectPosition == position) {
 			cvHolder.lin_bg.setVisibility(View.VISIBLE);
 			// 播放当前语音
-			// new
-			// MediaPlayerHelper(DatabaseHelperMy.CACHE_DIR_DOWNLOAD+"/kit/1/"+model.getPron_file_name()).play();
-			MediaPlayUtil.getInstance().play(
-					DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/kit/"
-							+ model.getCid() + "/" + model.getPron_file_name());
-
+			MediaPlayUtil.getInstance().play(DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/kit/"+ model.getCid() + "/" + model.getPron_file_name());
 		} else {
 			cvHolder.lin_bg.setVisibility(View.GONE);
+			MediaPlayUtil.getInstance().stop();
 		}
-		
-		
+		cvHolder.ck_collect.setChecked(startMap.get(position)==null?false:startMap.get(position));
 
 		return convertView;
 	}
@@ -185,50 +191,51 @@ public class SurvivalListAdapter extends BaseAdapter {
 					}
 				});
 
-		cvHolder.ck_collect
-				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-					@Override
-					public void onCheckedChanged(CompoundButton arg0,
-							boolean checked) {
-						// TODO Auto-generated method stub
-						// if (checked) {
-						// LearnUnitBaseModel modelBase = new
-						// LearnUnitBaseModel();
-						// CustomApplication.app.favouriteList.add(modelBase);
-						if(checked){
-							arg0.setChecked(checked);
-						}else{
-							arg0.setChecked(!checked);
-						}
-						// checked=!checked;
-						// } else {
-						// cvHolder.ck_collect.setChecked(checked);
-						// checked=!checked;
-						// 从中找到这一个对象，删除
-						// for (int i = 0; i <
-						// CustomApplication.app.favouriteList
-						// .size(); i++) {
-						// LearnUnitBaseModel modelBase =
-						// CustomApplication.app.favouriteList
-						// .get(i);
-						//
-						// if (modelBase == null) {
-						// continue;
-						// }
-						// // 暂时 用name做校验
-						// String unitName = modelBase.getUnitName();
-						// if ("Favourite".equals(unitName)) {
-						// CustomApplication.app.favouriteList
-						// .remove(i);
-						// checked=false;
-						// break;
-						// }
-						// }
-						// }
-						// SurvivalListAdapter.this.notifyDataSetChanged();
-					}
-				});
+//		cvHolder.ck_collect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//
+//					@Override
+//					public void onCheckedChanged(CompoundButton arg0,
+//							boolean checked) {
+//						// TODO Auto-generated method stub
+//						// if (checked) {
+//						// LearnUnitBaseModel modelBase = new
+//						// LearnUnitBaseModel();
+//						// CustomApplication.app.favouriteList.add(modelBase);
+//						if(checked){
+////							arg0.setChecked(checked);
+//							startMap.put(position, checked);
+//						}else{
+////							arg0.setChecked(!checked);
+//							startMap.put(position, !checked);
+//						}
+//						// checked=!checked;
+//						// } else {
+//						// cvHolder.ck_collect.setChecked(checked);
+//						// checked=!checked;
+//						// 从中找到这一个对象，删除
+//						// for (int i = 0; i <
+//						// CustomApplication.app.favouriteList
+//						// .size(); i++) {
+//						// LearnUnitBaseModel modelBase =
+//						// CustomApplication.app.favouriteList
+//						// .get(i);
+//						//
+//						// if (modelBase == null) {
+//						// continue;
+//						// }
+//						// // 暂时 用name做校验
+//						// String unitName = modelBase.getUnitName();
+//						// if ("Favourite".equals(unitName)) {
+//						// CustomApplication.app.favouriteList
+//						// .remove(i);
+//						// checked=false;
+//						// break;
+//						// }
+//						// }
+//						// }
+//						// SurvivalListAdapter.this.notifyDataSetChanged();
+//					}
+//				});
 
 	}
 

@@ -94,15 +94,15 @@ public class TasksCompletedView extends View {
 		mYCenter = getHeight() / 2;
 		
 //		canvas.drawCircle(mXCenter, mYCenter, mRadius, mCirclePaint);
-		
+		canvas.drawCircle(mXCenter, mYCenter, mRadius + mStrokeWidth , mCirclePaint);
 		if (mProgress > 0 ) {
 			RectF oval = new RectF();
 			oval.left = (mXCenter - mRingRadius);
 			oval.top = (mYCenter - mRingRadius);
 			oval.right = mRingRadius * 2 + (mXCenter - mRingRadius);
 			oval.bottom = mRingRadius * 2 + (mYCenter - mRingRadius);
-			canvas.drawCircle(mXCenter, mYCenter, mRadius + mStrokeWidth , mCirclePaint);
-			canvas.drawArc(oval, -90, ((float)mProgress / mTotalProgress) * 360, true, mRingPaint); //
+//			canvas.drawCircle(mXCenter, mYCenter, mRadius + mStrokeWidth , mCirclePaint);
+			canvas.drawArc(oval, -90, ((float)mProgress / mTotalProgress) * 360, true, mRingPaint); //动态画
 //			String txt = mProgress + "%";
 //			mTxtWidth = mTextPaint.measureText(txt, 0, txt.length());
 //			canvas.drawText(txt, mXCenter - mTxtWidth / 2, mYCenter + mTxtHeight / 4, mTextPaint);
