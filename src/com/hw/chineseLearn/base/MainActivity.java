@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		contentView = LayoutInflater.from(context).inflate(
 				R.layout.activity_main_tab, null);
 		setContentView(contentView);
-		mainActivity = this; 
+		mainActivity = this;
 		init();
 		getUnitData();// 查询数据库Unit表得到所有girdView需要字段
 	}
@@ -108,7 +108,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			mLinList[i] = (LinearLayout) findViewById(bottomLinIds[i]);
 			mLinList[i].setOnClickListener(this);
 		}
-
+		mLinList[1].setVisibility(View.GONE);
+		
 		for (int i = 0; i < bottomBtnIds.length; i++) {
 			mBtnList[i] = (Button) findViewById(bottomBtnIds[i]);
 			mBtnList[i].setClickable(false);
@@ -129,7 +130,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		}
 
 		setTitle(View.GONE, View.GONE, 0, "Learn", View.GONE, View.VISIBLE,
-				R.drawable.review_button,true);
+				R.drawable.review_button, true);
 
 	}
 
@@ -156,13 +157,14 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	 */
 	@SuppressWarnings("deprecation")
 	public void setTitle(int textLeft, int imgLeft, int imgLeftDrawable,
-			String title, int textRight, int imgRight, int imgRightDrawable,boolean isShow) {
+			String title, int textRight, int imgRight, int imgRightDrawable,
+			boolean isShow) {
 
-		View view_title = (View) this.findViewById(R.id.view_title);//rel_title_view
-		
-		if(isShow){
+		View view_title = (View) this.findViewById(R.id.view_title);// rel_title_view
+
+		if (isShow) {
 			view_title.setVisibility(View.VISIBLE);
-		}else{
+		} else {
 			view_title.setVisibility(View.GONE);
 		}
 		Button btn_title = (Button) view_title.findViewById(R.id.btn_title);
@@ -202,10 +204,10 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				learnFragment = new LearnFragment();
 				navigateToNoAnimWithId(learnFragment, R.id.container1);
 			}
-			View view_title = (View) this.findViewById(R.id.view_title);//rel_title_view
+			View view_title = (View) this.findViewById(R.id.view_title);// rel_title_view
 			view_title.setVisibility(View.VISIBLE);
 			setTitle(View.GONE, View.GONE, 0, "Learn", View.GONE, View.VISIBLE,
-					R.drawable.review_button,true);
+					R.drawable.review_button, true);
 
 			break;
 
@@ -216,17 +218,17 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			// navigateToNoAnimWithId(learnFragment, R.id.container2);
 			// }
 			setTitle(View.GONE, View.GONE, 0, "Complete", View.GONE, View.GONE,
-					0,true);
+					0, true);
 			break;
 		case R.id.lin_2:
 			selectIndex = 2;
- 
+
 			if (discoverFragment == null) {
 				discoverFragment = new DiscoverFragment();
 				navigateToNoAnimWithId(discoverFragment, R.id.container3);
 			}
-			setTitle(View.GONE, View.GONE, 0, "Discover", View.GONE,
-					View.GONE, R.drawable.img_share,true);
+			setTitle(View.GONE, View.GONE, 0, "Discover", View.GONE, View.GONE,
+					R.drawable.img_share, true);
 			break;
 		case R.id.lin_3:
 			selectIndex = 3;
@@ -234,7 +236,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				mineFragment = new MineFragment();
 				navigateToNoAnimWithId(mineFragment, R.id.container4);
 			}
-			setTitle(View.GONE, View.GONE, 0, "Me", View.GONE, View.GONE, 0,false);
+			setTitle(View.GONE, View.GONE, 0, "Me", View.GONE, View.GONE, 0,
+					false);
 			break;
 
 		default:
@@ -365,7 +368,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		builder.show();
 		builder.setCancelable(true);
 
-		lin_copy_link.setOnClickListener(new OnClickListener() { 
+		lin_copy_link.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -394,7 +397,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		public void onReceive(Context context, Intent intent) {
 			// 接收
 			if (intent.getAction().equals(
-					"android.net.conn.CONNECTIVITY_CHANGE")) { 
+					"android.net.conn.CONNECTIVITY_CHANGE")) {
 
 				if (SystemHelper.isConnected(MainActivity.this) == true && // 如果网络连接正常
 						SystemHelper.getNetworkType(MainActivity.this) != -1) {
