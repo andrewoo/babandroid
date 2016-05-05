@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -123,6 +125,16 @@ public class LearnUnitAdapter extends BaseAdapter {
 		holder.tv_name.setText("" + unitName);
 		holder.iv_img.setImageResource(context.getResources().getIdentifier(
 				imageName, "drawable", context.getPackageName()));
+		
+		//手动设置前3个图标大小
+		if(position<3){
+			 Drawable drawable=context.getResources().getDrawable(R.drawable.lu0_1_1);
+			 int width = drawable.getIntrinsicWidth();
+			 int height= drawable.getIntrinsicHeight();
+			LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(width,height);
+			holder.iv_img.setLayoutParams(params);
+			holder.iv_img.setScaleType(ScaleType.FIT_XY);
+		}
 
 		return convertView;
 	}

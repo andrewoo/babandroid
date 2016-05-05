@@ -134,8 +134,7 @@ public class SurvivalKitDetailActivity extends BaseActivity {
 
 			case R.id.iv_title_left:// 返回
 
-				CustomApplication.app
-						.finishActivity(SurvivalKitDetailActivity.this);
+				CustomApplication.app.finishActivity(SurvivalKitDetailActivity.this);
 				break;
 
 			default:

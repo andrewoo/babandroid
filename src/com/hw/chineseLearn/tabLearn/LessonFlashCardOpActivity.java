@@ -30,6 +30,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.FlashCardOpGalleryAdapter;
@@ -44,9 +45,7 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.util.tool.MediaPlayUtil;
-import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
-import com.util.weight.MyGallery;
 import com.util.weight.SlideSwitch;
 import com.util.weight.SlideSwitch.SlideListener;
 
@@ -103,7 +102,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 	boolean isWordChecked = false;
 	boolean isAutoPlay = true;
 
-	private MyGallery gallery;// CoverFlow
+	private FancyCoverFlow gallery;// CoverFlow
 	private FlashCardOpGalleryAdapter adapter;
 
 	int id = -1;
@@ -379,11 +378,11 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 			adapter = new FlashCardOpGalleryAdapter(this, datas, datas.size());
 		}
 		adapter.notifyDataSetChanged();
-		gallery = (MyGallery) findViewById(R.id.flash_gallery);
+		gallery = (FancyCoverFlow) findViewById(R.id.flash_gallery);
 		gallery.setAdapter(adapter);
 		gallery.setOnItemSelectedListener(this);
 		gallery.setAnimationDuration(1500);
-		gallery.setSpacing(screenWidth / 10 * 1);
+//		gallery.setSpacing(screenWidth / 10 * 1);
 		gallery.setSelection(index);
 		gallery.setFocusable(false);
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(

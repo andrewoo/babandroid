@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="LESSON"
             android:textColor="@color/deep_grey"
-            android:textSize="@dimen/text_s18" />
+            android:textSize="@dimen/text_s20" />
 
         <TextView
             android:id="@+id/tv_no"
@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="1 of 2"
+            android:visibility="invisible"
             android:textColor="@color/chinese_skill_blue"
             android:textSize="@dimen/text_s16" />
 
@@ -41,72 +42,7 @@
             android:gravity="center"
             android:text="人；男人；女人；男孩；女孩"
             android:textColor="@color/deep_grey"
-            android:textSize="@dimen/text_s14" />
-
-        <Button
-            android:id="@+id/btn_redo"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/btn_bg_blue"
-            android:gravity="center"
-            android:onClick="redo"
-            android:padding="10dip"
-            android:singleLine="true"
-            android:text="Redo"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_s14" />
-
-        <Button
-            android:id="@+id/btn_start"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/btn_bg_blue"
-            android:gravity="center"
-            android:onClick="start"
-            android:padding="10dip"
-            android:singleLine="true"
-            android:text="Start"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_s14" />
-
-        <Button
-            android:id="@+id/btn_review"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/btn_bg_blue"
-            android:gravity="center"
-            android:onClick="review"
-            android:padding="10dip"
-            android:singleLine="true"
-            android:text="Review"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_s14" />
-        
-        <Button
-            android:id="@+id/btn_lock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/btn_grey_bg"
-            android:gravity="center"
-            android:enabled="false"
-            android:padding="10dip"
-            android:singleLine="true"
-            android:text="Locked"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_s14" />
+            android:textSize="@dimen/text_s20" />
     </LinearLayout>
 
 </RelativeLayout>

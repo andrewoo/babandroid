@@ -361,5 +361,5 @@
     <color name="pinyinchart">#3a8e98</color>
     <color name="chinese_skill_grey">#EBEBEB</color>
     <color name="chinese_skill_lOGIN_BULE">#4A90E2</color>
-
+	<color name="chinese_skill_locked_grey">#9B9B9B</color>
 </resources>

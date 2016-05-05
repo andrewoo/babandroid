@@ -106,7 +106,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	// 一个自定义的布局，作为显示的内容
 	View checkView = null;
 	CustomDialog builder;
-	private int utilId = 0;
+//	private int utilId = 0;
 
 	private List<LessonRepeatRegex> regexes;
 	private int lessonId;
@@ -162,9 +162,9 @@ public class LessonExerciseActivity extends BaseActivity {
 	private void initBudle() {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-			if (bundle.containsKey("utilId")) {
-				utilId = bundle.getInt("utilId");
-			}
+//			if (bundle.containsKey("utilId")) {
+//				utilId = bundle.getInt("utilId");
+//			}
 			if (bundle.containsKey("regexes")) {
 				regexes = (List<LessonRepeatRegex>) bundle
 						.getSerializable("regexes");

@@ -8,10 +8,8 @@ import java.util.Random;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +22,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.GalleryAdapter;
@@ -35,23 +36,20 @@ import com.hw.chineseLearn.dao.bean.Lesson;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
-import com.util.tool.BitmapLoader;
 import com.util.tool.UiUtil;
-import com.util.weight.MyGallery;
 
 /**
  * 课程总览页面
  * 
  * @author yh
  */
-public class LessonViewActivity extends BaseActivity implements
-		OnItemSelectedListener {
+public class LessonViewActivity extends BaseActivity implements OnItemSelectedListener {
 
 	protected static final int LESSON_QUERY = 100;
 	protected static final int TB_LESSON = 200;
 	private String TAG = "==LessonViewActivity==";
 	public Context context;
-	private MyGallery gallery;// CoverFlow
+	private FancyCoverFlow gallery;// CoverFlow
 	private GalleryAdapter adapter;
 	private ImageView iv_unit_img;
 	View contentView;
@@ -59,7 +57,6 @@ public class LessonViewActivity extends BaseActivity implements
 	int height;
 	AnimationSet animationSet;
 	int selection = 0;
-	private List<TbLessonMaterialStatus> lessonStatusList;// tbLesson表
 	private Unit mUnit;// 当前Unit列
 	private List<Lesson> lessonList;// lesson表
 	private List<Integer> statusList = new ArrayList<Integer>();// 存放是否解锁状态的集合
@@ -78,6 +75,7 @@ public class LessonViewActivity extends BaseActivity implements
 				mUnit = (Unit) bundle.getSerializable("unit");
 			}
 		}
+
 		getStatusAndLessonDesc();// 拿到状态传给下个界面
 		init();// 初始化gallery和动画
 
@@ -192,12 +190,29 @@ public class LessonViewActivity extends BaseActivity implements
 		setTitle(View.GONE, View.VISIBLE,
 				R.drawable.btn_selector_top_left_white, mUnit.getUnitName(),
 				View.GONE, View.GONE, 0);
+		//iv_unit_img 手动设置顶部飞机图标的大小
+		iv_unit_img = (ImageView) findViewById(R.id.iv_unit_img);// START按钮
+		 Drawable drawable=getResources().getDrawable(R.drawable.lu0_1_1);
+		 int width = drawable.getIntrinsicWidth();
+		 int height= drawable.getIntrinsicHeight();
+		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(width,height);
+		iv_unit_img.setLayoutParams(params);
+		iv_unit_img.setScaleType(ScaleType.FIT_XY);
+		 
+		tv_start = (TextView) findViewById(R.id.tv_start);// START按钮
+		tv_start.setOnClickListener(onClickListener);
+
+		tv_review = (TextView) findViewById(R.id.tv_review);// REVIEW按钮
+		tv_review.setOnClickListener(onClickListener);
+
+		tv_locked = (TextView) findViewById(R.id.tv_locked);
+		tv_locked.setOnClickListener(onClickListener);
+
 		adapter = new GalleryAdapter(this, mUnit, statusList, descList);
-		gallery = (MyGallery) findViewById(R.id.gallery);
+		gallery = (FancyCoverFlow) findViewById(R.id.gallery);
+//		gallery.setSpacing(CustomApplication.app.displayMetrics.widthPixels / 10 * 1);
 		gallery.setOnItemClickListener(onItemclickListener);
 		gallery.setAdapter(adapter);
-		gallery.setAnimationDuration(1500);
-		gallery.setSpacing(CustomApplication.app.displayMetrics.widthPixels / 10 * 1);
 		gallery.setOnItemSelectedListener(this);
 		gallery.setSelection(selection);
 		iv_unit_img = (ImageView) findViewById(R.id.iv_unit_img);
@@ -298,26 +313,41 @@ public class LessonViewActivity extends BaseActivity implements
 				CustomApplication.app.finishActivity(LessonViewActivity.this);
 				break;
 
-			case R.id.iv_unit_img:
+			case R.id.tv_start:
+				startLessonExerciseActivity();
 
+				break;
+			case R.id.tv_review:
+				startLessonExerciseActivity();
 				break;
 
 			default:
 				break;
 			}
 		}
+
 	};
+
+	private void startLessonExerciseActivity() {
+		Intent intent = new Intent(context, LessonExerciseActivity.class);
+		intent.putExtra("regexes", regexes);
+		intent.putExtra("LessonId", lesson.getLessonId());
+		startActivityForResult(intent, 0);
+	}
 
 	OnItemClickListener onItemclickListener = new AdapterView.OnItemClickListener() {
 
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View convertView,
 				final int position, long arg3) {
-			// TODO Auto-generated method stub
 
 		}
 	};
 	private Lesson lesson;
+	private TextView tv_start;
+	private ArrayList<LessonRepeatRegex> regexes;// 选中位置的题
+	private TextView tv_review;
+	private TextView tv_locked;
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View convertView,
@@ -325,69 +355,32 @@ public class LessonViewActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 
 		selection = position;
-		final ArrayList<LessonRepeatRegex> regexes = (ArrayList<LessonRepeatRegex>) getRepeatRegexBeanList();// 得到正则表达式中所有题型的集合
+		regexes = (ArrayList<LessonRepeatRegex>) getRepeatRegexBeanList();// 得到正则表达式中所有题型的集合
 		adapter.setSelection(position);
+		// 判断显示start review lock
+		if (statusList != null) {
+			if (statusList.get(position) == 1) {
+				tv_start.setVisibility(View.VISIBLE);
+				tv_review.setVisibility(View.GONE);
+				tv_locked.setVisibility(View.GONE);
+			} else if (statusList.get(position) == 0) {
+				tv_locked.setVisibility(View.VISIBLE);
+				tv_start.setVisibility(View.GONE);
+				tv_review.setVisibility(View.GONE);
+			} else if (statusList.get(position) == 2) {
+				tv_locked.setVisibility(View.GONE);
+				tv_start.setVisibility(View.GONE);
+				tv_review.setVisibility(View.VISIBLE);
+			}
+		}
+
+		if (tv_start.getVisibility() == View.VISIBLE) {
+			tv_review.setVisibility(View.GONE);
+		}
 
 		if (convertView == null) {
 			convertView = View.inflate(this, R.layout.layout_gellay_item, null);
 		}
-		Button btn_redo = (Button) convertView.findViewById(R.id.btn_redo);
-		Button btn_start = (Button) convertView.findViewById(R.id.btn_start);
-		Button btn_review = (Button) convertView.findViewById(R.id.btn_review);
-
-		btn_redo.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(context,
-						LessonExerciseActivity.class);
-				intent.putExtra("utilId", position);
-				intent.putExtra("regexes", regexes);
-				intent.putExtra("LessonId", lesson.getLessonId());
-				startActivityForResult(intent, 0);
-				Log.d("GalleryAdapter", "utilId:" + position);
-			}
-		});
-		btn_start.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(context,
-						LessonExerciseActivity.class);
-				intent.putExtra("utilId", position);
-				intent.putExtra("regexes", regexes);
-				intent.putExtra("LessonId", lesson.getLessonId());
-				startActivityForResult(intent, 0);
-				Log.d("GalleryAdapter", "utilId:" + position);
-			}
-		});
-
-		btn_review.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// startActivity(new Intent(context,
-				// LessonReViewActivity.class));
-				// review 就是start
-				Intent intent = new Intent(context,
-						LessonExerciseActivity.class);
-				intent.putExtra("utilId", position);
-				intent.putExtra("regexes", regexes);
-				intent.putExtra("LessonId", lesson.getLessonId());
-				startActivityForResult(intent, 0);
-				Log.d("GalleryAdapter", "utilId:" + position);
-
-			}
-		});
-
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
@@ -410,6 +403,11 @@ public class LessonViewActivity extends BaseActivity implements
 			break;
 		}
 		Log.d(TAG, "resultCode:" + resultCode);
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+		
 	};
 
 }

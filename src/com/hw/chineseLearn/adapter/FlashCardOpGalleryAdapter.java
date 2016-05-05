@@ -18,12 +18,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import at.technikum.mti.fancycoverflow.FancyCoverFlow;
+import at.technikum.mti.fancycoverflow.FancyCoverFlowAdapter;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
 
-public class FlashCardOpGalleryAdapter extends BaseAdapter {
+public class FlashCardOpGalleryAdapter extends FancyCoverFlowAdapter {
 	Context mContext;
 	public int selectItem;
 	LayoutInflater inflater;
@@ -110,35 +112,48 @@ public class FlashCardOpGalleryAdapter extends BaseAdapter {
 		this.selectItem = position;
 	}
 
+
+	public class ViewHolder {
+
+		public LinearLayout lin_1;
+		public ImageView img_play;
+		public TextView tv_translation;
+		public TextView tv_pinyin;
+		public TextView tv_word;
+	}
+
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getCoverFlowItem(int position, View reusableView,
+			ViewGroup parent) {
+
 		// TODO Auto-generated method stub
 		ViewHolder holder = null;
 
-		if (convertView == null) {
+		if (reusableView == null) {
 			holder = new ViewHolder();
-			convertView = inflater.inflate(R.layout.layout_falsh_card_item,
-					null);
-			holder.lin_1 = (LinearLayout) convertView.findViewById(R.id.lin_1);
-			holder.lin_1.setLayoutParams(new LinearLayout.LayoutParams(// 设置当前view的大小
-					width, height));
-			holder.tv_word = (TextView) convertView.findViewById(R.id.tv_word);
-			holder.tv_translation = (TextView) convertView
+//			reusableView = inflater.inflate(R.layout.layout_falsh_card_item,null);
+			reusableView=LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_falsh_card_item, parent, false);
+			holder.lin_1 = (LinearLayout) reusableView.findViewById(R.id.lin_1);
+//			holder.lin_1.setLayoutParams(new LinearLayout.LayoutParams(// 设置当前view的大小
+//					width, height));
+			reusableView.setLayoutParams(new FancyCoverFlow.LayoutParams(width,height));
+			holder.tv_word = (TextView) reusableView.findViewById(R.id.tv_word);
+			holder.tv_translation = (TextView) reusableView
 					.findViewById(R.id.tv_translation);
-			holder.tv_pinyin = (TextView) convertView
+			holder.tv_pinyin = (TextView) reusableView
 					.findViewById(R.id.tv_pinyin);
-			holder.img_play = (ImageView) convertView
+			holder.img_play = (ImageView) reusableView
 					.findViewById(R.id.img_play);
-			mapView.put(position, convertView);
+			mapView.put(position, reusableView);
 
-			convertView.setTag(holder);
+			reusableView.setTag(holder);
 		} else {
-			holder = (ViewHolder) convertView.getTag();
+			holder = (ViewHolder) reusableView.getTag();
 		}
 
 		LGModelFlashCard lGModelFlashCard = datas.get(position);
 		if (lGModelFlashCard == null) {
-			return convertView;
+			return reusableView;
 		}
 		// id = lGModelFlashCard.getCharId();
 		holder.tv_translation.setText("" + lGModelFlashCard.getEnglish());
@@ -154,15 +169,7 @@ public class FlashCardOpGalleryAdapter extends BaseAdapter {
 		// width / 5 * 4, height));
 		// }
 
-		return convertView;
-	}
-
-	public class ViewHolder {
-
-		public LinearLayout lin_1;
-		public ImageView img_play;
-		public TextView tv_translation;
-		public TextView tv_pinyin;
-		public TextView tv_word;
+		return reusableView;
+	
 	}
 }

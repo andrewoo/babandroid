@@ -1,6 +1,5 @@
 package com.hw.chineseLearn.adapter;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,27 +8,23 @@ import java.util.Map.Entry;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.test.UiThreadTest;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import at.technikum.mti.fancycoverflow.FancyCoverFlow;
+import at.technikum.mti.fancycoverflow.FancyCoverFlowAdapter;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.dao.MyDao;
-import com.hw.chineseLearn.dao.bean.Lesson;
-import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
 import com.util.tool.UiUtil;
 
-public class GalleryAdapter extends BaseAdapter {
+public class GalleryAdapter extends FancyCoverFlowAdapter {
 	Context mContext;
 	public int selectItem;
 	LayoutInflater inflater;
@@ -114,70 +109,54 @@ public class GalleryAdapter extends BaseAdapter {
 		this.selectItem = position;
 	}
 
+
+	public class ViewHolder {
+
+		public LinearLayout lin_c;
+		public TextView tv_title;
+		public TextView tv_no;
+		public TextView tv_description;
+	}
+
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getCoverFlowItem(int position, View reusableView,
+			ViewGroup parent) {
 		// TODO Auto-generated method stub
 		ViewHolder holder = null;
 
-		if (convertView == null) {
+		if (reusableView == null) {
 			holder = new ViewHolder();
-			convertView = inflater.inflate(R.layout.layout_gellay_item, null);
-			holder.lin_c = (LinearLayout) convertView.findViewById(R.id.lin_c);
-			holder.lin_c.setLayoutParams(new RelativeLayout.LayoutParams(//设置当前view的大小
-					width, height));
-			holder.tv_description = (TextView) convertView
-					.findViewById(R.id.tv_description);
-			holder.tv_no = (TextView) convertView
-					.findViewById(R.id.tv_no);
+			reusableView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_gellay_item, parent, false);
+			holder.lin_c = (LinearLayout) reusableView.findViewById(R.id.lin_c);
+			holder.tv_title = (TextView) reusableView.findViewById(R.id.tv_title);
+			reusableView.setLayoutParams(new FancyCoverFlow.LayoutParams(width,height));
+//			holder.lin_c.setLayoutParams(new RelativeLayout.LayoutParams(//设置当前view的大小
+//					width, height));
+			holder.tv_description = (TextView) reusableView.findViewById(R.id.tv_description);
 			
-//			holder.tv_description = (TextView) convertView
-//					.findViewById(R.id.tv_description);
-			
-			holder.btn_redo = (Button) convertView.findViewById(R.id.btn_redo);
-			holder.btn_start = (Button) convertView
-					.findViewById(R.id.btn_start);
-			holder.btn_review = (Button) convertView
-					.findViewById(R.id.btn_review);
-			holder.btn_lock = (Button) convertView
-			.findViewById(R.id.btn_lock);
+			mapView.put(position, reusableView);
 
-			mapView.put(position, convertView);
-
-			convertView.setTag(holder);
+			reusableView.setTag(holder);
 		} else {
-			holder = (ViewHolder) convertView.getTag();
+			holder = (ViewHolder) reusableView.getTag();
 		}
-
-		// if (selectItem == position) {
-		// holder.lin_c.setLayoutParams(new RelativeLayout.LayoutParams(width,
-		// height));
-		// } else {
-		// // 未选中
-		// holder.lin_c.setLayoutParams(new RelativeLayout.LayoutParams(width,
-		// height / 5 * 4));
-		// }
 
 		//判断显示start redo review
 		if(lessonStatus!=null){
-			
-			if(lessonStatus.get(position)==1){
-				holder.btn_start.setVisibility(View.VISIBLE);
-				holder.btn_review.setVisibility(View.GONE);
-				holder.btn_lock .setVisibility(View.GONE);
-			}else if(lessonStatus.get(position)==0){
-				holder.btn_lock .setVisibility(View.VISIBLE);
-				holder.btn_start.setVisibility(View.GONE);
-				holder.btn_review.setVisibility(View.GONE);
+			if(lessonStatus.get(position)==1){//start
+				holder.lin_c.setBackgroundResource(R.drawable.shape_white_coner_stroke);
+				holder.tv_description.setTextColor(mContext.getResources().getColor(R.color.floralwhite));
+				holder.tv_title.setTextColor(mContext.getResources().getColor(R.color.floralwhite));
+			}else if(lessonStatus.get(position)==0){//lock
+				holder.lin_c.setBackgroundResource(R.drawable.shape_white_coner_stroke);
+				holder.tv_description.setTextColor(mContext.getResources().getColor(R.color.floralwhite));
+				holder.tv_title.setTextColor(mContext.getResources().getColor(R.color.floralwhite));
 			}
-			else if(lessonStatus.get(position)==2){
-				holder.btn_lock .setVisibility(View.GONE);
-				holder.btn_start.setVisibility(View.GONE);
-				holder.btn_review.setVisibility(View.VISIBLE);
+			else if(lessonStatus.get(position)==2){//review
+				holder.lin_c.setBackgroundResource(R.drawable.shape_white_corner_bg);
+				holder.tv_description.setTextColor(mContext.getResources().getColor(R.color.chinese_skill_green));
+				holder.tv_title.setTextColor(mContext.getResources().getColor(R.color.chinese_skill_green));
 			}
-		}
-		
-		if (holder.btn_start.getVisibility() == View.VISIBLE) {
-			holder.btn_review.setVisibility(View.GONE);
 		}
 		//分割去掉数据库中特殊字符
 			String description = descList.get(position);
@@ -194,20 +173,9 @@ public class GalleryAdapter extends BaseAdapter {
 				
 				desc+=str+"\n";
 			}
+			String ofNumber=(position+1)+"of"+UiUtil.getListFormString(unit.getLessonList()).length;
+			holder.tv_title.setText("LESSON"+" "+ofNumber);
 			holder.tv_description.setText(desc);
-		holder.tv_no.setText((position+1)+"of"+UiUtil.getListFormString(unit.getLessonList()).length);//1 of 2
-		return convertView;
-	}
-
-	public class ViewHolder {
-
-		public Button btn_lock;
-		public LinearLayout lin_c;
-		public TextView tv_title;
-		public TextView tv_no;
-		public TextView tv_description;
-		public Button btn_redo;
-		public Button btn_start;
-		public Button btn_review;
+		return reusableView;
 	}
 }

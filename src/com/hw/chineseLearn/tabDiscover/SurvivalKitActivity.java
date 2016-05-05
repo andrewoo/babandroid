@@ -199,7 +199,8 @@ public class SurvivalKitActivity extends BaseActivity {
 			case R.id.iv_title_left:// 返回
 
 				// CustomApplication.app.finishActivity(SurvivalKitActivity.this);
-				SurvivalKitActivity.this.onBackPressed();
+//				SurvivalKitActivity.this.onBackPressed();
+				moveTaskToBack(true);
 				break;
 
 			default:
