@@ -395,25 +395,28 @@ public class HttpHelper {
 			Log.e(TAG + "-downLoadLessonVoices()", "文件夹不存在");
 		}
 		final String direPath = filePath + fileName + ".zip";
+		Log.d(TAG + "-downLoadLessonVoices()", "direPath:" + direPath);
 		File fileP = new File(filePath);
-		if (fileP.exists()) {// zip文件已经下载过了，直接解压
-			// 下载完后解压到音频目录
-			new Thread() {
-				public void run() {
-					boolean isScuess = FileTools.unZip(direPath, filePath);
-
-					if (isScuess) {
-						if (isPlay) {
-							String filePath = DatabaseHelperMy.LESSON_SOUND_PATH
-									+ "/" + fileName;
-							Log.d("filePath", "filePath:" + filePath);
-							MediaPlayUtil.getInstance().play(filePath);
-						}
-					}
-				};
-			}.start();
-		} else {// 下载并解压
-
+//		if (fileP.exists()) {// zip文件已经下载过了，直接解压
+//			// 下载完后解压到音频目录
+//			Log.d(TAG + "-downLoadLessonVoices()", "zip文件已经下载过了，直接解压");
+//			new Thread() {
+//				public void run() {
+//					boolean isScuess = FileTools.unZip(direPath, filePath);
+//
+//					if (isScuess) {
+//						if (isPlay) {
+//							String filePath = DatabaseHelperMy.LESSON_SOUND_PATH
+//									+ "/" + fileName;
+//							Log.d(TAG + "-downLoadLessonVoices()", "filePath:"
+//									+ filePath);
+//							MediaPlayUtil.getInstance().play(filePath);
+//						}
+//					}
+//				};
+//			}.start();
+//		} else {// 下载并解压
+			Log.d(TAG + "-downLoadLessonVoices()", "zip文件没有下载过，下载并解压");
 			http.download(urlName, direPath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
 					false, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 					new RequestCallBack<File>() {
@@ -473,6 +476,6 @@ public class HttpHelper {
 							Log.d(TAG + "-downLoadLessonVoices()", "失败");
 						}
 					});
-		}
+//		}
 	};
 }
