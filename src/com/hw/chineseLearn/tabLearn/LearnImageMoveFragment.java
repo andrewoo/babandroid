@@ -106,6 +106,10 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		MediaPlayUtil.getInstance().play(filePath);
 	}
 
+	public void playClickSound() {
+		new MediaPlayerHelper("sounds/main_click.mp3").play();
+	}
+
 	/**
 	 * 
 	 */
@@ -539,7 +543,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-
+			playClickSound();
 			int[] locations = new int[2];
 			rel_top.getLocationInWindow(locations);
 			// lin_lin在屏幕中的y

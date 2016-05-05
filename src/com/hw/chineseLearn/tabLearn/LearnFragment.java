@@ -28,6 +28,7 @@ import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.TbSetting;
 import com.hw.chineseLearn.dao.bean.Unit;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.SelfGridView;
 
@@ -181,12 +182,15 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		centGridView1.setOnItemClickListener(itemClickListener1);
 	}
 
+	public void playPageIntoSound() {
+		new MediaPlayerHelper("sounds/page_into.mp3").play();
+	}
+
 	OnItemClickListener itemClickListener = new OnItemClickListener() {
 
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 				long arg3) {
-
 			boolean isEnable = false;
 
 			Unit unit = firstList.get(position);
@@ -209,12 +213,13 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 			if (unit != null) {
 				// boolean isEnable = unit.isEnable();
 				if (isEnable) {
+					playPageIntoSound();
 					Intent intent = new Intent(getActivity(),
 							LessonViewActivity.class);
 					intent.putExtra("unit", unit);
 					intent.putExtra("position", position);
 					startActivity(intent);
-				} 
+				}
 			}
 		}
 	};
@@ -248,6 +253,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 			if (unit != null) {
 				// boolean isEnable = learnUnitBaseModel.isEnable();
 				if (isEnable) {
+					playPageIntoSound();
 					Intent intent = new Intent(getActivity(),
 							LessonViewActivity.class);
 					intent.putExtra("unit", unit);

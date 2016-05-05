@@ -44,6 +44,7 @@ import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.UiUtil;
 import com.util.weight.SlideSwitch;
@@ -382,7 +383,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		gallery.setAdapter(adapter);
 		gallery.setOnItemSelectedListener(this);
 		gallery.setAnimationDuration(1500);
-//		gallery.setSpacing(screenWidth / 10 * 1);
+		// gallery.setSpacing(screenWidth / 10 * 1);
 		gallery.setSelection(index);
 		gallery.setFocusable(false);
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
@@ -394,19 +395,12 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 	/**
 	 * 播放asset里的声音文件
 	 */
-	public void assetPlay() {
+	public void play() {
 
-		try {
-			AssetFileDescriptor afd = CustomApplication.app.getAssets().openFd(
-					ASSETS_SOUNDS_PATH + voicePath);
-			Log.d(TAG, "voicePath:" + voicePath);
-			if (isAutoPlay) {
-				MediaPlayUtil.getInstance().play(afd);
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voicePath;
+		Log.d(TAG, "filePath:" + filePath);
+		if (isAutoPlay) {
+			MediaPlayUtil.getInstance().play(filePath);
 		}
 
 	}
@@ -430,6 +424,8 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 					tv_word.setText(chinese);
 					tv_pinyin.setText(pinyin);
 					lin_is_gorget.setVisibility(View.VISIBLE);
+					lin_remember_level.setVisibility(View.GONE);
+					lin_forgot_level.setVisibility(View.GONE);
 				} else {
 					Log.e(TAG, "lGModelFlashCard==null");
 				}
@@ -458,7 +454,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		case 1:// redo
 			index = 0;
 			setText();
-			assetPlay();
+			play();
 			gallery.setSelection(index);// 选中当前页面
 			break;
 
@@ -650,7 +646,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 			} else {
 				gallery.setSelection(index);// 选中当前页面
 				setText();
-				assetPlay();
+				play();
 
 			}
 
@@ -891,7 +887,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		index = position;
 		adapter.setSelection(position);
 		setText();
-		assetPlay();
+		play();
 		if (convertView == null) {
 			convertView = View.inflate(this, R.layout.layout_falsh_card_item,
 					null);
@@ -903,7 +899,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				assetPlay();
+				play();
 			}
 		});
 	}
