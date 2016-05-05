@@ -293,10 +293,13 @@ public class FileTools {
 		zipInputStream.close();
 	}
 
-	public static void unZip(String unZipfileName, String mDestPath) {
+	public static boolean unZip(String unZipfileName, String mDestPath) {
 		if (!mDestPath.endsWith("/")) {
 			mDestPath = mDestPath + "/";
 		}
+		Log.d("unZip()", "目标文件：" + unZipfileName);
+		Log.d("unZip()", "解压地址：" + mDestPath);
+
 		FileOutputStream fileOut = null;
 		ZipInputStream zipIn = null;
 		ZipEntry zipEntry = null;
@@ -323,10 +326,14 @@ public class FileTools {
 					fileOut.close();
 				}
 				zipIn.closeEntry();
+				Log.d("unZip()", "解压成功！");
+				return true;
 			}
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
+		Log.e("unZip()", "解压失败！");
+		return false;
 	}
 
 	/**

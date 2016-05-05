@@ -1,5 +1,6 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +32,11 @@ import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.BitmapLoader;
+import com.util.tool.HttpHelper;
+import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.tool.UtilMedthod;
@@ -65,7 +69,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private List<String> randomList = new ArrayList<String>();
 	// private List<String> partPicNameList = new ArrayList<String>();
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
-	private MediaPlayerHelper mediaPlayerHelper;
 	private int colorBlue = 0;
 	private int colorGrey = 0;
 	private int viewMagin;
@@ -87,6 +90,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	 */
 	HashMap<ImageView, SubLGModel> subLGModelMap = new HashMap<ImageView, SubLGModel>();
 	HashMap<ImageView, SubLGModel> choosedSubLGModelMap = new HashMap<ImageView, SubLGModel>();
+	String filePath = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,14 +99,11 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initData();// 得到传过来的参数
-		play();
 		initView();
 	}
 
 	private void play() {
-		mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
-				+ voicePath);
-		mediaPlayerHelper.play();
+		MediaPlayUtil.getInstance().play(filePath);
 	}
 
 	/**
@@ -135,13 +136,15 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 			@Override
 			public void onClick(View v) {
-				if (mediaPlayerHelper != null) {
-					mediaPlayerHelper.play();
+
+				File file = new File(filePath);
+				if (!file.exists()) {
+					// 下载并播放
+					HttpHelper.downLoadLessonVoices(voicePath, true);
 				} else {
-					mediaPlayerHelper = new MediaPlayerHelper(
-							ASSETS_SOUNDS_PATH + voicePath);
-					mediaPlayerHelper.play();
+					play();
 				}
+
 			}
 		});
 
@@ -163,6 +166,13 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		initMoveViews();
 	}
 
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		MediaPlayUtil.getInstance().release();
+	}
+
 	private void initData() {
 
 		Bundle bundle = getArguments();
@@ -174,6 +184,17 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				title = modelWord.getTitle();
 				subLGModelList = modelWord.getSubLGModelList();
 				answerList = modelWord.getAnswerList();
+
+				filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voicePath;
+				Log.d("filePath", "filePath:" + filePath);
+				File file = new File(filePath);
+				if (!file.exists()) {
+					// 下载并播放
+					HttpHelper.downLoadLessonVoices(voicePath, true);
+				} else {
+					play();
+				}
+
 			}
 		}
 	}
@@ -618,9 +639,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 	@Override
 	public void onStop() {
-		if (mediaPlayerHelper != null) {
-			mediaPlayerHelper.stop();
-		}
 		super.onStop();
 	}
 

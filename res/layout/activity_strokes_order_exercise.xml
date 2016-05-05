@@ -113,6 +113,14 @@
         </LinearLayout>
     </LinearLayout>
 
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/chinesewriting_trangle1" />
+
     <LinearLayout
         android:id="@+id/lin_is_gorget"
         android:layout_width="match_parent"
@@ -129,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginRight="10dp"
-            android:background="@drawable/bg_btn_remembered"
+            android:background="@drawable/bg_btn_remembered0"
             android:gravity="center"
             android:singleLine="true"
             android:textColor="@color/white"
@@ -152,9 +160,9 @@
     <LinearLayout
         android:id="@+id/lin_remember_level"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
         android:paddingTop="10dp" >
@@ -164,53 +172,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
+            android:background="@drawable/bg_btn_remembered_perfect"
             android:gravity="center"
             android:lines="2"
             android:text="@string/pemembered_perfectly"
-            android:textColor="@color/deep_grey"
+            android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/deep_grey" />
 
         <TextView
             android:id="@+id/btn_remembered"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
+            android:background="@drawable/bg_btn_remembered1"
             android:gravity="center"
             android:lines="1"
             android:text="Remembered"
-            android:textColor="@color/deep_grey"
+            android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/deep_grey" />
 
         <TextView
             android:id="@+id/btn_barely_remembered"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:background="@drawable/bg_btn_remembered_barely"
             android:gravity="center"
             android:lines="2"
             android:text="Barely Remembered"
-            android:textColor="@color/deep_grey"
+            android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/lin_forgot_level"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
         android:paddingTop="10dp" >
@@ -220,45 +225,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
+            android:background="@drawable/bg_btn_remembered_almost"
             android:gravity="center"
             android:lines="2"
             android:text="Almost Remembered"
-            android:textColor="@color/deep_grey"
+            android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/deep_grey" />
 
         <TextView
             android:id="@+id/btn_forgot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
+            android:background="@drawable/bg_btn_forgot1"
             android:gravity="center"
             android:lines="1"
             android:text="Forgot"
-            android:textColor="@color/deep_grey"
+            android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/deep_grey" />
 
         <TextView
             android:id="@+id/btn_dont_know"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:background="@drawable/bg_btn_dont_know"
             android:gravity="center"
             android:lines="2"
             android:text="Don&apos;t konw"
-            android:textColor="@color/deep_grey"
+            android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
     </LinearLayout>
 

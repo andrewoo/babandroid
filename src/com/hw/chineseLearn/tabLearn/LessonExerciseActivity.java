@@ -136,16 +136,8 @@ public class LessonExerciseActivity extends BaseActivity {
 	TimerTask task = new TimerTask() {
 		@Override
 		public void run() {
-
-			// new Thread(new Runnable() {
-			// @Override
-			// public void run() {
-			// secondCount++;
-			// Log.d(TAG, "secondCount:" + secondCount);
-			// }
-			// });
 			secondCount++;
-			Log.d(TAG, "secondCount:" + secondCount);
+			// Log.d(TAG, "secondCount:" + secondCount);
 		}
 	};
 
@@ -208,16 +200,6 @@ public class LessonExerciseActivity extends BaseActivity {
 	}
 
 	public void playRightSound() {
-		// AssetManager am = getAssets();// 获得该应用的AssetManager
-		// try {
-		// AssetFileDescriptor afd = am.openFd("sounds/correct_sound.mp3");
-		// mediaPlayer.setDataSource(afd.getFileDescriptor());
-		// mediaPlayer.setVolume(1f, 1f);
-		// mediaPlayer.prepare(); // 准备
-		// mediaPlayer.start();
-		// return;
-		// } catch (IOException localIOException1) {
-		// }
 		new MediaPlayerHelper("sounds/correct_sound.mp3").play();
 	}
 

@@ -76,6 +76,7 @@
 
         <com.util.weight.RoundProgressBar
             android:id="@+id/progress_download"
+            android_custom:style="FILL"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
