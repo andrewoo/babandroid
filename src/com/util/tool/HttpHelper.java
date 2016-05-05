@@ -14,6 +14,7 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,15 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbFileDownload;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.HttpHandler;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -66,6 +76,8 @@ public class HttpHelper {
 	 * An InputStream that skips the exact number of bytes provided, unless it
 	 * reaches EOF.
 	 */
+	private static String TAG = "HttpHelper";
+
 	private static class FlushedInputStream extends FilterInputStream {
 		public FlushedInputStream(InputStream inputStream) {
 			super(inputStream);
@@ -365,4 +377,102 @@ public class HttpHelper {
 		return result;
 	}
 
+	/**
+	 * 下载lesson里的语音文件
+	 * 
+	 * @param fileName
+	 * @param isPlay
+	 */
+	public static void downLoadLessonVoices(final String fileName,
+			final boolean isPlay) {
+		HttpUtils http = new HttpUtils();
+		final String urlName = "http://58.67.154.138:8088/babbel-api-app/resource/"
+				+ fileName + ".zip";
+		Log.d(TAG + "-downLoadLessonVoices()", "urlName:" + urlName);
+		final String filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/";
+		File file = new File(filePath);
+		if (!file.exists()) {
+			Log.e(TAG + "-downLoadLessonVoices()", "文件夹不存在");
+		}
+		final String direPath = filePath + fileName + ".zip";
+		File fileP = new File(filePath);
+		if (fileP.exists()) {// zip文件已经下载过了，直接解压
+			// 下载完后解压到音频目录
+			new Thread() {
+				public void run() {
+					boolean isScuess = FileTools.unZip(direPath, filePath);
+
+					if (isScuess) {
+						if (isPlay) {
+							String filePath = DatabaseHelperMy.LESSON_SOUND_PATH
+									+ "/" + fileName;
+							Log.d("filePath", "filePath:" + filePath);
+							MediaPlayUtil.getInstance().play(filePath);
+						}
+					}
+				};
+			}.start();
+		} else {// 下载并解压
+
+			http.download(urlName, direPath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
+					false, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
+					new RequestCallBack<File>() {
+						@Override
+						public void onStart() {
+
+						}
+
+						@Override
+						public void onLoading(long total, long current,
+								boolean isUploading) {
+
+							System.out.println("current" + "--"
+									+ (float) current / total);
+						}
+
+						@SuppressWarnings("unchecked")
+						@Override
+						public void onSuccess(ResponseInfo<File> responseInfo) {
+							System.out.println("lesson里的语音文件下载成功");
+							// 下载成功后 存表 解压
+							TbFileDownload fileDown = new TbFileDownload();
+							fileDown.setType(2);
+							fileDown.setDlStatus(1);
+							fileDown.setFileName(fileName + ".zip");
+							fileDown.setFileURL(urlName);
+							try {
+								MyDao.getDaoMy(TbFileDownload.class)
+										.createOrUpdate(fileDown);
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							// 下载完后解压到音频目录
+							new Thread() {
+								public void run() {
+									boolean isScuess = FileTools.unZip(filePath
+											+ fileName + ".zip", filePath);
+
+									if (isScuess) {
+										if (isPlay) {
+											String filePath = DatabaseHelperMy.LESSON_SOUND_PATH
+													+ "/" + fileName;
+											Log.d("filePath", "filePath:"
+													+ filePath);
+											MediaPlayUtil.getInstance().play(
+													filePath);
+										}
+									}
+								};
+							}.start();
+
+						}
+
+						@Override
+						public void onFailure(HttpException error, String msg) {
+							Log.d(TAG + "-downLoadLessonVoices()", "失败");
+						}
+					});
+		}
+	};
 }

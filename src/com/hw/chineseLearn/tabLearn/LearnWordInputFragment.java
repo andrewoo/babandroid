@@ -1,5 +1,6 @@
 package com.hw.chineseLearn.tabLearn;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +31,10 @@ import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGModel_Word_040;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.HttpHelper;
+import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 
@@ -62,7 +67,7 @@ public class LearnWordInputFragment extends BaseFragment implements
 
 	private Button btn_play_normal;
 
-	private MediaPlayerHelper mediaPlayerHelper;
+	String filePath = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,8 +80,7 @@ public class LearnWordInputFragment extends BaseFragment implements
 	}
 
 	private void play() {
-		mediaPlayerHelper = new MediaPlayerHelper(ASSETS_SOUNDS_PATH + voicePath);
-		mediaPlayerHelper.play();
+		MediaPlayUtil.getInstance().play(filePath);
 	}
 
 	private void initData() {
@@ -88,6 +92,16 @@ public class LearnWordInputFragment extends BaseFragment implements
 				voicePath = modelWord.getVoicePath();
 				title = modelWord.getTitle();// 得到title
 				answerList = modelWord.getAnswerList();// 得到答案集合
+
+				filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voicePath;
+				Log.d("filePath", "filePath:" + filePath);
+				File file = new File(filePath);
+				if (!file.exists()) {
+					// 下载并播放
+					HttpHelper.downLoadLessonVoices(voicePath, true);
+				} else {
+					play();
+				}
 			}
 		}
 	}
@@ -134,22 +148,26 @@ public class LearnWordInputFragment extends BaseFragment implements
 		// "Learn is loading…");
 	}
 
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		MediaPlayUtil.getInstance().release();
+		MediaPlayUtil.getInstance().stop();
+
+	}
+
 	/**
 	 * 初始化
 	 */
 	public void init() {
-		btn_play_normal = (Button) contentView.findViewById(R.id.btn_play_normal);
+		btn_play_normal = (Button) contentView
+				.findViewById(R.id.btn_play_normal);
 		btn_play_normal.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				if (mediaPlayerHelper != null) {
-					mediaPlayerHelper.play();
-				} else {
-					mediaPlayerHelper = new MediaPlayerHelper(
-							ASSETS_SOUNDS_PATH + voicePath);
-					mediaPlayerHelper.play();
-				}
+				play();
 			}
 		});
 		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
@@ -202,12 +220,9 @@ public class LearnWordInputFragment extends BaseFragment implements
 			}
 		});
 	}
-	
+
 	@Override
 	public void onStop() {
-		if (mediaPlayerHelper != null) {
-			mediaPlayerHelper.stop();
-		}
 		super.onStop();
 	}
 

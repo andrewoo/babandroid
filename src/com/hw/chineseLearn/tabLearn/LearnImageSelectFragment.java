@@ -1,14 +1,14 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.IOException;
+import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
-import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,10 +21,19 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnImageSelectAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
-import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
+import com.hw.chineseLearn.dao.bean.TbFileDownload;
+import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.hw.chineseLearn.dao.bean.LGWord;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.util.thread.ThreadWithDialogTask;
+import com.util.tool.FileTools;
+import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 
@@ -36,6 +45,7 @@ import com.util.tool.MediaPlayerHelper;
 @SuppressLint("NewApi")
 public class LearnImageSelectFragment extends BaseFragment implements
 		OnClickListener {
+	private static final String TAG = "LearnImageSelectFragment";
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 
 	private View contentView;// 主view
@@ -62,25 +72,6 @@ public class LearnImageSelectFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initDBdata();// 初始化数据库数据
-		// play();
-	}
-
-	private void play() {
-		// mediaPlayerHelper = new MediaPlayerHelper("");
-		// mediaPlayerHelper.play();
-
-		// soundPool = new SoundPool(5,AudioManager.STREAM_MUSIC, 5);
-		// AssetManager am = CustomApplication.app.getAssets();
-		// AssetFileDescriptor afd = null;
-		// try {
-		// afd = am.openFd("w-11-104372091955652092.mp3");
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// int load = soundPool.load(afd, 1);
-		// soundPool.play(load, 1, 1, 0, 0, 1);
-
 	}
 
 	/**
@@ -91,6 +82,28 @@ public class LearnImageSelectFragment extends BaseFragment implements
 		voicePath = modelWord.getVoicePath();
 		String title = modelWord.getTitle();
 		question = title;
+
+		// 下载语音文件
+		List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
+		if (subLGModelList != null && subLGModelList.size() != 0) {
+			for (int i = 0; i < subLGModelList.size(); i++) {
+				SubLGModel subLGModel = subLGModelList.get(i);
+				if (subLGModel == null) {
+					continue;
+				}
+				String voicePath = subLGModel.getSubVoicePath();
+
+				String filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/"
+						+ voicePath;
+				Log.d("filePath", "filePath:" + filePath);
+				File file = new File(filePath);
+				if (!file.exists()) {
+					// 下载不播放
+					HttpHelper.downLoadLessonVoices(voicePath, false);
+				}
+
+			}
+		}
 	}
 
 	@Override
@@ -129,9 +142,6 @@ public class LearnImageSelectFragment extends BaseFragment implements
 
 	@Override
 	public void onStop() {
-		if (mediaPlayerHelper != null) {
-			mediaPlayerHelper.stop();
-		}
 		super.onStop();
 	}
 
@@ -139,8 +149,6 @@ public class LearnImageSelectFragment extends BaseFragment implements
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		// task.RunWithMsg(getActivity(), new LoadNoticesThread(),
-		// "Learn is loading…");
 	}
 
 	/**
@@ -177,20 +185,17 @@ public class LearnImageSelectFragment extends BaseFragment implements
 				isRight = false;
 			}
 
-			// meidiaPlayer = new MediaPlayerHelper(ASSETS_SOUNDS_PATH
-			// + modelWord.getSubLGModelList().get(position)
-			// .getSubVoicePath());
-			// meidiaPlayer.play();
-
 			String voiceP = modelWord.getSubLGModelList().get(position)
 					.getSubVoicePath();
-			try {
-				AssetFileDescriptor afd = CustomApplication.app.getAssets()
-						.openFd(ASSETS_SOUNDS_PATH + voiceP);
-				MediaPlayUtil.getInstance().play(afd);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			String filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voiceP;
+			Log.d("filePath", "filePath:" + filePath);
+			File file = new File(filePath);
+			if (!file.exists()) {
+				// 下载并播放
+				HttpHelper.downLoadLessonVoices(voiceP, true);
+			} else {
+				// 直接播放
+				MediaPlayUtil.getInstance().play(filePath);
 			}
 
 			learnImageSelectAdapter.notifyDataSetChanged();
@@ -212,19 +217,17 @@ public class LearnImageSelectFragment extends BaseFragment implements
 
 	private String voicePath;
 
-	private SoundPool soundPool;
-
-	private MediaPlayerHelper mediaPlayerHelper;
-
 	public boolean isRight() {
 		return isRight;
 	}
+
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		MediaPlayUtil.getInstance().stop();
 		MediaPlayUtil.getInstance().release();
+		MediaPlayUtil.getInstance().stop();
+
 	}
 
 }

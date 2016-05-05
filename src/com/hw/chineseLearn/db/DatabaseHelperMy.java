@@ -18,7 +18,7 @@ public class DatabaseHelperMy extends OrmLiteSqliteOpenHelper {
 
 	public static final String DATABASE_PATH = CustomApplication.app
 			.getFilesDir() + "/Babbel_ub.db";
-	
+
 	private AndroidConnectionSource connectionSource;
 	private static String TAG = "==DatabaseHelper==";
 	public static final int DATABASE_VERSION = 1;// 数据库版本
@@ -34,10 +34,11 @@ public class DatabaseHelperMy extends OrmLiteSqliteOpenHelper {
 	public static final String REPORT_FORM;// 数据报表
 	static Boolean isFirstRun = false;
 	public static Boolean isFirstRunForApplication = false;
-	
+
 	public static final String SOUND_PATH;
 	public static final String CONTENT_JSON_PATH;
-	
+	public static final String LESSON_SOUND_PATH;
+
 	static {
 		if (Environment.MEDIA_MOUNTED.equals(Environment
 				.getExternalStorageState())) {
@@ -55,11 +56,22 @@ public class DatabaseHelperMy extends OrmLiteSqliteOpenHelper {
 		REPORT_FORM = CACHE_DIR + "/ReportForm";
 		CACHE_DIR_LOG = CACHE_DIR + "/log";
 		CACHE_DIR_MAPPKGS = CACHE_DIR + "/mapPkgs";
-		
-		SOUND_PATH = CACHE_DIR_DOWNLOAD+"/kit";//kit界面 解压后声音存放位置
-		CONTENT_JSON_PATH= CACHE_DIR_DOWNLOAD+"/contentJson";//解压fluent内容zip后存放的路径
 
-		File file = new File(CACHE_DIR);
+		SOUND_PATH = CACHE_DIR_DOWNLOAD + "/kit";// kit界面 解压后声音存放位置
+		CONTENT_JSON_PATH = CACHE_DIR_DOWNLOAD + "/contentJson";// 解压fluent内容zip后存放的路径
+		LESSON_SOUND_PATH = CACHE_DIR_DOWNLOAD + "/lessonVoice";// 解压fluent内容zip后存放的路径
+
+		File file = new File(CONTENT_JSON_PATH);
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+
+		file = new File(LESSON_SOUND_PATH);
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+
+		file = new File(CACHE_DIR);
 		if (!file.exists()) {
 			file.mkdirs();
 		}
