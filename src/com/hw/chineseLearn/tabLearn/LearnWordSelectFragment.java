@@ -44,7 +44,7 @@ import com.util.tool.MediaPlayerHelper;
 @SuppressLint("NewApi")
 public class LearnWordSelectFragment extends BaseFragment implements
 		OnClickListener {
-
+	private String TAG = "LearnWordSelectFragment";
 	private static final String ASSETS_SOUNDS_PATH = "sounds/";
 	private View contentView;// 主view
 
@@ -81,9 +81,8 @@ public class LearnWordSelectFragment extends BaseFragment implements
 					"modelWorld");
 			voicePath = modelWord.getVoicePath();
 
-			String filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/"
-					+ voicePath;
-			Log.d("filePath", "filePath:" + filePath);
+			filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voicePath;
+			Log.d(TAG + "initData()", "filePath:" + filePath);
 			File file = new File(filePath);
 			if (!file.exists()) {
 				// 下载并播放
@@ -161,7 +160,14 @@ public class LearnWordSelectFragment extends BaseFragment implements
 
 			@Override
 			public void onClick(View v) {
-				play();
+				File file = new File(filePath);
+				if (!file.exists()) {
+					// 下载并播放
+					HttpHelper.downLoadLessonVoices(voicePath, true);
+				} else {
+					play();
+				}
+
 			}
 		});
 		listView.setAdapter(adapter);

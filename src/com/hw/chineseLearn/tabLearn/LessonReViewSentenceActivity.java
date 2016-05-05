@@ -36,6 +36,7 @@ import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGSentence;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.db.DatabaseHelper;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.tool.AudioRecorder;
 import com.util.tool.AudioRecorder.VMChangeListener;
 import com.util.tool.MediaPlayUtil;
@@ -86,7 +87,7 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 		img_loop = (ImageView) contentView.findViewById(R.id.img_loop);
 		img_loop.setVisibility(View.GONE);
 		img_loop.setOnClickListener(onClickListener);
-		
+
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Sentence Review", View.GONE, View.VISIBLE,
 				R.drawable.revie_pen);
@@ -272,13 +273,8 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 						}
 					}
 				});
-		AssetManager am = getAssets();
-		try {
-			AssetFileDescriptor afd = am.openFd(ASSETS_SOUNDS_PATH + voicePath);
-			MediaPlayUtil.getInstance().play(afd);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		MediaPlayUtil.getInstance().play(
+				DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voicePath);
 	}
 
 	/**
@@ -299,6 +295,7 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 				});
 		MediaPlayUtil.getInstance().play(filePath);
 	}
+
 	@SuppressLint("NewApi")
 	private void setRecoedBg() {
 		if (isRecord) {
@@ -350,6 +347,7 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 			}
 		}
 	}
+
 	/**
 	 * @author yh
 	 * 
@@ -534,6 +532,7 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 
 		}
 	}
+
 	/**
 	 * @param position
 	 */
@@ -546,7 +545,7 @@ public class LessonReViewSentenceActivity extends BaseActivity {
 			tv_sentence.setText(sentence);
 			String translations = model.getTranslations();
 			tv_translation.setText(translations);
-			
+
 			int sentenceId = model.getSentenceId();
 			String dirCode = model.getDirCode();
 			voicePath = "s-" + sentenceId + "-" + dirCode + ".mp3";

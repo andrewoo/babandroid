@@ -41,6 +41,7 @@ import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.db.DatabaseHelper;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.tool.AudioRecorder;
 import com.util.tool.AudioRecorder.VMChangeListener;
 import com.util.tool.BitmapLoader;
@@ -126,13 +127,9 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 						}
 					}
 				});
-		AssetManager am = getAssets();
-		try {
-			AssetFileDescriptor afd = am.openFd(ASSETS_SOUNDS_PATH + voicePath);
-			MediaPlayUtil.getInstance().play(afd);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		MediaPlayUtil.getInstance().play(
+				DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voicePath);
+
 	}
 
 	/**
@@ -449,7 +446,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 						break;
 					}
 					handler.sendMessage(msg);
-					Thread.sleep(500);// 
+					Thread.sleep(500);//
 
 				} catch (InterruptedException e) {
 					e.printStackTrace();

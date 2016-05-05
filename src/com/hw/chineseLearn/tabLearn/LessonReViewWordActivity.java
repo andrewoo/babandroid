@@ -36,6 +36,7 @@ import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.hw.chineseLearn.db.DatabaseHelper;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.tool.AudioRecorder;
 import com.util.tool.AudioRecorder.VMChangeListener;
 import com.util.tool.MediaPlayUtil;
@@ -86,7 +87,7 @@ public class LessonReViewWordActivity extends BaseActivity {
 		img_loop = (ImageView) contentView.findViewById(R.id.img_loop);
 		img_loop.setVisibility(View.GONE);
 		img_loop.setOnClickListener(onClickListener);
-		
+
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Word Review", View.GONE, View.VISIBLE, R.drawable.revie_pen);
 
@@ -268,13 +269,8 @@ public class LessonReViewWordActivity extends BaseActivity {
 						}
 					}
 				});
-		AssetManager am = getAssets();
-		try {
-			AssetFileDescriptor afd = am.openFd(ASSETS_SOUNDS_PATH + voicePath);
-			MediaPlayUtil.getInstance().play(afd);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		MediaPlayUtil.getInstance().play(
+				DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voicePath);
 	}
 
 	/**
@@ -295,6 +291,7 @@ public class LessonReViewWordActivity extends BaseActivity {
 				});
 		MediaPlayUtil.getInstance().play(filePath);
 	}
+
 	@SuppressLint("NewApi")
 	private void setRecoedBg() {
 		if (isRecord) {
@@ -346,6 +343,7 @@ public class LessonReViewWordActivity extends BaseActivity {
 			}
 		}
 	}
+
 	/**
 	 * @author yh
 	 * 
@@ -530,7 +528,7 @@ public class LessonReViewWordActivity extends BaseActivity {
 
 		}
 	}
-	
+
 	/**
 	 * @param position
 	 */
