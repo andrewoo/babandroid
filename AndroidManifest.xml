@@ -134,8 +134,8 @@
         <activity
             android:name="com.hw.chineseLearn.tabDiscover.SurvivalKitActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
 
@@ -161,6 +161,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
+        <!-- 拼音音调练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.PinyinToneExerciseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
 
         <!-- 拼写练习页面 -->
         <activity
@@ -169,8 +176,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
-        
-         <!-- 拼写练习页面 -->
+
+        <!-- 拼写练习页面 -->
         <activity
             android:name="com.hw.chineseLearn.tabDiscover.StrokesOrderExerciseActivity"
             android:exported="true"
@@ -384,17 +391,16 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
-        </activity>//DownloadMererialsActivity
-        
-          <!-- tabme download -->
+        </activity>
+//DownloadMererialsActivity
+
+        <!-- tabme download -->
         <activity
             android:name="com.hw.chineseLearn.tabMe.DownloadMererialsActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
-        
-        
     </application>
 
 </manifest>

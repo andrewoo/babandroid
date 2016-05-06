@@ -12,19 +12,19 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
+import com.hw.chineseLearn.dao.bean.TbMyPinyinTone;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 
 public class ToneAdapter extends BaseAdapter {
 	private Context context;
-	public ArrayList<LearnUnitBaseModel> list;
+	public ArrayList<TbMyPinyinTone> list;
 	private LayoutInflater inflater;
 	private int colorWhite, colorGrey;
 
-	public ToneAdapter(Context context, ArrayList<LearnUnitBaseModel> list) {
+	public ToneAdapter(Context context, ArrayList<TbMyPinyinTone> list) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
 		this.list = list;
@@ -76,16 +76,16 @@ public class ToneAdapter extends BaseAdapter {
 			convertView = mapView.get(position);
 			holder = (ViewHolder) convertView.getTag();
 		}
-		LearnUnitBaseModel model = list.get(position);
+		TbMyPinyinTone model = list.get(position);
 		if (model == null) {
 			return convertView;
 		}
-		boolean isEnable = model.isEnable();
+		int status = model.getStatus();
 		String imageName = "" + model.getIconResSuffix();
 
 		holder.iv_img.setImageResource(context.getResources().getIdentifier(
 				imageName, "drawable", context.getPackageName()));
-		if (isEnable) {
+		if (status == 1) {
 			holder.tv_name.setTextColor(colorWhite);
 			holder.lin_dots.setBackground(context.getResources().getDrawable(
 					R.drawable.pinyintone_bg_blue));
@@ -99,7 +99,6 @@ public class ToneAdapter extends BaseAdapter {
 	}
 
 	public class ViewHolder {
-
 		public ImageView iv_img;
 		public TextView tv_name;
 		public LinearLayout lin_dots;

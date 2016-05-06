@@ -1,10 +1,17 @@
 package com.hw.chineseLearn.tabDiscover;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,8 +25,14 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.ToneAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.LGCharacter;
+import com.hw.chineseLearn.dao.bean.LGWord;
+import com.hw.chineseLearn.dao.bean.TbMyPinyinTone;
+import com.hw.chineseLearn.model.PinyinToneLessonExerciseModel;
 import com.hw.chineseLearn.tabLearn.LessonViewActivity;
+import com.util.tool.FileTools;
+import com.util.tool.JsonUtil;
 import com.util.weight.SelfGridView;
 
 /**
@@ -34,7 +47,7 @@ public class PinyinToneActivity extends BaseActivity {
 	View contentView;
 	ToneAdapter adapter;
 	SelfGridView centGridView;
-	ArrayList<LearnUnitBaseModel> listBase = new ArrayList<LearnUnitBaseModel>();
+	ArrayList<TbMyPinyinTone> listBase = new ArrayList<TbMyPinyinTone>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +63,7 @@ public class PinyinToneActivity extends BaseActivity {
 	/**
 	 * 初始化
 	 */
+	@SuppressWarnings("unchecked")
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
 				"Pinyin Tone", View.GONE, View.GONE, 0);
@@ -57,21 +71,100 @@ public class PinyinToneActivity extends BaseActivity {
 		centGridView = (SelfGridView) contentView
 				.findViewById(R.id.gv_tone_gridview);
 
-		for (int i = 0; i < 67; i++) {
-			LearnUnitBaseModel modelBase = new LearnUnitBaseModel();
+		String results = FileTools.getJsonFromAsset(getApplicationContext(),
+				"pinyin_tone.json");
+		if (!"".equals(results)) {
+			try {
+				JSONObject jsObj = new JSONObject(results);
 
-			if (i == 0) {
-				modelBase.setEnable(true);
-				modelBase.setIconResSuffix("pinyintone_" + (i + 1));
-			} else if (i == 1) {
-				modelBase.setEnable(false);
-				modelBase.setIconResSuffix("pinyintone_l" + (i + 1));
-			} else {
-				modelBase.setEnable(false);
-				modelBase.setIconResSuffix("pinyintone_" + (i + 1));
+				int jsObjCount = jsObj.length();
+				Log.d(TAG, "jsObjCount:" + jsObjCount);
+
+				for (int i = 0; i < jsObjCount; i++) {
+
+					JSONArray jsonArray = jsObj.getJSONArray("" + (i + 1));
+
+					TbMyPinyinTone tbMyPinyinTone = new TbMyPinyinTone();
+
+					if (i == 0) {
+						tbMyPinyinTone
+								.setIconResSuffix("pinyintone_" + (i + 1));
+						tbMyPinyinTone.setStatus(1);
+					} else if (i == 1) {
+						tbMyPinyinTone.setIconResSuffix("pinyintone_l"
+								+ (i + 1));
+						tbMyPinyinTone.setStatus(0);
+					} else {
+						tbMyPinyinTone
+								.setIconResSuffix("pinyintone_" + (i + 1));
+						tbMyPinyinTone.setStatus(0);
+					}
+					tbMyPinyinTone.setId(i + 1);
+					MyDao.getDaoMy(TbMyPinyinTone.class).createOrUpdate(
+							tbMyPinyinTone);
+
+					int arrayLength = jsonArray.length();
+					Log.d(TAG, "arrayLength:" + arrayLength);
+					listBase.add(tbMyPinyinTone);
+					ArrayList<PinyinToneLessonExerciseModel> lessonModels = new ArrayList<PinyinToneLessonExerciseModel>();
+					for (int j = 0; j < arrayLength; j++) {
+						PinyinToneLessonExerciseModel lessonModel = new PinyinToneLessonExerciseModel();
+						JSONObject jsObj2 = (JSONObject) jsonArray.opt(j);
+						Iterator iterator = jsObj2.keys();
+						if (iterator.hasNext()) {
+							String key = (String) iterator.next();
+							String value = JsonUtil.getString(jsObj2, key);
+							Log.d("key", "key：" + key);
+							Log.d("value", "value：" + value);
+
+							String voicePath = "";
+							String dirCode = "";
+							String py = "";
+							String cn = "";
+							String en = "";
+							if ("word".equals(key)) {
+								LGWord lGWord = (LGWord) MyDao.getDao(
+										LGWord.class).queryForId(value);
+								dirCode = lGWord.getDirCode();
+								py = lGWord.getPinyin();
+								cn = lGWord.getWord();
+								en = lGWord.getTranslations();
+								voicePath = "w-" + value + "-" + dirCode
+										+ ".mp3";
+
+							} else if ("character".equals(key)) {
+
+								LGCharacter lGCharacter = (LGCharacter) MyDao
+										.getDao(LGCharacter.class).queryForId(
+												value);
+								if (lGCharacter != null) {
+									dirCode = lGCharacter.getDirCode();
+									py = lGCharacter.getPinyin();
+									cn = lGCharacter.getCharacter();
+									en = lGCharacter.getTranslation();
+									voicePath = "c-" + value + "-" + dirCode
+											+ ".mp3";
+								}
+							}
+
+							lessonModel.setVoicePath(voicePath);
+							lessonModel.setCn(cn);
+							lessonModel.setEn(en);
+							lessonModel.setPy(py);
+							lessonModels.add(lessonModel);
+						}
+						tbMyPinyinTone.setLessonModels(lessonModels);
+					}
+
+				}
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-			listBase.add(modelBase);
 		}
 
 		adapter = new ToneAdapter(context, listBase);
@@ -104,14 +197,16 @@ public class PinyinToneActivity extends BaseActivity {
 				long arg3) {
 			// TODO Auto-generated method stub
 
-			// LearnUnitBaseModel learnUnitBaseModel = listBase.get(arg2);
-			// if (learnUnitBaseModel != null) {
-			// boolean isEnable = learnUnitBaseModel.isEnable();
-			// if (isEnable) {
-			// startActivity(new Intent(PinyinToneActivity.this,
-			// LessonViewActivity.class));
-			// }
-			// }
+			TbMyPinyinTone tbMyPinyinTone = listBase.get(arg2);
+			if (tbMyPinyinTone != null) {
+				int status = tbMyPinyinTone.getStatus();
+				if (status == 1) {
+					Intent intent = new Intent(PinyinToneActivity.this,
+							PinyinToneExerciseActivity.class);
+					intent.putExtra("model", tbMyPinyinTone);
+					startActivity(intent);
+				}
+			}
 		}
 	};
 
