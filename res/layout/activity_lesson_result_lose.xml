@@ -25,12 +25,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="You losed all" 
+                android:text="You losed all"
                 android:textColor="@color/deep_grey"
-                android:textSize="@dimen/text_s38"
-                />
+                android:textSize="@dimen/text_s38" />
 
-            
+            <ImageView
+                android:id="@+id/iv_is_failed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/test_out_fail" />
         </LinearLayout>
     </LinearLayout>
 
@@ -41,9 +45,8 @@
         android:background="@color/chinese_skill_blue"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingTop="5dp"
         android:paddingBottom="5dp"
-         >
+        android:paddingTop="5dp" >
 
         <TextView
             android:id="@+id/btn_redo"

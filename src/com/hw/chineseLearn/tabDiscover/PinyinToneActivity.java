@@ -70,7 +70,15 @@ public class PinyinToneActivity extends BaseActivity {
 
 		centGridView = (SelfGridView) contentView
 				.findViewById(R.id.gv_tone_gridview);
+		getDatasFronFile();
+		adapter = new ToneAdapter(context, listBase);
+		centGridView.setAdapter(adapter);
+		centGridView.setOnItemClickListener(itemClickListener);
+		adapter.notifyDataSetChanged();
+	}
 
+	@SuppressWarnings("unchecked")
+	private void getDatasFronFile() {
 		String results = FileTools.getJsonFromAsset(getApplicationContext(),
 				"pinyin_tone.json");
 		if (!"".equals(results)) {
@@ -81,30 +89,44 @@ public class PinyinToneActivity extends BaseActivity {
 				Log.d(TAG, "jsObjCount:" + jsObjCount);
 
 				for (int i = 0; i < jsObjCount; i++) {
-
+					TbMyPinyinTone tbMyPinyinTone = null;
 					JSONArray jsonArray = jsObj.getJSONArray("" + (i + 1));
 
-					TbMyPinyinTone tbMyPinyinTone = new TbMyPinyinTone();
-
+					tbMyPinyinTone = (TbMyPinyinTone) MyDao.getDaoMy(
+							TbMyPinyinTone.class).queryForId((i + 1));
+					if (tbMyPinyinTone == null) {
+						tbMyPinyinTone = new TbMyPinyinTone();
+						if (i == 0) {
+							tbMyPinyinTone.setIconResSuffix("pinyintone_"
+									+ (i + 1));
+							tbMyPinyinTone.setStatus(1);
+						} else if (i == 1) {
+							tbMyPinyinTone.setIconResSuffix("pinyintone_l"
+									+ (i + 1));
+							tbMyPinyinTone.setStatus(0);
+						} else {
+							tbMyPinyinTone.setIconResSuffix("pinyintone_"
+									+ (i + 1));
+							tbMyPinyinTone.setStatus(0);
+						}
+					}
 					if (i == 0) {
 						tbMyPinyinTone
 								.setIconResSuffix("pinyintone_" + (i + 1));
-						tbMyPinyinTone.setStatus(1);
 					} else if (i == 1) {
 						tbMyPinyinTone.setIconResSuffix("pinyintone_l"
 								+ (i + 1));
-						tbMyPinyinTone.setStatus(0);
 					} else {
 						tbMyPinyinTone
 								.setIconResSuffix("pinyintone_" + (i + 1));
-						tbMyPinyinTone.setStatus(0);
 					}
+
 					tbMyPinyinTone.setId(i + 1);
 					MyDao.getDaoMy(TbMyPinyinTone.class).createOrUpdate(
 							tbMyPinyinTone);
 
 					int arrayLength = jsonArray.length();
-					Log.d(TAG, "arrayLength:" + arrayLength);
+					// Log.d(TAG, "arrayLength:" + arrayLength);
 					listBase.add(tbMyPinyinTone);
 					ArrayList<PinyinToneLessonExerciseModel> lessonModels = new ArrayList<PinyinToneLessonExerciseModel>();
 					for (int j = 0; j < arrayLength; j++) {
@@ -114,8 +136,8 @@ public class PinyinToneActivity extends BaseActivity {
 						if (iterator.hasNext()) {
 							String key = (String) iterator.next();
 							String value = JsonUtil.getString(jsObj2, key);
-							Log.d("key", "key：" + key);
-							Log.d("value", "value：" + value);
+							// Log.d("key", "key：" + key);
+							// Log.d("value", "value：" + value);
 
 							String voicePath = "";
 							String dirCode = "";
@@ -166,11 +188,6 @@ public class PinyinToneActivity extends BaseActivity {
 				e.printStackTrace();
 			}
 		}
-
-		adapter = new ToneAdapter(context, listBase);
-		centGridView.setAdapter(adapter);
-		centGridView.setOnItemClickListener(itemClickListener);
-		adapter.notifyDataSetChanged();
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {
@@ -190,6 +207,8 @@ public class PinyinToneActivity extends BaseActivity {
 			}
 		}
 	};
+	private TbMyPinyinTone tbMyPinyinToneCurrentClicked = null;
+	private int indexCurrentClicked;
 	OnItemClickListener itemClickListener = new OnItemClickListener() {
 
 		@Override
@@ -197,15 +216,18 @@ public class PinyinToneActivity extends BaseActivity {
 				long arg3) {
 			// TODO Auto-generated method stub
 
-			TbMyPinyinTone tbMyPinyinTone = listBase.get(arg2);
-			if (tbMyPinyinTone != null) {
-				int status = tbMyPinyinTone.getStatus();
+			indexCurrentClicked = arg2;
+			tbMyPinyinToneCurrentClicked = listBase.get(arg2);
+			if (tbMyPinyinToneCurrentClicked != null) {
+				int status = tbMyPinyinToneCurrentClicked.getStatus();
 				if (status == 1) {
 					Intent intent = new Intent(PinyinToneActivity.this,
 							PinyinToneExerciseActivity.class);
-					intent.putExtra("model", tbMyPinyinTone);
-					startActivity(intent);
+					intent.putExtra("model", tbMyPinyinToneCurrentClicked);
+					startActivityForResult(intent, 1);
 				}
+			} else {
+				Log.e(TAG, "tbMyPinyinToneCurrentClicked == null");
 			}
 		}
 	};
@@ -257,4 +279,35 @@ public class PinyinToneActivity extends BaseActivity {
 
 	}
 
+	@SuppressWarnings("unchecked")
+	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
+		switch (resultCode) {
+		case 1:// passed，unlock next lesson
+			TbMyPinyinTone tbMyPinyinTone = null;
+			int nextIndex = indexCurrentClicked + 1;
+			if (nextIndex < listBase.size()) {
+				tbMyPinyinTone = listBase.get(nextIndex);
+				tbMyPinyinTone.setStatus(1);// update
+				if (tbMyPinyinTone != null) {
+					try {
+						int isSucess = MyDao.getDaoMy(TbMyPinyinTone.class)
+								.update(tbMyPinyinTone);
+						Log.d(TAG, "isSucess:" + isSucess);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					listBase.set(nextIndex, tbMyPinyinTone);
+					adapter.notifyDataSetChanged();
+				}
+
+			}
+
+			break;
+
+		default:
+			break;
+		}
+		Log.d(TAG, "resultCode:" + resultCode);
+	};
 }

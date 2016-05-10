@@ -509,6 +509,7 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 				break;
 			case R.id.btn_write:
 				pv.enableHandwriting();
+				isStartHwViewAnim = false;
 				isStartHwViewWrite = true;
 				setWriteBtnBg();
 				setPlayBtnBg();
