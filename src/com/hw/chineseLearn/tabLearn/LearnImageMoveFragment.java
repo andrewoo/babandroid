@@ -8,7 +8,6 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,9 +20,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -130,10 +131,21 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				R.layout.fragment_lesson_image_move, null);
 		task = new ThreadWithDialogTask();
 		tv_word = (TextView) contentView.findViewById(R.id.tv_word);
+		//test
+		ll_root = (RelativeLayout)getActivity().findViewById(R.id.ll_root);
+//		FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(screenWidth*2, screenHeight);
+//		ll_root.setLayoutParams(params);
 		tv_word.setText(title);// 拿到title
 		rel_root = (RelativeLayout) contentView.findViewById(R.id.rel_root);
+		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(screenWidth*2, screenHeight);
+		rel_root.setLayoutParams(params);
+		
 		rel_root.bringToFront();
 		rel_top = (RelativeLayout) contentView.findViewById(R.id.rel_top);
+		//设置TextTitle的高度
+		RelativeLayout.LayoutParams params1=new RelativeLayout.LayoutParams(screenWidth,LayoutParams.WRAP_CONTENT);
+		rel_top.setLayoutParams(params1);
+		
 
 		iv_dv_view = (ImageView) contentView.findViewById(R.id.iv_dv_view);
 		iv_dv_view.setOnClickListener(new OnClickListener() {
@@ -288,7 +300,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				Log.e(TAG, "initBgViews,subLGModel == null");
 			}
 			bgViewList.add(imageView);
-			rel_root.addView(imageView);
+			rel_root.addView(imageView);//test
+//			ll_root.addView(imageView);//背景View暂时不加
 
 			int imageWidth = imageView.getWidth();
 			int height = imageView.getHeight();
@@ -401,7 +414,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 			ImageView imageView = new ImageView(context);
 			RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
-					itemViewWidth, itemViewWidth);
+					itemViewWidth/2, itemViewWidth/2);//暂时用2测试效果
 			imageView.setLayoutParams(ly);
 			imageView.setTag(i);
 			imageView.setFocusable(false);
@@ -411,10 +424,11 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				String imageName = model.getImageName();
 				String strRect = model.getStrRect();// x.y.宽.高.
 				int wordId = model.getWordId();
-				Bitmap bitmap = BitmapLoader
-						.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
-								+ imageName);
-				imageView.setImageBitmap(bitmap);
+				Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH+ imageName);
+				Bitmap cropBitmap = UtilMedthod.getCropBitmap(bitmap);//截取图片为只有像素的矩形
+				
+				imageView.setImageBitmap(cropBitmap);
+				
 				// imageView.setTag(wordId);
 
 			} else {
@@ -422,7 +436,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			}
 			subLGModelMap.put(imageView, model);// 建立对应关系
 			moveViewList.add(imageView);
-			rel_root.addView(imageView);
+//			ll_root.addView(imageView);
+			rel_root.addView(imageView);//test
 
 			int x1 = 0, y1 = y;
 
@@ -466,8 +481,9 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				.getLayoutParams();
 		params.leftMargin = (int) rawX - view.getWidth() / 2;
 		params.topMargin = (int) rawY - relTopHeight - view.getHeight() / 2;
-		params.width = mizigeWidth;
-		params.height = mizigeHeight;
+		
+//		params.width = mizigeWidth;
+//		params.height = mizigeHeight;
 		view.setLayoutParams(params);
 	}
 
@@ -504,8 +520,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				.getLayoutParams();
 		params.leftMargin = x;
 		params.topMargin = y;
-		params.width = itemViewWidth;
-		params.height = itemViewWidth;
+		params.width = itemViewWidth/2;
+		params.height = itemViewWidth/2;
 		imageView.setLayoutParams(params);
 		imageView.invalidate();
 
@@ -521,14 +537,17 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 	private float scale = 0.0f;
 
+	int lastX;
+	int lastY;
+	private RelativeLayout ll_root;
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 
 		scale = (float) mizigeWidth / (float) 420;// 缩放比
 		ImageView imageView = (ImageView) v;
 		imageView.bringToFront();
-		Bitmap bitmap = ((BitmapDrawable) (imageView.getDrawable()))
-				.getBitmap();
+		Bitmap bitmap = ((BitmapDrawable) (imageView.getDrawable())).getBitmap();
 		// if (bitmap.getPixel((int) (event.getX()), ((int) event.getY())) == 0)
 		// {
 		// String aa = "点击了透明区域";
@@ -541,8 +560,18 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		// }
 		SubLGModel model = subLGModelMap.get(imageView);
 
+		int rawX = (int) event.getRawX();
+		int rawY = (int) event.getRawY();
+
+		// rawX = rawX - imageView.getWidth() / 2;
+		// rawY = rawY - relTopHeight - imageView.getHeight() / 2;
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
+			 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView .getLayoutParams();
+			 params.width = mizigeWidth; params.height = mizigeHeight;
+			 imageView.setLayoutParams(params); 
+			 lastX = rawX; lastY = rawY;
+
 			playClickSound();
 			int[] locations = new int[2];
 			rel_top.getLocationInWindow(locations);
@@ -552,8 +581,15 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			break;
 		case MotionEvent.ACTION_MOVE:
 			moveViewWithFinger(imageView, event.getRawX(), event.getRawY());// 动态设置view的位置，拖动效果
-			Log.e(TAG, "Width:" + imageView.getWidth() + "    Height:"
-					+ imageView.getHeight());
+			Log.e(TAG, "Width:" + imageView.getWidth() + "    Height:"+ imageView.getHeight());
+
+//			 int offsetX = rawX - lastX; int offsetY = rawY - lastY;
+//			 
+//			 imageView.offsetLeftAndRight(offsetX);
+//			 imageView.offsetTopAndBottom(offsetY);
+//			 
+//			 lastX = rawX; lastY = rawY;
+
 			break;
 		case MotionEvent.ACTION_UP:
 

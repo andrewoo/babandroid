@@ -326,9 +326,9 @@ public class FileTools {
 					fileOut.close();
 				}
 				zipIn.closeEntry();
-				Log.d("unZip()", "解压成功！");
-				return true;
 			}
+			Log.d("unZip()", "解压成功！");
+			return true;
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}

@@ -128,14 +128,15 @@
             android:name="com.hw.chineseLearn.base.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
         <!-- 救生工具页面 -->
         <activity
             android:name="com.hw.chineseLearn.tabDiscover.SurvivalKitActivity"
             android:exported="true"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
 
