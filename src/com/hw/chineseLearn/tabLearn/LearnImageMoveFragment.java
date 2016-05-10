@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -39,6 +38,7 @@ import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.BitmapLoader;
 import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
+import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.tool.UtilMedthod;
 
@@ -105,6 +105,10 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 	private void play() {
 		MediaPlayUtil.getInstance().play(filePath);
+	}
+
+	public void playClickSound() {
+		new MediaPlayerHelper("sounds/main_click.mp3").play();
 	}
 
 	/**
@@ -568,6 +572,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			 imageView.setLayoutParams(params); 
 			 lastX = rawX; lastY = rawY;
 
+			playClickSound();
 			int[] locations = new int[2];
 			rel_top.getLocationInWindow(locations);
 			// lin_lin在屏幕中的y
