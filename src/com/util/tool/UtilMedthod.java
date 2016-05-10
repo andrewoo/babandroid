@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -267,6 +270,85 @@ public class UtilMedthod {
 		// 在画布上（mAlphaBitmap）绘制alpha位图
 		mCanvas.drawBitmap(alphaBitmap, 0, 0, mPaint);
 		return mAlphaBitmap;
+	}
+	
+	
+	/**
+	 * 裁剪出有像素的部分（矩形）
+	 * @param bitmap
+	 * @return
+	 */
+	public static Bitmap getCropBitmap(Bitmap bitmap){
+		
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		List<Point> list=new ArrayList<Point>();
+		//一列一列的找 第一个为最左边
+		first(bitmap, width, height, list);
+		//第二个为最上边
+		sencond(bitmap, width, height, list);
+		
+		//第三个最右边  x固定 y遍历
+		third(bitmap, width, height, list);
+		//第四个最下边 y固定 x遍历
+		forth(bitmap, width, height, list);
+		
+		Bitmap createBitmap = Bitmap.createBitmap(bitmap, list.get(0).x, list.get(1).y, list.get(2).x-list.get(0).x, list.get(3).y-list.get(1).y);
+		
+		return createBitmap;
+		
+	}
+	
+	private static void forth(Bitmap bitmap, int width, int height, List<Point> list) {
+		for (int i =height-1; i >=0; i--) {
+			for (int j = width-1; j >=0 ; j--) {
+				if(Color.TRANSPARENT!=bitmap.getPixel(j, i)){
+					Point point=new Point();
+					point.x=j; point.y=i;
+					list.add(point);
+					return ;
+				}
+			}
+		}
+	}
+
+	private static void third(Bitmap bitmap, int width, int height, List<Point> list) {
+		for (int i = width-1; i >=0; i--) {
+			for (int j = 0; j < height-1; j++) {
+				if(Color.TRANSPARENT!=bitmap.getPixel(i, j)){
+					Point point=new Point();
+					point.x=i; point.y=j;
+					list.add(point);
+					return ;
+				}
+			}
+		}
+	}
+
+	private static void sencond(Bitmap bitmap, int width, int height, List<Point> list) {
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				if(Color.TRANSPARENT!=bitmap.getPixel(j, i)){
+					Point point=new Point();
+					point.x=j; point.y=i;
+					list.add(point);
+					return ;
+				}
+			}
+		}
+	}
+
+	private static void first(Bitmap bitmap, int width, int height, List<Point> list) {
+		for (int i = 0; i < width-1; i++) {
+			for (int j = 0; j < height-1; j++) {
+				if(Color.TRANSPARENT!=bitmap.getPixel(i, j)){
+					Point point=new Point();
+					point.x=i; point.y=j;
+					list.add(point);
+					return ;
+				}
+			}
+		}
 	}
 
 }

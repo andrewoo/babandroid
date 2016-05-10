@@ -8,6 +8,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,11 +18,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.SurvivalKitAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.base.MainActivity;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbFileDownload;
 import com.hw.chineseLearn.dao.bean.TbMyCategory;
@@ -64,11 +67,36 @@ public class SurvivalKitActivity extends BaseActivity {
 		context = this;
 		init();
 	}
+	
+	
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		//销毁前更新数据库下载的状态
+		try {
+			List<TbFileDownload> download2List = MyDao.getDaoMy(TbFileDownload.class).queryBuilder().where().eq("dlStatus", 2).query();
+			List<TbMyCategory> tbMyCategoryList=MyDao.getDaoMy(TbMyCategory.class).queryBuilder().where().eq("complete_dl", 2).query();
+			for (int i = 0; i < download2List.size(); i++) {
+				TbFileDownload tbFileDownload = download2List.get(i);
+				tbFileDownload.setDlStatus(NODOWN);
+				MyDao.getDaoMy(TbFileDownload.class).update(tbFileDownload);
+			}
+			
+			for (int i = 0; i < tbMyCategoryList.size(); i++) {
+				TbMyCategory tbMyCategory = tbMyCategoryList.get(i);
+				tbMyCategory.setComplete_dl(NODOWN);
+				MyDao.getDaoMy(TbMyCategory.class).update(tbMyCategory);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("onDestroy--onDestroy");
+	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 		// if (CustomApplication.app.favouriteList.size() != 0) {
 		// LearnUnitBaseModel modelBase = new LearnUnitBaseModel();
 		// modelBase.setIconResSuffix("favorite_img");
@@ -88,27 +116,30 @@ public class SurvivalKitActivity extends BaseActivity {
 		// }
 		// }
 		// }
-		initDBDatas();//categoryList ,myCategoryList
-		initModel();
-		
-		// 重新从数据库拿处数据 查表 如果对应是2 则写下载的方法 整个集合都执行下载
-		try {
-			List<TbFileDownload> download2List = MyDao.getDaoMy(TbFileDownload.class).queryBuilder().where().eq("dlStatus", 2).query();
-			if (download2List != null) {
-				for (int i = 0; i < download2List.size(); i++) {
-					TbFileDownload tbFileDownload = download2List.get(i);
-//					if(tbFileDownload.getDlStatus()==LOADING){
-//						dealState(tbFileDownload.getCwsId()-1);
-//					}
-					modelList.get(tbFileDownload.getCwsId()-1).setPositionTag(tbFileDownload.getCwsId()-1);
-					adapter.notifyDataSetChanged();
-					download(tbFileDownload.getCwsId()-1);
-				}
-			}
+//		initDBDatas();// categoryList ,myCategoryList
+//		initModel();//把对应的model加入到modelList
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		// 重新从数据库拿处数据 查表 如果对应是2 则写下载的方法 整个集合都执行下载
+//		try {
+//			List<TbFileDownload> download2List = MyDao
+//					.getDaoMy(TbFileDownload.class).queryBuilder().where()
+//					.eq("dlStatus", 2).query();
+//			if (download2List != null) {
+//				for (int i = 0; i < download2List.size(); i++) {
+//					TbFileDownload tbFileDownload = download2List.get(i);
+//					// if(tbFileDownload.getDlStatus()==LOADING){
+//					// dealState(tbFileDownload.getCwsId()-1);
+//					// }
+//					modelList.get(tbFileDownload.getCwsId() - 1)
+//							.setPositionTag(tbFileDownload.getCwsId() - 1);
+//					adapter.notifyDataSetChanged();
+//					download(tbFileDownload.getCwsId() - 1);
+//				}
+//			}
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 		if (adapter != null) {
 			adapter.notifyDataSetChanged();
 		}
@@ -165,14 +196,14 @@ public class SurvivalKitActivity extends BaseActivity {
 				model.setState(1);// 1 已下载
 			} else {
 				imageName = "survival_" + myCategoryList.get(i).getId();
-				model.setState(2); 
+				model.setState(2);
 			}
 			model.setImageName(imageName);
 
 			// categoryList.get(i).setComplete_dl(myCategoryList.get(i).getComplete_dl());
 			modelList.add(model);
 		}
-		if(adapter!=null){
+		if (adapter != null) {
 			adapter.notifyDataSetChanged();
 		}
 	}
@@ -200,7 +231,9 @@ public class SurvivalKitActivity extends BaseActivity {
 
 				// CustomApplication.app.finishActivity(SurvivalKitActivity.this);
 //				SurvivalKitActivity.this.onBackPressed();
-				moveTaskToBack(true);
+				// moveTaskToBack(false);
+				startActivity(new Intent(SurvivalKitActivity.this,MainActivity.class));
+				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 				break;
 
 			default:
@@ -212,26 +245,27 @@ public class SurvivalKitActivity extends BaseActivity {
 	OnItemClickListener onItemclickListener = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {
+		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+				long arg3) {
 			// 点击后查表 确定是 跳转界面还是下载
 			// 点击后 确定 跳转新界面 还是下载动画 还是
-			
+
 			// int cid = category.getId();
-						// int complete_dl;
-						// try {
-						// TbMyCategory tbMyCategory=(TbMyCategory)
-						// MyDao.getDaoMy(TbMyCategory.class).queryForId(cid);
-						// complete_dl = tbMyCategory.getComplete_dl();
-						// } catch (SQLException e) {e.printStackTrace();}
-			dealState(position);//根据不同下载状态 做对应处理
+			// int complete_dl;
+			// try {
+			// TbMyCategory tbMyCategory=(TbMyCategory)
+			// MyDao.getDaoMy(TbMyCategory.class).queryForId(cid);
+			// complete_dl = tbMyCategory.getComplete_dl();
+			// } catch (SQLException e) {e.printStackTrace();}
+			dealState(position);// 根据不同下载状态 做对应处理
 		}
 
 	};
-	
+
 	private void dealState(int position) {
 		category category = categoryList.get(position);
 		int state = modelList.get(position).getState();
-		
+
 		if (state == NODOWN) {// 如果是0 下载 显示下载动画
 
 			modelList.get(position).setState(LOADING);
@@ -240,10 +274,10 @@ public class SurvivalKitActivity extends BaseActivity {
 
 			download(position);
 
-		} else if (state == LOADING) {
-			modelList.get(position).setPositionTag(position);
-			adapter.notifyDataSetChanged();
-			download(position);
+		} else if (state == LOADING) {//正在下载就不理他
+//			modelList.get(position).setPositionTag(position);
+//			adapter.notifyDataSetChanged();
+//			download(position);
 		} else if (state == FINISH) {// 跳转界面
 			Intent intent = new Intent(SurvivalKitActivity.this,
 					SurvivalKitDetailActivity.class);
@@ -308,11 +342,12 @@ public class SurvivalKitActivity extends BaseActivity {
 		}
 		final String fileName = "cssc_" + (position + 1) + ".zip";
 		final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/cssc_"
-				+ (position + 1) + ".zip";//https://d2kox946o1unj2.cloudfront.net
-//		String url="http://58.67.154.138:8088/babbel-api-app/resource";
+				+ (position + 1) + ".zip";// https://d2kox946o1unj2.cloudfront.net
+		// String url="http://58.67.154.138:8088/babbel-api-app/resource";
 		HttpHandler handler = http.download(
-				"http://58.67.154.138:8088/babbel-api-app/resource/cssc_" + (position + 1)+ ".zip", filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
-				true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
+				"http://58.67.154.138:8088/babbel-api-app/resource/cssc_"
+						+ (position + 1) + ".zip", filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
+				false, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 				new RequestCallBack<File>() {
 					TbFileDownload tbFileDownload;
 
@@ -328,17 +363,18 @@ public class SurvivalKitActivity extends BaseActivity {
 						// 先查询 有了就更新 没有了再new
 						try {
 							if (tbFileDownload != null) {// 如果数据库存在
-//								tbFileDownload = (TbFileDownload) MyDao
-//										.getDaoMy(TbFileDownload.class)
-//										.queryBuilder()
-//										.where()
-//										.eq("fileName","cssc_" + (position + 1)+ ".zip")
-//										.queryForFirst();
-//								if (tbFileDownload != null) {
-									tbFileDownload.setCurFileContentSize(current);
-									tbFileDownload.setFileContentSize(total);
-									MyDao.getDaoMy(TbFileDownload.class).createOrUpdate(tbFileDownload);
-//								}
+							// tbFileDownload = (TbFileDownload) MyDao
+							// .getDaoMy(TbFileDownload.class)
+							// .queryBuilder()
+							// .where()
+							// .eq("fileName","cssc_" + (position + 1)+ ".zip")
+							// .queryForFirst();
+							// if (tbFileDownload != null) {
+								tbFileDownload.setCurFileContentSize(current);
+								tbFileDownload.setFileContentSize(total);
+								MyDao.getDaoMy(TbFileDownload.class)
+										.createOrUpdate(tbFileDownload);
+								// }
 
 							} else {// 如果数据库不存在 就插入
 								tbFileDownload = new TbFileDownload();
@@ -349,7 +385,8 @@ public class SurvivalKitActivity extends BaseActivity {
 								tbFileDownload.setFileName("cssc_"
 										+ (position + 1) + ".zip");
 								tbFileDownload.setFilePath(filePath);
-								tbFileDownload.setFileURL("http://58.67.154.138:8088/babbel-api-app/resource/cssc_"
+								tbFileDownload
+										.setFileURL("http://58.67.154.138:8088/babbel-api-app/resource/cssc_"
 												+ (position + 1) + ".zip");
 								tbFileDownload.setType(1);
 								tbFileDownload.setDlStatus(LOADING);
@@ -359,34 +396,34 @@ public class SurvivalKitActivity extends BaseActivity {
 								TbMyCategory category = new TbMyCategory();
 								category.setId(position + 1);
 								category.setComplete_dl(LOADING);
-								MyDao.getDaoMy(TbMyCategory.class).createOrUpdate(category);
+								MyDao.getDaoMy(TbMyCategory.class)
+										.createOrUpdate(category);
 							}
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
 						// 把下载的值通过集合传过去
-						if(tbFileDownload!=null){
-							modelList.get(position).setCount(
-									tbFileDownload.getFileContentSize());
-							modelList.get(position).setCurrentSize(
-									tbFileDownload.getCurFileContentSize());
+						//进度乱跳的修复测试
+						synchronized (SurvivalKitActivity.this) {
+							modelList.get(position).setCount(tbFileDownload.getFileContentSize());
+							modelList.get(position).setCurrentSize(tbFileDownload.getCurFileContentSize());
+							adapter.notifyDataSetChanged();
 						}
-						
-						adapter.notifyDataSetChanged();
 					}
 
 					@Override
 					public void onSuccess(ResponseInfo<File> responseInfo) {
 						// testTextView.setText("downloaded:" +
 						// responseInfo.result.getPath());
-						// 更改TbFileDownload 下载完删除这条记录？
 						try {
 							tbFileDownload.setDlStatus(FINISH);
-							MyDao.getDaoMy(TbFileDownload.class).createOrUpdate(tbFileDownload);
+							MyDao.getDaoMy(TbFileDownload.class)
+									.createOrUpdate(tbFileDownload);
 							TbMyCategory category = new TbMyCategory();
 							category.setId(tbFileDownload.getCwsId());
 							category.setComplete_dl(FINISH);
-							MyDao.getDaoMy(TbMyCategory.class).createOrUpdate(category);
+							MyDao.getDaoMy(TbMyCategory.class).createOrUpdate(
+									category);
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
@@ -406,8 +443,26 @@ public class SurvivalKitActivity extends BaseActivity {
 
 					@Override
 					public void onFailure(HttpException error, String msg) {
-//						modelList.get(position).setState(LOADING);
-//						adapter.notifyDataSetChanged();
+						//若出现异常 下载失败 则重新开始下载
+						try {
+							tbFileDownload.setDlStatus(NODOWN);
+							MyDao.getDaoMy(TbFileDownload.class).createOrUpdate(tbFileDownload);
+							TbMyCategory category = new TbMyCategory();
+							category.setId(tbFileDownload.getCwsId());
+							category.setComplete_dl(NODOWN);
+							MyDao.getDaoMy(TbMyCategory.class).createOrUpdate(category);
+						} catch (SQLException e) {
+						
+						}
+						adapter.notifyDataSetChanged();
+						//在主线程中弹出吐死提示
+						SurvivalKitActivity.this.runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								Toast.makeText(SurvivalKitActivity.this, "Download failure", 0).show();
+							}
+						});
 					}
 				});
 

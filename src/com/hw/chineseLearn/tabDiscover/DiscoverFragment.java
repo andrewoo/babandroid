@@ -68,10 +68,10 @@ public class DiscoverFragment extends BaseFragment implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.rel_survival_kit:
 			startActivity(new Intent(getActivity(), SurvivalKitActivity.class));
+			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);//开启为单例 不用系统默认动画
 			break;
 		case R.id.rel_pinyin_chart:
-			startActivity(new Intent(getActivity(),
-					PinyinExerciseActivity.class));
+			startActivity(new Intent(getActivity(),PinyinExerciseActivity.class));
 			break;
 		case R.id.rel_pinyin_tone:
 			startActivity(new Intent(getActivity(), PinyinToneActivity.class));

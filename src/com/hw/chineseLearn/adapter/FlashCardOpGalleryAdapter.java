@@ -43,7 +43,7 @@ public class FlashCardOpGalleryAdapter extends FancyCoverFlowAdapter {
 		this.datas = datas;
 		inflater = LayoutInflater.from(mContext);
 		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;// gallery的宽和高
-		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 4;
+		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 6;
 	}
 
 	Handler mHandler = new Handler() {

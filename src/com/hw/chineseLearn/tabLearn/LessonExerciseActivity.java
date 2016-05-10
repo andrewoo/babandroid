@@ -235,7 +235,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	public void init() {
 		checkView = LayoutInflater.from(context).inflate(
 				R.layout.layout_learn_exercise_check_dialog, null);
-
+		
 		btn_check = (Button) findViewById(R.id.btn_check);
 		btn_check.setOnClickListener(onClickListener);
 		initTestDatas();

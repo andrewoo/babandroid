@@ -385,6 +385,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 //		gallery.setSpacing(screenWidth / 10 * 1);
 		gallery.setSelection(index);
 		gallery.setFocusable(false);
+		gallery.setGravity(Gravity.CENTER);
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
 				screenWidth, screenHeight * 5 / 10);
 		gallery.setLayoutParams(param);
