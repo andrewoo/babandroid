@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp" >
+        android:paddingRight="20dp"
+        android:paddingTop="20dp" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -62,7 +63,7 @@
                 android:orientation="horizontal" >
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
@@ -71,6 +72,7 @@
                     android:id="@+id/btn_play"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    android:layout_alignParentLeft="true"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/strokes_order_play_sound_onclick" />
 
@@ -78,12 +80,13 @@
                     android:id="@+id/tv_en"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
                     android:text="child;kid"
                     android:textColor="@color/mid_grey"
                     android:textSize="@dimen/text_s12" />
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
         <com.util.weight.LocusPassWordView

@@ -13,6 +13,9 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,10 +37,11 @@ import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.hw.chineseLearn.model.PinyinToneLessonExerciseModel;
 import com.hw.chineseLearn.tabLearn.LessonResultActivity;
 import com.hw.chineseLearn.tabLearn.LessonReviewResultActivity;
+import com.util.tool.BitmapLoader;
 import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
-import com.util.tool.UiUtil;
+import com.util.tool.UtilMedthod;
 import com.util.weight.CustomDialog;
 import com.util.weight.LocusPassWordView;
 import com.util.weight.LocusPassWordView.OnCompleteListener;
@@ -82,6 +86,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	int colorBlack = 0;
 	int colorRed = 0;
 	int colorGrey = 0;
+	Drawable drawable;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		colorBlack = resourse.getColor(R.color.black);
 		colorRed = resourse.getColor(R.color.chinese_skill_red);
 		colorGrey = resourse.getColor(R.color.mid_grey);
+		drawable = resourse.getDrawable(R.drawable.bg_border_grey2);
 		initBudle();// 初始化数据
 		CustomApplication.app.addActivity(this);
 		init();
@@ -199,6 +205,13 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	ArrayList<View> itemViewList = new ArrayList<View>();
 
 	/**
+	 * 这里做一个判断正确的规则，错0，对list.size()。如果一个题目有三个字，则正确答案scoreNum = 1*3；错误答案scoreNum=
+	 * 0；
+	 * 
+	 */
+	int scoreNum = 0;
+
+	/**
 	 * 初始化
 	 */
 	public void init() {
@@ -216,22 +229,9 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		lpwv.setOnCompleteListener(new OnCompleteListener() {
 			@Override
 			public void onComplete(String mPassword) {
-				// if (needverify) {
-				// if (lpwv.verifyPassword(mPassword)) {
-				// UiUtil.showToast(getApplicationContext(),
-				// "密码输入正确,请输入新密码!");
-				// lpwv.clearPassword();
-				// needverify = false;
-				// } else {
-				// UiUtil.showToast(getApplicationContext(),
-				// "错误的密码,请重新输入!");
-				// lpwv.clearPassword();
-				// password = "";
-				// }
-				// }
-				// Log.d(TAG, "mPassword:" + mPassword);
 				lpwv.clearPassword();
-				setViews(checkDrawToneIsRight(mPassword));
+				isDrawRight = checkDrawToneIsRight(mPassword);
+				setViews(isDrawRight);
 
 			}
 		});
@@ -276,7 +276,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	/**
 	 * 根据拼音判断是第几声
 	 */
-	private void findToneByPy(String pinyin) {
+	private String findToneByPy(String pinyin) {
 		int pinyinOrder = -1;
 		if (pinyin != null) {
 			for (int i = 0; i < yunmuOneTone.length; i++) {
@@ -320,7 +320,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		if (pinyinOrder != -1) {
 			rightToneList.add(pinyinOrder);
 		}
-
+		return pinyin;
 	}
 
 	/**
@@ -370,8 +370,6 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		} else {
 			isDrawRight = false;
 		}
-		// Log.d(TAG, "pinyinOrdFormList:" + pinyinOrdFormList);
-		// Log.d(TAG, "pinyinOrder:" + pinyinOrder);
 		Log.d(TAG, "checkDrawToneIsRight()-drawIndex:" + drawIndex);
 		Log.d(TAG, "checkDrawToneIsRight()-isDrawRight:" + isDrawRight);
 		return isDrawRight;
@@ -379,23 +377,63 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 	private void setViews(boolean isDrawRight) {
 
-		View view = itemViewList.get(drawIndex);
-		TextView tv_py = (TextView) view.findViewById(R.id.tv_py);
-		TextView tv_cn = (TextView) view.findViewById(R.id.tv_cn);
-		tv_py.setTextColor(colorBlack);
-		tv_cn.setTextColor(colorBlack);
+		if (pinList.length == rightToneList.size()
+				&& pinList.length == itemViewList.size()) {
 
-		drawIndex++;
-		if (drawIndex > rightToneList.size() - 1) {
-			drawIndex = rightToneList.size() - 1;
-			isCheckBtnActived(true);
-		}
-		if (rightToneList.size() > 1) {
-			setItemViewColor();
-		}
+			String py = pinList[drawIndex];
+			View view = itemViewList.get(drawIndex);
+			ImageView iv_tone = (ImageView) view.findViewById(R.id.iv_tone);
+			TextView tv_py = (TextView) view.findViewById(R.id.tv_py);
+			TextView tv_cn = (TextView) view.findViewById(R.id.tv_cn);
+			// 当前置黑
+			tv_py.setTextColor(colorBlack);
+			tv_cn.setTextColor(colorBlack);
+			Bitmap bitmap = BitmapLoader.drawableToBitmap(drawable);
+			if (isDrawRight) {
+				scoreNum += 1;
+				iv_tone.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
+						colorBlue));
+			} else {// 错一个则全错
+				scoreNum = 0;
+				iv_tone.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
+						colorRed));
+			}
 
+			int nextIndex = drawIndex + 1;
+			if (nextIndex <= itemViewList.size() - 1) {
+				if (rightToneList.size() > 1) {// 多个字的
+					View viewNext = itemViewList.get(nextIndex);
+					TextView tv_py_next = (TextView) viewNext
+							.findViewById(R.id.tv_py);
+					TextView tv_cn_next = (TextView) viewNext
+							.findViewById(R.id.tv_cn);
+					tv_py_next.setTextColor(colorBlue);
+					tv_cn_next.setTextColor(colorBlue);
+				}
+			}
+
+			drawIndex++;
+			if (drawIndex > itemViewList.size() - 1) {
+				drawIndex = itemViewList.size() - 1;
+				isCheckBtnActived(true);
+				tv_py.setTextColor(colorBlack);
+				tv_py.setText(py);
+				tv_cn.setTextColor(colorBlack);
+			}
+
+			if (rightToneList.size() > 1) {// 多个字的
+				// 不是最后一个置蓝
+				if (drawIndex < itemViewList.size() - 1) {
+					tv_py.setTextColor(colorBlue);
+					tv_cn.setTextColor(colorBlue);
+				}
+			}
+		}
 	}
 
+	/**
+	 * 
+	 */
 	private void initDatas() {
 		if (builder != null) {
 			builder.dismiss();
@@ -448,25 +486,6 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	}
 
 	/**
-	 * 设置item-UI
-	 */
-	private void setItemViewColor() {
-		Log.d(TAG, "setItemViewColor()-drawIndex:" + drawIndex);
-		View view = itemViewList.get(drawIndex);
-		TextView tv_py = (TextView) view.findViewById(R.id.tv_py);
-		TextView tv_cn = (TextView) view.findViewById(R.id.tv_cn);
-		if (drawIndex < itemViewList.size() - 1) {
-			tv_py.setTextColor(colorBlue);
-			tv_cn.setTextColor(colorBlue);
-		}
-		if (drawIndex == itemViewList.size() - 1) {
-			tv_py.setTextColor(colorBlack);
-			tv_cn.setTextColor(colorBlack);
-		}
-
-	}
-
-	/**
 	 * 播放声音
 	 */
 	private void play() {
@@ -491,16 +510,22 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				if (!"".equals(py)) {
 					pinList = py.split(" ");
 					if (pinList != null) {
+						// reset
 						isCheckBtnActived(false);
 						rightToneList.clear();
 						itemViewList.clear();
 						lin_content.removeAllViews();
-
+						scoreNum = 0;
 						for (int i = 0; i < pinList.length; i++) {
 							String pinyin = pinList[i];
-							findToneByPy(pinyin);
+							pinyin = findToneByPy(pinyin);
 							View view = LayoutInflater.from(context).inflate(
 									R.layout.layout_pytone_item, null);
+							ImageView iv_tone = (ImageView) view
+									.findViewById(R.id.iv_tone);
+							Bitmap bitmap = BitmapLoader
+									.drawableToBitmap(drawable);
+							iv_tone.setImageBitmap(bitmap);
 							TextView tv_py = (TextView) view
 									.findViewById(R.id.tv_py);
 							tv_py.setText(pinyin);
@@ -567,10 +592,12 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				panderLife--;
 				Log.d(TAG, "panderLife:" + panderLife);
 				if (panderLife == 0) {// lose all pander
-					Intent intent = new Intent(PinyinToneExerciseActivity.this,
-							PinyinToneResultActivity.class);
-					intent.putExtra("loseAllPanders", "loseAllPanders");
-					startActivityForResult(intent, 100);
+
+					// Intent intent = new
+					// Intent(PinyinToneExerciseActivity.this,
+					// PinyinToneResultActivity.class);
+					// intent.putExtra("loseAllPanders", "loseAllPanders");
+					// startActivityForResult(intent, 100);
 
 				} else {
 					// playWrongSound();
@@ -595,7 +622,8 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 			case R.id.btn_continue:
 
-				if (isDrawRight) {
+				if (scoreNum == pinList.length) {// 全部正确，才算对。
+
 					setProgressViewBg(exerciseIndex,// 设置进度快的背景
 							R.drawable.bg_progress_rigth);
 					// showCheckDialog(true);// 弹出正确的对话框

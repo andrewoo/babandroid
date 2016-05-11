@@ -9,7 +9,7 @@
         android:id="@+id/iv_tone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/check_box_nocheck" />
+        android:src="@drawable/bg_border_grey2" />
 
     <TextView
         android:id="@+id/tv_py"
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:text="hai"
         android:textColor="@color/chinese_skill_blue"
-        android:textSize="@dimen/text_s16" />
+        android:textSize="@dimen/text_s20" />
 
     <TextView
         android:id="@+id/tv_cn"
@@ -25,6 +25,6 @@
         android:layout_height="wrap_content"
         android:text="孩"
         android:textColor="@color/chinese_skill_blue"
-        android:textSize="@dimen/text_s18" />
+        android:textSize="@dimen/text_s20" />
 
 </LinearLayout>
