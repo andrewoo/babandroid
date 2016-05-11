@@ -22,6 +22,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -91,6 +92,10 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity();
+		
+		viewLeftRightPadding=UiUtil.dip2px(context, 8);
+		viewTopBottomPadding=UiUtil.dip2px(context, 10);
+		
 		initData();
 		play();
 		x = 0;
@@ -107,6 +112,8 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	private void initView() {
 		contentView = LayoutInflater.from(context).inflate(
 				R.layout.fragment_lesson_sentence_move, null);
+		FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(screenWidth*2, screenHeight);
+		contentView.setLayoutParams(params);
 		task = new ThreadWithDialogTask();
 		rlRoot = (RelativeLayout) contentView.findViewById(R.id.rl_root);
 		lin_play_and_text = (LinearLayout) contentView
@@ -173,7 +180,6 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			textView.setLayoutParams(ly);
 			textView.setPadding(viewLeftRightPadding, viewTopBottomPadding,
 					viewLeftRightPadding, viewTopBottomPadding);
-
 			textView.setText("" + textViewB.getText());
 
 			textView.setTextColor(context.getResources().getColor(
@@ -204,13 +210,13 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			}
 			moveViewWithFingerUp(textView, x1, y1);
 			xb = x1;
-			xb += (viewTextWidth + UiUtil.dip2px(context, viewLeftRightPadding));
+			xb += (viewTextWidth + UiUtil.dip2px(context, viewLeftRightPadding+10));
 			yb = y1;
 
 		}
 	}
 
-	int viewLeftRightPadding = 30;
+	int viewLeftRightPadding =30; 
 	int viewTopBottomPadding = 20;
 
 	private String[] textSplits;
@@ -276,7 +282,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			orignViewY.add(y1);
 			moveViewWithFingerUp(textView, x1, y1);
 			x = x1;
-			x += (viewTextWidth + UiUtil.dip2px(context, viewLeftRightPadding));
+			x += (viewTextWidth + UiUtil.dip2px(context, viewLeftRightPadding+10));
 			y = y1;
 
 		}
@@ -593,7 +599,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				currentDragTag = -1;
 			}
 			x = x1;
-			x += (viewTextWidth + UiUtil.dip2px(context, viewLeftRightPadding));
+			x += (viewTextWidth + UiUtil.dip2px(context, viewLeftRightPadding+10));
 			y = y1;
 		}
 		getTopViewStrings();
