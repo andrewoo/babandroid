@@ -17,7 +17,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.test.UiThreadTest;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -27,8 +26,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -47,10 +46,10 @@ import com.util.tool.UiUtil;
 import com.util.tool.UtilMedthod;
 import com.util.weight.CustomDialog;
 import com.util.weight.LocusPassWordView;
-import com.util.weight.XieLineView;
 import com.util.weight.LocusPassWordView.OnAnamationCompleteListener;
 import com.util.weight.LocusPassWordView.OnCompleteListener;
 import com.util.weight.Point;
+import com.util.weight.XieLineView;
 
 /**
  * 拼音发音课程练习页面
@@ -224,7 +223,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		checkView = LayoutInflater.from(context).inflate(
 				R.layout.layout_learn_exercise_check_dialog, null);
 		
-		container1 = (LinearLayout) findViewById(R.id.container1);//放line的容器
+		container1 = (RelativeLayout) findViewById(R.id.container1);//放line的容器
 		
 		btn_continue = (Button) findViewById(R.id.btn_continue);
 		btn_continue.setOnClickListener(onClickListener);
@@ -459,17 +458,27 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 		Integer tone = rightToneList.get(drawIndex);
 		Point[][] points = lpwv.getmPoints();
+		int width = lpwv.getWidth();
+		int height = lpwv.getHeight();
 		
-		
+		int[] locations = new int[2];
+		lpwv.getLocationOnScreen(locations);//九宫格的坐标
 
-		switch (tone) {
+		switch (1) {
 		case 1://平线动画
 			XieLineView lineView=new XieLineView(context);
+			lineView.setPoint(points[1][0], points[1][1], points[1][2]);//设置线的3个点
+			RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(width, height);
+			//设置宽高和九宫格一样
+			lineView.setLayoutParams(params);
 			container1.addView(lineView);
 			
-			ObjectAnimator ofFloat = ObjectAnimator.ofFloat(lineView, "translationX", 300,200);
-		    ofFloat.setDuration(2000);
-		    ofFloat.start();
+//			ObjectAnimator ofFloat = ObjectAnimator.ofFloat(lineView, "translationX", locations[0],);
+//		    ofFloat.setDuration(2000);
+//		    ObjectAnimator.ofFloat(lineView, "translationY", values);
+		    
+		    
+//		    ofFloat.start();
 			
 			break;
 		case 2:
@@ -871,7 +880,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			}
 		}
 	};
-	private LinearLayout container1;
+	private RelativeLayout container1;
 
 	@Override
 	protected void onDestroy() {

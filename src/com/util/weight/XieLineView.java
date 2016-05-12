@@ -31,8 +31,6 @@ public class XieLineView extends View {
 
 	private void initPoint() {
 		
-		
-		
 	}
 
 	@Override
@@ -45,9 +43,11 @@ public class XieLineView extends View {
 		p.setStrokeWidth(15);
 
 		Path path = new Path();
-		path.moveTo(one.x, one.y);
-		path.lineTo(two.x, two.y);
-		path.lineTo(three.x, three.y);
+		if(one!=null && two!=null && three!=null){
+			path.moveTo(one.x, one.y);
+			path.lineTo(two.x, two.y);
+			path.lineTo(three.x, three.y);
+		}
 		// canvas.drawLine(60, 40, 100, 40, p);// 画线
 		// canvas.drawLine(110, 40, 190, 80, p);// 斜线
 	}
