@@ -5,19 +5,26 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.hw.chineseLearn.R;
 import com.util.tool.BitmapUtil;
@@ -122,14 +129,23 @@ public class LocusPassWordView extends View {
 
 	public LocusPassWordView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		init();
 	}
 
 	public LocusPassWordView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		init();
 	}
 
 	public LocusPassWordView(Context context) {
 		super(context);
+		init();
+	}
+
+	private void init() {
+		bitmap = BitmapFactory.decodeResource(getResources(),
+				R.drawable.pinyintone_finger);
+
 	}
 
 	@Override
@@ -138,6 +154,39 @@ public class LocusPassWordView extends View {
 			initCache();
 		}
 		drawToCanvas(canvas);
+		drawToneLine(canvas);
+	}
+
+	private Path path;
+	List<float[]> arrayList = new ArrayList<float[]>();
+	private float[] animPos;
+	Paint dpaint = new Paint();
+
+	private void drawToneLine(Canvas canvas) {
+		Path path1 = new Path();
+		dpaint.setAntiAlias(true);
+		dpaint.setStyle(Paint.Style.STROKE);
+		dpaint.setStrokeWidth(15);
+		dpaint.setColor(Color.GRAY);
+
+		if (arrayList.size() > 0) {
+			if (animPos != null && animPos.length > 0) {
+				path1.moveTo(arrayList.get(0)[0], arrayList.get(0)[1]);//指定线的起始点
+				for (int i = 0; i < arrayList.size(); i++) {
+					float[] floatArray = arrayList.get(i);
+//					path1.addCircle(floatArray[0], floatArray[1], 15,Path.Direction.CW);
+					path1.lineTo(floatArray[0], floatArray[1]);
+				}
+				if (bitmap != null) {
+					canvas.drawBitmap(bitmap, animPos[0], animPos[1], dpaint);
+				}
+
+			}
+
+			canvas.drawPath(path1, dpaint);
+
+			canvas.restore();
+		}
 	}
 
 	/**
@@ -167,9 +216,9 @@ public class LocusPassWordView extends View {
 			lineAlpha = mPaint.getAlpha();
 		}
 		// 画所有点
-		for (int i = 0; i < mPoints.length; i++) {
-			for (int j = 0; j < mPoints[i].length; j++) {
-				Point p = mPoints[i][j];
+		for (int i = 0; i < getmPoints().length; i++) {
+			for (int j = 0; j < getmPoints()[i].length; j++) {
+				Point p = getmPoints()[i][j];
 				if (p != null) {
 					canvas.rotate(myDegrees, p.x, p.y);
 					if (p.state == Point.STATE_CHECK) {
@@ -293,17 +342,17 @@ public class LocusPassWordView extends View {
 				roundW = locus_round_original.getWidth() / 2;
 			}
 
-			mPoints[0][0] = new Point(x + 0 + roundW, y + 0 + roundW);
-			mPoints[0][1] = new Point(x + w / 2, y + 0 + roundW);
-			mPoints[0][2] = new Point(x + w - roundW, y + 0 + roundW);
-			mPoints[1][0] = new Point(x + 0 + roundW, y + h / 2);
-			mPoints[1][1] = new Point(x + w / 2, y + h / 2);
-			mPoints[1][2] = new Point(x + w - roundW, y + h / 2);
-			mPoints[2][0] = new Point(x + 0 + roundW, y + h - roundW);
-			mPoints[2][1] = new Point(x + w / 2, y + h - roundW);
-			mPoints[2][2] = new Point(x + w - roundW, y + h - roundW);
+			getmPoints()[0][0] = new Point(x + 0 + roundW, y + 0 + roundW);
+			getmPoints()[0][1] = new Point(x + w / 2, y + 0 + roundW);
+			getmPoints()[0][2] = new Point(x + w - roundW, y + 0 + roundW);
+			getmPoints()[1][0] = new Point(x + 0 + roundW, y + h / 2);
+			getmPoints()[1][1] = new Point(x + w / 2, y + h / 2);
+			getmPoints()[1][2] = new Point(x + w - roundW, y + h / 2);
+			getmPoints()[2][0] = new Point(x + 0 + roundW, y + h - roundW);
+			getmPoints()[2][1] = new Point(x + w / 2, y + h - roundW);
+			getmPoints()[2][2] = new Point(x + w - roundW, y + h - roundW);
 			int k = 0;
-			for (Point[] ps : mPoints) {
+			for (Point[] ps : getmPoints()) {
 				for (Point p : ps) {
 					p.index = k;
 					k++;
@@ -470,9 +519,9 @@ public class LocusPassWordView extends View {
 	 * @return
 	 */
 	private Point checkSelectPoint(float x, float y) {
-		for (int i = 0; i < mPoints.length; i++) {
-			for (int j = 0; j < mPoints[i].length; j++) {
-				Point p = mPoints[i][j];
+		for (int i = 0; i < getmPoints().length; i++) {
+			for (int j = 0; j < getmPoints()[i].length; j++) {
+				Point p = getmPoints()[i][j];
 				if (RoundUtil.checkInRound(p.x, p.y, r, (int) x, (int) y)) {
 					return p;
 				}
@@ -700,6 +749,7 @@ public class LocusPassWordView extends View {
 
 	//
 	private OnCompleteListener mCompleteListener;
+	private int tone;
 
 	/**
 	 * @param mCompleteListener
@@ -779,5 +829,109 @@ public class LocusPassWordView extends View {
 		 * @param str
 		 */
 		public void onComplete(String password);
+	}
+
+	public void startAnamation(int tone) {
+
+		this.tone = tone;
+		arrayList.clear();
+
+		switch (tone) {
+		case 1:
+			tone1Anamation();
+			break;
+		case 2:
+			tone2Anamation();
+			break;
+		case 3:
+			tone3Anamation();
+			break;
+		case 4:
+			tone4Anamation();
+			break;
+		}
+
+	}
+
+	private void tone4Anamation() {
+		commonAnamation(getmPoints()[0][0], getmPoints()[2][2], getmPoints()[2][2]);
+	}
+
+	private void tone2Anamation() {
+		commonAnamation(getmPoints()[2][0], getmPoints()[0][2], getmPoints()[0][2]);
+
+	}
+
+	private void tone1Anamation() {
+
+		commonAnamation(getmPoints()[1][0], getmPoints()[1][2], getmPoints()[1][2]);
+
+	}
+
+	private void tone3Anamation() {
+
+		commonAnamation(getmPoints()[0][0], getmPoints()[1][1], getmPoints()[0][2]);
+	}
+
+	private void commonAnamation(Point point1, Point point2, Point point3) {
+		final PathMeasure mMeasure = new PathMeasure();
+		path = new Path();
+		path.moveTo(point1.x, point1.y);
+		path.lineTo(point2.x, point2.y);
+		path.lineTo(point3.x, point3.y);
+
+		mMeasure.setPath(path, false);
+
+		float[] arrayOfFloat = new float[2];
+		arrayOfFloat[0] = 0.0F;
+		arrayOfFloat[1] = mMeasure.getLength();
+		ValueAnimator mValueAnim = ValueAnimator.ofFloat(arrayOfFloat);
+		mValueAnim.setDuration(1000);
+		mValueAnim.addUpdateListener(new AnimatorUpdateListener() {
+
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+				animPos = new float[2];
+				float f = ((Float) animation.getAnimatedValue()).floatValue();
+				mMeasure.getPosTan(f, animPos, null);// 拿到每一帧的点
+				arrayList.add(animPos);
+				invalidate();
+			}
+		});
+
+		mValueAnim.addListener(new AnimatorListenerAdapter() {
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				super.onAnimationEnd(animation);
+				// 清空当前画布
+				arrayList.clear();
+				// bitmap=null;
+				invalidate();
+				if (onAnamationCompleteListener != null) {
+					onAnamationCompleteListener.onCompleteListener();
+				}
+			}
+		});
+
+		mValueAnim.start();
+	}
+
+	private OnAnamationCompleteListener onAnamationCompleteListener;
+	private ImageView imageView;
+	private Bitmap bitmap;
+
+	public void setOnAnamationCompleteListener(
+			OnAnamationCompleteListener onAnamationCompleteListener) {
+		this.onAnamationCompleteListener = onAnamationCompleteListener;
+	}
+
+	public interface OnAnamationCompleteListener {
+		void onCompleteListener();
+	}
+	
+
+	public Point[][] getmPoints() {
+		return mPoints;
 	}
 }

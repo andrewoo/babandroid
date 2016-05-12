@@ -37,6 +37,7 @@ import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.BitmapLoader;
 import com.util.tool.HttpHelper;
+import com.util.tool.ImageZoom;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
@@ -98,7 +99,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		fragment = this;
-		context = getActivity();
+		context = getActivity(); 
 		initData();// 得到传过来的参数
 		initView();
 	}
@@ -407,6 +408,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	 */
 	private void initMoveViews() {
 		moveViewList.clear();
+		scale = (float) mizigeWidth / (float) 420;// 缩放比
+		scaleView = (float) itemViewWidth / (float) 420;
 		int x = 0;
 		int y = UiUtil.dip2px(context, 65);// topView y坐标的初始位置
 
@@ -414,21 +417,25 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 			ImageView imageView = new ImageView(context);
 			RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(
-					itemViewWidth/2, itemViewWidth/2);//暂时用2测试效果
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			imageView.setLayoutParams(ly);
 			imageView.setTag(i);
 			imageView.setFocusable(false);
 			imageView.setOnTouchListener(this);
 			SubLGModel model = subLGModelList.get(i);
+			Bitmap scaleBitmap=null;
 			if (model != null) {
 				String imageName = model.getImageName();
 				String strRect = model.getStrRect();// x.y.宽.高.
 				int wordId = model.getWordId();
 				Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH+ imageName);
 				Bitmap cropBitmap = UtilMedthod.getCropBitmap(bitmap);//截取图片为只有像素的矩形
+				//计算切割后的图片 放到ImageView上的大小
+//				float scaleWidth=(float)itemViewWidth/bitmap.getWidth();
+//				float scaleHeight=(float)itemViewWidth/bitmap.getHeight();
 				
-				imageView.setImageBitmap(cropBitmap);
-				
+				scaleBitmap = ImageZoom.scale(cropBitmap, scaleView, scaleView);
+				imageView.setImageBitmap(scaleBitmap);
 				// imageView.setTag(wordId);
 
 			} else {
@@ -437,7 +444,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			subLGModelMap.put(imageView, model);// 建立对应关系
 			moveViewList.add(imageView);
 //			ll_root.addView(imageView);
-			rel_root.addView(imageView);//test
+			rel_root.addView(imageView);
 
 			int x1 = 0, y1 = y;
 
@@ -458,10 +465,11 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			// Log.d(TAG, "x:" + x);
 			// Log.d(TAG, "y:" + y);
 			// Log.d(TAG, "itemViewWidth:" + itemViewWidth);
-
-			orignViewX.add(x1);
-			orignViewY.add(y1);
-			moveViewWithFingerUp(imageView, x1, y1);
+			if(scaleBitmap!=null){
+				orignViewX.add(x1+(itemViewWidth/2-scaleBitmap.getWidth()/2));
+				orignViewY.add(y1+(itemViewWidth/2-scaleBitmap.getHeight()/2));
+				moveViewWithFingerUp(imageView, x1+(itemViewWidth/2-scaleBitmap.getWidth()/2), y1+(itemViewWidth/2-scaleBitmap.getHeight()/2));
+			}
 			x = x1;
 			x += (itemViewWidth + viewMagin);
 			y = y1;
@@ -500,6 +508,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				.getLayoutParams();
 		params.leftMargin = (int) rawX;
 		params.topMargin = (int) rawY;
+		
 		view.setLayoutParams(params);
 		view.invalidate();
 	}
@@ -510,18 +519,23 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	 * @param textView
 	 */
 	private void moveToOrignPosition(ImageView imageView) {
-
+		
+		@SuppressWarnings("unused")
+		Bitmap bitmap = ((BitmapDrawable) (imageView.getDrawable())).getBitmap();//拿到view上的bitmap 获得原始宽度
 		int tag = (Integer) imageView.getTag();
 		int x = 0, y = 0;
 		x = orignViewX.get(tag);
 		y = orignViewY.get(tag);
 
-		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView
-				.getLayoutParams();
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
 		params.leftMargin = x;
 		params.topMargin = y;
-		params.width = itemViewWidth/2;
-		params.height = itemViewWidth/2;
+		int width = imageView.getWidth();
+		int height = imageView.getHeight();
+//		params.width = (int) (itemViewWidth*scale);
+//		params.height = (int) (itemViewWidth*scale);//scaleView
+		params.width = bitmap.getWidth();
+		params.height = bitmap.getHeight();//scaleView
 		imageView.setLayoutParams(params);
 		imageView.invalidate();
 
@@ -535,16 +549,17 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	private ImageView iv_dv_view;
 	private List<String> answerList;
 
-	private float scale = 0.0f;
+	private float scale = 1f;
 
 	int lastX;
 	int lastY;
 	private RelativeLayout ll_root;
+	private float scaleView;
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 
-		scale = (float) mizigeWidth / (float) 420;// 缩放比
+//		scale = (float) mizigeWidth / (float) 420;// 缩放比
 		ImageView imageView = (ImageView) v;
 		imageView.bringToFront();
 		Bitmap bitmap = ((BitmapDrawable) (imageView.getDrawable())).getBitmap();
@@ -562,15 +577,18 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 		int rawX = (int) event.getRawX();
 		int rawY = (int) event.getRawY();
-
+		
 		// rawX = rawX - imageView.getWidth() / 2;
 		// rawY = rawY - relTopHeight - imageView.getHeight() / 2;
 		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView .getLayoutParams();
-			 params.width = mizigeWidth; params.height = mizigeHeight;
-			 imageView.setLayoutParams(params); 
-			 lastX = rawX; lastY = rawY;
+		case MotionEvent.ACTION_DOWN: 
+			Bitmap bitmap1 = ((BitmapDrawable) (imageView.getDrawable())).getBitmap();
+			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView .getLayoutParams();
+			//点击后放大的具体宽高比例
+				params.width = (int) (bitmap1.getWidth()/((float)itemViewWidth/mizigeWidth));
+				params.height = (int) (bitmap1.getHeight()/((float)itemViewWidth/mizigeWidth));
+				imageView.setLayoutParams(params); 
+			lastX = rawX; lastY = rawY;
 
 			playClickSound();
 			int[] locations = new int[2];
@@ -631,7 +649,8 @@ public class LearnImageMoveFragment extends BaseFragment implements
 					float l1 = scale * l;// left
 					float t1 = scale * t;// top
 					float r1 = (420 - l - w) * scale;// right
-					float b1 = (420 - t - h) * scale;// bottom
+					float b1 = (420 - t - h) * scale;// bottomscaleView
+					
 
 					Log.d(TAG, "缩放后的值l1:" + l1);
 					Log.d(TAG, "缩放后的值t1:" + t1);
@@ -647,12 +666,12 @@ public class LearnImageMoveFragment extends BaseFragment implements
 					Log.d(TAG, "mizigeX:" + mizigeX);
 					Log.d(TAG, "mizigeY:" + mizigeY);
 					Log.d(TAG, "mizigeWidth:" + mizigeWidth);
-
-					if (((x + l1) > (mizigeX + UiUtil.dip2px(context, 20)))
-							&& (y + t1 > (mizigeY + relTopHeight))
-							&& (x + mizigeWidth - r1) < (mizigeX + mizigeWidth + UiUtil
+					//没用数据库中的位置校验
+					if ((x  > (mizigeX + UiUtil.dip2px(context, 20)))
+							&& (y  > (mizigeY + relTopHeight))
+							&& (x + imageView.getWidth()) < (mizigeX + mizigeWidth + UiUtil
 									.dip2px(context, 20))
-							&& (y + mizigeHeight - b1) < (mizigeY
+							&& (y + imageView.getHeight()) < (mizigeY
 									+ mizigeHeight + relTopHeight)) {
 						// 拖到了米字格的区域
 						// UiUtil.showToast(context,

@@ -1,5 +1,8 @@
 package com.util.tool;
 
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+
 public class ImageZoom {
 	public static void main(String[] args) {
 		ImageZoom iz = new ImageZoom();
@@ -71,4 +74,18 @@ public class ImageZoom {
 		}// if
 		this.calc(); // 执行缩放算法
 	}
+	/**
+     * 图片的缩放方法
+     *
+     * @param src    ：源图片资源
+     * @param scaleX ：横向缩放比例
+     * @param scaleY ：纵向缩放比例
+     */
+    public static Bitmap scale(Bitmap src, float scaleX, float scaleY) {
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleX, scaleY);
+        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(),
+                matrix, true);
+    }
+	
 }

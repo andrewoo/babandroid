@@ -57,7 +57,7 @@ public class HwAnim {
 		float[] arrayOfFloat = new float[2];
 		arrayOfFloat[0] = 0.0F;
 		arrayOfFloat[1] = this.mMeasure.getLength();
-		mValueAnim = ValueAnimator.ofFloat(arrayOfFloat);
+		mValueAnim = ValueAnimator.ofFloat(arrayOfFloat); 
 		mValueAnim.setDuration(1500);        
 		//值动画每走一次更新在mAnimHistoryPoints中添加最新的两个点作为线的连接点
 		mValueAnim.addUpdateListener(new AnimatorUpdateListener() {
@@ -125,7 +125,7 @@ public class HwAnim {
 			Path localPath = new Path();
 			for (int i = 0; i < this.mAnimHistoryPoints.size(); i++) {
 				HwPoint localHwPoint = (HwPoint) this.mAnimHistoryPoints.get(i);
-				localPath.addCircle(localHwPoint.x, localHwPoint.y,
+				localPath.addCircle(localHwPoint.x, localHwPoint.y, 
 						this.mAffectDistance, Path.Direction.CW);
 			}
 			Path part1=this.mView.partPaths.get(mHwAnimPartIndex);

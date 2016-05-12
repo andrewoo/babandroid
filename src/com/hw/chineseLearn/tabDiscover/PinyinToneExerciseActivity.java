@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,9 +15,9 @@ import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.test.UiThreadTest;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -26,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -41,10 +43,14 @@ import com.util.tool.BitmapLoader;
 import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
+import com.util.tool.UiUtil;
 import com.util.tool.UtilMedthod;
 import com.util.weight.CustomDialog;
 import com.util.weight.LocusPassWordView;
+import com.util.weight.XieLineView;
+import com.util.weight.LocusPassWordView.OnAnamationCompleteListener;
 import com.util.weight.LocusPassWordView.OnCompleteListener;
+import com.util.weight.Point;
 
 /**
  * 拼音发音课程练习页面
@@ -80,7 +86,6 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	TbMyPinyinTone tbMyPinyinTone;
 
 	private LocusPassWordView lpwv;
-	private boolean needverify = true;
 	Resources resourse;
 	int colorBlue = 0;
 	int colorBlack = 0;
@@ -220,6 +225,9 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		initToneList();
 		checkView = LayoutInflater.from(context).inflate(
 				R.layout.layout_learn_exercise_check_dialog, null);
+		
+		container1 = (LinearLayout) findViewById(R.id.container1);//放line的容器
+		
 		btn_continue = (Button) findViewById(R.id.btn_continue);
 		btn_continue.setOnClickListener(onClickListener);
 		isCheckBtnActived(false);
@@ -232,9 +240,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			@Override
 			public void onComplete(String mPassword) {
 				lpwv.clearPassword();
-				isDrawRight = checkDrawToneIsRight(mPassword);
-				setViews(isDrawRight);
-
+				setViews(checkDrawToneIsRight(mPassword));
 			}
 		});
 		initDatas();
@@ -398,6 +404,20 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				scoreNum = 0;
 				iv_tone.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
 						colorRed));
+				// 调用九宫格内提示动画 （内部俩动画） 外边一个动画
+				lpwv.startAnamation(rightToneList.get(drawIndex));
+				lpwv.setOnAnamationCompleteListener(new OnAnamationCompleteListener() {
+
+					@Override
+					public void onCompleteListener() {
+						// 画直线 做动画
+
+						drawLineAndAnamation();
+
+						UiUtil.showToast(PinyinToneExerciseActivity.this,
+								"anamation end");
+					}
+				});
 			}
 
 			//下一个置蓝
@@ -429,6 +449,39 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 					tv_cn.setTextColor(colorBlue);
 				}
 			}
+		}
+	}
+
+	/**
+	 * 画出平移的直线并做位移和缩放的动画
+	 * 
+	 */
+	private void drawLineAndAnamation() {
+
+		Integer tone = rightToneList.get(drawIndex);
+		Point[][] points = lpwv.getmPoints();
+		
+		
+
+		switch (tone) {
+		case 1://平线动画
+			XieLineView lineView=new XieLineView(context);
+			container1.addView(lineView);
+			
+			ObjectAnimator ofFloat = ObjectAnimator.ofFloat(lineView, "translationX", 300,200);
+		    ofFloat.setDuration(2000);
+		    ofFloat.start();
+			
+			break;
+		case 2:
+
+			break;
+		case 3:
+
+			break;
+		case 4:
+
+			break;
 		}
 	}
 
@@ -501,6 +554,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	 * @param index
 	 */
 	private void setData(int index) {
+		//貌似重新设置数据需要去掉前一个lineview
 		if (lessonModels != null && lessonModels.size() != 0) {
 			PinyinToneLessonExerciseModel model = lessonModels.get(index);
 			if (model != null) {
@@ -816,6 +870,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			}
 		}
 	};
+	private LinearLayout container1;
 
 	@Override
 	protected void onDestroy() {

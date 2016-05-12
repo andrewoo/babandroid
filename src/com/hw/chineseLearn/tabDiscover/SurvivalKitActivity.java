@@ -242,6 +242,12 @@ public class SurvivalKitActivity extends BaseActivity {
 			}
 		}
 	};
+	
+	public void onBackPressed() {
+		startActivity(new Intent(SurvivalKitActivity.this,MainActivity.class));
+		overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+		
+	};
 
 	OnItemClickListener onItemclickListener = new OnItemClickListener() {
 

@@ -181,9 +181,7 @@ public class PathView extends View {
             Path arrowPath =  ArrowCal.cal(getContext(), dpath, mRatio);
             arrowPaths.add(arrowPath);
         }
-        
 	}
-	
 	
 	@Override
 	protected void onDraw(Canvas canvas) {

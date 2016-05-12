@@ -136,8 +136,7 @@ public class PinyinToneResultActivity extends BaseActivity {
 
 				// 解锁下一节
 				setResult(1);
-				CustomApplication.app
-						.finishActivity(PinyinToneResultActivity.this);
+				CustomApplication.app.finishActivity(PinyinToneResultActivity.this);
 
 				break;
 
