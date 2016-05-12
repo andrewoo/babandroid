@@ -3,19 +3,19 @@ package com.hw.chineseLearn.tabDiscover;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.FluentAddLessonAdapter;
@@ -24,6 +24,7 @@ import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbFileDownload;
 import com.hw.chineseLearn.db.DatabaseHelperMy;
+import com.hw.chineseLearn.interfaces.AppConstants;
 import com.hw.chineseLearn.model.FluentListModel;
 import com.hw.chineseLearn.model.FluentModel;
 import com.hw.chineseLearn.model.FlunetAudioContentBaseModel;
@@ -38,7 +39,6 @@ import com.util.tool.FileTools;
 import com.util.weight.PullToRefreshView;
 import com.util.weight.PullToRefreshView.OnFooterRefreshListener;
 import com.util.weight.PullToRefreshView.OnRefreshTouchListener;
-import com.util.weight.RoundProgressBar;
 
 /**
  * 添加流畅练习课程
@@ -246,7 +246,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 
 		HttpUtils http = new HttpUtils();
 		http.send(HttpRequest.HttpMethod.GET,
-				"http://58.67.154.138:8088/babbel-api-app/v1/dialogues?diffLevel="
+				AppConstants.BASE_URL+"/babbel-api-app/v1/dialogues?diffLevel="
 						+ diffLevel, new RequestCallBack<String>() {
 
 					Gson gson = new Gson();
@@ -313,7 +313,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 		HttpUtils http = new HttpUtils();
 		final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/"
 				+ dlFileName;
-		final String fileUrl = "http://58.67.154.138:8088/" + dlFileName;
+		final String fileUrl = AppConstants.BASE_URL+"/" + dlFileName;
 		HttpHandler handler = http.download(fileUrl, filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
 				true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 				new RequestCallBack<File>() {

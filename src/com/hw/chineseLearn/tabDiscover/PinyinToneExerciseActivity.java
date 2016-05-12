@@ -91,6 +91,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	int colorRed = 0;
 	int colorGrey = 0;
 	Drawable drawable;
+	Bitmap bitmap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		colorRed = resourse.getColor(R.color.chinese_skill_red);
 		colorGrey = resourse.getColor(R.color.mid_grey);
 		drawable = resourse.getDrawable(R.drawable.bg_border_grey2);
+		bitmap = BitmapLoader.drawableToBitmap(drawable);
 		initBudle();// 初始化数据
 		CustomApplication.app.addActivity(this);
 		init();
@@ -393,7 +395,6 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			// 当前置黑
 			tv_py.setTextColor(colorBlack);
 			tv_cn.setTextColor(colorBlack);
-			Bitmap bitmap = BitmapLoader.drawableToBitmap(drawable);
 			if (isDrawRight) {
 				scoreNum += 1;
 				iv_tone.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
@@ -418,6 +419,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				});
 			}
 
+			//下一个置蓝
 			int nextIndex = drawIndex + 1;
 			if (nextIndex <= itemViewList.size() - 1) {
 				if (rightToneList.size() > 1) {// 多个字的
@@ -430,9 +432,8 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 					tv_cn_next.setTextColor(colorBlue);
 				}
 			}
-
 			drawIndex++;
-			if (drawIndex > itemViewList.size() - 1) {
+			if (drawIndex > itemViewList.size() - 1) {//最后一个
 				drawIndex = itemViewList.size() - 1;
 				isCheckBtnActived(true);
 				tv_py.setTextColor(colorBlack);
@@ -586,8 +587,6 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 									R.layout.layout_pytone_item, null);
 							ImageView iv_tone = (ImageView) view
 									.findViewById(R.id.iv_tone);
-							Bitmap bitmap = BitmapLoader
-									.drawableToBitmap(drawable);
 							iv_tone.setImageBitmap(bitmap);
 							TextView tv_py = (TextView) view
 									.findViewById(R.id.tv_py);

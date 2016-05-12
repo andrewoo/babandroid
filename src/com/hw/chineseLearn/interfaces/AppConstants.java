@@ -1,6 +1,5 @@
 package com.hw.chineseLearn.interfaces;
 
-import java.util.ArrayList;
 
 /**
  * App常量配置
@@ -15,7 +14,7 @@ public class AppConstants {
 	/**
 	 * 域名
 	 */
-	public static final String BASE_URL = "http://www.youtonggao.com/ytg";//
+	public static final String BASE_URL = "http://52.9.199.129";//
 
 	// 图片主地址
 	public static String BASE_IMG_URL = BASE_URL + "";
