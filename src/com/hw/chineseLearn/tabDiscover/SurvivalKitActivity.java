@@ -30,6 +30,7 @@ import com.hw.chineseLearn.dao.bean.TbFileDownload;
 import com.hw.chineseLearn.dao.bean.TbMyCategory;
 import com.hw.chineseLearn.dao.bean.category;
 import com.hw.chineseLearn.db.DatabaseHelperMy;
+import com.hw.chineseLearn.interfaces.AppConstants;
 import com.hw.chineseLearn.model.SurvivalKitModel;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
@@ -343,9 +344,8 @@ public class SurvivalKitActivity extends BaseActivity {
 		final String fileName = "cssc_" + (position + 1) + ".zip";
 		final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/cssc_"
 				+ (position + 1) + ".zip";// https://d2kox946o1unj2.cloudfront.net
-		// String url="http://58.67.154.138:8088/babbel-api-app/resource";
 		HttpHandler handler = http.download(
-				"http://58.67.154.138:8088/babbel-api-app/resource/cssc_"
+				AppConstants.BASE_URL+"/babbel-api-app/resource/cssc_"
 						+ (position + 1) + ".zip", filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
 				false, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 				new RequestCallBack<File>() {
@@ -386,7 +386,7 @@ public class SurvivalKitActivity extends BaseActivity {
 										+ (position + 1) + ".zip");
 								tbFileDownload.setFilePath(filePath);
 								tbFileDownload
-										.setFileURL("http://58.67.154.138:8088/babbel-api-app/resource/cssc_"
+										.setFileURL(AppConstants.BASE_URL+"/babbel-api-app/resource/cssc_"
 												+ (position + 1) + ".zip");
 								tbFileDownload.setType(1);
 								tbFileDownload.setDlStatus(LOADING);
