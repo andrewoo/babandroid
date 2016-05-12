@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,7 +13,11 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.test.UiThreadTest;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -22,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -32,10 +38,19 @@ import com.hw.chineseLearn.dao.bean.TbMyPinyinTone;
 import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.hw.chineseLearn.model.PinyinToneLessonExerciseModel;
 import com.hw.chineseLearn.tabLearn.LessonResultActivity;
+import com.hw.chineseLearn.tabLearn.LessonReviewResultActivity;
+import com.util.tool.BitmapLoader;
 import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
+import com.util.tool.UiUtil;
+import com.util.tool.UtilMedthod;
 import com.util.weight.CustomDialog;
+import com.util.weight.LocusPassWordView;
+import com.util.weight.XieLineView;
+import com.util.weight.LocusPassWordView.OnAnamationCompleteListener;
+import com.util.weight.LocusPassWordView.OnCompleteListener;
+import com.util.weight.Point;
 
 /**
  * 拼音发音课程练习页面
@@ -70,6 +85,14 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	CustomDialog builder;
 	TbMyPinyinTone tbMyPinyinTone;
 
+	private LocusPassWordView lpwv;
+	Resources resourse;
+	int colorBlue = 0;
+	int colorBlack = 0;
+	int colorRed = 0;
+	int colorGrey = 0;
+	Drawable drawable;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,6 +100,12 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				R.layout.activity_pytone_exercise, null);
 		setContentView(contentView);
 		context = this;
+		resourse = context.getResources();
+		colorBlue = resourse.getColor(R.color.chinese_skill_blue);
+		colorBlack = resourse.getColor(R.color.black);
+		colorRed = resourse.getColor(R.color.chinese_skill_red);
+		colorGrey = resourse.getColor(R.color.mid_grey);
+		drawable = resourse.getDrawable(R.drawable.bg_border_grey2);
 		initBudle();// 初始化数据
 		CustomApplication.app.addActivity(this);
 		init();
@@ -120,8 +149,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	/**
 	 * 当前测试的题答案是否正确
 	 */
-	private boolean isCurrentTestRight;
-
+	private boolean isDrawRight = false;
 	/**
 	 * 0错误，1正确
 	 */
@@ -142,21 +170,323 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	String filePath, voicePath;
 
 	ImageView btn_play;
+	LinearLayout lin_content;
+
+	String[] yunmuOneTone = { "ā", "ō", "ē", "ī", "ū", "ǖ" };
+	String[] yunmuTwoTone = { "á", "ó", "é", "í", "ú", "ǘ" };
+	String[] yunmuThreeTone = { "ǎ", "ǒ", "ě", "ǐ", "ǔ", "ǚ" };
+	String[] yunmuFourTone = { "à", "ò", "è", "ì", "ù", "ǜ" };
+	String[] yunmu = { "a", "o", "e", "i", "u", "ü" };
+
+	/**
+	 * 第一声声调的集合
+	 */
+	ArrayList<String> oneTone = new ArrayList<String>();
+	/**
+	 * 第二声声调的集合
+	 */
+	ArrayList<String> twoTone = new ArrayList<String>();
+	/**
+	 * 第三声声调的集合
+	 */
+	ArrayList<String> threeTone = new ArrayList<String>();
+	/**
+	 * 第四声声调的集合
+	 */
+	ArrayList<String> fourTone = new ArrayList<String>();
+	/**
+	 * 正确声调的集合
+	 */
+	ArrayList<Integer> rightToneList = new ArrayList<Integer>();
+
+	/**
+	 * 画声调的下标
+	 */
+	int drawIndex = 0;
+
+	/**
+	 * 
+	 */
+	ArrayList<View> itemViewList = new ArrayList<View>();
+
+	/**
+	 * 这里做一个判断正确的规则，错0，对list.size()。如果一个题目有三个字，则正确答案scoreNum = 1*3；错误答案scoreNum=
+	 * 0；
+	 * 
+	 */
+	int scoreNum = 0;
 
 	/**
 	 * 初始化
 	 */
 	public void init() {
+		initToneList();
 		checkView = LayoutInflater.from(context).inflate(
 				R.layout.layout_learn_exercise_check_dialog, null);
+		
+		container1 = (LinearLayout) findViewById(R.id.container1);//放line的容器
+		
 		btn_continue = (Button) findViewById(R.id.btn_continue);
 		btn_continue.setOnClickListener(onClickListener);
+		isCheckBtnActived(false);
+		lin_content = (LinearLayout) findViewById(R.id.lin_content);
 
 		btn_play = (ImageView) findViewById(R.id.btn_play);
 		btn_play.setOnClickListener(onClickListener);
+		lpwv = (LocusPassWordView) this.findViewById(R.id.mLocusPassWordView);
+		lpwv.setOnCompleteListener(new OnCompleteListener() {
+			@Override
+			public void onComplete(String mPassword) {
+				lpwv.clearPassword();
+				setViews(checkDrawToneIsRight(mPassword));
+			}
+		});
 		initDatas();
 	}
 
+	/**
+	 * 四个声调集合
+	 */
+	private void initToneList() {
+		oneTone.clear();
+		twoTone.clear();
+		threeTone.clear();
+		fourTone.clear();
+
+		oneTone.add("0, 1");
+		oneTone.add("0,1,2");
+		oneTone.add("1,2");
+		oneTone.add("3,4");
+		oneTone.add("3,4,5");
+		oneTone.add("4,5");
+		oneTone.add("6,7");
+		oneTone.add("6,7,8");
+		oneTone.add("7,8");
+
+		twoTone.add("3,1");
+		twoTone.add("4,2");
+		twoTone.add("6,4");
+		twoTone.add("7,5");
+		twoTone.add("6,4,2");
+
+		threeTone.add("3,7,5");
+		threeTone.add("0,4,2");
+
+		fourTone.add("0,4");
+		fourTone.add("1,5");
+		fourTone.add("3,7");
+		fourTone.add("4,8");
+		fourTone.add("0,4,8");
+	}
+
+	/**
+	 * 根据拼音判断是第几声
+	 */
+	private String findToneByPy(String pinyin) {
+		int pinyinOrder = -1;
+		if (pinyin != null) {
+			for (int i = 0; i < yunmuOneTone.length; i++) {
+				String str = yunmuOneTone[i];
+				if (!pinyin.contains(str)) {
+					continue;
+				}
+				pinyin = pinyin.replace(str, yunmu[i]);
+				pinyinOrder = 1;
+				break;
+			}
+			for (int i = 0; i < yunmuTwoTone.length; i++) {
+				String str = yunmuTwoTone[i];
+				if (!pinyin.contains(str)) {
+					continue;
+				}
+				pinyin = pinyin.replace(str, yunmu[i]);
+				pinyinOrder = 2;
+				break;
+			}
+			for (int i = 0; i < yunmuThreeTone.length; i++) {
+				String str = yunmuThreeTone[i];
+				if (!pinyin.contains(str)) {
+					continue;
+				}
+				pinyin = pinyin.replace(str, yunmu[i]);
+				pinyinOrder = 3;
+				break;
+			}
+
+			for (int i = 0; i < yunmuFourTone.length; i++) {
+				String str = yunmuFourTone[i];
+				if (!pinyin.contains(str)) {
+					continue;
+				}
+				pinyin = pinyin.replace(str, yunmu[i]);
+				pinyinOrder = 4;
+				break;
+			}
+		}
+		if (pinyinOrder != -1) {
+			rightToneList.add(pinyinOrder);
+		}
+		return pinyin;
+	}
+
+	/**
+	 * 检查画的声调是否正确
+	 * 
+	 * @param mPassword
+	 * @return
+	 */
+	private boolean checkDrawToneIsRight(String mPassword) {
+		boolean isDrawRight = false;
+		int pinyinOrder = 0;
+		for (int i = 0; i < oneTone.size(); i++) {
+			String toneStr = oneTone.get(i);
+			if (!mPassword.equals(toneStr)) {
+				continue;
+			}
+			pinyinOrder = 1;
+			break;
+		}
+		for (int i = 0; i < twoTone.size(); i++) {
+			String toneStr = twoTone.get(i);
+			if (!mPassword.equals(toneStr)) {
+				continue;
+			}
+			pinyinOrder = 2;
+			break;
+		}
+		for (int i = 0; i < threeTone.size(); i++) {
+			String toneStr = threeTone.get(i);
+			if (!mPassword.equals(toneStr)) {
+				continue;
+			}
+			pinyinOrder = 3;
+			break;
+		}
+		for (int i = 0; i < fourTone.size(); i++) {
+			String toneStr = fourTone.get(i);
+			if (!mPassword.equals(toneStr)) {
+				continue;
+			}
+			pinyinOrder = 4;
+			break;
+		}
+		int pinyinOrdFormList = rightToneList.get(drawIndex);
+		if (pinyinOrdFormList == pinyinOrder) {
+			isDrawRight = true;
+		} else {
+			isDrawRight = false;
+		}
+		Log.d(TAG, "checkDrawToneIsRight()-drawIndex:" + drawIndex);
+		Log.d(TAG, "checkDrawToneIsRight()-isDrawRight:" + isDrawRight);
+		return isDrawRight;
+	}
+
+	private void setViews(boolean isDrawRight) {
+
+		if (pinList.length == rightToneList.size()
+				&& pinList.length == itemViewList.size()) {
+
+			String py = pinList[drawIndex];
+			View view = itemViewList.get(drawIndex);
+			ImageView iv_tone = (ImageView) view.findViewById(R.id.iv_tone);
+			TextView tv_py = (TextView) view.findViewById(R.id.tv_py);
+			TextView tv_cn = (TextView) view.findViewById(R.id.tv_cn);
+			// 当前置黑
+			tv_py.setTextColor(colorBlack);
+			tv_cn.setTextColor(colorBlack);
+			Bitmap bitmap = BitmapLoader.drawableToBitmap(drawable);
+			if (isDrawRight) {
+				scoreNum += 1;
+				iv_tone.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
+						colorBlue));
+			} else {// 错一个则全错
+				scoreNum = 0;
+				iv_tone.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
+						colorRed));
+				// 调用九宫格内提示动画 （内部俩动画） 外边一个动画
+				lpwv.startAnamation(rightToneList.get(drawIndex));
+				lpwv.setOnAnamationCompleteListener(new OnAnamationCompleteListener() {
+
+					@Override
+					public void onCompleteListener() {
+						// 画直线 做动画
+
+						drawLineAndAnamation();
+
+						UiUtil.showToast(PinyinToneExerciseActivity.this,
+								"anamation end");
+					}
+				});
+			}
+
+			int nextIndex = drawIndex + 1;
+			if (nextIndex <= itemViewList.size() - 1) {
+				if (rightToneList.size() > 1) {// 多个字的
+					View viewNext = itemViewList.get(nextIndex);
+					TextView tv_py_next = (TextView) viewNext
+							.findViewById(R.id.tv_py);
+					TextView tv_cn_next = (TextView) viewNext
+							.findViewById(R.id.tv_cn);
+					tv_py_next.setTextColor(colorBlue);
+					tv_cn_next.setTextColor(colorBlue);
+				}
+			}
+
+			drawIndex++;
+			if (drawIndex > itemViewList.size() - 1) {
+				drawIndex = itemViewList.size() - 1;
+				isCheckBtnActived(true);
+				tv_py.setTextColor(colorBlack);
+				tv_py.setText(py);
+				tv_cn.setTextColor(colorBlack);
+			}
+
+			if (rightToneList.size() > 1) {// 多个字的
+				// 不是最后一个置蓝
+				if (drawIndex < itemViewList.size() - 1) {
+					tv_py.setTextColor(colorBlue);
+					tv_cn.setTextColor(colorBlue);
+				}
+			}
+		}
+	}
+
+	/**
+	 * 画出平移的直线并做位移和缩放的动画
+	 * 
+	 */
+	private void drawLineAndAnamation() {
+
+		Integer tone = rightToneList.get(drawIndex);
+		Point[][] points = lpwv.getmPoints();
+		
+		
+
+		switch (tone) {
+		case 1://平线动画
+			XieLineView lineView=new XieLineView(context);
+			container1.addView(lineView);
+			
+			ObjectAnimator ofFloat = ObjectAnimator.ofFloat(lineView, "translationX", 300,200);
+		    ofFloat.setDuration(2000);
+		    ofFloat.start();
+			
+			break;
+		case 2:
+
+			break;
+		case 3:
+
+			break;
+		case 4:
+
+			break;
+		}
+	}
+
+	/**
+	 * 
+	 */
 	private void initDatas() {
 		if (builder != null) {
 			builder.dismiss();
@@ -181,7 +511,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			imageView.setBackground(context.getResources().getDrawable(
 					R.drawable.panda_sit));
 			imageView.setId(i);
-			lin_pander_life.addView(imageView);
+			// lin_pander_life.addView(imageView);
 			panderView.put(i, imageView);
 		}
 		if (lessonModels != null) {
@@ -215,25 +545,63 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		MediaPlayUtil.getInstance().play(filePath);
 	}
 
+	String pinList[];
+
 	/**
 	 * 设置要显示的数据
 	 * 
 	 * @param index
 	 */
 	private void setData(int index) {
-		if (lessonModels != null) {
+		//貌似重新设置数据需要去掉前一个lineview
+		if (lessonModels != null && lessonModels.size() != 0) {
 			PinyinToneLessonExerciseModel model = lessonModels.get(index);
 			if (model != null) {
+				String py = model.getPy();
 				String cn = model.getCn();
 				String en = model.getEn();
-				String py = model.getPy();
+
 				if (!"".equals(py)) {
-					String pinList[] = py.split(" ");
+					pinList = py.split(" ");
 					if (pinList != null) {
+						// reset
+						isCheckBtnActived(false);
+						rightToneList.clear();
+						itemViewList.clear();
+						lin_content.removeAllViews();
+						scoreNum = 0;
 						for (int i = 0; i < pinList.length; i++) {
+							String pinyin = pinList[i];
+							pinyin = findToneByPy(pinyin);
+							View view = LayoutInflater.from(context).inflate(
+									R.layout.layout_pytone_item, null);
+							ImageView iv_tone = (ImageView) view
+									.findViewById(R.id.iv_tone);
+							Bitmap bitmap = BitmapLoader
+									.drawableToBitmap(drawable);
+							iv_tone.setImageBitmap(bitmap);
+							TextView tv_py = (TextView) view
+									.findViewById(R.id.tv_py);
+							tv_py.setText(pinyin);
+
+							TextView tv_cn = (TextView) view
+									.findViewById(R.id.tv_cn);
+							tv_cn.setText("" + cn.charAt(i));
+							if (i == 0) {
+								tv_cn.setTextColor(colorBlue);
+								tv_py.setTextColor(colorBlue);
+							} else {
+								tv_cn.setTextColor(colorGrey);
+								tv_py.setTextColor(colorGrey);
+							}
+							lin_content.addView(view);
+							itemViewList.add(view);
 						}
+
 					}
 				}
+				TextView tv_en = (TextView) findViewById(R.id.tv_en);
+				tv_en.setText("" + en);
 				voicePath = model.getVoicePath();
 				filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voicePath;
 				File file = new File(filePath);
@@ -277,12 +645,13 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				lin_pander_life.removeView(panderView.get(panderLife - 1));
 				panderLife--;
 				Log.d(TAG, "panderLife:" + panderLife);
-
 				if (panderLife == 0) {// lose all pander
-					Intent intent = new Intent(PinyinToneExerciseActivity.this,
-							LessonResultActivity.class);
-					intent.putExtra("loseAllPanders", "loseAllPanders");
-					startActivityForResult(intent, 100);
+
+					// Intent intent = new
+					// Intent(PinyinToneExerciseActivity.this,
+					// PinyinToneResultActivity.class);
+					// intent.putExtra("loseAllPanders", "loseAllPanders");
+					// startActivityForResult(intent, 100);
 
 				} else {
 					// playWrongSound();
@@ -307,29 +676,31 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 			case R.id.btn_continue:
 
-				// isCurrentTestRight = baseFragment.isRight();
-				// if (isCurrentTestRight) {
-				// setProgressViewBg(exerciseIndex,// 设置进度快的背景
-				// R.drawable.bg_progress_rigth);
-				// showCheckDialog(true);// 弹出正确的对话框
-				// playRightSound();// 播放正确的声音
-				// } else {
-				// setProgressViewBg(exerciseIndex,
-				// R.drawable.bg_progress_wrong);
-				// showCheckDialog(false);// 展示错误对话框
-				// playWrongSound();// 播放错误音乐
-				// }
+				if (scoreNum == pinList.length) {// 全部正确，才算对。
+
+					setProgressViewBg(exerciseIndex,// 设置进度快的背景
+							R.drawable.bg_progress_rigth);
+					// showCheckDialog(true);// 弹出正确的对话框
+					// playRightSound();// 播放正确的声音
+				} else {
+					setProgressViewBg(exerciseIndex,
+							R.drawable.bg_progress_wrong);
+					// showCheckDialog(false);// 展示错误对话框
+					// playWrongSound();// 播放错误音乐
+				}
+				Log.d(TAG, "exerciseIndex:" + exerciseIndex);
 				if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
 
 					Intent intent = new Intent(PinyinToneExerciseActivity.this,
-							LessonResultActivity.class);
+							LessonReviewResultActivity.class);
 					intent.putExtra("loseAllPanders", "");
 					startActivityForResult(intent, 100);
 				}
 				if (exerciseIndex < exerciseCount - 1) {
 					exerciseIndex++;
+					setData(exerciseIndex);
 				}
-
+				drawIndex = 0;
 				break;
 
 			case R.id.btn_play:
@@ -500,6 +871,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			}
 		}
 	};
+	private LinearLayout container1;
 
 	@Override
 	protected void onDestroy() {
@@ -530,17 +902,14 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	public void isCheckBtnActived(boolean isActived) {
 		if (isActived) {
 			btn_continue.setEnabled(true);
-			btn_continue.setBackgroundColor(context.getResources().getColor(
-					R.color.chinese_skill_blue));
+			btn_continue.setBackgroundColor(colorBlue);
 			btn_continue.setTextColor(context.getResources().getColor(
 					R.color.white));
 
 		} else {
 			btn_continue.setEnabled(false);
-			btn_continue.setBackgroundColor(context.getResources().getColor(
-					R.color.min_grey));
-			btn_continue.setTextColor(context.getResources().getColor(
-					R.color.chinese_skill_blue));
+			btn_continue.setBackgroundColor(colorGrey);
+			btn_continue.setTextColor(colorBlue);
 		}
 	}
 

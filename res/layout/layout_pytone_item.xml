@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical" >
@@ -9,30 +9,22 @@
         android:id="@+id/iv_tone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/check_box_nocheck" />
+        android:src="@drawable/bg_border_grey2" />
 
     <TextView
         android:id="@+id/tv_py"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="hai"
-        android:textColor="@color/deep_grey"
-        android:textSize="@dimen/text_s16" />
+        android:textColor="@color/chinese_skill_blue"
+        android:textSize="@dimen/text_s20" />
 
     <TextView
         android:id="@+id/tv_cn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="孩"
-        android:textColor="@color/deep_grey"
-        android:textSize="@dimen/text_s18" />
-
-    <TextView
-        android:id="@+id/tv_en"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="child;kid"
-        android:textColor="@color/mid_grey"
-        android:textSize="@dimen/text_s12" />
+        android:textColor="@color/chinese_skill_blue"
+        android:textSize="@dimen/text_s20" />
 
 </LinearLayout>
