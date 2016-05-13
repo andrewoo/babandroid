@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -224,9 +225,9 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		initToneList();
 		checkView = LayoutInflater.from(context).inflate(
 				R.layout.layout_learn_exercise_check_dialog, null);
-		
-		container1 = (RelativeLayout) findViewById(R.id.container1);//放line的容器
-		
+
+		container1 = (RelativeLayout) findViewById(R.id.container1);// 放line的容器
+
 		btn_continue = (Button) findViewById(R.id.btn_continue);
 		btn_continue.setOnClickListener(onClickListener);
 		isCheckBtnActived(false);
@@ -413,13 +414,12 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 						drawLineAndAnamation();
 
-						UiUtil.showToast(PinyinToneExerciseActivity.this,
-								"anamation end");
+						UiUtil.showToast(PinyinToneExerciseActivity.this,"anamation end");
 					}
 				});
 			}
 
-			//下一个置蓝
+			// 下一个置蓝
 			int nextIndex = drawIndex + 1;
 			if (nextIndex <= itemViewList.size() - 1) {
 				if (rightToneList.size() > 1) {// 多个字的
@@ -433,7 +433,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				}
 			}
 			drawIndex++;
-			if (drawIndex > itemViewList.size() - 1) {//最后一个
+			if (drawIndex > itemViewList.size() - 1) {// 最后一个
 				drawIndex = itemViewList.size() - 1;
 				isCheckBtnActived(true);
 				tv_py.setTextColor(colorBlack);
@@ -462,24 +462,43 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		int width = lpwv.getWidth();
 		int height = lpwv.getHeight();
 		
-		int[] locations = new int[2];
-		lpwv.getLocationOnScreen(locations);//九宫格的坐标
+		int[] location9 = new int[2];
+		lpwv.getLocationOnScreen(location9);//九宫格的坐标
+		
+		//拿最上方块的位置
+		View view = itemViewList.get(drawIndex);
+		ImageView iv_tone = (ImageView) view.findViewById(R.id.iv_tone);
+		int[] locationR= new int[2];
+		iv_tone.getLocationOnScreen(locationR);
 
 		switch (1) {
 		case 1://平线动画
 			XieLineView lineView=new XieLineView(context);
 			lineView.setPoint(points[1][0], points[1][1], points[1][2]);//设置线的3个点
-			RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(width, height);
-			//设置宽高和九宫格一样
+			RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+//			params.leftMargin=(int) points[1][0].x+location9[0];
+//			params.topMargin=10;//这个位置是相对view的
 			lineView.setLayoutParams(params);
+			lineView.layout((int) points[1][0].x, 0, (int) (points[1][2].x-points[1][0].x), 15);
+			lineView.invalidate();
 			container1.addView(lineView);
 			
-//			ObjectAnimator ofFloat = ObjectAnimator.ofFloat(lineView, "translationX", locations[0],);
-//		    ofFloat.setDuration(2000);
-//		    ObjectAnimator.ofFloat(lineView, "translationY", values);
-		    
-		    
-//		    ofFloat.start();
+//			AnimatorSet set = new AnimatorSet(); 
+//			
+//			ObjectAnimator xt = ObjectAnimator.ofFloat(lineView, "translationX",locationR[0]-points[1][0].x-location9[0]);
+//			xt.setDuration(1000);
+//			
+//		    ObjectAnimator yt = ObjectAnimator.ofFloat(lineView, "translationY",locationR[1]-points[1][0].y-location9[1]);
+//		    yt.setDuration(1000);
+//		    
+//		    ObjectAnimator xs = ObjectAnimator.ofFloat(lineView, "scaleX", (float)iv_tone.getWidth()/(points[1][2].x-points[1][0].x));
+//		    xs.setDuration(1000);
+//		    
+//		    ObjectAnimator ys = ObjectAnimator.ofFloat(lineView, "scaleY", 0.5f);
+//		    ys.setDuration(1000);
+//		    
+//		    set.playTogether(xt,yt,xs,ys);
+//			set.start();
 			
 			break;
 		case 2:
@@ -563,7 +582,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	 * @param index
 	 */
 	private void setData(int index) {
-		//貌似重新设置数据需要去掉前一个lineview
+		// 貌似重新设置数据需要去掉前一个lineview
 		if (lessonModels != null && lessonModels.size() != 0) {
 			PinyinToneLessonExerciseModel model = lessonModels.get(index);
 			if (model != null) {

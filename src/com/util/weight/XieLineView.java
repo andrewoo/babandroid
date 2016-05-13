@@ -48,6 +48,7 @@ public class XieLineView extends View {
 			path.lineTo(two.x, two.y);
 			path.lineTo(three.x, three.y);
 		}
+		canvas.drawPath(path, p);
 		// canvas.drawLine(60, 40, 100, 40, p);// 画线
 		// canvas.drawLine(110, 40, 190, 80, p);// 斜线
 	}
@@ -57,5 +58,13 @@ public class XieLineView extends View {
 		this.two = two;
 		this.three = three;
 		invalidate();
+	}
+	
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		
+		
+		
 	}
 }
