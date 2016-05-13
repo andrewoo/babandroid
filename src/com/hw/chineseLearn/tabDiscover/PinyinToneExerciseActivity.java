@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,11 +23,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -72,6 +71,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	private Button btn_continue;
 	View contentView;
 	private ImageView img_is_right;
+	private FrameLayout frame;
 	/**
 	 * 当前题目下标
 	 */
@@ -238,6 +238,8 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		btn_continue.setOnClickListener(onClickListener);
 		img_is_right = (ImageView) findViewById(R.id.img_is_right);
 		img_is_right.setVisibility(View.GONE);
+		frame = (FrameLayout) findViewById(R.id.frame);
+		frame.setVisibility(View.GONE);
 		isCheckBtnActived(false);
 		lin_content = (LinearLayout) findViewById(R.id.lin_content);
 
@@ -615,6 +617,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 					if (pinList != null) {
 						// reset
 						img_is_right.setVisibility(View.GONE);
+						frame.setVisibility(View.GONE);
 						lpwv.enableTouch(true);
 						isCheckBtnActived(false);
 						rightToneList.clear();
@@ -998,7 +1001,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			@Override
 			public void onAnimationEnd(Animation arg0) {
 				// TODO Auto-generated method stub
-				img_is_right.setVisibility(View.GONE);
+				arg0.cancel();
 			}
 		});
 		view.startAnimation(set);
@@ -1007,6 +1010,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 	private void animToBigger(View view) {
 		img_is_right.setVisibility(View.VISIBLE);
+		frame.setVisibility(View.VISIBLE);
 		ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f, 1.0f, 0.1f,
 				1.0f, Animation.RELATIVE_TO_SELF, 0.5f,
 				Animation.RELATIVE_TO_SELF, 0.5f);
@@ -1014,7 +1018,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		AnimationSet set = new AnimationSet(true);
 		set.addAnimation(scaleAnimation);
 		set.setDuration(700);
-		set.setFillAfter(true);
+		set.setFillAfter(false);
 		set.setAnimationListener(new AnimationListener() {
 
 			@Override
@@ -1033,6 +1037,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			public void onAnimationEnd(Animation arg0) {
 				// TODO Auto-generated method stub
 				animToSmaller(img_is_right);
+				arg0.cancel();
 			}
 		});
 		view.startAnimation(set);
