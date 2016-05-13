@@ -109,4 +109,16 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_s18" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/img_is_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/test_correct_2" />
+    </FrameLayout>
+
 </RelativeLayout>
