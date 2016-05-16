@@ -20,6 +20,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.hw.chineseLearn.R;
+import com.util.tool.BitmapLoader;
 import com.util.tool.BitmapUtil;
 import com.util.tool.MathUtil;
 import com.util.tool.RoundUtil;
@@ -295,10 +297,16 @@ public class LocusPassWordView extends View {
 				this.getResources(),
 				R.drawable.indicator_code_lock_point_area_red_holo);
 
-		locus_line = BitmapFactory.decodeResource(this.getResources(),
-				R.drawable.locus_line);
-		locus_line_semicircle = BitmapFactory.decodeResource(
-				this.getResources(), R.drawable.locus_line_semicircle);
+//		locus_line = BitmapFactory.decodeResource(this.getResources(),
+//				R.drawable.shape_9bg);//locus_line
+		
+		Drawable drawable = getResources().getDrawable(R.drawable.shape_9bg);
+		locus_line = BitmapLoader.drawableToBitmap(drawable);
+		
+		locus_line_semicircle = BitmapLoader.drawableToBitmap(drawable);
+		
+//		locus_line_semicircle = BitmapFactory.decodeResource(
+//				this.getResources(), R.drawable.locus_line_semicircle);//更改画线的颜色
 
 		locus_line_error = BitmapFactory.decodeResource(this.getResources(),
 				R.drawable.locus_line_error);
