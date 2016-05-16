@@ -26,8 +26,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -69,6 +74,8 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	private LinearLayout lin_lesson_progress;
 	private Button btn_continue;
 	View contentView;
+	private ImageView img_is_right;
+	private FrameLayout frame;
 	/**
 	 * 当前题目下标
 	 */
@@ -233,6 +240,10 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		rl_text = (RelativeLayout) findViewById(R.id.rl_text);//放数据的容器
 		btn_continue = (Button) findViewById(R.id.btn_continue);
 		btn_continue.setOnClickListener(onClickListener);
+		img_is_right = (ImageView) findViewById(R.id.img_is_right);
+		img_is_right.setVisibility(View.GONE);
+		frame = (FrameLayout) findViewById(R.id.frame);
+		frame.setVisibility(View.GONE);
 		isCheckBtnActived(false);
 		lin_content = (LinearLayout) findViewById(R.id.lin_content);
 
@@ -403,6 +414,8 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				scoreNum += 1;
 				iv_tone.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
 						colorBlue));
+				img_is_right.setImageDrawable(resourse
+						.getDrawable(R.drawable.test_correct_1));
 			} else {// 错一个则全错
 				scoreNum = 0;
 				iv_tone.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
@@ -417,11 +430,14 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 						drawLineAndAnamation();
 
-						UiUtil.showToast(PinyinToneExerciseActivity.this,"anamation end");
+						UiUtil.showToast(PinyinToneExerciseActivity.this,
+								"anamation end");
 					}
 				});
+				img_is_right.setImageDrawable(resourse
+						.getDrawable(R.drawable.test_wrong_1));
 			}
-
+			animToBigger(img_is_right);
 			// 下一个置蓝
 			int nextIndex = drawIndex + 1;
 			if (nextIndex <= itemViewList.size() - 1) {
@@ -439,6 +455,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			if (drawIndex > itemViewList.size() - 1) {// 最后一个
 				drawIndex = itemViewList.size() - 1;
 				isCheckBtnActived(true);
+				lpwv.enableTouch(false);
 				tv_py.setTextColor(colorBlack);
 				tv_py.setText(py);
 				tv_cn.setTextColor(colorBlack);
@@ -462,11 +479,13 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 		Integer tone = rightToneList.get(drawIndex);
 		Point[][] points = lpwv.getmPoints();
+		int width = lpwv.getWidth();
+		int height = lpwv.getHeight();
 		
 		int[] location9 = new int[2];
-		lpwv.getLocationOnScreen(location9);//九宫格的坐标
-		
-		//拿最上方块的位置
+		lpwv.getLocationOnScreen(location9);// 九宫格的坐标
+
+		// 拿最上方块的位置
 		View view = itemViewList.get(drawIndex);
 		final ImageView iv_tone = (ImageView) view.findViewById(R.id.iv_tone);
 		int[] locationR= new int[2];
@@ -549,7 +568,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 					lineView2.setVisibility(View.GONE);
 					Drawable drawable2 = getResources().getDrawable(R.drawable.pinyin_tone_two);
 					LinearLayout.LayoutParams paramsll=new LayoutParams(bitmap.getWidth(),bitmap.getHeight());
-					iv_tone.setLayoutParams(paramsll);
+					iv_tone.setLayoutParams(paramsll);  
 					iv_tone.setBackgroundDrawable(drawable2);
 				}
 			});
@@ -718,6 +737,9 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 					pinList = py.split(" ");
 					if (pinList != null) {
 						// reset
+						img_is_right.setVisibility(View.GONE);
+						frame.setVisibility(View.GONE);
+						lpwv.enableTouch(true);
 						isCheckBtnActived(false);
 						rightToneList.clear();
 						itemViewList.clear();
@@ -1065,4 +1087,81 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		}
 	}
 
+	private void animToSmaller(View view) {
+
+		ScaleAnimation scaleAnimationS = new ScaleAnimation(1.0f, 0.7f, 1.0f,
+				0.7f, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
+		scaleAnimationS.setFillAfter(true);// 动画执行完后是否停留在执行完的状态
+
+		int[] locations = new int[2];
+		btn_continue.getLocationInWindow(locations);
+		Log.d(TAG, "X:" + locations[0]);
+		Log.d(TAG, "Y:" + locations[1]);
+		TranslateAnimation tranlateAnimation = new TranslateAnimation(0, 0, 0,
+				locations[1] / 2 - UiUtil.dip2px(getApplicationContext(), 40));
+
+		AnimationSet set = new AnimationSet(true);
+		set.addAnimation(scaleAnimationS);
+		set.addAnimation(tranlateAnimation);
+		set.setDuration(1000);
+		set.setFillAfter(true);
+		set.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				// TODO Auto-generated method stub
+				arg0.cancel();
+			}
+		});
+		view.startAnimation(set);
+
+	}
+
+	private void animToBigger(View view) {
+		img_is_right.setVisibility(View.VISIBLE);
+		frame.setVisibility(View.VISIBLE);
+		ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f, 1.0f, 0.1f,
+				1.0f, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
+
+		AnimationSet set = new AnimationSet(true);
+		set.addAnimation(scaleAnimation);
+		set.setDuration(700);
+		set.setFillAfter(false);
+		set.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				// TODO Auto-generated method stub
+				animToSmaller(img_is_right);
+				arg0.cancel();
+			}
+		});
+		view.startAnimation(set);
+	}
 }

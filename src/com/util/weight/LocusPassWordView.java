@@ -171,10 +171,11 @@ public class LocusPassWordView extends View {
 
 		if (arrayList.size() > 0) {
 			if (animPos != null && animPos.length > 0) {
-				path1.moveTo(arrayList.get(0)[0], arrayList.get(0)[1]);//指定线的起始点
+				path1.moveTo(arrayList.get(0)[0], arrayList.get(0)[1]);// 指定线的起始点
 				for (int i = 0; i < arrayList.size(); i++) {
 					float[] floatArray = arrayList.get(i);
-//					path1.addCircle(floatArray[0], floatArray[1], 15,Path.Direction.CW);
+					// path1.addCircle(floatArray[0], floatArray[1],
+					// 15,Path.Direction.CW);
 					path1.lineTo(floatArray[0], floatArray[1]);
 				}
 				if (bitmap != null) {
@@ -240,24 +241,24 @@ public class LocusPassWordView extends View {
 			}
 		}
 		// 绘制方向图标
-		if (sPoints.size() > 0) {
-			int tmpAlpha = mPaint.getAlpha();
-			mPaint.setAlpha(lineAlpha);
-			Point tp = sPoints.get(0);
-			for (int i = 1; i < sPoints.size(); i++) {
-				// 根据移动的方向绘制方向图标
-				Point p = sPoints.get(i);
-				drawDirection(canvas, tp, p);
-				tp = p;
-			}
-			if (this.movingNoPoint) {
-				// 到达下一个点停止移动绘制固定的方向
-				drawDirection(canvas, tp, new Point((int) moveingX,
-						(int) moveingY));
-			}
-			mPaint.setAlpha(tmpAlpha);
-			lineAlpha = mPaint.getAlpha();
-		}
+		// if (sPoints.size() > 0) {
+		// int tmpAlpha = mPaint.getAlpha();
+		// mPaint.setAlpha(lineAlpha);
+		// Point tp = sPoints.get(0);
+		// for (int i = 1; i < sPoints.size(); i++) {
+		// // 根据移动的方向绘制方向图标
+		// Point p = sPoints.get(i);
+		// drawDirection(canvas, tp, p);
+		// tp = p;
+		// }
+		// if (this.movingNoPoint) {
+		// // 到达下一个点停止移动绘制固定的方向
+		// drawDirection(canvas, tp, new Point((int) moveingX,
+		// (int) moveingY));
+		// }
+		// mPaint.setAlpha(tmpAlpha);
+		// lineAlpha = mPaint.getAlpha();
+		// }
 
 	}
 
@@ -287,9 +288,9 @@ public class LocusPassWordView extends View {
 
 		locus_round_original = BitmapFactory.decodeResource(
 				this.getResources(),
-				R.drawable.indicator_code_lock_point_area_default_holo);
+				R.drawable.pinyin_tone_sudoku_round_original);// indicator_code_lock_point_area_default_holo
 		locus_round_click = BitmapFactory.decodeResource(this.getResources(),
-				R.drawable.indicator_code_lock_point_area_green_holo);
+				R.drawable.pinyin_tone_sudoku_round_selected);// indicator_code_lock_point_area_green_holo
 		locus_round_click_error = BitmapFactory.decodeResource(
 				this.getResources(),
 				R.drawable.indicator_code_lock_point_area_red_holo);
@@ -533,12 +534,12 @@ public class LocusPassWordView extends View {
 	/**
 	 * 重置点状态
 	 */
-	private void reset() {
+	public void reset() {
 		for (Point p : sPoints) {
 			p.state = Point.STATE_NORMAL;
 		}
 		sPoints.clear();
-		this.enableTouch();
+		this.enableTouch(true);
 	}
 
 	/**
@@ -660,7 +661,7 @@ public class LocusPassWordView extends View {
 				Log.e("task", "密码太短,请重新输入!");
 			} else if (mCompleteListener != null) {
 				if (this.sPoints.size() >= passwordMinLength) {
-					this.disableTouch();
+					this.enableTouch(false);
 					mCompleteListener.onComplete(toPointString());
 				}
 
@@ -694,22 +695,28 @@ public class LocusPassWordView extends View {
 			p.state = Point.STATE_CHECK_ERROR;
 		}
 		// 输入错误后设置为仍可用，以重新输入
-		enableTouch();
+		enableTouch(true);
 	}
 
 	/**
 	 * 设置为可操作
 	 */
-	public void enableTouch() {
-		isTouch = true;
+	public void enableTouch(boolean isTouch) {
+		this.isTouch = isTouch;
+		if (isTouch) {
+			setAlpha(1.0f);
+		} else {
+			setAlpha(0.5f);
+		}
+
 	}
 
 	/**
 	 * 设置为不可操作
 	 */
-	public void disableTouch() {
-		isTouch = false;
-	}
+//	public void disableTouch() {
+//		isTouch = false;
+//	}
 
 	private Timer timer = new Timer();
 	private TimerTask task = null;
@@ -854,23 +861,27 @@ public class LocusPassWordView extends View {
 	}
 
 	private void tone4Anamation() {
-		commonAnamation(getmPoints()[0][0], getmPoints()[2][2], getmPoints()[2][2]);
+		commonAnamation(getmPoints()[0][0], getmPoints()[2][2],
+				getmPoints()[2][2]);
 	}
 
 	private void tone2Anamation() {
-		commonAnamation(getmPoints()[2][0], getmPoints()[0][2], getmPoints()[0][2]);
+		commonAnamation(getmPoints()[2][0], getmPoints()[0][2],
+				getmPoints()[0][2]);
 
 	}
 
 	private void tone1Anamation() {
 
-		commonAnamation(getmPoints()[1][0], getmPoints()[1][2], getmPoints()[1][2]);
+		commonAnamation(getmPoints()[1][0], getmPoints()[1][2],
+				getmPoints()[1][2]);
 
 	}
 
 	private void tone3Anamation() {
 
-		commonAnamation(getmPoints()[0][0], getmPoints()[1][1], getmPoints()[0][2]);
+		commonAnamation(getmPoints()[0][0], getmPoints()[1][1],
+				getmPoints()[0][2]);
 	}
 
 	private void commonAnamation(Point point1, Point point2, Point point3) {
@@ -929,7 +940,6 @@ public class LocusPassWordView extends View {
 	public interface OnAnamationCompleteListener {
 		void onCompleteListener();
 	}
-	
 
 	public Point[][] getmPoints() {
 		return mPoints;
