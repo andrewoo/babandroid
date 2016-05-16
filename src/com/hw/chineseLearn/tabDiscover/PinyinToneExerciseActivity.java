@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -24,6 +26,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -227,7 +230,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				R.layout.layout_learn_exercise_check_dialog, null);
 
 		container1 = (RelativeLayout) findViewById(R.id.container1);// 放line的容器
-
+		rl_text = (RelativeLayout) findViewById(R.id.rl_text);//放数据的容器
 		btn_continue = (Button) findViewById(R.id.btn_continue);
 		btn_continue.setOnClickListener(onClickListener);
 		isCheckBtnActived(false);
@@ -459,56 +462,177 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 		Integer tone = rightToneList.get(drawIndex);
 		Point[][] points = lpwv.getmPoints();
-		int width = lpwv.getWidth();
-		int height = lpwv.getHeight();
 		
 		int[] location9 = new int[2];
 		lpwv.getLocationOnScreen(location9);//九宫格的坐标
 		
 		//拿最上方块的位置
 		View view = itemViewList.get(drawIndex);
-		ImageView iv_tone = (ImageView) view.findViewById(R.id.iv_tone);
+		final ImageView iv_tone = (ImageView) view.findViewById(R.id.iv_tone);
 		int[] locationR= new int[2];
 		iv_tone.getLocationOnScreen(locationR);
 
-		switch (1) {
+		switch (tone) {
 		case 1://平线动画
-			XieLineView lineView=new XieLineView(context);
+			final XieLineView lineView=new XieLineView(context);
 			lineView.setPoint(points[1][0], points[1][1], points[1][2]);//设置线的3个点
-			RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-//			params.leftMargin=(int) points[1][0].x+location9[0];
-//			params.topMargin=10;//这个位置是相对view的
+			RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(lpwv.getWidth(),lpwv.getHeight());
+			int leftmargin=(int) points[1][0].x+location9[0]-UiUtil.px2dip(this, 40);
+			params.leftMargin=location9[0]-UiUtil.px2dip(this, 40);
+			int topMargin=(int) (points[0][0].y+lin_content.getHeight()+rl_text.getHeight());
+			params.topMargin=lin_content.getHeight()+rl_text.getHeight();
 			lineView.setLayoutParams(params);
-			lineView.layout((int) points[1][0].x, 0, (int) (points[1][2].x-points[1][0].x), 15);
-			lineView.invalidate();
-			container1.addView(lineView);
+			container1.addView(lineView); 
+			AnimatorSet set = new AnimatorSet(); 
 			
-//			AnimatorSet set = new AnimatorSet(); 
-//			
-//			ObjectAnimator xt = ObjectAnimator.ofFloat(lineView, "translationX",locationR[0]-points[1][0].x-location9[0]);
-//			xt.setDuration(1000);
-//			
-//		    ObjectAnimator yt = ObjectAnimator.ofFloat(lineView, "translationY",locationR[1]-points[1][0].y-location9[1]);
-//		    yt.setDuration(1000);
-//		    
-//		    ObjectAnimator xs = ObjectAnimator.ofFloat(lineView, "scaleX", (float)iv_tone.getWidth()/(points[1][2].x-points[1][0].x));
-//		    xs.setDuration(1000);
-//		    
-//		    ObjectAnimator ys = ObjectAnimator.ofFloat(lineView, "scaleY", 0.5f);
-//		    ys.setDuration(1000);
-//		    
-//		    set.playTogether(xt,yt,xs,ys);
-//			set.start();
+			ObjectAnimator xt = ObjectAnimator.ofFloat(lineView, "translationX",locationR[0]-location9[0]-lpwv.getWidth()/2+UiUtil.px2dip(this, 20));//最后一个参数为缩放后的偏移
+			xt.setDuration(1000); 
+			
+		    ObjectAnimator yt = ObjectAnimator.ofFloat(lineView, "translationY",locationR[1]-location9[1]+iv_tone.getHeight()/2-lpwv.getHeight()/2);
+		    yt.setDuration(1000);
+		    
+		    ObjectAnimator xs = ObjectAnimator.ofFloat(lineView, "scaleX", (float)iv_tone.getWidth()/lpwv.getWidth());
+		    xs.setDuration(1000);
+		    
+		    ObjectAnimator ys = ObjectAnimator.ofFloat(lineView, "scaleY", (float)iv_tone.getHeight()/lpwv.getHeight());//y轴缩放后位置不对 暂时不缩放
+		    ys.setDuration(1000);
+		    
+		    set.playTogether(xt,yt,xs,ys);
+			set.start();
+			set.addListener(new AnimatorListenerAdapter() {
+
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					super.onAnimationEnd(animation);
+					lineView.setVisibility(View.GONE);
+					Drawable drawable2 = getResources().getDrawable(R.drawable.pinyin_tone_one);
+					LinearLayout.LayoutParams paramsll=new LayoutParams(bitmap.getWidth(),bitmap.getHeight());
+					iv_tone.setLayoutParams(paramsll);
+					iv_tone.setBackgroundDrawable(drawable2);
+				}
+			});
 			
 			break;
 		case 2:
+			
+			final XieLineView lineView2=new XieLineView(context);
+			lineView2.setPoint(points[2][0], points[1][1], points[0][2]);//设置线的3个点
+			RelativeLayout.LayoutParams params2=new RelativeLayout.LayoutParams(lpwv.getWidth(),lpwv.getHeight());
+			params2.leftMargin=location9[0]-UiUtil.px2dip(this, 40);
+			params2.topMargin=lin_content.getHeight()+rl_text.getHeight();
+			lineView2.setLayoutParams(params2);
+			container1.addView(lineView2); 
+			AnimatorSet set2 = new AnimatorSet(); 
+			
+			ObjectAnimator xt2 = ObjectAnimator.ofFloat(lineView2, "translationX",locationR[0]-location9[0]+UiUtil.px2dip(this, 20)-lpwv.getWidth()/2);//最后一个参数为缩放后的偏移
+			xt2.setDuration(1000);
+			
+		    ObjectAnimator yt2 = ObjectAnimator.ofFloat(lineView2, "translationY",locationR[1]-location9[1]+iv_tone.getHeight()/2-lpwv.getHeight()/2);
+		    yt2.setDuration(1000);
+		    
+		    ObjectAnimator xs2 = ObjectAnimator.ofFloat(lineView2, "scaleX", (float)iv_tone.getWidth()/lpwv.getWidth());
+		    xs2.setDuration(1000);
+		    
+		    ObjectAnimator ys2 = ObjectAnimator.ofFloat(lineView2, "scaleY", (float)iv_tone.getHeight()/lpwv.getHeight());//y轴缩放后位置不对 暂时不缩放
+		    ys2.setDuration(1000);
+		    
+		    set2.playTogether(xt2,yt2,xs2,ys2);
+			set2.start();
+			set2.addListener(new AnimatorListenerAdapter() {
+
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					super.onAnimationEnd(animation);
+					lineView2.setVisibility(View.GONE);
+					iv_tone.setBackgroundResource(R.drawable.pinyin_tone_two);
+					
+					lineView2.setVisibility(View.GONE);
+					Drawable drawable2 = getResources().getDrawable(R.drawable.pinyin_tone_two);
+					LinearLayout.LayoutParams paramsll=new LayoutParams(bitmap.getWidth(),bitmap.getHeight());
+					iv_tone.setLayoutParams(paramsll);
+					iv_tone.setBackgroundDrawable(drawable2);
+				}
+			});
 
 			break;
 		case 3:
+			
+			final XieLineView lineView3=new XieLineView(context);
+			lineView3.setPoint(points[0][0], points[1][1], points[0][2]);//设置线的3个点
+			RelativeLayout.LayoutParams params3=new RelativeLayout.LayoutParams(lpwv.getWidth(),lpwv.getHeight());
+			params3.leftMargin=location9[0]-UiUtil.px2dip(this, 40);
+			params3.topMargin=lin_content.getHeight()+rl_text.getHeight();
+			lineView3.setLayoutParams(params3);
+			container1.addView(lineView3); 
+			AnimatorSet set3 = new AnimatorSet(); 
+			
+			ObjectAnimator xt3 = ObjectAnimator.ofFloat(lineView3, "translationX",locationR[0]-location9[0]+UiUtil.px2dip(this, 20)-lpwv.getWidth()/2);//最后一个参数为缩放后的偏移
+			xt3.setDuration(1000);
+			
+		    ObjectAnimator yt3 = ObjectAnimator.ofFloat(lineView3, "translationY",locationR[1]-location9[1]+iv_tone.getHeight()/2-lpwv.getHeight()/2);
+		    yt3.setDuration(1000);
+		    
+		    ObjectAnimator xs3 = ObjectAnimator.ofFloat(lineView3, "scaleX", (float)iv_tone.getWidth()/lpwv.getWidth());
+		    xs3.setDuration(1000);
+		    
+		    ObjectAnimator ys3 = ObjectAnimator.ofFloat(lineView3, "scaleY", (float)iv_tone.getHeight()/lpwv.getHeight());//y轴缩放后位置不对 暂时不缩放
+		    ys3.setDuration(1000);
+		    
+		    set3.playTogether(xt3,yt3,xs3,ys3);
+			set3.start();
+			set3.addListener(new AnimatorListenerAdapter() {
+
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					super.onAnimationEnd(animation);
+					lineView3.setVisibility(View.GONE);
+					Drawable drawable2 = getResources().getDrawable(R.drawable.pinyin_tone_three);
+					LinearLayout.LayoutParams paramsll=new LayoutParams(bitmap.getWidth(),bitmap.getHeight());
+					iv_tone.setLayoutParams(paramsll);
+					iv_tone.setBackgroundDrawable(drawable2);
+				}
+			});
 
 			break;
 		case 4:
 
+			final XieLineView lineView4=new XieLineView(context);
+			lineView4.setPoint(points[0][0], points[1][1], points[2][2]);//设置线的3个点
+			RelativeLayout.LayoutParams params4=new RelativeLayout.LayoutParams(lpwv.getWidth(),lpwv.getHeight());
+			params4.leftMargin=location9[0]-UiUtil.px2dip(this, 40);
+			params4.topMargin=lin_content.getHeight()+rl_text.getHeight();
+			lineView4.setLayoutParams(params4);
+			container1.addView(lineView4); 
+			AnimatorSet set4 = new AnimatorSet(); 
+			
+			ObjectAnimator xt4 = ObjectAnimator.ofFloat(lineView4, "translationX",locationR[0]-location9[0]+UiUtil.px2dip(this, 20)-lpwv.getWidth()/2);//最后一个参数为缩放后的偏移
+			xt4.setDuration(1000);
+			
+		    ObjectAnimator yt4 = ObjectAnimator.ofFloat(lineView4, "translationY",locationR[1]-location9[1]+iv_tone.getHeight()/2-lpwv.getHeight()/2);
+		    yt4.setDuration(1000);
+		    
+		    ObjectAnimator xs4 = ObjectAnimator.ofFloat(lineView4, "scaleX", (float)iv_tone.getWidth()/lpwv.getWidth());
+		    xs4.setDuration(1000);
+		    
+		    ObjectAnimator ys4 = ObjectAnimator.ofFloat(lineView4, "scaleY", (float)iv_tone.getHeight()/lpwv.getHeight());//y轴缩放后位置不对 暂时不缩放
+		    ys4.setDuration(1000);
+		    
+		    set4.playTogether(xt4,yt4,xs4,ys4);
+			set4.start();
+			set4.addListener(new AnimatorListenerAdapter() {
+
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					super.onAnimationEnd(animation);
+					lineView4.setVisibility(View.GONE);
+					Drawable drawable2 = getResources().getDrawable(R.drawable.pinyin_tone_four);
+					LinearLayout.LayoutParams paramsll=new LayoutParams(bitmap.getWidth(),bitmap.getHeight());
+					iv_tone.setLayoutParams(paramsll);
+					iv_tone.setBackgroundDrawable(drawable2);
+				}
+			});
+
+			
 			break;
 		}
 	}
@@ -899,6 +1023,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		}
 	};
 	private RelativeLayout container1;
+	private RelativeLayout rl_text;
 
 	@Override
 	protected void onDestroy() {

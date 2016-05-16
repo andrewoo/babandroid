@@ -44,7 +44,7 @@ public class XieLineView extends View {
 
 		Path path = new Path();
 		if(one!=null && two!=null && three!=null){
-			path.moveTo(one.x, one.y);
+			path.moveTo(one.x,one.y);
 			path.lineTo(two.x, two.y);
 			path.lineTo(three.x, three.y);
 		}

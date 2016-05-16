@@ -64,6 +64,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
