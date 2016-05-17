@@ -129,7 +129,7 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 
 		http = new HttpUtils();
 		for (int i = 0; i < 6; i++) {
-			downLoad(i);
+			downLoadZip(i);
 		}
 		setVoicePathAndPlay();
 		try {
@@ -377,14 +377,14 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 		}
 	}
 
-	private void downLoad(final int index) {
+	private void downLoadZip(final int index) {
 
 		final String urlName = "https://d2kox946o1unj2.cloudfront.net/CPY_Part"
 				+ index + ".zip";
 		final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD
 				+ "/CPY_Part" + index + ".zip";
 		HttpHandler handler = http.download(urlName, filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
-				true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
+				false, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 				new RequestCallBack<File>() {
 					@Override
 					public void onStart() {
@@ -399,6 +399,7 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 								+ (float) current / total);
 					}
 
+					@SuppressWarnings("unchecked")
 					@Override
 					public void onSuccess(ResponseInfo<File> responseInfo) {
 						// 下载成功后 存表 解压
@@ -427,7 +428,7 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 
 					@Override
 					public void onFailure(HttpException error, String msg) {
-						System.out.println("失败");
+						System.out.println("downLoadZip-失败");
 					}
 				});
 
@@ -751,8 +752,9 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 								.getDrawable(R.drawable.strokes_order_play_sound_noclick));
 					}
 				});
-		MediaPlayUtil.getInstance().play(
-				DatabaseHelperMy.SOUND_PATH + "/pinchar/" + voicePath);
+		String path = DatabaseHelperMy.SOUND_PATH + "/pinchar/" + voicePath;
+		Log.d(TAG, "play()-path：" + path);
+		MediaPlayUtil.getInstance().play(path);
 	}
 
 	@Override
