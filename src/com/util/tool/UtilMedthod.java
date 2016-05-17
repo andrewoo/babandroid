@@ -15,6 +15,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
@@ -30,8 +31,6 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.hw.chineseLearn.base.CustomApplication;
 
 public class UtilMedthod {
 
@@ -292,8 +291,9 @@ public class UtilMedthod {
 		third(bitmap, width, height, list);
 		//第四个最下边 y固定 x遍历
 		forth(bitmap, width, height, list);
+		Matrix matrix = new Matrix();
 		
-		Bitmap createBitmap = Bitmap.createBitmap(bitmap, list.get(0).x, list.get(1).y, list.get(2).x-list.get(0).x, list.get(3).y-list.get(1).y);
+		Bitmap createBitmap = Bitmap.createBitmap(bitmap, list.get(0).x, list.get(1).y, list.get(2).x-list.get(0).x, list.get(3).y-list.get(1).y,matrix,true);//最后一个参数抗锯齿好像不管用
 		
 		return createBitmap;
 		

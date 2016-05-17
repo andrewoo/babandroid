@@ -285,8 +285,7 @@ public class SurvivalKitActivity extends BaseActivity {
 //			adapter.notifyDataSetChanged();
 //			download(position);
 		} else if (state == FINISH) {// 跳转界面
-			Intent intent = new Intent(SurvivalKitActivity.this,
-					SurvivalKitDetailActivity.class);
+			Intent intent = new Intent(SurvivalKitActivity.this,SurvivalKitDetailActivity.class);
 			intent.putExtra("category", category);
 			startActivity(intent);
 		}

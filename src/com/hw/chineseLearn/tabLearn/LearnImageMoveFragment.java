@@ -2,6 +2,8 @@ package com.hw.chineseLearn.tabLearn;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -444,7 +446,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			subLGModelMap.put(imageView, model);// 建立对应关系
 			moveViewList.add(imageView);
 //			ll_root.addView(imageView);
-			rel_root.addView(imageView);
+//			rel_root.addView(imageView);
 
 			int x1 = 0, y1 = y;
 
@@ -475,6 +477,11 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			y = y1;
 
 		}
+		Collections.shuffle(moveViewList);//打乱集合
+		for (int j = 0; j < subLGModelList.size(); j++) {
+			rel_root.addView(moveViewList.get(j));
+		}
+		
 	}
 
 	/**

@@ -860,6 +860,7 @@ public class LessonExerciseActivity extends BaseActivity {
 					subLGModelList.add(subLGModel);// 拿到所有图片选项
 
 				}
+				Collections.shuffle(subLGModelList);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
