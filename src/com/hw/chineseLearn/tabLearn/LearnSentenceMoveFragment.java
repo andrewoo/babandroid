@@ -178,8 +178,8 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			LinearLayout.LayoutParams ly = new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			textView.setLayoutParams(ly);
-			textView.setPadding(viewLeftRightPadding, viewTopBottomPadding,
-					viewLeftRightPadding, viewTopBottomPadding);
+			textView.setPadding(viewLeftRightPadding, (int)(viewTopBottomPadding*0.2),
+					viewLeftRightPadding, (int)(viewTopBottomPadding*0.2));
 			textView.setText("" + textViewB.getText());
 
 			textView.setTextColor(context.getResources().getColor(
@@ -241,8 +241,8 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			LinearLayout.LayoutParams ly = new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			textView.setLayoutParams(ly);
-			textView.setPadding(viewLeftRightPadding, viewTopBottomPadding,
-					viewLeftRightPadding, viewTopBottomPadding);
+			textView.setPadding(viewLeftRightPadding, (int)(viewTopBottomPadding*0.2),
+					viewLeftRightPadding, (int)(viewTopBottomPadding*0.2));
 			String word = subLGModelList.get(i).getOption();
 			textView.setText("" + word);
 			textView.setBackground(context.getResources().getDrawable(

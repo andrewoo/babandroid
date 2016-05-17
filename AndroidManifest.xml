@@ -153,6 +153,7 @@
             android:name="com.hw.chineseLearn.tabDiscover.PinyinExerciseActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
 

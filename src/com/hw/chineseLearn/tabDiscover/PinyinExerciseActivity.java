@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -41,6 +42,7 @@ import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.base.MainActivity;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbFileDownload;
 import com.hw.chineseLearn.db.DatabaseHelper;
@@ -923,12 +925,18 @@ public class PinyinExerciseActivity extends Activity implements
 
 			case R.id.iv_title_left:// 返回
 
-				CustomApplication.app.finishActivity(PinyinExerciseActivity.this);
+				startActivity(new Intent(PinyinExerciseActivity.this,MainActivity.class));
+				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+//				CustomApplication.app.finishActivity(PinyinExerciseActivity.this);
 				break;
 
 			default:
 				break;
 			}
 		}
+	};
+	public void onBackPressed() {
+		startActivity(new Intent(PinyinExerciseActivity.this,MainActivity.class));
+		overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 	};
 }

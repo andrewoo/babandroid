@@ -117,7 +117,7 @@ public class LearnUnitAdapter extends BaseAdapter {
 					imageView.setLayoutParams(layoutParams);
 					imageView.setBackground(context.getResources().getDrawable(
 							R.drawable.bg_circle_blue));
-					holder.lin_dots.addView(imageView);
+					holder.lin_dots.addView(imageView); 
 				}
 			}
 		}
@@ -127,14 +127,13 @@ public class LearnUnitAdapter extends BaseAdapter {
 				imageName, "drawable", context.getPackageName()));
 		
 		//手动设置前3个图标大小
-		if(position<3){
-			 Drawable drawable=context.getResources().getDrawable(R.drawable.lu0_1_1);
-			 int width = drawable.getIntrinsicWidth();
-			 int height= drawable.getIntrinsicHeight();
-			LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(width,height);
-			holder.iv_img.setLayoutParams(params);
-			holder.iv_img.setScaleType(ScaleType.FIT_XY);
-		}
+//		if(position<3){
+//			 Drawable drawable=context.getResources().getDrawable(R.drawable.lu0_1_5);
+//			 int width = (int) (drawable.getIntrinsicWidth()*1.2);
+//			 int height= (int) (drawable.getIntrinsicHeight()*1.2);
+//			LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(width,height);
+//			holder.iv_img.setLayoutParams(params);
+//		}
 
 		return convertView;
 	}

@@ -419,8 +419,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				scoreNum += 1;
 				iv_tone.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
 						colorBlue));
-				img_is_right.setImageDrawable(resourse
-						.getDrawable(R.drawable.test_correct_1));
+				
 				final int tempDrawIndex = drawIndex;
 				drawLineAndAnamation(tempDrawIndex);
 			} else {// 错一个则全错
@@ -438,10 +437,8 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 						drawLineAndAnamation(tempDrawIndex);
 					}
 				});
-				img_is_right.setImageDrawable(resourse
-						.getDrawable(R.drawable.test_wrong_1));
+				
 			}
-//			animToBigger(img_is_right);
 			// 下一个置蓝
 			int nextIndex = drawIndex + 1;
 			if (nextIndex <= itemViewList.size() - 1) {
@@ -458,11 +455,20 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			drawIndex++;
 			if (drawIndex > itemViewList.size() - 1) {// 最后一个
 				drawIndex = itemViewList.size() - 1;
-				isCheckBtnActived(true);
+//				isCheckBtnActived(true);
 				lpwv.enableTouch(false);
 				tv_py.setTextColor(colorBlack);
 				tv_py.setText(py);
 				tv_cn.setTextColor(colorBlack);
+				
+				if (scoreNum == pinList.length) {// 全部正确，才算对。
+					img_is_right.setImageDrawable(resourse
+							.getDrawable(R.drawable.test_correct_1));
+				}else{
+					img_is_right.setImageDrawable(resourse
+							.getDrawable(R.drawable.test_wrong_1));
+				}
+				
 			}
 
 			if (rightToneList.size() > 1) {// 多个字的
@@ -498,6 +504,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			lineView.setPoint(points[1][0], points[1][1], points[1][2]);// 设置线的3个点
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 					lpwv.getWidth(), lpwv.getHeight());
+			params.leftMargin = location9[0] - UiUtil.dip2px(this, 20);
 			params.topMargin = lin_content.getHeight() + rl_text.getHeight();
 			lineView.setLayoutParams(params);
 			container1.addView(lineView);
@@ -506,8 +513,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			ObjectAnimator xt = ObjectAnimator.ofFloat(
 					lineView,
 					"translationX",
-					locationR[0] - location9[0] - lpwv.getWidth() / 2
-							+ UiUtil.px2dip(this, 20));// 最后一个参数为缩放后的偏移
+					locationR[0] - location9[0] - lpwv.getWidth() / 2+ UiUtil.dip2px(this, 10));// 最后一个参数为缩放后的偏移
 			xt.setDuration(1000);
 
 			ObjectAnimator yt = ObjectAnimator.ofFloat(lineView,
@@ -550,7 +556,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			lineView2.setPoint(points[2][0], points[1][1], points[0][2]);// 设置线的3个点
 			RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
 					lpwv.getWidth(), lpwv.getHeight());
-			params2.leftMargin = location9[0] - UiUtil.px2dip(this, 40);
+			params2.leftMargin = location9[0] - UiUtil.dip2px(this, 20);
 			params2.topMargin = lin_content.getHeight() + rl_text.getHeight();
 			lineView2.setLayoutParams(params2);
 			container1.addView(lineView2);
@@ -558,7 +564,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 			ObjectAnimator xt2 = ObjectAnimator.ofFloat(lineView2,
 					"translationX",
-					locationR[0] - location9[0] + UiUtil.px2dip(this, 20)
+					locationR[0] - location9[0] + UiUtil.dip2px(this, 10)
 							- lpwv.getWidth() / 2);// 最后一个参数为缩放后的偏移
 			xt2.setDuration(1000);
 
@@ -607,7 +613,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			lineView3.setPoint(points[0][0], points[1][1], points[0][2]);// 设置线的3个点
 			RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams(
 					lpwv.getWidth(), lpwv.getHeight());
-			params3.leftMargin = location9[0] - UiUtil.px2dip(this, 40);
+			params3.leftMargin = location9[0] - UiUtil.dip2px(this, 20);
 			params3.topMargin = lin_content.getHeight() + rl_text.getHeight();
 			lineView3.setLayoutParams(params3);
 			container1.addView(lineView3);
@@ -615,8 +621,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 			ObjectAnimator xt3 = ObjectAnimator.ofFloat(lineView3,
 					"translationX",
-					locationR[0] - location9[0] + UiUtil.px2dip(this, 20)
-							- lpwv.getWidth() / 2);// 最后一个参数为缩放后的偏移
+					locationR[0] - location9[0] + UiUtil.dip2px(this, 10)- lpwv.getWidth() / 2);// 最后一个参数为缩放后的偏移
 			xt3.setDuration(1000);
 
 			ObjectAnimator yt3 = ObjectAnimator.ofFloat(lineView3,
@@ -661,7 +666,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			lineView4.setPoint(points[0][0], points[1][1], points[2][2]);// 设置线的3个点
 			RelativeLayout.LayoutParams params4 = new RelativeLayout.LayoutParams(
 					lpwv.getWidth(), lpwv.getHeight());
-			params4.leftMargin = location9[0] - UiUtil.px2dip(this, 40);
+			params4.leftMargin = location9[0] - UiUtil.dip2px(this, 20);
 			params4.topMargin = lin_content.getHeight() + rl_text.getHeight();
 			lineView4.setLayoutParams(params4);
 			container1.addView(lineView4);
@@ -669,7 +674,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 			ObjectAnimator xt4 = ObjectAnimator.ofFloat(lineView4,
 					"translationX",
-					locationR[0] - location9[0] + UiUtil.px2dip(this, 20)
+					locationR[0] - location9[0] + UiUtil.dip2px(this,10)
 							- lpwv.getWidth() / 2);// 最后一个参数为缩放后的偏移
 			xt4.setDuration(1000);
 
@@ -1131,8 +1136,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		if (isActived) {
 			btn_continue.setEnabled(true);
 			btn_continue.setBackgroundColor(colorBlue);
-			btn_continue.setTextColor(context.getResources().getColor(
-					R.color.white));
+			btn_continue.setTextColor(context.getResources().getColor(R.color.white));
 
 		} else {
 			btn_continue.setEnabled(false);
@@ -1153,7 +1157,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		Log.d(TAG, "X:" + locations[0]);
 		Log.d(TAG, "Y:" + locations[1]);
 		TranslateAnimation tranlateAnimation = new TranslateAnimation(0, 0, 0,
-				locations[1] / 2 - UiUtil.dip2px(getApplicationContext(), 40));
+				locations[1] / 2 - UiUtil.dip2px(this, 40));
 
 		AnimationSet set = new AnimationSet(true);
 		set.addAnimation(scaleAnimationS);
@@ -1178,6 +1182,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			public void onAnimationEnd(Animation arg0) {
 				// TODO Auto-generated method stub
 				arg0.cancel();
+				isCheckBtnActived(true);
 			}
 		});
 		view.startAnimation(set);
@@ -1192,7 +1197,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 		AnimationSet set = new AnimationSet(true);
 		set.addAnimation(scaleAnimation);
-		set.setDuration(700);
+		set.setDuration(700); 
 		set.setFillAfter(false);
 		set.setAnimationListener(new AnimationListener() {
 
