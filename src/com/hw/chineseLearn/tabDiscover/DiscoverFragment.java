@@ -72,6 +72,7 @@ public class DiscoverFragment extends BaseFragment implements OnClickListener {
 			break;
 		case R.id.rel_pinyin_chart:
 			startActivity(new Intent(getActivity(),PinyinExerciseActivity.class));
+			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.rel_pinyin_tone:
 			startActivity(new Intent(getActivity(), PinyinToneActivity.class));

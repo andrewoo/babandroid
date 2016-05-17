@@ -83,11 +83,11 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 
 			break;
 		case R.id.rel_rate_this_app:
-			Intent intentRate = new Intent();
-			intentRate.putExtra("url", "http://www.baidu.com");
-			intentRate.putExtra("title", "Rate this app");
-			intentRate.setClass(getActivity(), MainWebActivity.class);
-			startActivity(intentRate);
+//			Intent intentRate = new Intent();
+//			intentRate.putExtra("url", "http://www.baidu.com");
+//			intentRate.putExtra("title", "Rate this app");
+//			intentRate.setClass(getActivity(), MainWebActivity.class);
+//			startActivity(intentRate);
 			break;
 		case R.id.rel_settings:
 			startActivity(new Intent(getActivity(), MySettingActivity.class));
