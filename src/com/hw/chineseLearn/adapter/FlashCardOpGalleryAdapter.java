@@ -26,7 +26,7 @@ import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
 
 public class FlashCardOpGalleryAdapter extends FancyCoverFlowAdapter {
-	Context mContext;
+	Context mContext; 
 	public int selectItem;
 	LayoutInflater inflater;
 	// 存放view的集合

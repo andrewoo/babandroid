@@ -1,5 +1,8 @@
 package com.util.weight;
 
+import com.util.tool.UiUtil;
+import com.util.tool.Utility;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,19 +16,23 @@ public class XieLineView extends View {
 	private Point one;
 	private Point two;
 	private Point three;
+	private Context context;
 
 	public XieLineView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		this.context = context;
 		initPoint();
 	}
 
 	public XieLineView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.context = context;
 		initPoint();
 	}
 
 	public XieLineView(Context context) {
 		super(context);
+		this.context = context;
 		initPoint();
 	}
 
@@ -40,7 +47,8 @@ public class XieLineView extends View {
 		p.setAntiAlias(true);
 		p.setColor(Color.GRAY);
 		p.setStyle(Paint.Style.STROKE);
-		p.setStrokeWidth(15);
+		int dip2px = UiUtil.dip2px(context, 10);
+		p.setStrokeWidth(dip2px);
 
 		Path path = new Path();
 		if(one!=null && two!=null && three!=null){

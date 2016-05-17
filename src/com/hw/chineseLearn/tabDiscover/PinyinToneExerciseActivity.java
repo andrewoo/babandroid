@@ -53,6 +53,7 @@ import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.tool.UtilMedthod;
+import com.util.tool.Utility;
 import com.util.weight.CustomDialog;
 import com.util.weight.LocusPassWordView;
 import com.util.weight.LocusPassWordView.OnAnamationCompleteListener;
@@ -249,6 +250,11 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		btn_play = (ImageView) findViewById(R.id.btn_play);
 		btn_play.setOnClickListener(onClickListener);
 		lpwv = (LocusPassWordView) this.findViewById(R.id.mLocusPassWordView);
+		int screenWidth = (int) (Utility.getScreenWidth(context)*0.8);
+		int screenHeight = Utility.getScreenWidthHeight(context);
+		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(screenWidth, 0, 1);
+		params.gravity=Gravity.CENTER; 
+		lpwv.setLayoutParams(params);
 		lpwv.setOnCompleteListener(new OnCompleteListener() {
 			@Override
 			public void onComplete(String mPassword) {
@@ -492,9 +498,6 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			lineView.setPoint(points[1][0], points[1][1], points[1][2]);// 设置线的3个点
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 					lpwv.getWidth(), lpwv.getHeight());
-//			int leftmargin = (int) points[1][0].x + location9[0]- UiUtil.px2dip(this, 40);
-//			params.leftMargin = location9[0] - UiUtil.px2dip(this, 40);
-//			int topMargin = (int) (points[0][0].y + lin_content.getHeight() + rl_text.getHeight());
 			params.topMargin = lin_content.getHeight() + rl_text.getHeight();
 			lineView.setLayoutParams(params);
 			container1.addView(lineView);

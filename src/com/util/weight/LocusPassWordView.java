@@ -33,6 +33,7 @@ import com.util.tool.BitmapUtil;
 import com.util.tool.MathUtil;
 import com.util.tool.RoundUtil;
 import com.util.tool.StringUtil;
+import com.util.tool.UiUtil;
 
 /**
  * 
@@ -128,19 +129,23 @@ public class LocusPassWordView extends View {
 	float moveingX, moveingY;
 
 	float myDegrees;
+	private Context context;
 
 	public LocusPassWordView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		this.context = context;
 		init();
 	}
 
 	public LocusPassWordView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.context = context;
 		init();
 	}
 
 	public LocusPassWordView(Context context) {
 		super(context);
+		this.context = context;
 		init();
 	}
 
@@ -168,7 +173,8 @@ public class LocusPassWordView extends View {
 		Path path1 = new Path();
 		dpaint.setAntiAlias(true);
 		dpaint.setStyle(Paint.Style.STROKE);
-		dpaint.setStrokeWidth(15);
+		int px2dip = UiUtil.dip2px(context, 10);
+		dpaint.setStrokeWidth(px2dip);
 		dpaint.setColor(Color.GRAY);
 
 		if (arrayList.size() > 0) {
