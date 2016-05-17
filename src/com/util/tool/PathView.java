@@ -3,9 +3,6 @@ package com.util.tool;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,15 +10,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
-import android.graphics.Region;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.util.svgandroid.ArrowCal;
 import com.util.svgandroid.HwAnim;
-import com.util.svgandroid.HwSVGDrawer;
-import com.util.svgandroid.HwSVGDrawer.HwPoint;
 import com.util.svgandroid.HwWriting;
 //import com.util.svgandroid.HwAnim;
 
