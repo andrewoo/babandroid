@@ -667,14 +667,17 @@ public class FluentDetailActivity extends BaseActivity {
 		});
 		RadioButton rb_Small = (RadioButton) view.findViewById(R.id.rb_Small);
 		RadioButton rb_Medium = (RadioButton) view.findViewById(R.id.rb_Medium);
+
 		RadioButton rb_Large = (RadioButton) view.findViewById(R.id.rb_Large);
 
 		if ("10".equals(font_size)) {
 			rb_Small.setChecked(true);
 		} else if ("14".equals(font_size)) {
 			rb_Medium.setChecked(true);
-		} else {// 22
+		} else if ("22".equals(font_size)) {// 22
 			rb_Large.setChecked(true);
+		} else {//默认值
+			rb_Medium.setChecked(true);
 		}
 		popupWindow.setTouchable(true);
 		popupWindow.setTouchInterceptor(new OnTouchListener() {
