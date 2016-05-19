@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +27,8 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.hw.chineseLearn.dao.bean.Unit;
+import com.hw.chineseLearn.tabDiscover.FluentAddLessonActivity;
+import com.hw.chineseLearn.tabDiscover.FluentListActivity;
 import com.util.tool.DateUtil;
 import com.util.tool.UiUtil;
 import com.util.weight.RoundProgressBar;
@@ -326,4 +330,13 @@ public class LessonResultActivity extends BaseActivity {
 		}
 	};
 
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+				&& event.getAction() == KeyEvent.ACTION_DOWN) {
+			setResult(1);
+			return true;
+		}
+		return super.dispatchKeyEvent(event);
+	}
 }

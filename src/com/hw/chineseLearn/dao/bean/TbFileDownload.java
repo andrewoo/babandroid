@@ -15,7 +15,7 @@ public class TbFileDownload {
 	// fileURL VARCHAR( 1000 ) DEFAULT NULL,
 	// dlStatus INTEGER
 
-	 @DatabaseField(generatedId = true)  
+	@DatabaseField(generatedId = true)
 	private int id;
 	@DatabaseField(columnName = "cwsId")
 	private int cwsId;
@@ -25,16 +25,19 @@ public class TbFileDownload {
 	private long curFileContentSize;
 	@DatabaseField(columnName = "fileContentSize")
 	private long fileContentSize;
-	@DatabaseField(columnName = "fileName",unique=true)
+	@DatabaseField(columnName = "fileName", unique = true)
 	private String fileName;
 	@DatabaseField(columnName = "filePath")
 	private String filePath;
 	@DatabaseField(columnName = "fileExtent")
 	private String fileExtent;
-	@DatabaseField(columnName = "fileURL",unique=true)
+	@DatabaseField(columnName = "fileURL", unique = true)
 	private String fileURL;
+	/**
+	 * 下载状态 -1-未下载， 0-正在下载， 1-已下载
+	 */
 	@DatabaseField(columnName = "dlStatus")
-	private int dlStatus;
+	private int dlStatus = -1;
 
 	public int getId() {
 		return id;
@@ -115,5 +118,5 @@ public class TbFileDownload {
 	public void setFileContentSize(long fileContentSize) {
 		this.fileContentSize = fileContentSize;
 	}
-	
+
 }
