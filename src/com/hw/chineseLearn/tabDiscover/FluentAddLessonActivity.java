@@ -5,8 +5,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,12 +17,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.FluentAddLessonAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.base.MainActivity;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbFileDownload;
 import com.hw.chineseLearn.db.DatabaseHelperMy;
@@ -132,10 +136,21 @@ public class FluentAddLessonActivity extends BaseActivity {
 					}
 				});
 		getDataFromServer("" + (selectIndex + 1));
-		adapter = new FluentAddLessonAdapter(context, datas);
+		if (adapter == null) {
+			adapter = new FluentAddLessonAdapter(context, datas);
+		}
 		lv_add_lesson.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if (adapter != null) {
+			adapter.notifyDataSetChanged();
+		}
 	}
 
 	private void setLeftBtnColor(int selectIndex) {
@@ -164,6 +179,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 
 				CustomApplication.app
 						.finishActivity(FluentAddLessonActivity.this);
+
 				break;
 
 			case R.id.lin_level1:
