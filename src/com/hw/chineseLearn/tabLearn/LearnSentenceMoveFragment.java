@@ -117,8 +117,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		contentView.setLayoutParams(params);
 		task = new ThreadWithDialogTask();
 		rlRoot = (RelativeLayout) contentView.findViewById(R.id.rl_root);
-		lin_play_and_text = (LinearLayout) contentView
-				.findViewById(R.id.lin_play_and_text);
+		lin_play_and_text = (LinearLayout) contentView.findViewById(R.id.lin_play_and_text);
 		// lin_play_and_text.setVisibility(View.GONE);
 		lin_line = (LinearLayout) contentView.findViewById(R.id.lin_line);
 		
@@ -137,7 +136,6 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		txt_name.setLayoutParams(paramsTextView);
 		
 		txt_name.setText(title);
-
 		
 	}
 
