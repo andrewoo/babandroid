@@ -433,17 +433,13 @@ public class HttpHelper {
 						// 下载完后解压到音频目录
 						new Thread() {
 							public void run() {
-								boolean isScuess = FileTools.unZip(filePath
-										+ fileName + ".zip", filePath);
+								boolean isScuess = FileTools.unZip(filePath+ fileName + ".zip", filePath);
 
 								if (isScuess) {
 									if (isPlay) {
-										String filePath = DatabaseHelperMy.LESSON_SOUND_PATH
-												+ "/" + fileName;
-										Log.d("filePath", "filePath:"
-												+ filePath);
-										MediaPlayUtil.getInstance().play(
-												filePath);
+										String filePath = DatabaseHelperMy.LESSON_SOUND_PATH+ "/" + fileName;
+										Log.d("filePath", "filePath:"+ filePath);
+										MediaPlayUtil.getInstance().play(filePath);
 									}
 								}
 							};

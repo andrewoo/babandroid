@@ -2,8 +2,6 @@ package com.hw.chineseLearn.tabLearn;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +58,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	public static LearnImageMoveFragment fragment;
 	Context context;
 	private RelativeLayout rel_root;
-	private RelativeLayout rel_top;
+	private LinearLayout rel_top;
 	private TextView tv_word;
 	private Button btn_hint;
 	private int relTopHeight;
@@ -144,7 +142,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		rel_root.setLayoutParams(params);
 		
 		rel_root.bringToFront();
-		rel_top = (RelativeLayout) contentView.findViewById(R.id.rel_top);
+		rel_top = (LinearLayout) contentView.findViewById(R.id.rel_top);
 		//设置TextTitle的高度
 		RelativeLayout.LayoutParams params1=new RelativeLayout.LayoutParams(screenWidth,LayoutParams.WRAP_CONTENT);
 		rel_top.setLayoutParams(params1);
@@ -377,7 +375,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 			for (int j = 0; j < subLGModelList.size(); j++) {
 
-				SubLGModel model = subLGModelList.get(i);
+				SubLGModel model = subLGModelList.get(j);
 
 				if (model == null) {
 					continue;
@@ -446,7 +444,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			subLGModelMap.put(imageView, model);// 建立对应关系
 			moveViewList.add(imageView);
 //			ll_root.addView(imageView);
-//			rel_root.addView(imageView);
+			rel_root.addView(imageView);
 
 			int x1 = 0, y1 = y;
 
@@ -476,10 +474,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 			x += (itemViewWidth + viewMagin);
 			y = y1;
 
-		}
-		Collections.shuffle(moveViewList);//打乱集合
-		for (int j = 0; j < subLGModelList.size(); j++) {
-			rel_root.addView(moveViewList.get(j));
 		}
 		
 	}

@@ -419,22 +419,20 @@ public class SurvivalKitActivity extends BaseActivity {
 					public void onSuccess(ResponseInfo<File> responseInfo) {
 						// testTextView.setText("downloaded:" +
 						// responseInfo.result.getPath());
+						if (tbFileDownload != null) {
 						try {
 							tbFileDownload.setDlStatus(FINISH);
-							MyDao.getDaoMy(TbFileDownload.class)
-									.createOrUpdate(tbFileDownload);
+							MyDao.getDaoMy(TbFileDownload.class).createOrUpdate(tbFileDownload);
 							TbMyCategory category = new TbMyCategory();
 							category.setId(tbFileDownload.getCwsId());
 							category.setComplete_dl(FINISH);
-							MyDao.getDaoMy(TbMyCategory.class).createOrUpdate(
-									category);
+							MyDao.getDaoMy(TbMyCategory.class).createOrUpdate(category);
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
 						// 下载完后更变state和图片颜色
 						modelList.get(position).setState(FINISH);
-						String imageName = modelList.get(position)
-								.getImageName() + "_hit";
+						String imageName = modelList.get(position).getImageName() + "_hit";
 						modelList.get(position).setImageName(imageName);
 						adapter.notifyDataSetChanged();
 						// 下载完后解压到音频目录
@@ -444,9 +442,12 @@ public class SurvivalKitActivity extends BaseActivity {
 							};
 						}.start();
 					}
+					}
 
 					@Override
 					public void onFailure(HttpException error, String msg) {
+						
+						if (tbFileDownload != null) {
 						//若出现异常 下载失败 则重新开始下载
 						try {
 							tbFileDownload.setDlStatus(NODOWN);
@@ -468,7 +469,7 @@ public class SurvivalKitActivity extends BaseActivity {
 							}
 						});
 					}
-				});
+					}});
 
 	}
 

@@ -17,9 +17,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -37,6 +40,7 @@ import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
+import com.util.tool.Utility;
 
 /**
  * 文字输入视图模版
@@ -171,8 +175,11 @@ public class LearnWordInputFragment extends BaseFragment implements
 			}
 		});
 		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
+		int textVieWidth=Utility.getScreenWidth(context)-UiUtil.px2dip(context, 85);
+		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(textVieWidth,LayoutParams.WRAP_CONTENT);//设置textview宽度 防止超出屏幕
+		txt_name.setLayoutParams(params);
 		et_input = (EditText) contentView.findViewById(R.id.et_input);
-		txt_name.setText(title);
+		txt_name.setText(title); 
 		et_input.addTextChangedListener(new TextWatcher() {
 
 			@Override

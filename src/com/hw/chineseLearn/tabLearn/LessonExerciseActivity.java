@@ -233,8 +233,7 @@ public class LessonExerciseActivity extends BaseActivity {
 	 * 初始化
 	 */
 	public void init() {
-		checkView = LayoutInflater.from(context).inflate(
-				R.layout.layout_learn_exercise_check_dialog, null);
+		checkView = LayoutInflater.from(context).inflate(R.layout.layout_learn_exercise_check_dialog, null);
 		
 		btn_check = (Button) findViewById(R.id.btn_check);
 		btn_check.setOnClickListener(onClickListener);
@@ -795,6 +794,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		} else if (lgTable == 2) {
 			// 查询lgcharacid title= 得到 partoption和partanswer spit;
 			// 查lgcharpart得到imagename
+			randomList.clear();
 			modelWord = new LGModelWord();
 			int lgTableId = lessonRepeatRegex.getLgTableId();
 			LGCharacter lGCharacterPart = null;
@@ -830,14 +830,13 @@ public class LessonExerciseActivity extends BaseActivity {
 						picList.add(picArray[i]);// 加入答案
 					}
 				}
-				if (!randomList.contains(picArray[i])
-						&& !picList.contains(picArray[i])) {
+				if (!randomList.contains(picArray[i]) && !picList.contains(picArray[i])) {
 					randomList.add(picArray[i]);// 加入答案外的
 				}
 			}
 			Collections.shuffle(randomList);
 			int length = picArray.length;
-			if (picList.size() < length) {
+			if (picList.size() < length) { 
 				length = Math.min(length, 5);// 可能是4 5 6 选最小
 				int x = length - picList.size();
 				for (int i = 0; i < x; i++) {
@@ -860,10 +859,11 @@ public class LessonExerciseActivity extends BaseActivity {
 					subLGModelList.add(subLGModel);// 拿到所有图片选项
 
 				}
-				Collections.shuffle(subLGModelList);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			Collections.shuffle(subLGModelList);
 			modelWord.setSubLGModelList(subLGModelList);
 
 			imageMoveFragment = new LearnImageMoveFragment();

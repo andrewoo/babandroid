@@ -261,6 +261,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 			builder = null;
 		}
 
+		isFirstList.clear();
 		btn_check.setVisibility(View.VISIBLE);
 		lin_pander_life = (LinearLayout) findViewById(R.id.lin_pander_life);
 		lin_pander_life.setVisibility(View.GONE);
@@ -635,9 +636,10 @@ public class LessonTestOutTestActivity extends BaseActivity {
 
 		case 1:// continue
 			setResult(1);
-			CustomApplication.app
-					.finishActivity(LessonTestOutTestActivity.class);
+			CustomApplication.app.finishActivity(LessonTestOutTestActivity.class);
 			break;
+			
+		case 0:
 
 		default:
 			break;
@@ -727,6 +729,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 		} else if (lgTable == 2) {
 			// 查询lgcharacid title= 得到 partoption和partanswer spit;
 			// 查lgcharpart得到imagename
+			randomList.clear();
 			modelWord = new LGModelWord();
 			int lgTableId = lessonRepeatRegex.getLgTableId();
 			LGCharacter lGCharacterPart = null;

@@ -101,11 +101,11 @@ public class SurvivalKitAdapter extends BaseAdapter {
 		 if(survivalKitModel.getState()==0){//未下载
 			 holder.circleView.setVisibility(View.GONE);
 			 holder.iv_arrow.setVisibility(View.VISIBLE);
-			 holder.iv_arrow .setBackgroundResource(R.drawable.ls_dl_btn);
+			 holder.iv_arrow .setImageResource(R.drawable.ls_dl_btn);
 		 }else if(survivalKitModel.getState()==1){//完成
 			 holder.circleView.setVisibility(View.GONE);
 			 holder.iv_arrow.setVisibility(View.VISIBLE);
-			 holder.iv_arrow .setBackgroundResource(R.drawable.arrow);
+			 holder.iv_arrow .setImageResource(R.drawable.arrow);
 		 }else if(survivalKitModel.getState()==2){ //正在下载
 			 holder.iv_arrow .setVisibility(View.GONE);
 			 holder.circleView.setVisibility(View.VISIBLE);

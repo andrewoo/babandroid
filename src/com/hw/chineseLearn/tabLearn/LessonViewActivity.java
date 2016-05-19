@@ -398,6 +398,23 @@ public class LessonViewActivity extends BaseActivity implements OnItemSelectedLi
 			} else {
 				gallery.setSelection(selection + 1);// 选中下一个页面
 			}
+			
+			if (statusList != null) {
+				if (statusList.get(selection ) == 1) {
+					tv_start.setVisibility(View.VISIBLE);
+					tv_review.setVisibility(View.GONE);
+					tv_locked.setVisibility(View.GONE);
+				} else if (statusList.get(selection) == 0) {
+					tv_locked.setVisibility(View.VISIBLE);
+					tv_start.setVisibility(View.GONE);
+					tv_review.setVisibility(View.GONE);
+				} else if (statusList.get(selection) == 2) {
+					tv_locked.setVisibility(View.GONE);
+					tv_start.setVisibility(View.GONE);
+					tv_review.setVisibility(View.VISIBLE);
+				}
+			}
+			
 			break;
 		default:
 			break;

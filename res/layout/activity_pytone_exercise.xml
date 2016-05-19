@@ -123,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/test_correct_1" />
+            android:src="@drawable/right_elph" />
     </FrameLayout>
 
 </RelativeLayout>

@@ -67,8 +67,7 @@ public class FluentListActivity extends BaseActivity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				//
-				startActivity(new Intent(FluentListActivity.this,
-						FluentAddLessonActivity.class));
+				startActivity(new Intent(FluentListActivity.this,FluentAddLessonActivity.class));
 			}
 		});
 		initDatas();
@@ -126,8 +125,7 @@ public class FluentListActivity extends BaseActivity {
 				long arg3) {
 			// TODO Auto-generated method stub
 			TbMyFluentNow model = listBase.get(arg2);
-			Intent intent = new Intent(FluentListActivity.this,
-					FluentDetailActivity.class);
+			Intent intent = new Intent(FluentListActivity.this,FluentDetailActivity.class);
 			intent.putExtra("model", model);
 			startActivity(intent);
 		}
