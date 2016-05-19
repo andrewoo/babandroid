@@ -6,10 +6,12 @@
     android:orientation="vertical"
     >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rel_top"
         android:layout_width="match_parent"
-        android:layout_height="60dp" >
+        android:layout_height="60dp" 
+        android:gravity="center"
+        >
 
         <ImageView
             android:id="@+id/iv_dv_view"
@@ -21,14 +23,16 @@
 
         <TextView
             android:id="@+id/tv_word"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iv_dv_view"
             android:singleLine="true"
             android:text="[ta]he/him"
             android:textColor="@color/deep_grey"
-            android:textSize="@dimen/text_s26" />
+            android:textSize="@dimen/text_s20" />
 
         <Button
             android:id="@+id/btn_hint"
@@ -44,6 +48,6 @@
             android:text="Hint"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s18" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

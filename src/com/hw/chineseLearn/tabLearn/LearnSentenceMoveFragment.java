@@ -38,6 +38,7 @@ import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
+import com.util.tool.Utility;
 
 /**
  * 拼句子
@@ -120,11 +121,8 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				.findViewById(R.id.lin_play_and_text);
 		// lin_play_and_text.setVisibility(View.GONE);
 		lin_line = (LinearLayout) contentView.findViewById(R.id.lin_line);
-		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
-		txt_name.setText(title);
-
-		btn_play_normal = (Button) contentView
-				.findViewById(R.id.btn_play_normal);
+		
+		btn_play_normal = (Button) contentView.findViewById(R.id.btn_play_normal);
 		btn_play_normal.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -132,6 +130,15 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				play();
 			}
 		});
+		
+		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
+		int textVieWidth=Utility.getScreenWidth(context)-UiUtil.px2dip(context, 90);
+		LinearLayout.LayoutParams paramsTextView=new LinearLayout.LayoutParams(textVieWidth,LayoutParams.WRAP_CONTENT);//设置textview宽度 防止超出屏幕
+		txt_name.setLayoutParams(paramsTextView);
+		
+		txt_name.setText(title);
+
+		
 	}
 
 	private void play() {

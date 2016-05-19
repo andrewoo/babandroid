@@ -32,20 +32,22 @@
 
         <com.util.weight.TasksCompletedView
             android:id="@+id/tasks_view"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:scaleType="fitXY"
             tc:circleColor="@color/chinese_skill_blue"
-            tc:radius="15dip"
+            tc:radius="9dip"
             tc:ringColor="@color/dimgrey"
-            tc:strokeWidth="3dip" />
+            tc:strokeWidth="1dip" />
 
         <ImageView
             android:id="@+id/iv_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/arrow"
-            android:scaleType="fitXY" />
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/arrow"
+             />
     </LinearLayout>
 
     <View

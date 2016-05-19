@@ -463,10 +463,10 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				
 				if (scoreNum == pinList.length) {// 全部正确，才算对。
 					img_is_right.setImageDrawable(resourse
-							.getDrawable(R.drawable.test_correct_1));
+							.getDrawable(R.drawable.right_elph));
 				}else{
 					img_is_right.setImageDrawable(resourse
-							.getDrawable(R.drawable.test_wrong_1));
+							.getDrawable(R.drawable.wrong_elph));
 				}
 				
 			}
@@ -1157,7 +1157,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		Log.d(TAG, "X:" + locations[0]);
 		Log.d(TAG, "Y:" + locations[1]);
 		TranslateAnimation tranlateAnimation = new TranslateAnimation(0, 0, 0,
-				locations[1] / 2 - UiUtil.dip2px(this, 40));
+				locations[1] / 2 - view.getHeight()/2);
 
 		AnimationSet set = new AnimationSet(true);
 		set.addAnimation(scaleAnimationS);
