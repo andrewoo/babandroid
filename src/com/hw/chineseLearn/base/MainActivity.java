@@ -303,6 +303,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				return true;
 			} else {
 				// ExitApplication.getInstance().exit(); // 调用退出方法
+				CustomApplication.app.finishAllActivity();
 				finish();
 				// android.os.Process.killProcess(android.os.Process.myPid());
 				// System.exit(0);
@@ -483,5 +484,6 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		CustomApplication.app.unitList = unitList;
 		return unitList;
 	}
+	
 
 }

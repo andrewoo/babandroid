@@ -111,6 +111,9 @@ public class PinyinExerciseActivity extends Activity implements
 		
 		CustomApplication.app.addActivity(this);
 		http = new HttpUtils();
+		
+		showDialog();//弹出进度对话框 等待数据加载
+		
 		for (int i = 1; i <= 6; i++) {
 			downLoad(i);
 		}
@@ -134,9 +137,31 @@ public class PinyinExerciseActivity extends Activity implements
 		geHeight = (int) (Utility.getScreenWidthHeight(this) * ((float)  7/ 8));
 		
 		initArrayToList();
-		initFirstRow();
-		initData();
-		initViews();
+		
+		
+		new Thread(){
+			public void run() {
+				initData();
+				Message msg=Message.obtain();
+				msg.what=100;
+				hand.sendMessage(msg);
+			};
+		}.start();
+		
+		
+		
+	}
+
+	private void showDialog() {
+		mModifyDialog2 = new AlertDialog.Builder(this).create();
+
+		LayoutInflater inflater = LayoutInflater.from(this);
+		View view = inflater.inflate(R.layout.progress,null);
+		View findViewById = view.findViewById(R.id.pro);
+		FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.gravity=Gravity.CENTER;
+		mModifyDialog2.show(); 
+		mModifyDialog2.setContentView(view,params);		
 	}
 
 	private void initArrayToList() {
@@ -565,8 +590,7 @@ public class PinyinExerciseActivity extends Activity implements
 				null);
 		LinearLayout ll_root = (LinearLayout) view.findViewById(R.id.ll_root);
 		ll_root.setBackgroundResource(R.drawable.pop_bg_pinchar);
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				popWidth, popHeight);
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(popWidth, popHeight);
 		ll_root.setLayoutParams(params);
 
 		final TextView tv_pinchar = (TextView) view
@@ -877,10 +901,15 @@ public class PinyinExerciseActivity extends Activity implements
 				imageView.setImageDrawable(resources
 						.getDrawable(R.drawable.recorder_animate_15));
 				break;
+				
+			case 100:
+				initFirstRow();
+				initViews();
+				mModifyDialog2.dismiss();
+				break;
 
 			default:
-				imageView.setImageDrawable(resources
-						.getDrawable(R.drawable.recorder_animate_01));
+				imageView.setImageDrawable(resources.getDrawable(R.drawable.recorder_animate_01));
 			}
 
 		};
@@ -935,7 +964,8 @@ public class PinyinExerciseActivity extends Activity implements
 			}
 		}
 	};
-	public void onBackPressed() {
+
+	private AlertDialog mModifyDialog2;	public void onBackPressed() {
 		startActivity(new Intent(PinyinExerciseActivity.this,MainActivity.class));
 		overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 	};
