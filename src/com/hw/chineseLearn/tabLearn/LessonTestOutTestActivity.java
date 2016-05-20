@@ -260,6 +260,10 @@ public class LessonTestOutTestActivity extends BaseActivity {
 			builder.dismiss();
 			builder = null;
 		}
+		
+		secondCount = 0;
+		rightCount = 0;
+		wrongCount = 0;
 
 		isFirstList.clear();
 		btn_check.setVisibility(View.VISIBLE);
@@ -640,6 +644,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 			break;
 			
 		case 0:
+			init();//redo
 
 		default:
 			break;

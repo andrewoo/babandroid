@@ -109,8 +109,7 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 		String imageName = subLGModelList.get(position).getImageName();
 		String option = subLGModelList.get(position).getOption();
 		holder.txt_word_name.setText("" + option);
-		Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGWORD_PATH
-				+ imageName);
+		Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGWORD_PATH+ imageName);
 		holder.iv_img.setImageBitmap(bitmap);
 
 		if (selectPosition == position) {// 选中

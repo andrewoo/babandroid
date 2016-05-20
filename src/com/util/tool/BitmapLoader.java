@@ -304,7 +304,7 @@ public class BitmapLoader {
 			InputStream is = am.open(fileName);
 
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inPreferredConfig = Config.RGB_565;
+			options.inPreferredConfig = Config.ARGB_4444;
 			image = BitmapFactory.decodeStream(is, null, options);
 
 			// image = BitmapFactory.decodeStream(is);

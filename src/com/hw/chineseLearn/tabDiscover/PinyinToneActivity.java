@@ -8,16 +8,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +48,7 @@ import com.util.weight.SelfGridView;
  */
 public class PinyinToneActivity extends BaseActivity {
 
+	protected static final int FLUSH_UI = 100;
 	private String TAG = "==PinyinToneActivity==";
 	private Context context;
 	View contentView;
@@ -57,7 +64,20 @@ public class PinyinToneActivity extends BaseActivity {
 		setContentView(contentView);
 		CustomApplication.app.addActivity(this);
 		context = this;
+		showDialog();//弹出进度对话框 等待数据加载
 		init();
+	}
+	
+	private void showDialog() {
+		mModifyDialog2 = new AlertDialog.Builder(this).create();
+
+		LayoutInflater inflater = LayoutInflater.from(this);
+		View view = inflater.inflate(R.layout.progress,null);
+		View findViewById = view.findViewById(R.id.pro);
+		FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.gravity=Gravity.CENTER;
+		mModifyDialog2.show(); 
+		mModifyDialog2.setContentView(view,params);		
 	}
 
 	/**
@@ -70,11 +90,13 @@ public class PinyinToneActivity extends BaseActivity {
 
 		centGridView = (SelfGridView) contentView
 				.findViewById(R.id.gv_tone_gridview);
-		getDatasFronFile();
-		adapter = new ToneAdapter(context, listBase);
-		centGridView.setAdapter(adapter);
-		centGridView.setOnItemClickListener(itemClickListener);
-		adapter.notifyDataSetChanged();
+		new Thread(){
+			public void run() {
+				getDatasFronFile();
+				handler.sendEmptyMessage(FLUSH_UI);
+			};
+		}.start();
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -310,4 +332,22 @@ public class PinyinToneActivity extends BaseActivity {
 		}
 		Log.d(TAG, "resultCode:" + resultCode);
 	};
+	
+	Handler handler=new Handler(){
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case FLUSH_UI:
+				adapter = new ToneAdapter(context, listBase);
+				centGridView.setAdapter(adapter);
+				centGridView.setOnItemClickListener(itemClickListener);
+				adapter.notifyDataSetChanged();
+				mModifyDialog2.dismiss();
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
+	private AlertDialog mModifyDialog2;
 }
