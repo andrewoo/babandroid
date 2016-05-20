@@ -192,8 +192,7 @@ public class PinyinExerciseActivity extends Activity implements
 		CHScrollView headerScroll = (CHScrollView) findViewById(R.id.item_scroll_title);
 		LinearLayout ll_scroll_text = (LinearLayout) findViewById(R.id.ll_scroll_text);// item_title
 		TextView item_title = (TextView) findViewById(R.id.item_title);
-		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width,
-				height);
+		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width,height);
 		item_title.setLayoutParams(param);
 		for (int i = 0; i < firstRow.length; i++) {
 			TextView tv = initTextView(i);
@@ -298,7 +297,8 @@ public class PinyinExerciseActivity extends Activity implements
 		Map<String, String> data = null;
 		//设置表格的宽和高
 		
-//		LinearLayout ll_root_pinchar = (LinearLayout) findViewById(R.id.ll_root_pinchar);
+		LinearLayout ll_root_pinchar = (LinearLayout) findViewById(R.id.ll_root_pinchar);
+		ll_root_pinchar.setVisibility(View.VISIBLE);
 //		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(popWidth,geHeight);
 //		ll_root_pinchar.setLayoutParams(params);
 		
@@ -317,8 +317,7 @@ public class PinyinExerciseActivity extends Activity implements
 
 	private TextView initTextView(int i) {
 		TextView tv = new TextView(this);
-		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width,
-				height);
+		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width,height);
 		tv.setLayoutParams(param);
 		tv.setGravity(Gravity.CENTER);
 		tv.setTextColor(Color.parseColor("#000000"));// 设置文字为黑色
@@ -919,6 +918,8 @@ public class PinyinExerciseActivity extends Activity implements
 			String title, int textRight, int imgRight, int imgRightDrawable) {
 
 		View view_title = (View) this.findViewById(R.id.view_title);
+		view_title.setVisibility(View.VISIBLE);
+		
 		view_title.setBackgroundColor(getResources().getColor(R.color.pinyinchart));
 		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
 		tv_title.setTextColor(Color.WHITE);

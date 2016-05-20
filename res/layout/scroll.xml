@@ -7,6 +7,7 @@
 
     <include
         android:id="@+id/view_title"
+        android:visibility="invisible"
         layout="@layout/main_title_view" />
 
     <LinearLayout
@@ -16,6 +17,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:minHeight="40dip"
+        android:visibility="invisible"
         android:orientation="horizontal" >
 
         <TextView
@@ -29,6 +31,7 @@
             android:textColor="#850" />
 
         <com.util.weight.CHScrollView
+            
             android:id="@+id/item_scroll_title"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
