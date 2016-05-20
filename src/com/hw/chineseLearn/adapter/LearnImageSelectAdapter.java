@@ -91,10 +91,8 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 					.findViewById(R.id.iv_unit_img);
 			holder.iv_tag = (ImageView) convertView.findViewById(R.id.iv_tag);
 			holder.iv_tag.setVisibility(View.GONE);
-			holder.txt_word_name = (TextView) convertView
-					.findViewById(R.id.txt_word_name);
-			holder.lin_content = (LinearLayout) convertView
-					.findViewById(R.id.lin_content);
+			holder.txt_word_name = (TextView) convertView.findViewById(R.id.txt_word_name);
+			holder.lin_content = (LinearLayout) convertView.findViewById(R.id.lin_content);
 
 			convertView.setTag(holder);
 		} else {
@@ -108,23 +106,22 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 
 		String imageName = subLGModelList.get(position).getImageName();
 		String option = subLGModelList.get(position).getOption();
-		holder.txt_word_name.setText("" + option);
-		Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGWORD_PATH+ imageName);
+		holder.txt_word_name.setText("" + option); 
+//		Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGWORD_PATH+ imageName);
+		Bitmap bitmap = BitmapLoader.getImageFromAssetsFileZoom(context,ASSETS_LGWORD_PATH+ imageName);
+		
+		
 		holder.iv_img.setImageBitmap(bitmap);
 
 		if (selectPosition == position) {// 选中
-			holder.lin_content.setBackground(resources
-					.getDrawable(R.drawable.bg_blue));
+			holder.lin_content.setBackground(resources.getDrawable(R.drawable.bg_blue));
 			// holder.txt_word_name.setTextColor(colorWhite);
-			holder.iv_tag.setImageDrawable(resources
-					.getDrawable(R.drawable.word_model1_sel));
+			holder.iv_tag.setImageDrawable(resources.getDrawable(R.drawable.word_model1_sel));
 
 		} else {// 未选中
-			holder.lin_content.setBackground(resources
-					.getDrawable(R.drawable.bg_white1));
+			holder.lin_content.setBackground(resources.getDrawable(R.drawable.bg_white1));
 			// holder.txt_word_name.setTextColor(colorBlack);
-			holder.iv_tag.setImageDrawable(resources
-					.getDrawable(R.drawable.word_model1_unsel));
+			holder.iv_tag.setImageDrawable(resources.getDrawable(R.drawable.word_model1_unsel));
 		}
 
 		return convertView;

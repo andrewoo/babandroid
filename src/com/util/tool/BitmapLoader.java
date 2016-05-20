@@ -8,12 +8,14 @@ import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.List;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
 import com.hw.chineseLearn.base.CustomApplication;
@@ -312,7 +314,32 @@ public class BitmapLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return image;
+	}
+	
+	public static Bitmap getImageFromAssetsFileZoom(Context context,String fileName) {
+		Bitmap image = null;
+		AssetManager am = CustomApplication.app.getResources().getAssets();
+		try {
 
+			InputStream is = am.open(fileName);
+
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inPreferredConfig = Config.ARGB_8888;
+			options.inJustDecodeBounds=true;
+			BitmapFactory.decodeStream(is, null, options);
+			
+			int scaleWidth=(int) ((float)options.outWidth/UiUtil.dip2px(context, 80)-0.5);
+//			int scaleHeight=(int) ((float)options.outHeight/UiUtil.px2dip(context, 80)-0.5);
+			
+			options.inSampleSize=scaleWidth;
+			options.inJustDecodeBounds=false;
+			image=BitmapFactory.decodeStream(is, new Rect(), options);
+			// image = BitmapFactory.decodeStream(is);
+			is.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return image;
 	}
 

@@ -11,12 +11,13 @@
         android:gravity="center"
         android:orientation="vertical" >
 
+        <!--这里是correct_graphic.png图片 由于会oom已删除  -->
         <ImageView
             android:id="@+id/img_is_right"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/correct_graphic" />
+             />
 
         <LinearLayout
             android:layout_width="match_parent"

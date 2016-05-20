@@ -338,22 +338,20 @@ public class SurvivalKitActivity extends BaseActivity {
 
 	}
 
-	private boolean isUploading;// 是否正在下载
 	private HttpUtils http;
 
 	protected void download(final int position) {
 		if (http == null) {
 			http = new HttpUtils();
 		}
+		final TbFileDownload tbFileDownload = new TbFileDownload();
 		final String fileName = "cssc_" + (position + 1) + ".zip";
-		final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/cssc_"
-				+ (position + 1) + ".zip";// https://d2kox946o1unj2.cloudfront.net
+		final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/cssc_"+ (position + 1) + ".zip";// https://d2kox946o1unj2.cloudfront.net
 		HttpHandler handler = http.download(
-				AppConstants.BASE_URL+"/babbel-api-app/resource/cssc_"
+				AppConstants.BASE_URL+"/babble-api-app/resource/cssc_"
 						+ (position + 1) + ".zip", filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
 				false, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 				new RequestCallBack<File>() {
-					TbFileDownload tbFileDownload;
 
 					@Override
 					public void onStart() {
@@ -366,7 +364,7 @@ public class SurvivalKitActivity extends BaseActivity {
 						// 在数据库中插入记录
 						// 先查询 有了就更新 没有了再new
 						try {
-							if (tbFileDownload != null) {// 如果数据库存在
+//							if (tbFileDownload != null) {// 如果数据库存在
 							// tbFileDownload = (TbFileDownload) MyDao
 							// .getDaoMy(TbFileDownload.class)
 							// .queryBuilder()
@@ -374,14 +372,14 @@ public class SurvivalKitActivity extends BaseActivity {
 							// .eq("fileName","cssc_" + (position + 1)+ ".zip")
 							// .queryForFirst();
 							// if (tbFileDownload != null) {
-								tbFileDownload.setCurFileContentSize(current);
-								tbFileDownload.setFileContentSize(total);
-								MyDao.getDaoMy(TbFileDownload.class)
-										.createOrUpdate(tbFileDownload);
+//								tbFileDownload.setCurFileContentSize(current);
+//								tbFileDownload.setFileContentSize(total);
+//								MyDao.getDaoMy(TbFileDownload.class)
+//										.createOrUpdate(tbFileDownload);
 								// }
 
-							} else {// 如果数据库不存在 就插入
-								tbFileDownload = new TbFileDownload();
+//							} else {// 如果数据库不存在 就插入
+								
 								tbFileDownload.setId(position + 1);
 								tbFileDownload.setCwsId(position + 1);
 								tbFileDownload.setCurFileContentSize(current);
@@ -402,7 +400,7 @@ public class SurvivalKitActivity extends BaseActivity {
 								category.setComplete_dl(LOADING);
 								MyDao.getDaoMy(TbMyCategory.class)
 										.createOrUpdate(category);
-							}
+//							}
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}

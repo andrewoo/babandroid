@@ -261,7 +261,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		txt_lesson_score.setText("" + score);
 		exerciseIndex = 0;// 第一道题
 
-		panderLife = 5;
+		panderLife = 20;
 		panderView.clear();
 		lin_pander_life.removeAllViews();
 		for (int i = 0; i < panderLife; i++) {
@@ -288,8 +288,7 @@ public class LessonExerciseActivity extends BaseActivity {
 						LayoutParams.MATCH_PARENT, 37, 1);
 				layoutParams.setMargins(0, 5, 5, 5);
 				imageView.setLayoutParams(layoutParams);
-				imageView.setBackground(context.getResources().getDrawable(
-						R.drawable.bg_progress_noraml));
+				imageView.setBackground(context.getResources().getDrawable(R.drawable.bg_progress_noraml));
 				lin_lesson_progress.addView(imageView);
 				progressView.put(i, imageView);
 			}
@@ -598,8 +597,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			// R.color.chinese_skill_blue));
 		} else {
 
-			img_is_right.setBackground(context.getResources().getDrawable(
-					R.drawable.incorrect_graphic));
+			img_is_right.setBackground(context.getResources().getDrawable(R.drawable.incorrect_graphic));
 			// btn_next.setTextColor(context.getResources().getColor(
 			// R.color.chinese_skill_yellow));
 			tv_tip.setVisibility(View.INVISIBLE);
