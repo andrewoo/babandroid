@@ -269,7 +269,7 @@ public class LessonResultActivity extends BaseActivity {
 
 			tv_result = (TextView) contentView.findViewById(R.id.tv_result);
 			tv_result.setText("Congratulations!You defeated " + progressCount
-					+ "%babbelApp learns!");
+					+ "%babbleApp learns!");
 
 			try {
 				ArrayList<TbMyCharacter> tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao

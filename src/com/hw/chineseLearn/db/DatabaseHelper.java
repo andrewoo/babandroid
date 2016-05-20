@@ -100,7 +100,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			isFirstRunForApplication = false;
 		}
 
-		FileTools.copyDb("Babbel_ub.db");
+		FileTools.copyDb("Babble_ub.db");
 	}
 
 	@Override

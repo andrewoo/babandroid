@@ -17,7 +17,7 @@ public class DatabaseHelperMy extends OrmLiteSqliteOpenHelper {
 	private static DatabaseHelperMy instance;
 
 	public static final String DATABASE_PATH = CustomApplication.app
-			.getFilesDir() + "/Babbel_ub.db";
+			.getFilesDir() + "/Babble_ub.db";
 
 	private AndroidConnectionSource connectionSource;
 	private static String TAG = "==DatabaseHelper==";

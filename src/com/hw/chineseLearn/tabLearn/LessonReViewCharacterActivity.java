@@ -98,7 +98,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 				- UiUtil.dip2px(getApplicationContext(), 20);// padding =20dp
 		mizigeHeight = mizigeWidth;
 		resources = context.getResources();
-		lastRecFileName = "babbel_record";
+		lastRecFileName = "babble_record";
 		filePath = DatabaseHelper.CACHE_DIR_SOUND + "/" + lastRecFileName
 				+ ".amr";
 		init();
