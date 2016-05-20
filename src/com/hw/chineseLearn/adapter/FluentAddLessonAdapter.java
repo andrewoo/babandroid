@@ -419,7 +419,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 						progress_download.setAccurally(1.0f);
 						progress_download.isDrawText(false);
 						progress_download.invalidate();
-						notifyDataSetChanged();
+						// notifyDataSetChanged();
 					}
 
 					@Override

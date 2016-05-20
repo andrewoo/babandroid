@@ -388,7 +388,7 @@ public class HttpHelper {
 			final boolean isPlay) {
 		HttpUtils http = new HttpUtils();
 		final String urlName = AppConstants.BASE_URL
-				+ "/babbel-api-app/resource/" + fileName + ".zip";
+				+ "/babble-api-app/resource/" + fileName + ".zip";
 		Log.d(TAG + "-downLoadLessonVoices()", "urlName:" + urlName);
 		final String filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/";
 		File file = new File(filePath);

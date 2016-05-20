@@ -388,7 +388,7 @@ public class SurvivalKitActivity extends BaseActivity {
 										+ (position + 1) + ".zip");
 								tbFileDownload.setFilePath(filePath);
 								tbFileDownload
-										.setFileURL(AppConstants.BASE_URL+"/babbel-api-app/resource/cssc_"
+										.setFileURL(AppConstants.BASE_URL+"/babble-api-app/resource/cssc_"
 												+ (position + 1) + ".zip");
 								tbFileDownload.setType(1);
 								tbFileDownload.setDlStatus(LOADING);
