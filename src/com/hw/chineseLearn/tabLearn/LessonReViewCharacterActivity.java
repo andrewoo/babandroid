@@ -103,7 +103,6 @@ public class LessonReViewCharacterActivity extends BaseActivity {
 				+ ".amr";
 		init();
 	}
-
 	private void deleteRecord() {
 		File file = new File(filePath);
 		if (file.exists()) {

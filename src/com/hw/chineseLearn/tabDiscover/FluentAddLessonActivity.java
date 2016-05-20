@@ -262,7 +262,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 
 		HttpUtils http = new HttpUtils();
 		http.send(HttpRequest.HttpMethod.GET, AppConstants.BASE_URL
-				+ "/babbel-api-app/v1/dialogues?diffLevel=" + diffLevel,
+				+ "/babble-api-app/v1/dialogues?diffLevel=" + diffLevel,
 				new RequestCallBack<String>() {
 
 					Gson gson = new Gson();
