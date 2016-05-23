@@ -38,7 +38,7 @@ public class HwAnim {
 	}
     public void reset() {
         mAnimHistoryPoints.clear();
-        mHwAnimPartIndex = 0x0;
+        mHwAnimPartIndex = 0;
         mHwAnimRunning = false;
         if(mValueAnim != null) {
             mValueAnim.cancel();
@@ -119,7 +119,7 @@ public class HwAnim {
 	protected void preDraw(Canvas paramCanvas) {
 		int count = mView.partPaths.size();
 		Log.e("preDraw", "mHwAnimPartIndex:" + mHwAnimPartIndex);
-		Log.e("preDraw", "mPartPolygon.size():" + count);
+		Log.d("preDraw", "mPartPolygon.size():" + count);
 
 		if ((this.mHwAnimRunning) && (this.mHwAnimPartIndex < this.mView.partPaths.size())) {
 			Path localPath = new Path();
