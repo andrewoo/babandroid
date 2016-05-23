@@ -22,9 +22,7 @@ import com.hw.chineseLearn.dao.bean.Unit;
 import com.hw.chineseLearn.db.DatabaseHelper;
 import com.hw.chineseLearn.db.SQLConnection;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.util.tool.ImageLoader;
 import com.util.tool.SharedPreferencesUtil;
 import com.util.tool.UiUtil;
 
@@ -71,6 +69,7 @@ public class CustomApplication extends Application {
 	 * Unit jihe
 	 */
 	public List<Unit> unitList = new ArrayList<Unit>();
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -85,14 +84,14 @@ public class CustomApplication extends Application {
 
 	private void initDB() {
 		File f = new File(DatabaseHelper.DATABASE_PATH);
-        if (!f.exists()) {
-            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(
-            		DatabaseHelper.DATABASE_PATH,null);
-            DatabaseHelper orm = new DatabaseHelper(this);
-            orm.onCreate(db);
-            db.close();
-        }
-		
+		if (!f.exists()) {
+			SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(
+					DatabaseHelper.DATABASE_PATH, null);
+			DatabaseHelper orm = new DatabaseHelper(this);
+			orm.onCreate(db);
+			db.close();
+		}
+
 	}
 
 	/**
@@ -143,19 +142,6 @@ public class CustomApplication extends Application {
 			app = new CustomApplication();
 		}
 		return app;
-	}
-
-	public void initImgLoader() {
-		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-				.showImageForEmptyUri(0).showImageOnFail(0).cacheInMemory(true)
-				.cacheOnDisc(true).build();
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				getApplicationContext())
-				.defaultDisplayImageOptions(defaultOptions)
-				.discCacheSize(50 * 1024 * 1024)//
-				.discCacheFileCount(100)//
-				.writeDebugLogs().build();
-		ImageLoader.getInstance().init(config);
 	}
 
 	public void showTimeoutMsg(String msg) {
