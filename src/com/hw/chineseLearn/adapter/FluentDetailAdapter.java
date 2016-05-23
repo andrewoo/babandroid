@@ -171,7 +171,7 @@ public class FluentDetailAdapter extends BaseAdapter {
 				if (i == 0) {
 					if ("A".equals(listWordsModel.getSW())) {
 						holder.lin_bg.setBackground(context.getResources()
-								.getDrawable(R.drawable.chat_from_bg_normal));
+								.getDrawable(R.drawable.chat_from_bg_pressed));//chat_from_bg_normal
 						holder.lin_content.setGravity(Gravity.LEFT);
 					} else {
 						holder.lin_bg.setBackground(context.getResources()
