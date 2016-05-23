@@ -77,8 +77,8 @@ public class LessonReViewActivity extends BaseActivity {
 		layoutParams.width = width;
 		layoutParams.height = height;
 		img_panda.setLayoutParams(layoutParams);
-		img_panda.setImageDrawable(getResources().getDrawable(
-				R.drawable.review_panda));
+		// img_panda.setImageDrawable(getResources().getDrawable(
+		// R.drawable.review_panda));
 
 		lin_character = (LinearLayout) findViewById(R.id.lin_character);
 		lin_words = (LinearLayout) findViewById(R.id.lin_words);
