@@ -18,6 +18,7 @@ import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +50,7 @@ import com.hw.chineseLearn.tabLearn.LessonResultActivity;
 import com.hw.chineseLearn.tabLearn.LessonReviewResultActivity;
 import com.util.tool.BitmapLoader;
 import com.util.tool.HttpHelper;
+import com.util.tool.ImageUtils;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
@@ -108,8 +110,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		contentView = LayoutInflater.from(this).inflate(
-				R.layout.activity_pytone_exercise, null);
+		contentView = LayoutInflater.from(this).inflate(R.layout.activity_pytone_exercise, null);
 		setContentView(contentView);
 		context = this;
 		resourse = context.getResources();
@@ -404,8 +405,7 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 
 	private void setViews(boolean isDrawRight) {
 
-		if (pinList.length == rightToneList.size()
-				&& pinList.length == itemViewList.size()) {
+		if (pinList.length == rightToneList.size() && pinList.length == itemViewList.size()) {
 
 			String py = pinList[drawIndex];
 			View view = itemViewList.get(drawIndex);
@@ -444,10 +444,8 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 			if (nextIndex <= itemViewList.size() - 1) {
 				if (rightToneList.size() > 1) {// 多个字的
 					View viewNext = itemViewList.get(nextIndex);
-					TextView tv_py_next = (TextView) viewNext
-							.findViewById(R.id.tv_py);
-					TextView tv_cn_next = (TextView) viewNext
-							.findViewById(R.id.tv_cn);
+					TextView tv_py_next = (TextView) viewNext.findViewById(R.id.tv_py);
+					TextView tv_cn_next = (TextView) viewNext.findViewById(R.id.tv_cn);
 					tv_py_next.setTextColor(colorBlue);
 					tv_cn_next.setTextColor(colorBlue);
 				}
@@ -462,13 +460,15 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 				tv_cn.setTextColor(colorBlack);
 				
 				if (scoreNum == pinList.length) {// 全部正确，才算对。
-					img_is_right.setImageDrawable(resourse
-							.getDrawable(R.drawable.right_elph));
+					Bitmap corrBitmap = BitmapLoader.decodeSampledBitmapFromResource(getResources(), R.drawable.right_elph,  ImageUtils.getExpectWidth(img_is_right), ImageUtils.getExpectHeight(img_is_right));
+					Drawable drawable =new BitmapDrawable(corrBitmap);
+					img_is_right.setImageDrawable(drawable);
 				}else{
-					img_is_right.setImageDrawable(resourse
-							.getDrawable(R.drawable.wrong_elph));
+					
+					Bitmap incorrBitmap = BitmapLoader.decodeSampledBitmapFromResource(getResources(), R.drawable.wrong_elph,  ImageUtils.getExpectWidth(img_is_right), ImageUtils.getExpectHeight(img_is_right));
+					Drawable drawable =new BitmapDrawable(incorrBitmap);
+					img_is_right.setImageDrawable(drawable);
 				}
-				
 			}
 
 			if (rightToneList.size() > 1) {// 多个字的

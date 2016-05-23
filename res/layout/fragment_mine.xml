@@ -122,7 +122,6 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@+id/img_chinese_display"
                         android:text="Chinese Display"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_s14" />
@@ -195,7 +194,6 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@+id/img_chinese_display"
                         android:text="Character Test Model"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_s14" />

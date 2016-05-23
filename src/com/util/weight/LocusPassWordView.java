@@ -182,8 +182,7 @@ public class LocusPassWordView extends View {
 				path1.moveTo(arrayList.get(0)[0], arrayList.get(0)[1]);// 指定线的起始点
 				for (int i = 0; i < arrayList.size(); i++) {
 					float[] floatArray = arrayList.get(i);
-					// path1.addCircle(floatArray[0], floatArray[1],
-					// 15,Path.Direction.CW);
+					// path1.addCircle(floatArray[0], floatArray[1],15,Path.Direction.CW); 一次画一个园 练成线
 					path1.lineTo(floatArray[0], floatArray[1]);
 				}
 				if (bitmap != null) {
@@ -934,7 +933,7 @@ public class LocusPassWordView extends View {
 				// bitmap=null;
 				invalidate();
 				if (onAnamationCompleteListener != null) {
-					onAnamationCompleteListener.onCompleteListener();
+					onAnamationCompleteListener.onCompleteListener();//暴露在外的监听
 				}
 			}
 		});
