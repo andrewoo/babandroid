@@ -322,25 +322,26 @@ public class BitmapLoader {
 			String fileName) {
 		Bitmap image = null;
 		AssetManager am = CustomApplication.app.getResources().getAssets();
+		int scaleWidth=0 ;
 		try {
 
 			InputStream is = am.open(fileName);
 
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inPreferredConfig = Config.ARGB_8888;
 			options.inJustDecodeBounds = true;
 			BitmapFactory.decodeStream(is, null, options);
 
-			int scaleWidth = (int) ((float) options.outWidth
-					/ UiUtil.dip2px(context, 80) - 0.5);
+			scaleWidth = (int) (options.outWidth*1.0f/ UiUtil.dip2px(context, 80)-0.5f);
 			// int scaleHeight=(int)
 			// ((float)options.outHeight/UiUtil.px2dip(context, 80)-0.5);
 
-			options.inSampleSize = scaleWidth;
+			options.inSampleSize = scaleWidth;  
 			options.inJustDecodeBounds = false;
-			image = BitmapFactory.decodeStream(is, new Rect(), options);
+			InputStream is2 = am.open(fileName);//第一个流用到这里会返回null bitmap
+			image = BitmapFactory.decodeStream(is2,null, options);
 			// image = BitmapFactory.decodeStream(is);
 			is.close();
+			is2.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
