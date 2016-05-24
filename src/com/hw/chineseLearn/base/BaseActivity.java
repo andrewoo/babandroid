@@ -38,7 +38,7 @@ import com.util.tool.UiUtil;
 public class BaseActivity extends FragmentActivity {
 	private String TAG = "BaseActivity";
 	public List<Fragment> listFragment;
-//record
+//record 1
 	private List<BaseTaskPost> recordPost = new Vector<BaseTaskPost>();
 	private ThreadPoolManager threadPoolManager;
 	private static SharedPreferencesUtil spUtil;
