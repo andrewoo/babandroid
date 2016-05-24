@@ -384,9 +384,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				if (id == wordId) {
 					ImageView iv = new ImageView(context);// 复制view
 					String imageName = model.getImageName();
-					Bitmap bitmap = BitmapLoader
-							.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH
-									+ imageName);
+					Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGCHARACTERPART_PATH+ imageName);
 					iv.setImageBitmap(UtilMedthod.translateImageColor(bitmap,
 							colorGrey));
 					RelativeLayout.LayoutParams ly = new RelativeLayout.LayoutParams(

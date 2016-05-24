@@ -10,6 +10,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -306,7 +307,7 @@ public class BitmapLoader {
 			InputStream is = am.open(fileName);
 
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inPreferredConfig = Config.ARGB_4444;
+			options.inPreferredConfig = Config.RGB_565;
 			image = BitmapFactory.decodeStream(is, null, options);
 
 			// image = BitmapFactory.decodeStream(is);
@@ -316,8 +317,9 @@ public class BitmapLoader {
 		}
 		return image;
 	}
-	
-	public static Bitmap getImageFromAssetsFileZoom(Context context,String fileName) {
+
+	public static Bitmap getImageFromAssetsFileZoom(Context context,
+			String fileName) {
 		Bitmap image = null;
 		AssetManager am = CustomApplication.app.getResources().getAssets();
 		try {
@@ -326,15 +328,17 @@ public class BitmapLoader {
 
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inPreferredConfig = Config.ARGB_8888;
-			options.inJustDecodeBounds=true;
+			options.inJustDecodeBounds = true;
 			BitmapFactory.decodeStream(is, null, options);
-			
-			int scaleWidth=(int) ((float)options.outWidth/UiUtil.dip2px(context, 80)-0.5);
-//			int scaleHeight=(int) ((float)options.outHeight/UiUtil.px2dip(context, 80)-0.5);
-			
-			options.inSampleSize=scaleWidth;
-			options.inJustDecodeBounds=false;
-			image=BitmapFactory.decodeStream(is, new Rect(), options);
+
+			int scaleWidth = (int) ((float) options.outWidth
+					/ UiUtil.dip2px(context, 80) - 0.5);
+			// int scaleHeight=(int)
+			// ((float)options.outHeight/UiUtil.px2dip(context, 80)-0.5);
+
+			options.inSampleSize = scaleWidth;
+			options.inJustDecodeBounds = false;
+			image = BitmapFactory.decodeStream(is, new Rect(), options);
 			// image = BitmapFactory.decodeStream(is);
 			is.close();
 		} catch (IOException e) {
@@ -358,4 +362,63 @@ public class BitmapLoader {
 		return bitmap;
 
 	}
+
+	/**
+	 * 其他方法调用 计算缩放比例
+	 * 
+	 * @param options
+	 * @param reqWidth
+	 * @param reqHeight
+	 * @return
+	 */
+	public static int calculateInSampleSize(BitmapFactory.Options options,
+			int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			// Calculate the largest inSampleSize value that is a power of 2 and
+			// keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > reqHeight
+					&& (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
+			}
+		}
+
+		return inSampleSize;
+	}
+	
+	/**
+	 * 返回缩放过后的图片
+	 * @param res
+	 * @param resId
+	 * @param reqWidth
+	 * @param reqHeight
+	 * @return
+	 */
+	public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+	        int reqWidth, int reqHeight) {
+
+	    // First decode with inJustDecodeBounds=true to check dimensions
+	    final BitmapFactory.Options options = new BitmapFactory.Options();
+	    options.inJustDecodeBounds = true;
+	    BitmapFactory.decodeResource(res, resId, options);
+
+	    // Calculate inSampleSize
+	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+	    // Decode bitmap with inSampleSize set
+	    options.inJustDecodeBounds = false;
+	    return BitmapFactory.decodeResource(res, resId, options);
+	}
+
+	
+	
 }

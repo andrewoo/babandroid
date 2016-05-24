@@ -109,8 +109,6 @@ public class LearnImageSelectAdapter extends BaseAdapter {
 		holder.txt_word_name.setText("" + option); 
 //		Bitmap bitmap = BitmapLoader.getImageFromAssetsFile(ASSETS_LGWORD_PATH+ imageName);
 		Bitmap bitmap = BitmapLoader.getImageFromAssetsFileZoom(context,ASSETS_LGWORD_PATH+ imageName);
-		
-		
 		holder.iv_img.setImageBitmap(bitmap);
 
 		if (selectPosition == position) {// 选中

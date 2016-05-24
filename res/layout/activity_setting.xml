@@ -140,12 +140,11 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/img_chinese_display"
                         android:text="Chinese Display"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 
-                    <RadioGroup
+                    <RadioGroup 
                         android:id="@+id/rg_chinese_display"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

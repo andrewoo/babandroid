@@ -17,6 +17,9 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -59,6 +62,9 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.j256.ormlite.dao.Dao;
+import com.util.tool.BitmapLoader;
+import com.util.tool.ImageUtils;
+import com.util.tool.ImageUtils.ImageSize;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
@@ -261,7 +267,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		txt_lesson_score.setText("" + score);
 		exerciseIndex = 0;// 第一道题
 
-		panderLife = 20;
+		panderLife = 5;
 		panderView.clear();
 		lin_pander_life.removeAllViews();
 		for (int i = 0; i < panderLife; i++) {
@@ -588,18 +594,21 @@ public class LessonExerciseActivity extends BaseActivity {
 		tv_answer.setText(modelWord.getAnswerText());
 
 		TextView tv_tip = (TextView) checkView.findViewById(R.id.tv_tip);
+		
+		//防止oom 计算view的大小和bitmap的大小 缩放
+		int expectWidth = ImageUtils.getExpectWidth(img_is_right);
+		int expectHeight = ImageUtils.getExpectHeight(img_is_right);
+		
 
 		if (isRight) {
-			img_is_right.setBackground(context.getResources().getDrawable(
-					R.drawable.correct_graphic));
+			Bitmap corrBitmap = BitmapLoader.decodeSampledBitmapFromResource(getResources(), R.drawable.correct_graphic,expectWidth ,expectHeight);
+			Drawable drawable =new BitmapDrawable(corrBitmap);
+			img_is_right.setBackgroundDrawable(drawable);
 			tv_tip.setVisibility(View.VISIBLE);
-			// btn_next.setTextColor(context.getResources().getColor(
-			// R.color.chinese_skill_blue));
 		} else {
-
-			img_is_right.setBackground(context.getResources().getDrawable(R.drawable.incorrect_graphic));
-			// btn_next.setTextColor(context.getResources().getColor(
-			// R.color.chinese_skill_yellow));
+			Bitmap incorrBitmap = BitmapLoader.decodeSampledBitmapFromResource(getResources(), R.drawable.incorrect_graphic,expectWidth ,expectHeight);
+			Drawable drawable =new BitmapDrawable(incorrBitmap);
+			img_is_right.setBackgroundDrawable(drawable);
 			tv_tip.setVisibility(View.INVISIBLE);
 		}
 
