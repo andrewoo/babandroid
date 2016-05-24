@@ -289,12 +289,16 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 			if (model == null) {
 				continue;
 			}
-
+			String temp1 = "";
 			String pathStr = model.getPartPath();
-			String temp1 = "M" + pathStr;
-			String temp2 = temp1.trim().replace(" ", "L");
-			Path partPath = SVGParser.parsePath(temp2);
-			charPartList.add(partPath);
+			if (pathStr != null) {
+				if (!"M".equals(pathStr.charAt(0))) {
+					temp1 = "M" + pathStr;
+				}
+				String temp2 = temp1.trim().replace(" ", "L");
+				Path partPath = SVGParser.parsePath(temp2);
+				charPartList.add(partPath);
+			}
 
 			String directionStr = model.getPartDirection();
 			Path directionPartPath = SVGParser.parsePath(directionStr);
