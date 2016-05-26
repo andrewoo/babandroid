@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="f393f5bf381d6e01c300c44d01b42145f408bd9b">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\instant-run_7a857d04b2fc162250ba2650ccbd24f0fcc24b10.jar" />
+    </item>
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\libs\gson-2.2.4.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="973e832af433b44c3ed11c426f2f390b29f3f3f8">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\gson-2.2.4_66e678e8c8829c4fcee4f3595b4252e0acc0fc00.jar" />
+    </item>
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\libs\httpcore-4.3.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\httpcore-4.3.2_bab420c960a34281c85dd9da4c2cd7d4ec6b7c78.jar" />
+    </item>
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="7e2f6422bed60b3cf13307596b3b229c4c5cd357">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\instant-run-bootstrap_3cfc3a9b243e5cded1e661031a2626194ef3307a.jar" />
+    </item>
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\libs\svg-android.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="25aa82d989e7cea9af961a0b8e73858e5fa7d2eb">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\svg-android_4e009fcf96871a226e38b7548ae526c9220cbd99.jar" />
+    </item>
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\libs\xUtils-2.6.14.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="f10c51f3e0732fdeefe6e104279a58e275879b6c">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\xUtils-2.6.14_fc298d4e9804a9878ce07e55709dd471498e93b2.jar" />
+    </item>
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\libs\ormlite-android-4.48.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="afa06f539a4026c10b247386312aa67404b80a16">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\ormlite-android-4.48_786ed734bc2a854fea8199ec2a3c0cabd88db86b.jar" />
+    </item>
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\libs\androidsvg-1.2.1.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="d0cb3453e18fffeb053e9b7f052af3dcec9f75b4">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\androidsvg-1.2.1_a0a0bd824aa1bcfd27e8de8fd33ae0bf8741fb63.jar" />
+    </item>
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\libs\android-support-v4.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="605c447c20ca216b5556af9f215af5d4bba1b117">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\android-support-v4_bd22ce64462540d46ac2eab7042104628cf099fa.jar" />
+    </item>
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\libs\httpmime-4.3.5.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1dd0d38df9c6d21e893f2e52403f1cd99e91cd81">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\httpmime-4.3.5_f37061cadd4343c7f7728b338204cb60dd8b5e78.jar" />
+    </item>
+    <item
+        jar="D:\ascode\ChineseLearn\ChineseLearn_Android\libs\ormlite-core-4.48.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5">
+        <dex dex="D:\ascode\ChineseLearn\ChineseLearn_Android\build\intermediates\pre-dexed\debug\ormlite-core-4.48_7308c72f3a472f42fb92046799f54c66ce03b1ca.jar" />
+    </item>
+
+</items>
