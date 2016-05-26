@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="1dip"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="1dip"
+	    android:background="@color/white"
+	    android:gravity="center_vertical"
+	    android:orientation="vertical"
+	    android:paddingBottom="@dimen/notice_detail_bottom_padding"
+	    android:paddingLeft="@dimen/notice_detail_left_padding"
+	    android:paddingRight="@dimen/notice_detail_right_padding"
+	    android:paddingTop="@dimen/notice_detail_top_padding" >
+	
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_vertical"
+	        android:orientation="horizontal"
+	        android:paddingBottom="@dimen/notice_detail_bottom_padding"
+	        android:paddingTop="@dimen/notice_detail_top_padding" >
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="补充说明："
+	            android:textColor="@color/black"
+	            android:textSize="14sp" />
+	
+	        <TextView
+	            android:id="@+id/tv_buchong_date"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="right"
+	            android:text="2015-07-08 12:15"
+	            android:textColor="@color/grey"
+	            android:textSize="14sp" />
+	    </LinearLayout>
+	
+	    <TextView
+	        android:id="@+id/tv_buchong_desc"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingBottom="@dimen/notice_detail_bottom_padding"
+	        android:paddingTop="@dimen/notice_detail_top_padding"
+	        android:text="坚决杜绝迟到早退，否则扣工资。"
+	        android:textColor="@color/grey"
+	        android:textSize="14sp" />
+	    
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rel_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/rel_top"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" 
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:id="@+id/iv_dv_view"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/strokes_order_play_sound_onclick" />
+
+        <TextView
+            android:id="@+id/tv_word"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_dv_view"
+            android:maxLines="2"
+            android:text="[ta]he/him"
+            android:textColor="@color/deep_grey"
+            android:textSize="@dimen/text_s14" />
+
+        <Button
+            android:id="@+id/btn_hint"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_bg_blue"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:text="Hint"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_s16" />
+    </LinearLayout>
+
+</RelativeLayout>

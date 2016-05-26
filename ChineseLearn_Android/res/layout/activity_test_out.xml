@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/chinese_skill_red"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/view_title"
+        layout="@layout/main_title_view" />
+
+    <LinearLayout
+        android:id="@+id/lin_gallery_test_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="If you pass TEST OUT,all skills will be unlocked.You are able to learn whatever you like."
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_s12" />
+
+        <Button
+            android:id="@+id/btn_test_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/chinese_skill_red_deeper"
+            android:gravity="center"
+            android:padding="10dip"
+            android:singleLine="true"
+            android:text="TEST NOW"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_s18" />
+    </LinearLayout>
+
+</LinearLayout>
