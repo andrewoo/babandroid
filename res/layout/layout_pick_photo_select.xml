@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey_white"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_pick_from_take"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white_to_grey"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="Take Photo"
+        android:textColor="@color/red"
+        android:textSize="@dimen/text_s16" />
+
+    <TextView
+        android:id="@+id/tv_pick_from_dicm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/bg_white_to_grey"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="Choose Existing"
+        android:textColor="@color/deep_grey"
+        android:textSize="@dimen/text_s16" />
+
+    <TextView
+        android:id="@+id/tv_show_cancle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_white_to_grey"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="cancel"
+        android:textColor="@color/deep_grey"
+        android:textSize="@dimen/text_s16" />
+
+</LinearLayout>

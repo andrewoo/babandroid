@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hw.chineseLearn"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="21" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <!-- 访问网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 访问手机状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 获取当前WiFi接入状态和热点信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 获取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 开机自动运行 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 允许连续接收广播 -->
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <!-- 读取修改系统设置 -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- 唤醒手机 -->
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <!-- 手机屏幕关闭后继续运行 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 允许程序调用killBackgroundProcesses(String).方法结束后台进程 -->
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <!-- 允许程序获取当前或最近运行的应用 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- 读取系统底层日志 -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <!-- 允许震动 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 允许使用蓝牙连接 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!-- 获取电池电量统计信息 -->
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <!-- 写入联系人 -->
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <!-- 位置信息 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- 发送消息 -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- 阅读消息 -->
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <!-- 写入消息 -->
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <!-- 接收消息 -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <!-- 拨打电话 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- 退出 -->
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <!-- 读文件 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 写文件 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 访问GMail账户列表 -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- 允许用手机账户验证 -->
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <!-- 管理系统账户 -->
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <!-- 读取系统设置 -->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <!-- 改变WIFI状态 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 读取联系人 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- 录制音频 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 录制视频 -->
+    <uses-permission android:name="android.permission.RECORD_VIDEO" />
+    <!-- 修改声音设置 -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <!-- 允许第三方定位 -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!-- 相机权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 闪光灯权限 -->
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <!-- PDF -->
+    <uses-permission android:name="com.android.email.permission.ACCESS_PROVIDER" />
+    <uses-permission android:name="com.android.email.permission.READ_ATTACHMENT" />
+
+    <!-- 使用定位所需权限 -->
+    <!-- <permission android:name="android.permission.BAIDU_LOCATION_SERVICE" > -->
+    <!-- </permission> -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name="com.hw.chineseLearn.base.CustomApplication"
+        android:allowBackup="true"
+        android:allowTaskReparenting="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:launchMode="singleTop"
+        android:theme="@style/SampleTheme.Light" >
+        <uses-library android:name="android.test.runner" />
+
+        <activity
+            android:name="com.hw.chineseLearn.base.SplashActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- 首页 -->
+        <activity
+            android:name="com.hw.chineseLearn.base.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- 救生工具页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.SurvivalKitActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 救生练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.SurvivalKitDetailActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 拼音练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.PinyinExerciseActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 拼音练习结果页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.PinyinToneResultActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 拼音音调页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.PinyinToneActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- 拼音音调练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.PinyinToneExerciseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 拼写练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.StrokesOrderActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 拼写练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.StrokesOrderExerciseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 流畅练习列表页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.FluentListActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 流畅练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.FluentDetailActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 添加流畅练习课程 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabDiscover.FluentAddLessonActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 网页 -->
+        <activity
+            android:name="com.hw.chineseLearn.base.MainWebActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 注册页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabMe.MyRegisterActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- 登录页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabMe.MyLoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 个人中心页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabMe.MyAccountActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 忘记密码页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabMe.MyForgotPswActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateVisible" >
+        </activity>
+        <!-- 修改密码页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabMe.MyChangePswActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateVisible" >
+        </activity>
+
+        <!-- 设置页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabMe.MySettingActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 设置提醒页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabMe.MySettingRemindersActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 课程总览页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonViewActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- 章节复习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LearnReViewActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 课程复习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonReViewActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 课程复习-偏旁部首-页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonReViewCharacterActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 课程复习-单词-页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonReViewWordActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 课程复习-句子-页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonReViewSentenceActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- 课程复习-练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonReviewExerciseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- 课程复习-练习结果页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonReviewResultActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- FlashCard页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonFlashCardActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- FlashCard操作页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonFlashCardOpActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- FlashCard操作结果页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonFlashCardResultActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 课程练习页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonExerciseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <!-- 课程练习结果页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonResultActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 章节测试页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonTestOutActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 章节测试页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonTestOutTestActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+
+        <!-- 章节测试结果页面 -->
+        <activity
+            android:name="com.hw.chineseLearn.tabLearn.LessonTestOutResultActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+//DownloadMererialsActivity
+
+        <!-- tabme download -->
+        <activity
+            android:name="com.hw.chineseLearn.tabMe.DownloadMererialsActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+    </application>
+
+</manifest>

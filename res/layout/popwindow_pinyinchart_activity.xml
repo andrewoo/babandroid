@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/ll_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_pinchar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textColor="#41a0aa"
+            android:textStyle="bold"
+            android:text="ceshi"
+            android:textSize="@dimen/text_s22" />
+
+        <RelativeLayout
+            android:id="@+id/rel_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/iv_pinchar_left"
+                android:layout_width="45dp"
+                android:layout_height="90dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/pinyin_last1" />
+
+            <ImageView
+                android:id="@+id/iv_pinchar_right"
+                android:layout_width="45dp"
+                android:layout_height="90dp"
+              
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/pinyin_next1" />
+
+            <ImageView
+                android:id="@+id/iv_record"
+                  android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:adjustViewBounds="true"
+                android:background="@drawable/recorder_animate_bg"
+                android:src="@drawable/recorder_animate_01" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</FrameLayout>
