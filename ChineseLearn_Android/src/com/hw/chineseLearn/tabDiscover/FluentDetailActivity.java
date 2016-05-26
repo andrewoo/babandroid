@@ -1,12 +1,5 @@
 package com.hw.chineseLearn.tabDiscover;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
@@ -24,20 +17,16 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.FluentDetailAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
@@ -48,15 +37,19 @@ import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.hw.chineseLearn.model.FluentDetailListModel;
 import com.hw.chineseLearn.model.FluentDetailListWordsModel;
 import com.hw.chineseLearn.model.FluentDetailModel;
-import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.tool.AudioRecorder;
+import com.util.tool.AudioRecorder.VMChangeListener;
 import com.util.tool.FileTools;
 import com.util.tool.JsonUtil;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
-import com.util.tool.AudioRecorder.VMChangeListener;
-import com.util.weight.SlideSwitch;
-import com.util.weight.SlideSwitch.SlideListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * 流畅练习对话课程
@@ -313,10 +306,8 @@ public class FluentDetailActivity extends BaseActivity {
 					// 设置是否循环 点击后图标改变 停止正在循环的录音 判断当前语音是否循环
 					if (isLoop) {
 						img_loop.setImageResource(R.drawable.loop_play);
-						Log.d(TAG, "isLoop==true");
 					} else {
 						img_loop.setImageResource(R.drawable.unloop_play);
-						Log.d(TAG, "isLoop==false");
 					}
 					isLoop = !isLoop;
 					adapter.setIsControl(false);
@@ -507,10 +498,10 @@ public class FluentDetailActivity extends BaseActivity {
 
 			@Override
 			public void onCompletion(MediaPlayer mp) {
-				// if (isLoop) {
+				 if (isLoop) {
 				MediaPlayUtil.getInstance().release();
-				// playRecoder(position);
-				// }
+				 playRecoder(position);
+				 }
 			}
 		});
 		instance.play(soundPath);
