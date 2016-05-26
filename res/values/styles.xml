@@ -1,241 +1,0 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
-
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-    </style>
-
-    <style name="main_btn_style">
-        <item name="android:button">@null</item>
-        <item name="android:textSize">@dimen/text_s12</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:drawablePadding">2dp</item>
-        <item name="android:layout_weight">1.0</item>
-        <item name="android:background">@null</item>
-    </style>
-
-    <!-- 发布 -->
-    <style name="report_linear_item">
-        <item name="android:paddingLeft">@dimen/report_padding_left</item>
-        <item name="android:paddingRight">@dimen/report_padding_right</item>
-        <item name="android:paddingBottom">@dimen/report_padding_bottom</item>
-        <item name="android:paddingTop">@dimen/report_padding_top</item>
-        <item name="android:background">@color/white</item>
-    </style>
-
-    <style name="dialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:background">@android:color/darker_gray</item>
-        <item name="android:windowBackground">@null</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
-    <style name="my_dialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowFrame">@null</item>
-        <!-- 边框 -->
-        <item name="android:windowIsFloating">true</item>
-        <!-- 是否浮现在activity之上 -->
-        <item name="android:windowIsTranslucent">false</item>
-        <!-- 半透明 -->
-        <item name="android:windowNoTitle">true</item>
-        <!-- 无标题 -->
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <!-- 背景透明 -->
-        <item name="android:backgroundDimEnabled">false</item>
-        <!-- 模糊 -->
-    </style>
-
-    <style name="Dialog" parent="android:style/Theme.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <item name="android:backgroundDimEnabled">true</item>
-    </style>
-
-    <attr name="numberPickerStyle" format="reference" />
-
-    <declare-styleable name="NumberPicker">
-
-        <!-- @hide Color for the solid color background if such for optimized rendering. -->
-        <attr name="solidColor" format="color|reference" />
-        <!-- @hide The divider for making the selection area. -->
-        <attr name="selectionDivider" format="reference" />
-        <!-- @hide The height of the selection divider. -->
-        <attr name="selectionDividerHeight" format="dimension" />
-        <!-- @hide The distance between the two selection dividers. -->
-        <attr name="selectionDividersDistance" format="dimension" />
-        <!-- @hide The min height of the NumberPicker. -->
-        <attr name="internalMinHeight" format="dimension" />
-        <!-- @hide The max height of the NumberPicker. -->
-        <attr name="internalMaxHeight" format="dimension" />
-        <!-- @hide The min width of the NumberPicker. -->
-        <attr name="internalMinWidth" format="dimension" />
-        <!-- @hide The max width of the NumberPicker. -->
-        <attr name="internalMaxWidth" format="dimension" />
-        <!-- @hide The layout of the number picker. -->
-        <attr name="internalLayout" format="reference" />
-        <!-- @hide The drawable for pressed virtual (increment/decrement) buttons. -->
-        <attr name="virtualButtonPressedDrawable" format="reference" />
-    </declare-styleable>
-
-    <style name="NPWidget">
-        <item name="android:textAppearance">?android:attr/textAppearance</item>
-    </style>
-
-    <style name="NPWidget.NumberPicker">
-        <item name="android:orientation">vertical</item>
-        <item name="android:fadingEdge">vertical</item>
-        <item name="android:fadingEdgeLength">50dip</item>
-    </style>
-
-    <style name="NPWidget.Holo.NumberPicker" parent="NPWidget.NumberPicker">
-        <item name="solidColor">@android:color/transparent</item>
-        <item name="selectionDivider">@drawable/np_numberpicker_selection_divider</item>
-        <item name="selectionDividerHeight">2dip</item>
-        <item name="internalLayout">@layout/number_picker_with_selector_wheel</item>
-        <item name="internalMinWidth">64dip</item>
-        <item name="internalMaxHeight">180dip</item>
-        <item name="virtualButtonPressedDrawable">@drawable/item_background_holo_dark</item>
-    </style>
-
-    <style name="NPWidget.Holo.Light.NumberPicker" parent="NPWidget.Holo.NumberPicker">
-        <item name="virtualButtonPressedDrawable">@drawable/item_background_holo_light</item>
-    </style>
-
-    <style name="SampleTheme" parent="android:Theme">
-        <item name="numberPickerStyle">@style/NPWidget.Holo.NumberPicker</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <style name="SampleTheme.Light" parent="android:Theme.Light">
-        <item name="android:windowNoTitle">true</item>
-        <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>
-        <!-- ：是否浮现在activity之上 -->
-
-    </style>
-
-    <style name="Widget">
-        <item name="android:textAppearance">?android:attr/textAppearance</item>
-    </style>
-
-    <style name="TextAppearance.Small.CalendarViewWeekDayView" parent="@android:style/TextAppearance.Small">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextAppearance.Holo.CalendarViewWeekDayView" parent="TextAppearance.Small.CalendarViewWeekDayView">
-        <item name="android:textColor">#505050</item>
-    </style>
-
-    <style name="TextAppearance.Holo.Light.CalendarViewWeekDayView" parent="TextAppearance.Small.CalendarViewWeekDayView"></style>
-
-    <style name="dialog_msg_alert_txt_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-        <item name="android:textSize">@dimen/text_s18</item>
-        <item name="android:textColor">#4e4e4e</item>
-        <item name="android:gravity">left|center_vertical</item>
-    </style>
-
-    <style name="default_dialog_style">
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowBackground">@color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:radius">5dp</item>
-    </style>
-
-    <style name="dialog_popupwindow" parent="@android:Theme.Dialog">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/white</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
-    <style name="widget_listview">
-        <item name="android:divider">@null</item>
-        <item name="android:dividerHeight">@dimen/listview_divider_height</item>
-        <item name="android:listSelector">@color/transparent</item>
-        <item name="android:fadingEdge">none</item>
-        <item name="android:scrollingCache">false</item>
-        <item name="android:scrollbarStyle">outsideOverlay</item>
-        <item name="android:cacheColorHint">#0000</item>
-        <item name="android:background">@color/color_list_bac</item>
-    </style>
-
-    <!-- =========显示大图片所用 ========= -->
-
-    <style name="ImageloadingDialogStyle" parent="android:Theme.Dialog">
-        <item name="android:windowBackground">@android:color/black</item>
-        <!-- transparent -->
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <!-- 对话框是否有遮盖 -->
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <item name="android:backgroundDimEnabled">true</item>
-    </style>
-    <!-- =========显示大图片所用 ========= -->
-
-
-    <!-- 显示大图片 -->
-    <style name="ImageScale" parent="android:Theme.Black.NoTitleBar">
-        <item name="android:windowNoTitle">true</item>
-        <!-- 无标题 -->
-        <item name="android:windowFullscreen">true</item>
-        <!-- 设置全屏显示 -->
-        <item name="android:windowFrame">@null</item>
-        <!-- 边框 -->
-        <item name="android:windowIsFloating">false</item>
-        <!-- 是否浮现在activity之上 -->
-        <item name="android:windowIsTranslucent">true</item>
-        <!-- 半透明 -->
-        <item name="android:windowBackground">@android:color/black</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <!-- 模糊 -->
-    </style>
-
-    <style name="anim_popup_dir">
-        <item name="android:windowEnterAnimation">@anim/slide_in</item>
-        <item name="android:windowExitAnimation">@anim/slide_out</item>
-    </style>
-
-    <style name="Widget.SeekBar.Normal" parent="@android:style/Widget.SeekBar">
-        <item name="android:maxHeight">4.0dip</item>
-        <item name="android:indeterminateOnly">false</item>
-        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
-        <item name="android:progressDrawable">@drawable/seekbar_horizontal</item>
-        <item name="android:minHeight">4.0dip</item>
-        <item name="android:thumb">@drawable/seek_thumb</item>
-        <item name="android:thumbOffset">0.0dip</item>
-    </style>
-
-</resources>
