@@ -188,7 +188,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			textView.setText("" + textViewB.getText());
 
 			textView.setTextColor(context.getResources().getColor(
-					R.color.min_grey));
+					R.color.white));
 			textView.setTextSize(14.0f);
 			textView.setTag(i);
 			textView.setGravity(Gravity.CENTER);
@@ -621,6 +621,10 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		for (int i = 0; i < topViewList.size(); i++) {
 
 			TextView textView = topViewList.get(i);
+			textView.setBackground(context.getResources().getDrawable(
+					R.drawable.bg_blue));
+			textView.setTextColor(context.getResources()
+					.getColor(R.color.white));
 			String textViewText = textView.getText().toString();
 			buffer = buffer.append(textViewText + " ");
 		}
