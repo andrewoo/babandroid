@@ -5,133 +5,78 @@
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\httpmime-4.3.5.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
         sha1="1dd0d38df9c6d21e893f2e52403f1cd99e91cd81">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\httpmime-4.3.5_512a11a095317e9624737d3a56c78eadd9fd88ea\classes.dex" />
-=======
-        sha1="f10c51f3e0732fdeefe6e104279a58e275879b6c">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\xUtils-2.6.14_3d726f25e0bddc1d26a3c1c8710d748b590ef428\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
     <item
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\ormlite-android-4.48.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
         sha1="afa06f539a4026c10b247386312aa67404b80a16">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\ormlite-android-4.48_bf7240c98cc7514b27e681fb6b00132c300bf66b\classes.dex" />
-=======
-        sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\httpcore-4.3.2_1fe206e9e67adccf777adf238534bd4b2b0d58f1\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
     <item
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\androidsvg-1.2.1.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
         sha1="d0cb3453e18fffeb053e9b7f052af3dcec9f75b4">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\androidsvg-1.2.1_6f883bab6b4e0e2c8645e520fe99132fa6689f88\classes.dex" />
-=======
-        sha1="973e832af433b44c3ed11c426f2f390b29f3f3f8">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\gson-2.2.4_e0108fcacb51e17a658682a9e980e2363cb60624\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
     <item
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
-        sha1="aad62e0946aa47b7c31f8c88cb84fd86cafa115f">
+        sha1="874959bc226d7393063a2f0ac48c779e9ac198c8">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_b2f5af2d3ed6120945a0e006284722fab2efe9c2\classes.dex" />
-=======
-        sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\ormlite-core-4.48_632c688bd1e74e12409e3f45003b57adc2475aa4\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
     <item
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\gson-2.2.4.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
         sha1="973e832af433b44c3ed11c426f2f390b29f3f3f8">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\gson-2.2.4_e0d53765582c1c1a23f9be57165db27dcba2516c\classes.dex" />
-=======
-        sha1="1dd0d38df9c6d21e893f2e52403f1cd99e91cd81">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\httpmime-4.3.5_5d78b4fc2f07b6c40cb54e553a79e1dcae4ebcdc\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
     <item
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\httpcore-4.3.2.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
         sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\httpcore-4.3.2_70f41f5c2e9257e976061aff750e9624b9d7ccc6\classes.dex" />
-=======
-        sha1="afa06f539a4026c10b247386312aa67404b80a16">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\ormlite-android-4.48_8b1a316455a3b9f43f44bec62c060840c0f93f7b\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
     <item
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\xUtils-2.6.14.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
         sha1="f10c51f3e0732fdeefe6e104279a58e275879b6c">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\xUtils-2.6.14_2a17553a383e445a23c49b0ec6c08a2f44aff715\classes.dex" />
-=======
-        sha1="190dfab2b6b02cba62623870bab7eb7347583dfb">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_29b3ee29184a02a77b0fa4cd107c1e56b2bdcec5\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
     <item
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\ormlite-core-4.48.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
         sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\ormlite-core-4.48_11d012b8e346317ae4ec63cf8327dfcb73c50337\classes.dex" />
-=======
-        sha1="d0cb3453e18fffeb053e9b7f052af3dcec9f75b4">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\androidsvg-1.2.1_71c742513b30642b0fb913a87eeb2fa81e30463a\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
     <item
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\android-support-v4.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
         sha1="605c447c20ca216b5556af9f215af5d4bba1b117">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\android-support-v4_c4fe5654507398be7462eed3dc773bb7c96b953a\classes.dex" />
-=======
-        sha1="25aa82d989e7cea9af961a0b8e73858e5fa7d2eb">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\svg-android_30d4a1bbfaf4356231e13526dcdd1918c1624d80\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
     <item
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\svg-android.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
         sha1="25aa82d989e7cea9af961a0b8e73858e5fa7d2eb">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\svg-android_d8652c7d1e039218be417971b5e54484a32adcb8\classes.dex" />
-=======
-        sha1="06046569a2062249323ce94b8d56fbfd534e5c6c">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_f66fedfdc5891fc673f36c1c6d940d44a8cc2a98\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
     <item
         jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
-        sha1="230cddb3b598cc37638cb64bfd222e2a9e6dd72a">
+        sha1="93cb4e9d4ac45e00b92b1216cfb6800700756597">
         <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_41aee9735de22f032ada752919f4eee2783a5425\classes.dex" />
-=======
-        sha1="605c447c20ca216b5556af9f215af5d4bba1b117">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\android-support-v4_e414d07e21f6433e2e49c6ebabe890a3f8ac5575\classes.dex" />
->>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
     </item>
 
 </items>

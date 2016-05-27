@@ -4,6 +4,6 @@
   
     <solid android:color="@color/chinese_skill_blue" />  
   
-    <corners android:radius="2dp" />  
+    <corners android:radius="0dp" />
   
 </shape>  
