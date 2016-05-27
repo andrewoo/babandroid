@@ -4,19 +4,20 @@
     android:layout_height="fill_parent"
     android:background="@color/light_grey_white"
     android:gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="10dp"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <com.util.weight.SelfGridView
                 android:id="@+id/gv_center_gridview"
@@ -29,28 +30,27 @@
                 android:listSelector="#00000000"
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="7dp" >
-            </com.util.weight.SelfGridView>
+                android:verticalSpacing="7dp"></com.util.weight.SelfGridView>
 
             <RelativeLayout
                 android:id="@+id/rel_test_out"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/btn_bg_orange"
+                android:background="@drawable/btn_orange_bg_n"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:paddingRight="10dp" >
+                android:paddingRight="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:text="TestOut"
                     android:textColor="@color/white" />
 
@@ -58,11 +58,11 @@
                     android:id="@+id/img_lock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="5dp"
-                    android:src="@drawable/testout_img" />
+                    android:src="@drawable/testout_img"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <com.util.weight.SelfGridView
@@ -77,8 +77,7 @@
                 android:listSelector="#00000000"
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="7dp" >
-            </com.util.weight.SelfGridView>
+                android:verticalSpacing="7dp"></com.util.weight.SelfGridView>
         </LinearLayout>
     </ScrollView>
 
