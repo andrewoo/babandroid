@@ -37,9 +37,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+<<<<<<< HEAD
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:background="@drawable/btn_orange_bg_n"
+=======
+                android:padding="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_bg_orange"
+>>>>>>> d9263525edaaddd19a26a92daebf772dae1148b5
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingRight="10dp">
