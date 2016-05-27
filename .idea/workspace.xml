@@ -13,6 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8c94cb17-e72e-4d5a-aa94-bd74acec3bae" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ChineseLearn_Android/res/drawable-xxhdpi/correct_graphic2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ChineseLearn_Android/res/drawable-xxhdpi/correct_graphic3.png" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileHashes.bin" />
@@ -113,8 +115,8 @@
       <file leaf-file-name="LessonExerciseActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ChineseLearn_Android/src/com/hw/chineseLearn/tabLearn/LessonExerciseActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.29506174">
-              <caret line="598" column="41" selection-start-line="598" selection-start-column="41" selection-end-line="598" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.42251223">
+              <caret line="599" column="109" selection-start-line="599" selection-start-column="93" selection-end-line="599" selection-end-column="109" />
               <folding />
             </state>
           </provider>
@@ -1932,6 +1934,11 @@
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="device.picker.selection" value="7bfa9838" />
   </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\res\drawable-xxhdpi" />
+    </key>
+  </component>
   <component name="RunManager" selected="Android Application.ChineseLearn_Android-ChineseLearn_Android">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="" />
@@ -2210,12 +2217,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1924" height="1056" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2693133" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21962096" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21962096" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26421404" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2511,8 +2518,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ChineseLearn_Android/src/com/hw/chineseLearn/tabLearn/LessonExerciseActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29506174">
-          <caret line="598" column="41" selection-start-line="598" selection-start-column="41" selection-end-line="598" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.42251223">
+          <caret line="599" column="109" selection-start-line="599" selection-start-column="93" selection-end-line="599" selection-end-column="109" />
           <folding />
         </state>
       </provider>
