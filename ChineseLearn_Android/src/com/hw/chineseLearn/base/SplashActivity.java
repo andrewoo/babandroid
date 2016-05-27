@@ -183,7 +183,7 @@ public class SplashActivity extends BaseActivity {
 
 		iv_logo = (ImageView) findViewById(R.id.iv_logo);
 		LayoutParams layoutParams = (LayoutParams) iv_logo.getLayoutParams();
-		layoutParams.width = CustomApplication.app.displayMetrics.widthPixels / 10 * 9;
+		layoutParams.width = CustomApplication.app.displayMetrics.widthPixels / 10 * 7;
 		layoutParams.height = layoutParams.width;
 		iv_logo.setLayoutParams(layoutParams);
 		iv_logo.setImageDrawable(getResources().getDrawable(

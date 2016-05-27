@@ -20,8 +20,8 @@
             android:layout_height="20dp"
             android:background="@drawable/img_right"
             android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_s12" />
+            android:layout_marginLeft="10dp"
+            />
 
         <LinearLayout
             android:layout_width="fill_parent"

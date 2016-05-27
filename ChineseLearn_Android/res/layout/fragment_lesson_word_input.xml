@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/input_white_p"
+        android:background="@drawable/input_white"
         android:minHeight="150dp"
         android:orientation="vertical" >
 
@@ -48,9 +48,10 @@
             android:layout_gravity="top|left"
             android:background="@null"
             android:gravity="top|left"
-            android:hint="input the answer"
+            android:hint="Write down the translation"
             android:minHeight="150dp"
-            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="15dp"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/text_s18" />

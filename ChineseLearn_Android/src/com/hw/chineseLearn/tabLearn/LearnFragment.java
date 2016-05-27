@@ -136,7 +136,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		if (unLock == 0) {
 			rel_test_out.setEnabled(true);
 			rel_test_out.setBackground(context.getResources().getDrawable(
-					R.drawable.btn_bg_orange));
+					R.drawable.btn_orange_bg_n));
 			img_lock.setImageDrawable(context.getResources().getDrawable(
 					R.drawable.testout_img));
 		} else {

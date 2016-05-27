@@ -79,6 +79,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 	public Context context;
 	private LinearLayout lin_pander_life;
 	private TextView txt_lesson_score;
+	private ImageView iv_quit;
 	private LinearLayout lin_lesson_progress;
 	private LinearLayout lin_lesson_score;
 	private Button btn_check;
@@ -309,6 +310,8 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 
 		btn_check = (Button) findViewById(R.id.btn_check);
 		btn_check.setOnClickListener(onClickListener);
+		iv_quit = (ImageView) findViewById(R.id.iv_quit);
+		iv_quit.setOnClickListener(onClickListener);
 		initTestDatas();
 	}
 
@@ -397,7 +400,9 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
 			switch (arg0.getId()) {
-
+				case R.id.iv_quit:
+					showQuitDialog();
+					break;
 			case R.id.btn_check:
 
 				isCurrentTestRight = baseFragment.isRight();
