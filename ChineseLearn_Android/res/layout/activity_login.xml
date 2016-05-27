@@ -45,7 +45,7 @@
                 android:layout_marginLeft="16dp"
                 android:background="@null"
                 android:padding="5dip"
-                android:text="Emial"
+                android:text="Email"
                 android:textColor="@color/floralwhite"
                 android:textSize="14sp"
                 android:visibility="invisible" />
@@ -57,7 +57,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:background="@null"
-                android:hint="Emial"
+                android:hint="Email"
                 android:imeOptions="actionNext"
                 android:padding="5dip"
                 android:singleLine="true"

@@ -1,12 +1,7 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,7 +25,6 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.FlashCardOpGalleryAdapter;
@@ -49,6 +43,11 @@ import com.util.tool.MediaPlayUtil;
 import com.util.tool.UiUtil;
 import com.util.weight.SlideSwitch;
 import com.util.weight.SlideSwitch.SlideListener;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 
 /**
  * FlashCard操作页面
@@ -387,8 +386,8 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 		gallery.setSelection(index);
 		gallery.setFocusable(false);
 		gallery.setGravity(Gravity.CENTER);
-		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-				screenWidth, screenHeight * 5 / 10);
+		gallery.setIsTouchMove(false);
+		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(screenWidth, screenHeight * 6 / 10);
 		gallery.setLayoutParams(param);
 
 	}
@@ -589,9 +588,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 	};
 
 	/**
-	 * 
-	 * @param Proficient
-	 *            熟练度
+	 *熟练度
 	 */
 	@SuppressWarnings("unchecked")
 	private void updateDb(int proficient) {

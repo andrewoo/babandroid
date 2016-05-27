@@ -1,11 +1,5 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -25,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.GalleryAdapter;
@@ -37,6 +30,14 @@ import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.Unit;
 import com.util.tool.UiUtil;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 
 /**
  * 课程总览页面
@@ -215,6 +216,7 @@ public class LessonViewActivity extends BaseActivity implements OnItemSelectedLi
 		gallery.setAdapter(adapter);
 		gallery.setOnItemSelectedListener(this);
 		gallery.setSelection(selection);
+		gallery.setIsTouchMove(true);
 		iv_unit_img = (ImageView) findViewById(R.id.iv_unit_img);
 		iv_unit_img.setImageResource(getResources().getIdentifier(
 				"lu1_" + mUnit.getIconResSuffix(), "drawable",

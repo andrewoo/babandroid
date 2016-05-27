@@ -1,13 +1,7 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.drm.DrmStore.Playback;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -36,9 +30,12 @@ import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
-import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.tool.Utility;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 拼句子
@@ -189,7 +186,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 			textView.setTextColor(context.getResources().getColor(
 					R.color.white));
-			textView.setTextSize(14.0f);
+			textView.setTextSize(UiUtil.sp2px(context,10));
 			textView.setTag(i);
 			textView.setGravity(Gravity.CENTER);
 			textView.setBackground(context.getResources().getDrawable(
@@ -254,7 +251,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 					R.drawable.bg_white_to_blue));
 			textView.setTextColor(context.getResources().getColor(
 					R.color.deep_grey));
-			textView.setTextSize(14.0f);
+			textView.setTextSize(UiUtil.sp2px(context,10));
 			textView.setTag(i);
 			textView.setGravity(Gravity.CENTER);
 			rlRoot.addView(textView);
@@ -263,8 +260,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 			textView.setOnTouchListener(this);
 
-			int viewTextWidth = (int) Layout.getDesiredWidth(textView.getText()
-					.toString(), textView.getPaint());
+			int viewTextWidth = (int) Layout.getDesiredWidth(textView.getText().toString(), textView.getPaint());
 
 			int x1 = 0, y1 = y;
 
@@ -292,6 +288,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 		}
 	}
+
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {

@@ -1,7 +1,5 @@
 package com.hw.chineseLearn.adapter;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.view.LayoutInflater;
@@ -10,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
+import com.util.tool.UiUtil;
+
+import java.util.ArrayList;
 
 public class TestOutGalleryAdapter extends BaseAdapter {
 	private Context mContext;
@@ -35,8 +35,8 @@ public class TestOutGalleryAdapter extends BaseAdapter {
 		mGalleryItemBackground = typedArray.getResourceId(
 				R.styleable.Gallery_android_galleryItemBackground, 0);
 		inflater = LayoutInflater.from(mContext);
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 2;
-		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 2;
+		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 5;
+		height =width;
 	}
 
 	// 第1点改进，返回一个很大的值，例如，Integer.MAX_VALUE
@@ -62,8 +62,7 @@ public class TestOutGalleryAdapter extends BaseAdapter {
 		ViewHolder holder;
 		if (convertView == null) {
 			holder = new ViewHolder();
-			convertView = inflater.inflate(
-					R.layout.layout_gellay_item_test_out, null);
+			convertView = inflater.inflate(R.layout.layout_gellay_item_test_out, null);
 			holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
 			holder.img_tag = (ImageView) convertView.findViewById(R.id.img_tag);
 			convertView.setTag(holder);
@@ -75,21 +74,22 @@ public class TestOutGalleryAdapter extends BaseAdapter {
 		String imageName = "" + model.getIconResSuffix();
 
 		holder.tv_name.setText("" + unitName);
-		holder.img_tag.setImageResource(mContext.getResources().getIdentifier(
-				imageName, "drawable", mContext.getPackageName()));
-
+		//暂时写死用纸飞机的图片
+//		holder.img_tag.setImageResource(mContext.getResources().getIdentifier(imageName, "drawable", mContext.getPackageName()));
+//		holder.img_tag.setImageResource(R.drawable.basic);
 		if (selectItem == position) {
-			holder.tv_name.setTextSize(12.0f);
-			holder.img_tag.setLayoutParams(new LinearLayout.LayoutParams(width,
-					height));
+			holder.tv_name.setTextSize(UiUtil.sp2px(mContext,8f));
+			Gallery.LayoutParams params=new Gallery.LayoutParams(width,height);
+			convertView.setLayoutParams(params);
+//			holder.img_tag.setLayoutParams(new LinearLayout.LayoutParams(width, height));
 		} else {
 			// 未选中时，这是设置的比较小
-			holder.tv_name.setTextSize(9.0f);
-			holder.img_tag.setLayoutParams(new LinearLayout.LayoutParams(
-					width / 5 * 4, height / 5 * 4));
+			Gallery.LayoutParams params=new Gallery.LayoutParams(width*8/10,height*8/10);
+			convertView.setLayoutParams(params);
+			holder.tv_name.setTextSize(6f);
+//			holder.img_tag.setLayoutParams(new LinearLayout.LayoutParams(width / 5 * 4, height / 5 * 4));
 
 		}
-
 		return convertView;
 	}
 

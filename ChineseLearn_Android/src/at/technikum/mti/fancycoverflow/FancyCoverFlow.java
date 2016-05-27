@@ -22,6 +22,7 @@ import android.content.res.TypedArray;
 import android.graphics.Camera;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Transformation;
@@ -29,7 +30,6 @@ import android.widget.Gallery;
 import android.widget.SpinnerAdapter;
 
 import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.base.CustomApplication;
 
 public class FancyCoverFlow extends Gallery {
 
@@ -114,7 +114,7 @@ public class FancyCoverFlow extends Gallery {
     private void initialize() {
         this.transformationCamera = new Camera();
         int width = this.getContext().getResources().getDisplayMetrics().widthPixels;
-        this.setSpacing(width/30);
+        this.setSpacing(width / 30);
     }
 
     private void applyXmlAttributes(AttributeSet attrs) {
@@ -357,7 +357,7 @@ public class FancyCoverFlow extends Gallery {
             final float zoomAmount = (this.unselectedScale - 1) * Math.abs(effectsAmount) + 1;
             final float translateX = childWidth / 2.0f;
             final float translateY = childHeight * this.scaleDownGravity;
-            
+
             imageMatrix.preTranslate(-translateX, -translateY);
             imageMatrix.postScale(zoomAmount, zoomAmount);
             imageMatrix.postTranslate(translateX, translateY);
@@ -382,5 +382,22 @@ public class FancyCoverFlow extends Gallery {
         public LayoutParams(ViewGroup.LayoutParams source) {
             super(source);
         }
+    }
+
+    boolean result = true;//是否屏蔽gallery的滑动 默认可以滑动
+
+    public void setIsTouchMove(Boolean isTouchMove) {
+        this.result = isTouchMove;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if (result) {
+            return super.onTouchEvent(event);
+        } else {
+            return false;
+        }
+
     }
 }
