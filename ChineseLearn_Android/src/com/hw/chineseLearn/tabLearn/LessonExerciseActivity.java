@@ -1,15 +1,5 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,15 +15,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -64,10 +51,19 @@ import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.j256.ormlite.dao.Dao;
 import com.util.tool.BitmapLoader;
 import com.util.tool.ImageUtils;
-import com.util.tool.ImageUtils.ImageSize;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 课程练习页面
@@ -291,8 +287,8 @@ public class LessonExerciseActivity extends BaseActivity {
 			for (int i = 0; i < exerciseCount; i++) {
 				ImageView imageView = new ImageView(context);
 				LayoutParams layoutParams = new LayoutParams(
-						LayoutParams.MATCH_PARENT, 37, 1);
-				layoutParams.setMargins(0, 5, 5, 5);
+						LayoutParams.MATCH_PARENT, 20, 1);
+				layoutParams.setMargins(0, 2, 2, 2);
 				imageView.setLayoutParams(layoutParams);
 				imageView.setBackground(context.getResources().getDrawable(R.drawable.bg_progress_noraml));
 				lin_lesson_progress.addView(imageView);
@@ -584,8 +580,7 @@ public class LessonExerciseActivity extends BaseActivity {
 			height = width / 78 * 100;
 		}
 
-		ImageView img_is_right = (ImageView) checkView
-				.findViewById(R.id.img_is_right);
+		ImageView img_is_right = (ImageView) checkView.findViewById(R.id.img_is_right);
 
 		LayoutParams layoutParams = new LayoutParams(width, height);
 		img_is_right.setLayoutParams(layoutParams);
@@ -601,6 +596,7 @@ public class LessonExerciseActivity extends BaseActivity {
 		
 
 		if (isRight) {
+			int[] correctArray=new int[]{};
 			Bitmap corrBitmap = BitmapLoader.decodeSampledBitmapFromResource(getResources(), R.drawable.correct_graphic,expectWidth ,expectHeight);
 			Drawable drawable =new BitmapDrawable(corrBitmap);
 			img_is_right.setBackgroundDrawable(drawable);
@@ -1372,17 +1368,13 @@ public class LessonExerciseActivity extends BaseActivity {
 	public void isCheckBtnActived(boolean isActived) {
 		if (isActived) {
 			btn_check.setEnabled(true);
-			btn_check.setBackgroundColor(context.getResources().getColor(
-					R.color.chinese_skill_blue));
-			btn_check.setTextColor(context.getResources().getColor(
-					R.color.white));
+			btn_check.setBackgroundColor(context.getResources().getColor(R.color.chinese_skill_blue));
+			btn_check.setTextColor(context.getResources().getColor(R.color.white));
 
 		} else {
 			btn_check.setEnabled(false);
-			btn_check.setBackgroundColor(context.getResources().getColor(
-					R.color.min_grey));
-			btn_check.setTextColor(context.getResources().getColor(
-					R.color.chinese_skill_blue));
+			btn_check.setBackgroundColor(context.getResources().getColor(R.color.min_grey));
+			btn_check.setTextColor(context.getResources().getColor(R.color.chinese_skill_blue));
 		}
 	}
 

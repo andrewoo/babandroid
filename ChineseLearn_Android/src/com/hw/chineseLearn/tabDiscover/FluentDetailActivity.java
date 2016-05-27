@@ -304,12 +304,13 @@ public class FluentDetailActivity extends BaseActivity {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					// 设置是否循环 点击后图标改变 停止正在循环的录音 判断当前语音是否循环
+					isLoop = !isLoop;
 					if (isLoop) {
 						img_loop.setImageResource(R.drawable.loop_play);
 					} else {
 						img_loop.setImageResource(R.drawable.unloop_play);
 					}
-					isLoop = !isLoop;
+
 					adapter.setIsControl(false);
 					adapter.notifyDataSetChanged();
 				}

@@ -1,13 +1,5 @@
 package com.util.tool;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.NumberFormat;
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
@@ -17,9 +9,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.hw.chineseLearn.base.CustomApplication;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.NumberFormat;
+import java.util.List;
 
 /**
  *
@@ -318,6 +317,12 @@ public class BitmapLoader {
 		return image;
 	}
 
+	/**
+	 * 缩放比例根据imagselecetfragment的item的宽高而来
+	 * @param context
+	 * @param fileName
+     * @return
+     */
 	public static Bitmap getImageFromAssetsFileZoom(Context context,
 			String fileName) {
 		Bitmap image = null;
