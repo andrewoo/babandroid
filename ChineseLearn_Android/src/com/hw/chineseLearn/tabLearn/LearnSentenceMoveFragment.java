@@ -126,7 +126,14 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				play();
 			}
 		});
-		
+
+		btn_play_slow = (Button)contentView.findViewById(R.id.btn_play_slow);
+		btn_play_slow.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				play();
+			}
+		});
 		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
 		int textVieWidth=Utility.getScreenWidth(context)-UiUtil.px2dip(context, 90);
 		LinearLayout.LayoutParams paramsTextView=new LinearLayout.LayoutParams(textVieWidth,LayoutParams.WRAP_CONTENT);//设置textview宽度 防止超出屏幕
@@ -233,7 +240,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 	private String voicePath;
 
-	private Button btn_play_normal;
+	private Button btn_play_normal,btn_play_slow;
 
 	private void initBottomMoveViews() {
 
