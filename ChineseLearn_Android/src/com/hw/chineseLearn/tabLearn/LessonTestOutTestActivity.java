@@ -565,16 +565,8 @@ public class LessonTestOutTestActivity extends BaseActivity {
 
 				if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
 
-					Intent intent = new Intent(LessonTestOutTestActivity.this,
-							LessonResultActivity.class);
-					intent.putExtra("loseAllPanders", "");
-					intent.putExtra("secondCount", secondCount);// 用时秒数
-					intent.putExtra("score", score);// 得分
-					intent.putExtra("exerciseCount", exerciseCount);// 总练习题目数
-					intent.putExtra("rightCount", rightCount);// 正确个数
-					intent.putExtra("wrongCount", wrongCount);// 错误个数
-					intent.putExtra("LessonId", lessonId);// 传递lessonid确定哪个lesson做完
-					startActivityForResult(intent, 100);
+					setResult(100);
+					CustomApplication.app.finishActivity(LessonTestOutTestActivity.class);
 				}
 				builder.dismiss();
 				// learn表中regex第一位 对应View关系
