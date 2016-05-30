@@ -339,8 +339,8 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 		for (int i = 0; i < exerciseCount; i++) {
 			ImageView imageView = new ImageView(context);
 			LayoutParams layoutParams = new LayoutParams(
-					LayoutParams.MATCH_PARENT, 37, 1);
-			layoutParams.setMargins(0, 5, 5, 5);
+					LayoutParams.MATCH_PARENT, 20, 1);
+			layoutParams.setMargins(0, 2, 2, 2);
 			imageView.setLayoutParams(layoutParams);
 			imageView.setBackground(context.getResources().getDrawable(
 					R.drawable.bg_progress_noraml));

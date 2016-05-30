@@ -1,3 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\httpmime-4.3.5.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1dd0d38df9c6d21e893f2e52403f1cd99e91cd81">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\httpmime-4.3.5_512a11a095317e9624737d3a56c78eadd9fd88ea\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\ormlite-android-4.48.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="afa06f539a4026c10b247386312aa67404b80a16">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\ormlite-android-4.48_bf7240c98cc7514b27e681fb6b00132c300bf66b\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\androidsvg-1.2.1.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="d0cb3453e18fffeb053e9b7f052af3dcec9f75b4">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\androidsvg-1.2.1_6f883bab6b4e0e2c8645e520fe99132fa6689f88\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="7461e4ccdaa12913ec585b07f4dd37382cd26b61">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_b2f5af2d3ed6120945a0e006284722fab2efe9c2\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\gson-2.2.4.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="973e832af433b44c3ed11c426f2f390b29f3f3f8">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\gson-2.2.4_e0d53765582c1c1a23f9be57165db27dcba2516c\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\httpcore-4.3.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\httpcore-4.3.2_70f41f5c2e9257e976061aff750e9624b9d7ccc6\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\xUtils-2.6.14.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="f10c51f3e0732fdeefe6e104279a58e275879b6c">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\xUtils-2.6.14_2a17553a383e445a23c49b0ec6c08a2f44aff715\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\ormlite-core-4.48.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\ormlite-core-4.48_11d012b8e346317ae4ec63cf8327dfcb73c50337\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\android-support-v4.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="605c447c20ca216b5556af9f215af5d4bba1b117">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\android-support-v4_c4fe5654507398be7462eed3dc773bb7c96b953a\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\libs\svg-android.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="25aa82d989e7cea9af961a0b8e73858e5fa7d2eb">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\svg-android_d8652c7d1e039218be417971b5e54484a32adcb8\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="b404475914a8f43bc490e99651cf52ffe7fb391c">
+        <dex dex="C:\Users\QYer\AndroidStudioProjects\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_41aee9735de22f032ada752919f4eee2783a5425\classes.dex" />
+    </item>
+
+</items>
