@@ -139,7 +139,7 @@
                         android:padding="2dp" >
 
                         <RadioButton
-                            android:id="@+id/rb_character"
+                            android:id="@+id/rb_character1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -152,7 +152,7 @@
                             android:textSize="@dimen/text_s10" />
 
                         <RadioButton
-                            android:id="@+id/rb_Pinyin"
+                            android:id="@+id/rb_Pinyin1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -164,7 +164,7 @@
                             android:textSize="@dimen/text_s10" />
 
                         <RadioButton
-                            android:id="@+id/rb_Both"
+                            android:id="@+id/rb_Both1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -199,7 +199,7 @@
                         android:textSize="@dimen/text_s14" />
 
                     <RadioGroup
-                        android:id="@+id/rg_chinese_display"
+                        android:id="@+id/rg_chinese_display1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"

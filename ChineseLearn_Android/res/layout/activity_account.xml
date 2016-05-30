@@ -69,7 +69,7 @@
                     android:padding="15dp" >
 
                     <ImageView
-                        android:id="@+id/img_icon"
+                        android:id="@+id/img_icon2"
                         android:layout_width="17dp"
                         android:layout_height="17dp"
                         android:layout_centerVertical="true"
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/img_icon"
+                        android:layout_toRightOf="@+id/img_icon2"
                         android:text="Change Password"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
@@ -107,7 +107,7 @@
                     android:padding="15dp" >
 
                     <ImageView
-                        android:id="@+id/img_icon"
+                        android:id="@+id/img_icon1"
                         android:layout_width="17dp"
                         android:layout_height="17dp"
                         android:layout_centerVertical="true"
@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/img_icon"
+                        android:layout_toRightOf="@+id/img_icon1"
                         android:text="Upload Progress"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />

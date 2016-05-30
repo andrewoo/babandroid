@@ -8,6 +8,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -50,7 +51,6 @@ import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.j256.ormlite.dao.Dao;
 import com.util.tool.BitmapLoader;
-import com.util.tool.ImageUtils;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
@@ -238,12 +238,10 @@ public class LessonExerciseActivity extends BaseActivity {
     public void init() {
         checkView = LayoutInflater.from(context).inflate(R.layout.layout_learn_exercise_check_dialog, null);
 
-        btn_check = (Button) findViewById(R.id.btn_check);
-        btn_check.setOnClickListener(onClickListener);
-
         iv_quit = (ImageView) findViewById(R.id.iv_quit);
         iv_quit.setOnClickListener(onClickListener);
-
+        btn_check = (Button) findViewById(R.id.btn_check);
+        btn_check.setOnClickListener(onClickListener);
         initTestDatas();
     }
 
@@ -291,8 +289,7 @@ public class LessonExerciseActivity extends BaseActivity {
             // 加上十几个背景块
             for (int i = 0; i < exerciseCount; i++) {
                 ImageView imageView = new ImageView(context);
-                LayoutParams layoutParams = new LayoutParams(
-                        LayoutParams.MATCH_PARENT, 10, 1);
+                LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, 20, 1);
                 layoutParams.setMargins(0, 2, 2, 2);
                 imageView.setLayoutParams(layoutParams);
                 imageView.setBackground(context.getResources().getDrawable(R.drawable.bg_progress_noraml));
@@ -402,9 +399,11 @@ public class LessonExerciseActivity extends BaseActivity {
         public void onClick(View arg0) {
             // TODO Auto-generated method stub
             switch (arg0.getId()) {
+
                 case R.id.iv_quit:
                     showQuitDialog();
                     break;
+
                 case R.id.btn_check:
 
                     if (btn_check.getVisibility() == View.VISIBLE) {
@@ -589,8 +588,14 @@ public class LessonExerciseActivity extends BaseActivity {
 
         ImageView img_is_right = (ImageView) checkView.findViewById(R.id.img_is_right);
 
-        LayoutParams layoutParams = new LayoutParams(width, height);
-        img_is_right.setLayoutParams(layoutParams);
+//		LayoutParams layoutParams = (LayoutParams) img_is_right.getLayoutParams();
+//
+//		layoutParams.width=width;
+//		layoutParams.height=LayoutParams.WRAP_CONTENT;
+//
+//		img_is_right.setLayoutParams(layoutParams);
+//		img_is_right.setMaxWidth(width);
+//		img_is_right.setMaxHeight(width*2);
         Button btn_next = (Button) checkView.findViewById(R.id.btn_next);
         TextView tv_answer = (TextView) checkView.findViewById(R.id.tv_answer);
         tv_answer.setText(modelWord.getAnswerText());
@@ -598,20 +603,15 @@ public class LessonExerciseActivity extends BaseActivity {
         TextView tv_tip = (TextView) checkView.findViewById(R.id.tv_tip);
 
         //防止oom 计算view的大小和bitmap的大小 缩放
-        int expectWidth = ImageUtils.getExpectWidth(img_is_right);
-        int expectHeight = ImageUtils.getExpectHeight(img_is_right);
 
-
+        int random = new Random().nextInt(3);
         if (isRight) {
-            int[] correctArray = new int[]{};
-            Bitmap corrBitmap = BitmapLoader.decodeSampledBitmapFromResource(getResources(), R.drawable.correct_graphic, expectWidth, expectHeight);
-            Drawable drawable = new BitmapDrawable(corrBitmap);
-            img_is_right.setBackgroundDrawable(drawable);
+            int[] resArray = new int[]{R.drawable.correct_graphic, R.drawable.correct_graphic2, R.drawable.correct_graphic3};
+            setAnswerImage(width, img_is_right, resArray[random]);
             tv_tip.setVisibility(View.VISIBLE);
         } else {
-            Bitmap incorrBitmap = BitmapLoader.decodeSampledBitmapFromResource(getResources(), R.drawable.incorrect_graphic, expectWidth, expectHeight);
-            Drawable drawable = new BitmapDrawable(incorrBitmap);
-            img_is_right.setBackgroundDrawable(drawable);
+            int[] resArray = new int[]{R.drawable.incorrect_graphic, R.drawable.incorrect_graphic2, R.drawable.incorrect_graphic3};
+            setAnswerImage(width, img_is_right, resArray[random]);
             tv_tip.setVisibility(View.INVISIBLE);
         }
 
@@ -666,6 +666,18 @@ public class LessonExerciseActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private void setAnswerImage(int width, ImageView img_is_right, int id) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), id);
+        int newHeight = BitmapLoader.getFitBitmapHeight(bitmap, width);
+        LayoutParams params = (LayoutParams) img_is_right.getLayoutParams();
+        params.height = newHeight;
+        params.width = width;
+        img_is_right.setLayoutParams(params);
+        Bitmap corrBitmap = BitmapLoader.decodeSampledBitmapFromResource(getResources(), id, width, newHeight);
+        Drawable drawable = new BitmapDrawable(corrBitmap);
+        img_is_right.setBackgroundDrawable(drawable);
     }
 
     private void replaceTo2(String type) {
@@ -1388,5 +1400,6 @@ public class LessonExerciseActivity extends BaseActivity {
             btn_check.setTextColor(context.getResources().getColor(R.color.chinese_skill_blue));
         }
     }
+
 
 }

@@ -1,29 +1,28 @@
 package com.hw.chineseLearn.adapter;
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.hw.chineseLearn.R;
+import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 import at.technikum.mti.fancycoverflow.FancyCoverFlowAdapter;
-
-import com.hw.chineseLearn.R;
-import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.dao.bean.LGModelFlashCard;
 
 public class FlashCardOpGalleryAdapter extends FancyCoverFlowAdapter {
 	Context mContext; 
@@ -66,17 +65,12 @@ public class FlashCardOpGalleryAdapter extends FancyCoverFlowAdapter {
 						int position = entry.getKey();
 						if (position == msg.arg2) {
 							View views = entry.getValue();
-							LinearLayout lin_c = (LinearLayout) views
-									.findViewById(R.id.lin_c);
-							lin_c.setLayoutParams(new RelativeLayout.LayoutParams(
-									width, height));
+							LinearLayout lin_c = (LinearLayout) views.findViewById(R.id.lin_c);
+							lin_c.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 						} else {
 							View views = entry.getValue();
-							LinearLayout lin_c = (LinearLayout) views
-									.findViewById(R.id.lin_c);
-							lin_c.setLayoutParams(new RelativeLayout.LayoutParams(
-									LayoutParams.WRAP_CONTENT,
-									LayoutParams.WRAP_CONTENT));
+							LinearLayout lin_c = (LinearLayout) views.findViewById(R.id.lin_c);
+							lin_c.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 						}
 
 					}

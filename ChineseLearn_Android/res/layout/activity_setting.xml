@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:slideswitch="http://schemas.android.com/apk/res/com.hw.chineseLearn"
+    xmlns:slideswitch="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
@@ -92,7 +92,7 @@
 
 
                 <RelativeLayout
-                    android:id="@+id/rel_check_tone_when_test"
+                    android:id="@+id/rel_check_tone_when_test1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0.5dp"
@@ -113,7 +113,7 @@
                         android:textSize="@dimen/text_s14" />
 
                     <com.util.weight.SlideSwitch
-                        android:id="@+id/ck_check_tone_when_test"
+                        android:id="@+id/ck_check_tone_when_test1"
                         android:layout_width="55dp"
                         android:layout_height="27dp"
                         android:layout_alignParentRight="true"

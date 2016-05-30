@@ -14,10 +14,14 @@
         <!--这里是correct_graphic.png图片 由于会oom已删除  -->
         <ImageView
             android:id="@+id/img_is_right"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center"
             android:layout_centerInParent="true"
              />
+            <!--android:src="@drawable/correct_graphic"-->
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -427,4 +427,29 @@ public class BitmapLoader {
 		return BitmapFactory.decodeResource(res, resId, options);
 	}
 
+	/**
+	 * fuction: 设置固定的宽度，高度随之变化，使图片不会变形
+	 *
+	 * @param target
+	 * 需要转化bitmap参数
+	 * @param newWidth
+	 * 设置新的宽度
+	 * @return
+	 */
+	public static int getFitBitmapHeight(Bitmap target, int newWidth)
+	{
+		int width = target.getWidth();
+		int height = target.getHeight();
+		float scaleWidth = ((float) newWidth) / width;
+		// float scaleHeight = ((float)newHeight) / height;
+		int newHeight = (int) (scaleWidth * height);
+		if (target != null && !target.isRecycled())
+		{
+			target.recycle();
+			target = null;
+		}
+		return newHeight;// Bitmap.createBitmap(target, 0, 0, width, height, matrix,
+		// true);
+	}
+
 }
