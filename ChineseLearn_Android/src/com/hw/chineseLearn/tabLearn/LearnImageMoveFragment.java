@@ -1,17 +1,13 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,6 +38,12 @@ import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.tool.UtilMedthod;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 学习-拼汉字
@@ -96,7 +98,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity(); 
@@ -105,7 +106,18 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	}
 
 	private void play() {
-		MediaPlayUtil.getInstance().play(filePath);
+		MediaPlayUtil instance = MediaPlayUtil.getInstance();
+		//播放完成后 取消帧动画
+		instance.setPlayOnCompleteListener(new MediaPlayer.OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mediaPlayer) {
+				if(rocketAnimation!=null){
+					rocketAnimation.stop();
+				}
+			}
+		});
+
+		instance.play(filePath);
 	}
 
 	public void playClickSound() {
@@ -157,8 +169,16 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				File file = new File(filePath);
 				if (!file.exists()) {
 					// 下载并播放
+					HttpHelper.setOnCompleteDownloadListener(new HttpHelper.OnCompleteDownloadListener() {
+						@Override
+						public void onCompleteDownloadListener(String filePath) {//类中有了 参数貌似无用了
+							play();
+						}
+					});
 					HttpHelper.downLoadLessonVoices(voicePath, true);
+					doDrawableAnimation();
 				} else {
+					doDrawableAnimation();
 					play();
 				}
 
@@ -170,7 +190,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				if (isSetHint) {
 					isSetHint = false;
 				} else {
@@ -183,9 +202,16 @@ public class LearnImageMoveFragment extends BaseFragment implements
 		initMoveViews();
 	}
 
+	AnimationDrawable rocketAnimation;
+	private void doDrawableAnimation() {
+
+		iv_dv_view.setBackgroundResource(R.drawable.animation_sound);
+		rocketAnimation = (AnimationDrawable) iv_dv_view.getBackground();
+		rocketAnimation.start();
+	}
+
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		MediaPlayUtil.getInstance().release();
 	}
@@ -515,7 +541,6 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	/**
 	 * view回到原来的位置
 	 * 
-	 * @param textView
 	 */
 	private void moveToOrignPosition(ImageView imageView) {
 		

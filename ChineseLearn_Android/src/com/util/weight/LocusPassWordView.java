@@ -1,10 +1,5 @@
 package com.util.weight;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
@@ -34,6 +29,11 @@ import com.util.tool.MathUtil;
 import com.util.tool.RoundUtil;
 import com.util.tool.StringUtil;
 import com.util.tool.UiUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 
@@ -272,7 +272,6 @@ public class LocusPassWordView extends View {
 	/**
 	 * 初始化Cache信息
 	 * 
-	 * @param canvas
 	 */
 	private void initCache() {
 
@@ -504,7 +503,6 @@ public class LocusPassWordView extends View {
 	/**
 	 * 1=30度 2=45度 4=60度
 	 * 
-	 * @param tan
 	 * @return
 	 */
 	private float switchDegrees(float x, float y) {
@@ -588,7 +586,6 @@ public class LocusPassWordView extends View {
 	/**
 	 * 将选中的点转换为String
 	 * 
-	 * @param points
 	 * @return
 	 */
 	private String toPointString() {
@@ -846,7 +843,6 @@ public class LocusPassWordView extends View {
 		/**
 		 * 画完了
 		 * 
-		 * @param str
 		 */
 		public void onComplete(String password);
 	}

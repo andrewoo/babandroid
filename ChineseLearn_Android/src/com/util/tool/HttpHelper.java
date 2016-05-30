@@ -7,18 +7,20 @@
  */
 package com.util.tool;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FilterInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.Environment;
+import android.util.Log;
+
+import com.hw.chineseLearn.dao.MyDao;
+import com.hw.chineseLearn.dao.bean.TbFileDownload;
+import com.hw.chineseLearn.db.DatabaseHelperMy;
+import com.hw.chineseLearn.interfaces.AppConstants;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -50,21 +52,18 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import com.hw.chineseLearn.dao.MyDao;
-import com.hw.chineseLearn.dao.bean.TbFileDownload;
-import com.hw.chineseLearn.db.DatabaseHelperMy;
-import com.hw.chineseLearn.interfaces.AppConstants;
-import com.lidroid.xutils.HttpUtils;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.HttpHandler;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.os.Environment;
-import android.util.Log;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * HttpClient来发请求并返回字符串内容的工具类<br/>
@@ -192,7 +191,6 @@ public class HttpHelper {
 	/**
 	 * 加载远程图片成Bitmap对象
 	 * 
-	 * @param url
 	 *            图片路径
 	 * @return
 	 * @throws IOException
@@ -424,10 +422,8 @@ public class HttpHelper {
 						fileDown.setFileName(fileName + ".zip");
 						fileDown.setFileURL(urlName);
 						try {
-							MyDao.getDaoMy(TbFileDownload.class)
-									.createOrUpdate(fileDown);
+							MyDao.getDaoMy(TbFileDownload.class).createOrUpdate(fileDown);
 						} catch (SQLException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						// 下载完后解压到音频目录
@@ -438,8 +434,11 @@ public class HttpHelper {
 								if (isScuess) {
 									if (isPlay) {
 										String filePath = DatabaseHelperMy.LESSON_SOUND_PATH+ "/" + fileName;
-										Log.d("filePath", "filePath:"+ filePath);
-										MediaPlayUtil.getInstance().play(filePath);
+										if(onCompleteDownloadListener!=null){
+											onCompleteDownloadListener.onCompleteDownloadListener(filePath);
+										}else{
+											MediaPlayUtil.getInstance().play(filePath);
+									}
 									}
 								}
 							};
@@ -454,4 +453,16 @@ public class HttpHelper {
 				});
 		// }
 	};
+
+	//音乐播放完的监听 抽取出来
+	private static OnCompleteDownloadListener onCompleteDownloadListener;
+
+	public static void setOnCompleteDownloadListener(OnCompleteDownloadListener onCompleteDownloadListener) {
+		HttpHelper.onCompleteDownloadListener = onCompleteDownloadListener;
+	}
+
+	public interface OnCompleteDownloadListener {
+		void onCompleteDownloadListener(String filePath);
+	}
+
 }

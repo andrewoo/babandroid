@@ -1,13 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_input_view"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/chinese_skill_blue"
-    android:gravity="center_horizontal"
-    android:orientation="vertical" >
 
     <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/chinese_skill_blue"
+        android:gravity="center_horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
@@ -21,12 +16,10 @@
 
             <ImageView
                 android:id="@+id/iv_close"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginTop="5dp"
-                android:maxHeight="20dp"
-                android:maxWidth="20dp"
+                android:layout_margin="5dip"
                 android:src="@drawable/closeicon" />
 
             <ImageView
@@ -176,5 +169,3 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-
-</LinearLayout>
