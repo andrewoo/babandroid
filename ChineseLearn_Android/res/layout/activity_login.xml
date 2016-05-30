@@ -30,7 +30,7 @@
                 android:src="@drawable/closeicon" />
 
             <ImageView
-                android:id="@+id/iv_close"
+                android:id="@+id/iv_portrait"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
