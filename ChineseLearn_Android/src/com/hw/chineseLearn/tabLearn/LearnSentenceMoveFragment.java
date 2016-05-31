@@ -187,6 +187,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	}
 
 	String slowVoicePath="";
+
 	private void initData() {
 		Bundle bundle = getArguments();
 		if (bundle != null) {
@@ -204,6 +205,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				if (!file.exists()) {
 					// 下载并播放
 					HttpHelper.downLoadLessonVoices(voicePath, true);
+					HttpHelper.downLoadLessonVoices(slowVoicePath, false);
 				} else {
 					play();
 				}
@@ -381,10 +383,8 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			dragState = false;
 			upX = event.getRawX();
 			upY = event.getRawY();
-			textView.setBackground(context.getResources().getDrawable(
-					R.drawable.bg_white1));
-			textView.setTextColor(context.getResources().getColor(
-					R.color.deep_grey));
+			textView.setBackground(context.getResources().getDrawable(R.drawable.bg_white1));
+			textView.setTextColor(context.getResources().getColor(R.color.deep_grey));
 
 			if (Math.abs(downX - upX) <= 1 || Math.abs(downY - upY) <= 1) {
 
