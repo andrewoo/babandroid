@@ -97,7 +97,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		viewTopBottomPadding=UiUtil.dip2px(context, 10);
 		
 		initData();
-		play();
+//		play();
 		x = 0;
 		y = UiUtil.dip2px(context, 50 * 3 + 1 * 2 + 50);
 		screenWidth = CustomApplication.app.displayMetrics.widthPixels - (UiUtil.dip2px(context, 40));
@@ -134,12 +134,12 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 						HttpHelper.setOnCompleteDownloadListener(new HttpHelper.OnCompleteDownloadListener() {
 							@Override
 							public void onCompleteDownloadListener(String filePath) {//类中有了 参数貌似无用了
-								play();
+								play(filePath);
 							}
 						});
 						HttpHelper.downLoadLessonVoices(voicePath, true);
 					} else {
-						play();
+						play(filePath);
 					}
 			}
 		});
@@ -148,7 +148,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		btn_play_slow.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				play();
+				play(slowFilePath);
 			}
 		});
 		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
@@ -162,7 +162,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 	AnimationDrawable rocketAnimation;
 
-	private void play() {
+	private void play(String path) {
 		final MediaPlayUtil instance = MediaPlayUtil.getInstance();
 
 		instance.setReset();//reset触发载入完成的监听
@@ -184,10 +184,11 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			}
 		});
 
-		instance.play(filePath);
+		instance.play(path);
 	}
 
 	String slowVoicePath="";
+	String slowFilePath="";
 
 	private void initData() {
 		Bundle bundle = getArguments();
@@ -201,14 +202,18 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				slowVoicePath = modelWord.getSlowVoicePath();
 
 				filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voicePath;
+				slowFilePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/" + slowVoicePath;
 				Log.d("filePath", "filePath:" + filePath);
 				File file = new File(filePath);
 				if (!file.exists()) {
 					// 下载并播放
 					HttpHelper.downLoadLessonVoices(voicePath, true);
-					HttpHelper.downLoadLessonVoices(slowVoicePath, false);
 				} else {
-					play();
+					play(filePath);
+				}
+				File fileSlow = new File(slowFilePath);
+				if(!fileSlow.exists()){
+					HttpHelper.downLoadLessonVoices(slowVoicePath, false);
 				}
 			}
 		}
