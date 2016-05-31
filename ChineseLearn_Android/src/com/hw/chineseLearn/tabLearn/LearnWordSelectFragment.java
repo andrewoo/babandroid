@@ -1,11 +1,9 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,14 +21,15 @@ import com.hw.chineseLearn.adapter.LearnWordSelectListAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
 import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
-import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
-import com.util.tool.MediaPlayerHelper;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * 句子选择
@@ -67,11 +66,34 @@ public class LearnWordSelectFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initData();
-		play();
+//		play();
 	}
 
+	AnimationDrawable rocketAnimation;
 	private void play() {
-		MediaPlayUtil.getInstance().play(filePath);
+
+		final MediaPlayUtil instance = MediaPlayUtil.getInstance();
+
+		instance.setReset();//reset触发载入完成的监听
+		instance.setOnPrepareCompleteListener(new MediaPlayUtil.OnPrepareCompleteListener() {
+			@Override
+			public void doAnimation() {
+				btn_play_normal.setBackgroundResource(R.drawable.animation_sound);
+				rocketAnimation = (AnimationDrawable) btn_play_normal.getBackground();
+				rocketAnimation.setOneShot(false);
+				rocketAnimation.stop();
+				rocketAnimation.start();
+			}
+		});
+
+		instance.setPlayOnCompleteListener(new MediaPlayer.OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mediaPlayer) {
+				rocketAnimation.setOneShot(true);
+			}
+		});
+
+		instance.play(filePath);
 	}
 
 	private void initData() {
@@ -154,8 +176,7 @@ public class LearnWordSelectFragment extends BaseFragment implements
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
 		adapter = new LearnWordSelectListAdapter(context, modelWord);
-		btn_play_normal = (Button) contentView
-				.findViewById(R.id.btn_play_normal);
+		btn_play_normal = (Button) contentView.findViewById(R.id.btn_play_normal);
 		btn_play_normal.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -163,6 +184,13 @@ public class LearnWordSelectFragment extends BaseFragment implements
 				File file = new File(filePath);
 				if (!file.exists()) {
 					// 下载并播放
+					//下载完成后在这里播放 不是工具类里
+					HttpHelper.setOnCompleteDownloadListener(new HttpHelper.OnCompleteDownloadListener() {
+						@Override
+						public void onCompleteDownloadListener(String filePath) {//类中有了 参数貌似无用了
+							play();
+						}
+					});
 					HttpHelper.downLoadLessonVoices(voicePath, true);
 				} else {
 					play();

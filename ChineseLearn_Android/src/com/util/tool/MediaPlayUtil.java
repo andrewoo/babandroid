@@ -45,7 +45,13 @@ public class MediaPlayUtil {
 		}
 		
 	}
-	
+
+	private void doDrableAnamation() {
+		if (onPrepareCompleteListener!=null){
+			onPrepareCompleteListener.doAnimation();
+		}
+	}
+
 	public void play(String soundFilePath) {
 		if (mMediaPlayer == null) {
 			return;
@@ -58,6 +64,7 @@ public class MediaPlayUtil {
 				
 				@Override
 				public void onPrepared(MediaPlayer mp) {
+					doDrableAnamation();
 					 mp.start();
 				}
 			});
@@ -116,6 +123,24 @@ public class MediaPlayUtil {
 		if (mMediaPlayer != null) {
 			mMediaPlayer.setOnCompletionListener(playOnCompleteListener);
 		}
+	}
+
+	public void setReset(){
+		if(mMediaPlayer!=null){
+			mMediaPlayer.reset();
+		}
+	}
+
+
+	private OnPrepareCompleteListener onPrepareCompleteListener;
+
+	public void setOnPrepareCompleteListener(
+			OnPrepareCompleteListener onPrepareCompleteListener) {
+		this.onPrepareCompleteListener = onPrepareCompleteListener;
+	}
+
+	public interface OnPrepareCompleteListener {
+		void doAnimation();
 	}
 
 }

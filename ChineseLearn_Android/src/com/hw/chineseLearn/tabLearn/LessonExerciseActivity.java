@@ -146,7 +146,6 @@ public class LessonExerciseActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
     }
 
@@ -1170,14 +1169,14 @@ public class LessonExerciseActivity extends BaseActivity {
             LGModel_Sentence_010 sentence010 = (LGModel_Sentence_010) MyDao
                     .getDao(LGModel_Sentence_010.class).queryBuilder().where()
                     .eq("SentenceId", lgTableId).queryForFirst();
-            LGSentence lgSentence = (LGSentence) MyDao.getDao(LGSentence.class)
-                    .queryForId(lgTableId);
+            LGSentence lgSentence = (LGSentence) MyDao.getDao(LGSentence.class).queryForId(lgTableId);
             modelWord.setSentenceId(lgTableId);// 拿到sentenceid
             modelWord.setLessonId(lessonId);// 拿到lessonId
             modelWord.setTitle(lgSentence.getSentence());
             modelWord.setAnswer(sentence010.getAnswer());
             String dirCode = lgSentence.getDirCode();// 得到mp3文件名
             dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
+            modelWord.setSlowVoicePath("s"+dirCode);
             modelWord.setVoicePath(dirCode);
             List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
             int answer = sentence010.getAnswer();
