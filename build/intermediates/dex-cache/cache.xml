@@ -2,81 +2,81 @@
 <items version="2" >
 
     <item
-        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\ormlite-core-4.48.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\ormlite-core-4.48_632c688bd1e74e12409e3f45003b57adc2475aa4.jar" />
-    </item>
-    <item
-        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\httpmime-4.3.5.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="1dd0d38df9c6d21e893f2e52403f1cd99e91cd81">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\httpmime-4.3.5_5d78b4fc2f07b6c40cb54e553a79e1dcae4ebcdc.jar" />
-    </item>
-    <item
-        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\ormlite-android-4.48.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="afa06f539a4026c10b247386312aa67404b80a16">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\ormlite-android-4.48_8b1a316455a3b9f43f44bec62c060840c0f93f7b.jar" />
-    </item>
-    <item
         jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\xUtils-2.6.14.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="f10c51f3e0732fdeefe6e104279a58e275879b6c">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\xUtils-2.6.14_3d726f25e0bddc1d26a3c1c8710d748b590ef428.jar" />
-    </item>
-    <item
-        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="76a1e6a2ccfbdc6bda8e66b27900c02a6a795e1d">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\instant-run_29b3ee29184a02a77b0fa4cd107c1e56b2bdcec5.jar" />
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\xUtils-2.6.14_3d726f25e0bddc1d26a3c1c8710d748b590ef428\classes.dex" />
     </item>
     <item
         jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\httpcore-4.3.2.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\httpcore-4.3.2_1fe206e9e67adccf777adf238534bd4b2b0d58f1.jar" />
-    </item>
-    <item
-        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\androidsvg-1.2.1.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="d0cb3453e18fffeb053e9b7f052af3dcec9f75b4">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\androidsvg-1.2.1_71c742513b30642b0fb913a87eeb2fa81e30463a.jar" />
-    </item>
-    <item
-        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\svg-android.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="25aa82d989e7cea9af961a0b8e73858e5fa7d2eb">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\svg-android_30d4a1bbfaf4356231e13526dcdd1918c1624d80.jar" />
-    </item>
-    <item
-        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="892d825be59b0040cce41cd5d0069e7057268184">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\instant-run-bootstrap_f66fedfdc5891fc673f36c1c6d940d44a8cc2a98.jar" />
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\httpcore-4.3.2_1fe206e9e67adccf777adf238534bd4b2b0d58f1\classes.dex" />
     </item>
     <item
         jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\gson-2.2.4.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="973e832af433b44c3ed11c426f2f390b29f3f3f8">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\gson-2.2.4_e0108fcacb51e17a658682a9e980e2363cb60624.jar" />
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\gson-2.2.4_e0108fcacb51e17a658682a9e980e2363cb60624\classes.dex" />
+    </item>
+    <item
+        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\ormlite-core-4.48.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5">
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\ormlite-core-4.48_632c688bd1e74e12409e3f45003b57adc2475aa4\classes.dex" />
+    </item>
+    <item
+        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\httpmime-4.3.5.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1dd0d38df9c6d21e893f2e52403f1cd99e91cd81">
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\httpmime-4.3.5_5d78b4fc2f07b6c40cb54e553a79e1dcae4ebcdc\classes.dex" />
+    </item>
+    <item
+        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\ormlite-android-4.48.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="afa06f539a4026c10b247386312aa67404b80a16">
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\ormlite-android-4.48_8b1a316455a3b9f43f44bec62c060840c0f93f7b\classes.dex" />
+    </item>
+    <item
+        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="f78ecedac97e53194828bce4dc30ad9f0bc059e1">
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_29b3ee29184a02a77b0fa4cd107c1e56b2bdcec5\classes.dex" />
+    </item>
+    <item
+        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\androidsvg-1.2.1.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="d0cb3453e18fffeb053e9b7f052af3dcec9f75b4">
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\androidsvg-1.2.1_71c742513b30642b0fb913a87eeb2fa81e30463a\classes.dex" />
+    </item>
+    <item
+        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\svg-android.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="25aa82d989e7cea9af961a0b8e73858e5fa7d2eb">
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\svg-android_30d4a1bbfaf4356231e13526dcdd1918c1624d80\classes.dex" />
+    </item>
+    <item
+        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="2a54d1676fa0c92aba9d4571ba8e8222b27b8e61">
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_f66fedfdc5891fc673f36c1c6d940d44a8cc2a98\classes.dex" />
     </item>
     <item
         jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\android-support-v4.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="605c447c20ca216b5556af9f215af5d4bba1b117">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\android-support-v4_e414d07e21f6433e2e49c6ebabe890a3f8ac5575.jar" />
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\transforms\dex\debug\folders\1000\2\android-support-v4_e414d07e21f6433e2e49c6ebabe890a3f8ac5575\classes.dex" />
     </item>
 
 </items>
