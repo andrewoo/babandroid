@@ -937,9 +937,9 @@ public class LocusPassWordView extends View {
 		mValueAnim.start();
 	}
 
-	private OnAnamationCompleteListener onAnamationCompleteListener;
 	private ImageView imageView;
 	private Bitmap bitmap;
+	private OnAnamationCompleteListener onAnamationCompleteListener;
 
 	public void setOnAnamationCompleteListener(
 			OnAnamationCompleteListener onAnamationCompleteListener) {

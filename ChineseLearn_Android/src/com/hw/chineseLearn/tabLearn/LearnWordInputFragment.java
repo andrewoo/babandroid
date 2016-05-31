@@ -1,46 +1,35 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnUnitAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
-import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
-import com.hw.chineseLearn.dao.bean.LGModel_Word_040;
-import com.hw.chineseLearn.dao.bean.LGWord;
-import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
-import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.tool.Utility;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 文字输入视图模版
@@ -80,7 +69,7 @@ public class LearnWordInputFragment extends BaseFragment implements
 		fragment = this;
 		context = getActivity();
 		initData();
-		play();
+//		play();
 	}
 
 	private void play() {
@@ -91,8 +80,7 @@ public class LearnWordInputFragment extends BaseFragment implements
 		Bundle bundle = getArguments();
 		if (bundle != null) {
 			if (bundle.containsKey("modelWord")) {
-				LGModelWord modelWord = (LGModelWord) bundle
-						.getSerializable("modelWord");
+				LGModelWord modelWord = (LGModelWord) bundle.getSerializable("modelWord");
 				voicePath = modelWord.getVoicePath();
 				title = modelWord.getTitle();// 得到title
 				answerList = modelWord.getAnswerList();// 得到答案集合

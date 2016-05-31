@@ -2,6 +2,8 @@ package com.hw.chineseLearn.tabLearn;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -86,7 +88,6 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity();
@@ -98,8 +99,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		play();
 		x = 0;
 		y = UiUtil.dip2px(context, 50 * 3 + 1 * 2 + 50);
-		screenWidth = CustomApplication.app.displayMetrics.widthPixels
-				- (UiUtil.dip2px(context, 40));
+		screenWidth = CustomApplication.app.displayMetrics.widthPixels - (UiUtil.dip2px(context, 40));
 		screenHeight = CustomApplication.app.displayMetrics.heightPixels;
 
 		initView();
@@ -119,11 +119,27 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		lin_line = (LinearLayout) contentView.findViewById(R.id.lin_line);
 		
 		btn_play_normal = (Button) contentView.findViewById(R.id.btn_play_normal);
+
 		btn_play_normal.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				play();
+
+
+					File file = new File(filePath);
+					if (!file.exists()) {
+						// 下载并播放
+						//下载完成后在这里播放 不是工具类里
+						HttpHelper.setOnCompleteDownloadListener(new HttpHelper.OnCompleteDownloadListener() {
+							@Override
+							public void onCompleteDownloadListener(String filePath) {//类中有了 参数貌似无用了
+								play();
+							}
+						});
+						HttpHelper.downLoadLessonVoices(voicePath, true);
+					} else {
+						play();
+					}
 			}
 		});
 
@@ -143,16 +159,38 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		
 	}
 
+	AnimationDrawable rocketAnimation;
+
 	private void play() {
-		MediaPlayUtil.getInstance().play(filePath);
+		final MediaPlayUtil instance = MediaPlayUtil.getInstance();
+
+		instance.setReset();//reset触发载入完成的监听
+		instance.setOnPrepareCompleteListener(new MediaPlayUtil.OnPrepareCompleteListener() {
+			@Override
+			public void doAnimation() {
+				btn_play_normal.setBackgroundResource(R.drawable.animation_sound);
+				rocketAnimation = (AnimationDrawable) btn_play_normal.getBackground();
+				rocketAnimation.setOneShot(false);
+				rocketAnimation.stop();
+				rocketAnimation.start();
+			}
+		});
+
+		instance.setPlayOnCompleteListener(new MediaPlayer.OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mediaPlayer) {
+				rocketAnimation.setOneShot(true);
+			}
+		});
+
+		instance.play(filePath);
 	}
 
 	private void initData() {
 		Bundle bundle = getArguments();
 		if (bundle != null) {
 			if (bundle.containsKey("modelWord")) {
-				LGModelWord modelWord = (LGModelWord) bundle
-						.getSerializable("modelWord");
+				LGModelWord modelWord = (LGModelWord) bundle.getSerializable("modelWord");
 				title = modelWord.getTitle();// 得到title
 				subLGModelList = modelWord.getSubLGModelList();
 				answerList = modelWord.getAnswerList();
@@ -193,7 +231,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 			textView.setTextColor(context.getResources().getColor(
 					R.color.white));
-			textView.setTextSize(UiUtil.sp2px(context,10));
+			textView.setTextSize(UiUtil.sp2px(context,6));
 			textView.setTag(i);
 			textView.setGravity(Gravity.CENTER);
 			textView.setBackground(context.getResources().getDrawable(
@@ -258,7 +296,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 					R.drawable.bg_white_to_blue));
 			textView.setTextColor(context.getResources().getColor(
 					R.color.deep_grey));
-			textView.setTextSize(UiUtil.sp2px(context,10));
+			textView.setTextSize(UiUtil.sp2px(context,6));
 			textView.setTag(i);
 			textView.setGravity(Gravity.CENTER);
 			rlRoot.addView(textView);

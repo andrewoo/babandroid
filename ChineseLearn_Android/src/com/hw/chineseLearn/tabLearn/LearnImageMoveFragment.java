@@ -106,14 +106,24 @@ public class LearnImageMoveFragment extends BaseFragment implements
 	}
 
 	private void play() {
-		MediaPlayUtil instance = MediaPlayUtil.getInstance();
-		//播放完成后 取消帧动画
+		final MediaPlayUtil instance = MediaPlayUtil.getInstance();
+
+		instance.setReset();//reset触发载入完成的监听
+		instance.setOnPrepareCompleteListener(new MediaPlayUtil.OnPrepareCompleteListener() {
+			@Override
+			public void doAnimation() {
+				iv_dv_view.setBackgroundResource(R.drawable.animation_sound);
+				rocketAnimation = (AnimationDrawable) iv_dv_view.getBackground();
+				rocketAnimation.setOneShot(false);
+				rocketAnimation.stop();
+				rocketAnimation.start();
+			}
+		});
+
 		instance.setPlayOnCompleteListener(new MediaPlayer.OnCompletionListener() {
 			@Override
 			public void onCompletion(MediaPlayer mediaPlayer) {
-				if(rocketAnimation!=null){
-					rocketAnimation.stop();
-				}
+				rocketAnimation.setOneShot(true);
 			}
 		});
 
@@ -176,9 +186,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 						}
 					});
 					HttpHelper.downLoadLessonVoices(voicePath, true);
-					doDrawableAnimation();
 				} else {
-					doDrawableAnimation();
 					play();
 				}
 
