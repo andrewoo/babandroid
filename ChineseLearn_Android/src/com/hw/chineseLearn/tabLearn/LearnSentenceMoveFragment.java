@@ -186,6 +186,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		instance.play(filePath);
 	}
 
+	String slowVoicePath="";
 	private void initData() {
 		Bundle bundle = getArguments();
 		if (bundle != null) {
@@ -195,6 +196,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				subLGModelList = modelWord.getSubLGModelList();
 				answerList = modelWord.getAnswerList();
 				voicePath = modelWord.getVoicePath();
+				slowVoicePath = modelWord.getSlowVoicePath();
 
 				filePath = DatabaseHelperMy.LESSON_SOUND_PATH + "/" + voicePath;
 				Log.d("filePath", "filePath:" + filePath);
