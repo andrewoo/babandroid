@@ -32,6 +32,7 @@ import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
+import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.tool.Utility;
 
@@ -360,7 +361,7 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 			Log.d(TAG, "linLineHeight:" + linLineHeight);
 			downX = event.getRawX();
 			downY = event.getRawY();
-
+			playClickSound();
 			break;
 		case MotionEvent.ACTION_MOVE:
 
@@ -763,6 +764,9 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		super.onStop();
 	}
 
+	private void playClickSound() {
+		new MediaPlayerHelper("sounds/main_click.mp3").play();
+	}
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
