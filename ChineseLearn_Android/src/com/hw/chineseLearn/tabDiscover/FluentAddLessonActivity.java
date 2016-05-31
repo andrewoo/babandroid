@@ -1,14 +1,8 @@
 package com.hw.chineseLearn.tabDiscover;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,14 +11,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.FluentAddLessonAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.base.MainActivity;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbFileDownload;
 import com.hw.chineseLearn.db.DatabaseHelperMy;
@@ -44,9 +36,13 @@ import com.util.weight.PullToRefreshView;
 import com.util.weight.PullToRefreshView.OnFooterRefreshListener;
 import com.util.weight.PullToRefreshView.OnRefreshTouchListener;
 
+import java.io.File;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /**
  * 添加流畅练习课程
- * 
+ *
  * @author yh
  */
 public class FluentAddLessonActivity extends BaseActivity {
@@ -208,7 +204,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 
 	/**
 	 * 顶部标题栏
-	 * 
+	 *
 	 * @param textLeft
 	 *            是否显示左边文字
 	 * @param imgLeft
@@ -256,7 +252,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 	ArrayList<FlunetListBaseModel> datas = new ArrayList<FlunetListBaseModel>();
 
 	/**
-	 * @param diffLevel难度级别
+	 * diffLevel难度级别
 	 */
 	private void getDataFromServer(String diffLevel) {
 

@@ -11,8 +11,8 @@
 
         <Button
             android:id="@+id/btn_play_normal"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/strokes_order_play_sound_onclick" />
 
         <TextView

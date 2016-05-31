@@ -92,7 +92,6 @@ public class SurvivalKitActivity extends BaseActivity {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("onDestroy--onDestroy");
 	}
 
 	@Override
@@ -398,8 +397,7 @@ public class SurvivalKitActivity extends BaseActivity {
 								TbMyCategory category = new TbMyCategory();
 								category.setId(position + 1);
 								category.setComplete_dl(LOADING);
-								MyDao.getDaoMy(TbMyCategory.class)
-										.createOrUpdate(category);
+								MyDao.getDaoMy(TbMyCategory.class).createOrUpdate(category);
 //							}
 						} catch (SQLException e) {
 							e.printStackTrace();

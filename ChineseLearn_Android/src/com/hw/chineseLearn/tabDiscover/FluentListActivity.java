@@ -1,7 +1,5 @@
 package com.hw.chineseLearn.tabDiscover;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +20,9 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbMyFluentNow;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * 流畅练习
@@ -65,8 +66,6 @@ public class FluentListActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				//
 				startActivity(new Intent(FluentListActivity.this,FluentAddLessonActivity.class));
 			}
 		});

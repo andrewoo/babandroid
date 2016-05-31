@@ -148,6 +148,11 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 		btn_play_slow.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+
+				File slowFile = new File(slowFilePath);
+				if(!slowFile.exists()){
+					HttpHelper.downLoadLessonVoices(slowVoicePath, false);
+				}
 				play(slowFilePath);
 			}
 		});
@@ -211,8 +216,8 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 				} else {
 					play(filePath);
 				}
-				File fileSlow = new File(slowFilePath);
-				if(!fileSlow.exists()){
+				File slowFile = new File(slowFilePath);
+				if(!slowFile.exists()){
 					HttpHelper.downLoadLessonVoices(slowVoicePath, false);
 				}
 			}
@@ -760,7 +765,6 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 	}
 
@@ -774,7 +778,6 @@ public class LearnSentenceMoveFragment extends BaseFragment implements
 	}
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		MediaPlayUtil.getInstance().release();
 		MediaPlayUtil.getInstance().stop();

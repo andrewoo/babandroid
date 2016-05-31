@@ -403,7 +403,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
-//DownloadMererialsActivity
+//DownloadMererialsActivity
+
+
+
+
 
         <!-- tabme download -->
         <activity

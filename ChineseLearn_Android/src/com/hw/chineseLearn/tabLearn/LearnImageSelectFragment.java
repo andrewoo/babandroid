@@ -1,10 +1,5 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -21,21 +16,18 @@ import android.widget.TextView;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.LearnImageSelectAdapter;
 import com.hw.chineseLearn.base.BaseFragment;
-import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGModelWord;
-import com.hw.chineseLearn.dao.bean.TbFileDownload;
 import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.db.DatabaseHelperMy;
-import com.lidroid.xutils.HttpUtils;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.util.thread.ThreadWithDialogTask;
-import com.util.tool.FileTools;
 import com.util.tool.HttpHelper;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.MediaPlayerHelper;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 学习-选图片
@@ -101,7 +93,6 @@ public class LearnImageSelectFragment extends BaseFragment implements
 					// 下载不播放
 					HttpHelper.downLoadLessonVoices(voicePath, false);
 				}
-
 			}
 		}
 	}

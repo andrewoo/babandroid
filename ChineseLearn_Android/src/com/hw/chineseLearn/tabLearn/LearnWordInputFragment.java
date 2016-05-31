@@ -2,6 +2,8 @@ package com.hw.chineseLearn.tabLearn;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -72,8 +74,31 @@ public class LearnWordInputFragment extends BaseFragment implements
 //		play();
 	}
 
-	private void play() {
-		MediaPlayUtil.getInstance().play(filePath);
+	AnimationDrawable rocketAnimation;
+	private void play(String path) {
+
+		final MediaPlayUtil instance = MediaPlayUtil.getInstance();
+
+		instance.setReset();//reset触发载入完成的监听
+		instance.setOnPrepareCompleteListener(new MediaPlayUtil.OnPrepareCompleteListener() {
+			@Override
+			public void doAnimation() {
+				btn_play_normal.setBackgroundResource(R.drawable.animation_sound);
+				rocketAnimation = (AnimationDrawable) btn_play_normal.getBackground();
+				rocketAnimation.setOneShot(false);
+				rocketAnimation.stop();
+				rocketAnimation.start();
+			}
+		});
+
+		instance.setPlayOnCompleteListener(new MediaPlayer.OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mediaPlayer) {
+				rocketAnimation.setOneShot(true);
+			}
+		});
+
+		instance.play(path);
 	}
 
 	private void initData() {
@@ -92,7 +117,7 @@ public class LearnWordInputFragment extends BaseFragment implements
 					// 下载并播放
 					HttpHelper.downLoadLessonVoices(voicePath, true);
 				} else {
-					play();
+					play(filePath);
 				}
 			}
 		}
@@ -153,13 +178,26 @@ public class LearnWordInputFragment extends BaseFragment implements
 	 * 初始化
 	 */
 	public void init() {
-		btn_play_normal = (Button) contentView
-				.findViewById(R.id.btn_play_normal);
+		btn_play_normal = (Button) contentView.findViewById(R.id.btn_play_normal);
 		btn_play_normal.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				play();
+
+				File file = new File(filePath);
+				if (!file.exists()) {
+					// 下载并播放
+					//下载完成后在这里播放 不是工具类里
+					HttpHelper.setOnCompleteDownloadListener(new HttpHelper.OnCompleteDownloadListener() {
+						@Override
+						public void onCompleteDownloadListener(String fPath) {//类中有了 参数貌似无用了
+							play(filePath);
+						}
+					});
+					HttpHelper.downLoadLessonVoices(voicePath, true);
+				} else {
+					play(filePath);
+				}
 			}
 		});
 		txt_name = (TextView) contentView.findViewById(R.id.txt_name);
@@ -225,10 +263,7 @@ public class LearnWordInputFragment extends BaseFragment implements
 	public boolean isRight() {
 
 		String stringFilter = UiUtil.StringFilter(answerChanged);
-		System.out.println("333333" + answerList.size());
-		System.out.println("333333" + stringFilter);
 		for (int i = 0; i < answerList.size(); i++) {
-			System.out.println("444444" + answerList.get(i));
 			if (answerList.get(i).equals(stringFilter)) {
 				return true;
 			}
