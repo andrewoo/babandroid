@@ -28,7 +28,7 @@ public class FlashCardOpGalleryAdapter extends FancyCoverFlowAdapter {
 	Context mContext; 
 	public int selectItem;
 	LayoutInflater inflater;
-	// 存放view的集合
+	// 存放view的集合3
 	public Map<Integer, View> mapView = new HashMap<Integer, View>();
 	int width;
 	int height;
