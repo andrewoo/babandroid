@@ -915,6 +915,7 @@ public class LessonExerciseActivity extends BaseActivity {
             String dirCode = lgSentence.getDirCode();// 得到mp3文件名
             dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
             modelWord.setVoicePath(dirCode);
+            modelWord.setSlowVoicePath("s"+dirCode);//拿到慢速文件名
             List<String> answerList = modelWord.getAnswerList();
             LGModel_Sentence_050 sentence050 = (LGModel_Sentence_050) MyDao
                     .getDao(LGModel_Sentence_050.class).queryBuilder().where()
@@ -969,6 +970,7 @@ public class LessonExerciseActivity extends BaseActivity {
             String dirCode = lgSentence.getDirCode();// 得到mp3文件名
             dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
             modelWord.setVoicePath(dirCode);
+            modelWord.setSlowVoicePath("s"+dirCode);//拿到慢速文件名
             List<String> answerList = modelWord.getAnswerList();
             LGModel_Sentence_040 sentence040 = (LGModel_Sentence_040) MyDao
                     .getDao(LGModel_Sentence_040.class).queryBuilder().where()
@@ -1129,6 +1131,7 @@ public class LessonExerciseActivity extends BaseActivity {
             String dirCode = lgSentence.getDirCode();// 得到mp3文件名
             dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
             modelWord.setVoicePath(dirCode);
+            modelWord.setSlowVoicePath("s"+dirCode);//拿到慢速文件名
             List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
             String sentence = lgSentence.getSentence();
             String[] options = UiUtil.getListFormString(sentence030
@@ -1176,7 +1179,7 @@ public class LessonExerciseActivity extends BaseActivity {
             modelWord.setAnswer(sentence010.getAnswer());
             String dirCode = lgSentence.getDirCode();// 得到mp3文件名
             dirCode = "s-" + lgTableId + "-" + dirCode + ".mp3";
-            modelWord.setSlowVoicePath("s"+dirCode);
+            modelWord.setSlowVoicePath("s"+dirCode);//拿到慢速文件名
             modelWord.setVoicePath(dirCode);
             List<SubLGModel> subLGModelList = modelWord.getSubLGModelList();
             int answer = sentence010.getAnswer();
@@ -1276,6 +1279,7 @@ public class LessonExerciseActivity extends BaseActivity {
             String dirCode = lgWord1.getDirCode();// 得到mp3文件名
             dirCode = "w-" + lgTableId + "-" + dirCode + ".mp3";
             modelWord.setVoicePath(dirCode);
+            modelWord.setSlowVoicePath("s"+dirCode);//拿到慢速文件名
             LGWord lgWordAnswer = (LGWord) MyDao.getDao(LGWord.class)
                     .queryForId(answer);
             String left = lgWordAnswer.getTranslations();
