@@ -33,7 +33,7 @@
         jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="0083aef643c5c154a60c6b6888a8bc46443d0ead">
+        sha1="d8d51bae2d1ffc43686d47b3207234cc99babb70">
         <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\instant-run_29b3ee29184a02a77b0fa4cd107c1e56b2bdcec5.jar" />
     </item>
     <item
@@ -61,7 +61,7 @@
         jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="ca9935d1d730a8f857bdb438aad12f59feee4900">
+        sha1="3777c3c5e4aab1897627b80f431e6327b1944290">
         <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\instant-run-bootstrap_f66fedfdc5891fc673f36c1c6d940d44a8cc2a98.jar" />
     </item>
     <item

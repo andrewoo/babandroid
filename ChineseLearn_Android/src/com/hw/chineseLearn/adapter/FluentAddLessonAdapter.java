@@ -279,7 +279,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 
         changeState(position,list.get(position));
 
-//        notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
 
@@ -424,6 +424,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
                             ;
                         }.start();
                         progress_download.setVisibility(View.GONE);
+                        img_remove_lesson.setVisibility(View.VISIBLE);
                         String title_CN = listBaseModel.getTitleCn();
                         String title_EN = listBaseModel.getTitleEn();
                         int diffLevel = listBaseModel.getDiffLevel();
@@ -445,8 +446,10 @@ public class FluentAddLessonAdapter extends BaseAdapter {
                             e.printStackTrace();
                         }
 
-                        notifyDataSetChanged();
+//                        changeState(position, listBaseModel);
+//                        notifyDataSetChanged();
                     }
+
 
                     @Override
                     public void onFailure(HttpException error, String msg) {
