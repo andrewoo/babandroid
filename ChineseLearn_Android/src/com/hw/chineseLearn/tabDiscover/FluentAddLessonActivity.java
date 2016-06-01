@@ -132,9 +132,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 					}
 				});
 		getDataFromServer("" + (selectIndex + 1));
-		if (adapter == null) {
-			adapter = new FluentAddLessonAdapter(context, datas);
-		}
+		adapter = new FluentAddLessonAdapter(context, datas);
 		lv_add_lesson.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 
@@ -254,7 +252,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 	/**
 	 * diffLevel难度级别
 	 */
-	private void getDataFromServer(String diffLevel) {
+	private void getDataFromServer(final String diffLevel) {
 
 		HttpUtils http = new HttpUtils();
 		http.send(HttpRequest.HttpMethod.GET, AppConstants.BASE_URL
@@ -273,8 +271,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 					public void onSuccess(ResponseInfo<String> responseInfo) {
 						// Log.d(TAG, "" + responseInfo.result);
 
-						FluentModel dataObject = gson.fromJson(
-								responseInfo.result, FluentModel.class);
+						FluentModel dataObject = gson.fromJson(responseInfo.result, FluentModel.class);
 						if (dataObject == null) {
 							Log.e(TAG, "请求失败");
 						} else {
@@ -283,10 +280,13 @@ public class FluentAddLessonActivity extends BaseActivity {
 							if (isScuess) {
 
 							}
-							FluentListModel fluentListModel = dataObject
-									.getResults();
+							FluentListModel fluentListModel = dataObject.getResults();
 							if (fluentListModel != null) {
 								datas = fluentListModel.getList();
+								//给所有的model加上一个positiontag
+//								for (FlunetListBaseModel model: datas) {
+//									model.setPositionTag(diffLevel);
+//								}
 								if (datas != null) {
 									Log.d(TAG, "" + datas);
 									adapter.list = datas;

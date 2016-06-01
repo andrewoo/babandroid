@@ -1,10 +1,5 @@
 package com.hw.chineseLearn.adapter;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -35,6 +30,11 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.util.tool.FileTools;
 import com.util.weight.RoundProgressBar;
 
+import java.io.File;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class FluentAddLessonAdapter extends BaseAdapter {
     private String TAG = "FluentAddLessonAdapter";
     private Context context;
@@ -47,8 +47,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
     int colorWhite = -1;
     int colorBlack = -1;
 
-    public FluentAddLessonAdapter(Context context,
-                                  ArrayList<FlunetListBaseModel> list) {
+    public FluentAddLessonAdapter(Context context, ArrayList<FlunetListBaseModel> list) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.list = list;
@@ -96,21 +95,15 @@ public class FluentAddLessonAdapter extends BaseAdapter {
             convertView = inflater.inflate(
                     R.layout.layout_fluent_add_lesson_list_item, null);
 
-            holder.rel_intent = (RelativeLayout) convertView
-                    .findViewById(R.id.rel_intent);
+            holder.rel_intent = (RelativeLayout) convertView.findViewById(R.id.rel_intent);
             holder.iv_tag = (ImageView) convertView.findViewById(R.id.img_tag);
-            holder.txt_sentence_cn = (TextView) convertView
-                    .findViewById(R.id.txt_sentence_cn);
-            holder.txt_sentence_en = (TextView) convertView
-                    .findViewById(R.id.txt_sentence_en);
+            holder.txt_sentence_cn = (TextView) convertView.findViewById(R.id.txt_sentence_cn);
+            holder.txt_sentence_en = (TextView) convertView.findViewById(R.id.txt_sentence_en);
 
-            holder.img_add_lesson = (ImageView) convertView
-                    .findViewById(R.id.img_add_lesson);
-            holder.img_remove_lesson = (ImageView) convertView
-                    .findViewById(R.id.img_remove_lesson);
+            holder.img_add_lesson = (ImageView) convertView.findViewById(R.id.img_add_lesson);
+            holder.img_remove_lesson = (ImageView) convertView.findViewById(R.id.img_remove_lesson);
 
-            holder.progress_download = (RoundProgressBar) convertView
-                    .findViewById(R.id.progress_download);
+            holder.progress_download = (RoundProgressBar) convertView.findViewById(R.id.progress_download);
             holder.progress_download.setVisibility(View.GONE);
             convertView.setTag(holder);
         } else {
@@ -125,42 +118,9 @@ public class FluentAddLessonAdapter extends BaseAdapter {
         String sentenceEn = model.getTitleEn();
         holder.txt_sentence_cn.setText("" + sentenceCn);
         holder.txt_sentence_en.setText("" + sentenceEn);
-        holder.iv_tag.setImageDrawable(resources
-                .getDrawable(R.drawable.ls_catt_16));
+        holder.iv_tag.setImageDrawable(resources.getDrawable(R.drawable.ls_catt_16));
 
-        int dlStatue = checkDownLoadState(model);
-        Log.d(TAG, "dlStatue:" + dlStatue);
-
-        if (dlStatue == -1) {// 没下载过
-
-            holder.img_add_lesson.setVisibility(View.VISIBLE);
-            holder.progress_download.setVisibility(View.GONE);
-            holder.img_remove_lesson.setVisibility(View.GONE);
-
-        } else if (dlStatue == 0) {// 正在下载
-
-            holder.img_add_lesson.setVisibility(View.GONE);
-            holder.progress_download.setVisibility(View.VISIBLE);
-            holder.img_remove_lesson.setVisibility(View.GONE);
-            downLoadAudioFiles(position, model);
-            downLoadContentFiles(position, model);
-
-        } else if (dlStatue == 1) {// 下载过
-
-            int DownLoadStatue = getDownLoadStatue(model.getId());// 获取标记的状态
-
-            if (DownLoadStatue == 0) {// 标记删除
-
-                holder.img_add_lesson.setVisibility(View.VISIBLE);
-                holder.progress_download.setVisibility(View.GONE);
-                holder.img_remove_lesson.setVisibility(View.GONE);
-
-            } else {// 未标记删除
-                holder.img_add_lesson.setVisibility(View.GONE);
-                holder.progress_download.setVisibility(View.GONE);
-                holder.img_remove_lesson.setVisibility(View.VISIBLE);
-            }
-        }
+        changeState(position, model);
 
         // boolean isDownLoaded = checkIsDownLoaded(model);// 这一列是否下载过
         // if (isDownLoaded) {// 下载过
@@ -186,12 +146,12 @@ public class FluentAddLessonAdapter extends BaseAdapter {
             public void onClick(View arg0) {
                 // TODO Auto-generated method stub
                 int dlStatue = checkDownLoadState(model);
-
+                model.setPositionTag(position + "");
                 if (dlStatue == 1) {// 已下载
                     Log.e(TAG, "已下载过");
                     holder.img_add_lesson.setVisibility(View.GONE);
                     holder.img_remove_lesson.setVisibility(View.VISIBLE);
-                    setDownLoaded(1, model.getId());//标记删除
+                    setDownLoaded(1, model.getId(),position);//标记删除
 
                 } else if (dlStatue == -1) {
 
@@ -213,15 +173,56 @@ public class FluentAddLessonAdapter extends BaseAdapter {
             public void onClick(View arg0) {
                 // TODO Auto-generated method stub
                 // String dirId = model.getDirId();
+                model.setPositionTag(position + "");
                 holder.img_add_lesson.setVisibility(View.VISIBLE);
-                holder.progress_download.setVisibility(View.VISIBLE);
+                holder.progress_download.setVisibility(View.GONE);
                 holder.img_remove_lesson.setVisibility(View.GONE);
-                setDownLoaded(0, model.getId());
+                setDownLoaded(0, model.getId(),position);
 
             }
         });
 
         return convertView;
+    }
+
+    //改变状态
+    private void changeState(int position, FlunetListBaseModel model) {
+        int dlStatue = checkDownLoadState(model);
+        Log.d(TAG, "dlStatue:" + dlStatue);
+
+        if (dlStatue == -1) {// 没下载过
+
+            holder.img_add_lesson.setVisibility(View.VISIBLE);
+            holder.progress_download.setVisibility(View.GONE);
+            holder.img_remove_lesson.setVisibility(View.GONE);
+
+        } else if (dlStatue == 0) {// 正在下载
+
+            holder.img_add_lesson.setVisibility(View.GONE);
+            holder.progress_download.setVisibility(View.VISIBLE);
+            holder.img_remove_lesson.setVisibility(View.GONE);
+
+            if (model.getPositionTag().equals(position + "")) {
+                downLoadAudioFiles(position, model);
+                downLoadContentFiles(position, model);
+            }
+
+        } else if (dlStatue == 1) {// 下载过
+
+            int DownLoadStatue = getDownLoadStatue(model.getId());// 获取标记的状态
+
+            if (DownLoadStatue == 0) {// 标记删除
+
+                holder.img_add_lesson.setVisibility(View.VISIBLE);
+                holder.progress_download.setVisibility(View.GONE);
+                holder.img_remove_lesson.setVisibility(View.GONE);
+
+            } else {// 未标记删除
+                holder.img_add_lesson.setVisibility(View.GONE);
+                holder.progress_download.setVisibility(View.GONE);
+                holder.img_remove_lesson.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     /**
@@ -259,7 +260,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
      * @param downLoadStatue
      */
     @SuppressWarnings("unchecked")
-    private void setDownLoaded(int downLoadStatue, int fluentId) {
+    private void setDownLoaded(int downLoadStatue, int fluentId,int position) {
         try {
             TbMyFluentNow tbMyFluentNow = (TbMyFluentNow) MyDao.getDaoMy(
                     TbMyFluentNow.class).queryForId(fluentId);
@@ -275,8 +276,13 @@ public class FluentAddLessonAdapter extends BaseAdapter {
             e.printStackTrace();
             Log.d(TAG, "更新异常");
         }
-        notifyDataSetChanged();
+
+        changeState(position,list.get(position));
+
+//        notifyDataSetChanged();
     }
+
+
 
     /**
      * 检查下载的状态-1未下载，0正在下载，1已下载
@@ -300,8 +306,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
                 downLoadState = tbFileDownload.getDlStatus();
             } else {
                 Log.e(TAG,
-                        "checkDownLoadState()-tbFileDownload == null,downLoadState=="
-                                + downLoadState);
+                        "checkDownLoadState()-tbFileDownload == null,downLoadState==" + downLoadState);
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -322,19 +327,19 @@ public class FluentAddLessonAdapter extends BaseAdapter {
         private RoundProgressBar progress_download;
     }
 
-    TbFileDownload tbAudioFileDownload = null;
-    TbFileDownload tbContentFileDownload = null;
+    //    TbFileDownload tbAudioFileDownload = null;
+//    TbFileDownload tbContentFileDownload = null;
     String dlAudioFileName = "";
     int baseModelId;
+    HttpUtils http;
 
     @SuppressWarnings("unchecked")
     private void downLoadAudioFiles(final int position,
                                     final FlunetListBaseModel listBaseModel) {
         View convertView = mapView.get(position);
-        final RoundProgressBar progress_download = (RoundProgressBar) convertView
-                .findViewById(R.id.progress_download);
-        final ImageView img_add_lesson = (ImageView) convertView
-                .findViewById(R.id.img_add_lesson);
+        final RoundProgressBar progress_download = (RoundProgressBar) convertView.findViewById(R.id.progress_download);
+        final ImageView img_add_lesson = (ImageView) convertView.findViewById(R.id.img_add_lesson);
+        final ImageView img_remove_lesson = (ImageView) convertView.findViewById(R.id.img_remove_lesson);
 
         baseModelId = listBaseModel.getId();
         FlunetAudioContentBaseModel audioContent = listBaseModel
@@ -343,12 +348,16 @@ public class FluentAddLessonAdapter extends BaseAdapter {
             dlAudioFileName = audioContent.getFileName();// audio fileName
         }
         Log.d(TAG, "dlAudioFileName:" + dlAudioFileName);
-        HttpUtils http = new HttpUtils();
+        if (http == null) {
+
+            http = new HttpUtils();
+        }
+        final TbFileDownload tbAudioFileDownload = new TbFileDownload();
         final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/"
                 + dlAudioFileName;
         final String fileUrl = AppConstants.BASE_URL + "/" + dlAudioFileName;//
         Log.d(TAG, "downLoadAudioFiles()-fileUrl:" + fileUrl);
-        HttpHandler handler = http.download(fileUrl, filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将重新下载。
+        HttpHandler handler = http.download(fileUrl, filePath, false, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将重新下载。
                 true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
                 new RequestCallBack<File>() {
 
@@ -357,8 +366,9 @@ public class FluentAddLessonAdapter extends BaseAdapter {
                         Log.d(TAG, "onStart");
                         progress_download.setVisibility(View.VISIBLE);
                         img_add_lesson.setVisibility(View.GONE);
+                        img_remove_lesson.setVisibility(View.GONE);
                         try {
-                            tbAudioFileDownload = new TbFileDownload();
+
                             tbAudioFileDownload.setId(baseModelId);
                             tbAudioFileDownload.setFileName(dlAudioFileName);
                             tbAudioFileDownload.setDlStatus(0);
@@ -386,6 +396,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 
                         progress_download.setVisibility(View.VISIBLE);
                         img_add_lesson.setVisibility(View.GONE);
+                        img_remove_lesson.setVisibility(View.GONE);
                         progress_download.setMax((float) total);
                         progress_download.setProgress((float) current);
                         progress_download.setAccurally(1.0f);
@@ -402,7 +413,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
-                        progress_download.setVisibility(View.GONE);
+
                         // 下载完后解压到音频目录
                         new Thread() {
                             public void run() {
@@ -412,7 +423,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
 
                             ;
                         }.start();
-
+                        progress_download.setVisibility(View.GONE);
                         String title_CN = listBaseModel.getTitleCn();
                         String title_EN = listBaseModel.getTitleEn();
                         int diffLevel = listBaseModel.getDiffLevel();
@@ -431,9 +442,9 @@ public class FluentAddLessonAdapter extends BaseAdapter {
                             MyDao.getDaoMy(TbMyFluentNow.class).createOrUpdate(
                                     tbMyFluentNow);
                         } catch (SQLException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
+
                         notifyDataSetChanged();
                     }
 
@@ -460,28 +471,30 @@ public class FluentAddLessonAdapter extends BaseAdapter {
             }
         }
 
-        HttpUtils http = new HttpUtils();
+        if (http == null) {
+
+            http = new HttpUtils();
+        }
         // 下载的位置
-        final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/"
-                + dlTextFileName;
+        final TbFileDownload tbContentFileDownload = new TbFileDownload();
+        final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/" + dlTextFileName;
         final String fileUrl = AppConstants.BASE_URL + "/" + dlTextFileName;
         Log.d(TAG, "downLoadContentFiles()-fileUrl:" + fileUrl);
-        HttpHandler handler = http.download(fileUrl, filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
+        HttpHandler handler = http.download(fileUrl, filePath, false, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
                 true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
                 new RequestCallBack<File>() {
 
                     @Override
                     public void onStart() {
                         try {
-                            tbContentFileDownload = new TbFileDownload();
+
                             tbContentFileDownload.setId(baseModelId);
                             tbContentFileDownload.setFileName(dlAudioFileName);
                             tbContentFileDownload.setFilePath(filePath);
                             tbContentFileDownload.setFileURL(fileUrl);
                             tbContentFileDownload.setType(4);
                             tbContentFileDownload.setDlStatus(-1);
-                            int T = MyDao.getDaoMy(TbFileDownload.class)
-                                    .create(tbContentFileDownload);
+                            int T = MyDao.getDaoMy(TbFileDownload.class).create(tbContentFileDownload);
                             Log.d(TAG, "T:" + T);
                         } catch (SQLException e) {
                             e.printStackTrace();
@@ -489,8 +502,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
                     }
 
                     @Override
-                    public void onLoading(long total, long current,
-                                          boolean isUploading) {
+                    public void onLoading(long total, long current, boolean isUploading) {
                         tbContentFileDownload.setCurFileContentSize(current);
                         tbContentFileDownload.setFileContentSize(total);//
                         tbContentFileDownload.setDlStatus(0);
@@ -500,8 +512,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
                     public void onSuccess(ResponseInfo<File> responseInfo) {
                         try {
                             tbContentFileDownload.setDlStatus(1);
-                            MyDao.getDaoMy(TbFileDownload.class)
-                                    .createOrUpdate(tbContentFileDownload);
+                            MyDao.getDaoMy(TbFileDownload.class).createOrUpdate(tbContentFileDownload);
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }

@@ -1,14 +1,8 @@
 package com.hw.chineseLearn.tabDiscover;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +32,11 @@ import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.util.tool.FileTools;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 生存模式
@@ -460,8 +459,7 @@ public class SurvivalKitActivity extends BaseActivity {
 						SurvivalKitActivity.this.runOnUiThread(new Runnable() {
 							
 							@Override
-							public void run() {
-								Toast.makeText(SurvivalKitActivity.this, "Download failure", 0).show();
+							public void run() {Toast.makeText(SurvivalKitActivity.this, "Download failure", Toast.LENGTH_SHORT).show();
 							}
 						});
 					}

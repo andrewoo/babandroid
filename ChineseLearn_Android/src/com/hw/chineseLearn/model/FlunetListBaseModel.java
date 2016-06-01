@@ -33,6 +33,15 @@ public class FlunetListBaseModel extends BaseObject implements Serializable {
 	private FlunetAudioContentBaseModel audioContent;
 	private long createTime;//
 	private long updateTime;
+	private String positionTag="";
+
+	public String getPositionTag() {
+		return positionTag;
+	}
+
+	public void setPositionTag(String positionTag) {
+		this.positionTag = positionTag;
+	}
 
 	public int getId() {
 		return id;
