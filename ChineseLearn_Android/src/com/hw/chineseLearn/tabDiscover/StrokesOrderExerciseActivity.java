@@ -1,16 +1,12 @@
 package com.hw.chineseLearn.tabDiscover;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Path;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Build;
@@ -50,6 +46,11 @@ import com.util.tool.FileTools;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.PathView;
 import com.util.tool.UiUtil;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 笔画练习
@@ -499,8 +500,6 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 				break;
 
 			case R.id.img_play:
-				img_play.setBackgroundDrawable(resourse
-						.getDrawable(R.drawable.strokes_order_paly_sound_onclick));
 				play();
 				break;
 
@@ -741,24 +740,35 @@ public class StrokesOrderExerciseActivity extends BaseActivity {
 	}
 
 	private String voicePath;
+	AnimationDrawable rocketAnimation;
 
 	/**
 	 * 播放asset里的声音文件
 	 */
 	private void play() {
-		MediaPlayUtil.getInstance().setPlayOnCompleteListener(
-				new OnCompletionListener() {
-					@SuppressWarnings("deprecation")
-					@Override
-					public void onCompletion(MediaPlayer mp) {
-						MediaPlayUtil.getInstance().release();
-						img_play.setBackgroundDrawable(resourse
-								.getDrawable(R.drawable.strokes_order_play_sound_noclick));
-					}
-				});
+
+		final MediaPlayUtil instance = MediaPlayUtil.getInstance();
+
+		instance.setReset();//reset触发载入完成的监听
+		instance.setOnPrepareCompleteListener(new MediaPlayUtil.OnPrepareCompleteListener() {
+			@Override
+			public void doAnimation() {
+				img_play.setBackgroundResource(R.drawable.animation_sound);
+				rocketAnimation = (AnimationDrawable) img_play.getBackground();
+				rocketAnimation.setOneShot(false);
+				rocketAnimation.stop();
+				rocketAnimation.start();
+			}
+		});
+
+		instance.setPlayOnCompleteListener(new MediaPlayer.OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mediaPlayer) {
+				rocketAnimation.setOneShot(true);
+			}
+		});
 		String path = DatabaseHelperMy.SOUND_PATH + "/pinchar/" + voicePath;
-		Log.d(TAG, "play()-path：" + path);
-		MediaPlayUtil.getInstance().play(path);
+		instance.play(path);
 	}
 
 	@Override

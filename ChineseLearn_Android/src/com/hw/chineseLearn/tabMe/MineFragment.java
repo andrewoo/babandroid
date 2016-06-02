@@ -3,6 +3,7 @@ package com.hw.chineseLearn.tabMe;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,11 +84,9 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 
 			break;
 		case R.id.rel_rate_this_app:
-//			Intent intentRate = new Intent();
-//			intentRate.putExtra("url", "http://www.baidu.com");
-//			intentRate.putExtra("title", "Rate this app");
-//			intentRate.setClass(getActivity(), MainWebActivity.class);
-//			startActivity(intentRate);
+
+			startGoogle();//打开google play
+
 			break;
 		case R.id.rel_settings:
 			startActivity(new Intent(getActivity(), MySettingActivity.class));
@@ -103,6 +102,9 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 			break;
 		}
 	}
+
+
+
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -243,5 +245,16 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 	public boolean isRight() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	private void startGoogle() {
+
+		final String appPackageName =getActivity().getPackageName(); // getPackageName() from Context or Activity object
+		try {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+		} catch (android.content.ActivityNotFoundException anfe) {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+		}
+
+
 	}
 }

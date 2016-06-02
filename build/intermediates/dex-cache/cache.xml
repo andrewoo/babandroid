@@ -23,18 +23,18 @@
         <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\ormlite-android-4.48_8b1a316455a3b9f43f44bec62c060840c0f93f7b.jar" />
     </item>
     <item
+        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="bf8192afbe14fb571078bfc986df1d25c084f523">
+        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\instant-run_29b3ee29184a02a77b0fa4cd107c1e56b2bdcec5.jar" />
+    </item>
+    <item
         jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\xUtils-2.6.14.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="f10c51f3e0732fdeefe6e104279a58e275879b6c">
         <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\xUtils-2.6.14_3d726f25e0bddc1d26a3c1c8710d748b590ef428.jar" />
-    </item>
-    <item
-        jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="d8d51bae2d1ffc43686d47b3207234cc99babb70">
-        <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\instant-run_29b3ee29184a02a77b0fa4cd107c1e56b2bdcec5.jar" />
     </item>
     <item
         jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\libs\httpcore-4.3.2.jar"
@@ -61,7 +61,7 @@
         jar="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="3777c3c5e4aab1897627b80f431e6327b1944290">
+        sha1="74d9308d5bad3ab419464c4e17a150a602291fec">
         <dex dex="D:\adt\aspull\ChineseLearn_Android\ChineseLearn_Android\build\intermediates\pre-dexed\debug\instant-run-bootstrap_f66fedfdc5891fc673f36c1c6d940d44a8cc2a98.jar" />
     </item>
     <item

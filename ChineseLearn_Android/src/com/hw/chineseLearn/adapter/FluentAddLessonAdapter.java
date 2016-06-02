@@ -202,10 +202,10 @@ public class FluentAddLessonAdapter extends BaseAdapter {
             holder.progress_download.setVisibility(View.VISIBLE);
             holder.img_remove_lesson.setVisibility(View.GONE);
 
-            if (model.getPositionTag().equals(position + "")) {
-                downLoadAudioFiles(position, model);
-                downLoadContentFiles(position, model);
-            }
+//            if (model.getPositionTag().equals(position + "")) {
+//                downLoadAudioFiles(position, model);
+//                downLoadContentFiles(position, model);
+//            }
 
         } else if (dlStatue == 1) {// 下载过
 

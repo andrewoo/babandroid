@@ -381,8 +381,7 @@ public class LearnImageMoveFragment extends BaseFragment implements
 				mizigeWidth, mizigeHeight);
 
 		mizigeView.setLayoutParams(ly);
-		mizigeView.setBackground(context.getResources().getDrawable(
-				R.drawable.mizige));
+		mizigeView.setBackground(context.getResources().getDrawable(R.drawable.mizige));
 		mizigeView.setFocusable(false);
 		rel_root.addView(mizigeView);
 		int xx = pointList.get(3).x;
