@@ -17,24 +17,24 @@
         <FrameLayout
             android:id="@+id/container1"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
         <FrameLayout
             android:id="@+id/container2"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/container3"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/container4"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="gone" />
     </LinearLayout>
 

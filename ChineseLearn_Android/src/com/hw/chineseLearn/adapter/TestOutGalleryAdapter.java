@@ -78,7 +78,7 @@ public class TestOutGalleryAdapter extends BaseAdapter {
 //		holder.img_tag.setImageResource(mContext.getResources().getIdentifier(imageName, "drawable", mContext.getPackageName()));
 //		holder.img_tag.setImageResource(R.drawable.basic);
 		if (selectItem == position) {
-			holder.tv_name.setTextSize(UiUtil.sp2px(mContext,8f));
+			holder.tv_name.setTextSize(UiUtil.sp2px(mContext,6f));
 			Gallery.LayoutParams params=new Gallery.LayoutParams(width,height);
 			convertView.setLayoutParams(params);
 //			holder.img_tag.setLayoutParams(new LinearLayout.LayoutParams(width, height));
@@ -86,7 +86,7 @@ public class TestOutGalleryAdapter extends BaseAdapter {
 			// 未选中时，这是设置的比较小
 			Gallery.LayoutParams params=new Gallery.LayoutParams(width*8/10,height*8/10);
 			convertView.setLayoutParams(params);
-			holder.tv_name.setTextSize(6f);
+			holder.tv_name.setTextSize(4f);
 //			holder.img_tag.setLayoutParams(new LinearLayout.LayoutParams(width / 5 * 4, height / 5 * 4));
 
 		}

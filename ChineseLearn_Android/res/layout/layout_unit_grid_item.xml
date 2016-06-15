@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
+    android:paddingBottom="28dp"
     android:gravity="center"
     android:orientation="vertical" >
 
@@ -23,12 +23,13 @@
         android:gravity="center"
         android:textSize="@dimen/text_s10" />
 
-    <LinearLayout
-        android:id="@+id/lin_dots"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal" >
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:id="@+id/lin_dots"-->
+        <!--android:visibility="visible"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:orientation="horizontal" >-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>

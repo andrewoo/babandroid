@@ -8,35 +8,37 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical">
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            >
 
             <com.util.weight.SelfGridView
                 android:id="@+id/gv_center_gridview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:columnWidth="80dp"
-                android:descendantFocusability="afterDescendants"
                 android:gravity="center"
                 android:horizontalSpacing="7dp"
                 android:listSelector="#00000000"
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="7dp"></com.util.weight.SelfGridView>
+                android:isScrollContainer="false"
+                android:verticalSpacing="-10dp"
+                ></com.util.weight.SelfGridView>
 
             <RelativeLayout
                 android:id="@+id/rel_test_out"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginTop="-30dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginBottom="40dp"
@@ -69,16 +71,17 @@
             <com.util.weight.SelfGridView
                 android:id="@+id/gv_center_gridview1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
                 android:columnWidth="80dp"
-                android:descendantFocusability="afterDescendants"
                 android:gravity="center"
                 android:horizontalSpacing="7dp"
                 android:listSelector="#00000000"
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="7dp"></com.util.weight.SelfGridView>
+                android:isScrollContainer="false"
+                android:verticalSpacing="-10dp"
+                ></com.util.weight.SelfGridView>
+
         </LinearLayout>
     </ScrollView>
 

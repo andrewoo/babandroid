@@ -1,15 +1,9 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +25,11 @@ import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.SelfGridView;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 学习-首页
@@ -62,10 +61,10 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		fragment = this;
 		context = getActivity();
-		Log.d(TAG, "onCreate");
-
 		getListDataAndSpit();// 得到数据库中集合数据并拆分为两个集合
 	}
+
+
 
 	/**
 	 * 得到unit集合并拆分为两个子集合
@@ -92,7 +91,6 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 		task = new ThreadWithDialogTask();
 
 		init();
-		Log.d(TAG, "onCreateView");
 		return contentView;
 	}
 

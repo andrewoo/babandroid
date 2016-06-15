@@ -58,7 +58,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/img_record"
-                android:src="@drawable/ls_play_3" />
+                android:src="@drawable/strokes_order_play_sound_onclick" />
 
             <ImageView
                 android:id="@+id/img_record"
