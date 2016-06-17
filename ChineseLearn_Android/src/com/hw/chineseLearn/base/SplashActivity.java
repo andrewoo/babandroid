@@ -1,13 +1,5 @@
 package com.hw.chineseLearn.base;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -28,6 +20,14 @@ import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.tool.FileTools;
 import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SplashActivity extends BaseActivity {
 
@@ -61,8 +61,7 @@ public class SplashActivity extends BaseActivity {
 
 	/**
 	 * 弹出设置网络连接的提示
-	 * 
-	 * @param activity
+	 *
 	 */
 	public AlertDialog createSetNetworkDialog() {
 

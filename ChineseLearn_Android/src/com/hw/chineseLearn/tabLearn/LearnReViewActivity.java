@@ -1,11 +1,9 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +12,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -31,9 +29,12 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /**
  * 章节复习页面
- * 
+ *
  * @author yh
  */
 public class LearnReViewActivity extends BaseActivity {
@@ -59,6 +60,8 @@ public class LearnReViewActivity extends BaseActivity {
 	private RelativeLayout lin_review_words;
 	private RelativeLayout lin_review_sentence;
 
+	private ImageView btn_go_circle;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,7 +71,7 @@ public class LearnReViewActivity extends BaseActivity {
 		context = this;
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 6;
+		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 4;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
 		resources = context.getResources();
 		init();
@@ -81,7 +84,14 @@ public class LearnReViewActivity extends BaseActivity {
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Review", View.GONE, View.GONE, 0);
+				"Babble Review", View.GONE, View.GONE, 0);
+		//btn_go_circle
+		btn_go_circle = (ImageView) contentView.findViewById(R.id.btn_go_circle);
+
+		LayoutParams layoutParams = btn_go_circle.getLayoutParams();
+		layoutParams.height=width;
+		layoutParams.width=width;
+		btn_go_circle.setLayoutParams(layoutParams);
 
 		btn_go = (Button) contentView.findViewById(R.id.btn_go);
 		LayoutParams py = btn_go.getLayoutParams();
@@ -94,15 +104,17 @@ public class LearnReViewActivity extends BaseActivity {
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(1500);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					runOnUiThread(new Runnable() {
 						public void run() {
-							playHeartbeatAnimation();
+//							playHeartbeatAnimation();
+							heartAnaimation();
 						}
+
 					});
 				}
 			};
@@ -153,7 +165,7 @@ public class LearnReViewActivity extends BaseActivity {
 
 	/**
 	 * 顶部标题栏
-	 * 
+	 *
 	 * @param textLeft
 	 *            是否显示左边文字
 	 * @param imgLeft
@@ -172,8 +184,11 @@ public class LearnReViewActivity extends BaseActivity {
 	public void setTitle(int textLeft, int imgLeft, int imgLeftDrawable,
 			String title, int textRight, int imgRight, int imgRightDrawable) {
 
+
 		View view_title = (View) this.findViewById(R.id.view_title);
+		view_title.setBackgroundColor(getResources().getColor(R.color.chinese_skill_blue));
 		Button tv_title = (Button) view_title.findViewById(R.id.btn_title);
+		tv_title.setTextColor(Color.WHITE);
 		tv_title.setText(title);
 		TextView tv_title_left = (TextView) view_title
 				.findViewById(R.id.tv_title_left);
@@ -181,10 +196,10 @@ public class LearnReViewActivity extends BaseActivity {
 
 		ImageView iv_title_left = (ImageView) view_title
 				.findViewById(R.id.iv_title_left);
+
 		iv_title_left.setVisibility(imgLeft);
 		iv_title_left.setOnClickListener(onClickListener);
-		iv_title_left.setImageResource(imgLeftDrawable);
-
+		iv_title_left.setImageResource(R.drawable.closeicon);
 		TextView tv_title_right = (TextView) view_title
 				.findViewById(R.id.tv_title_right);
 		tv_title_right.setVisibility(textRight);
@@ -192,7 +207,7 @@ public class LearnReViewActivity extends BaseActivity {
 
 		ImageView iv_title_right = (ImageView) view_title
 				.findViewById(R.id.iv_title_right);
-		iv_title_right.setVisibility(imgRight);
+		iv_title_right.setVisibility(View.INVISIBLE);
 		iv_title_right.setImageResource(imgRightDrawable);
 
 	}
@@ -244,6 +259,56 @@ public class LearnReViewActivity extends BaseActivity {
 			}
 		}
 	};
+
+	private void heartAnaimation(){
+
+		ScaleAnimation scaleAnimation=new ScaleAnimation(1.0f, 0.9f, 1.0f, 0.9f,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		scaleAnimation.setDuration(1000);
+		scaleAnimation.setInterpolator(new AccelerateInterpolator());
+		scaleAnimation.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				//缩放完后 圆形放大 继续缩放
+				AnimationSet animationSet = new AnimationSet(true);
+				ScaleAnimation scaleCicle=new ScaleAnimation(1.0f, 1.5f,1.0f,1.5f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+				AlphaAnimation alphaAnimation = new AlphaAnimation(0.8f, 0.0f);
+				animationSet.setDuration(1000);
+				animationSet.addAnimation(scaleCicle);
+				animationSet.addAnimation(alphaAnimation);
+				animationSet.setAnimationListener(new AnimationListener() {
+					@Override
+					public void onAnimationStart(Animation animation) {
+
+					}
+
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						btn_go_circle.setVisibility(View.INVISIBLE);
+					}
+
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+
+					}
+				});
+				btn_go_circle.setVisibility(View.VISIBLE);
+				btn_go_circle.startAnimation(animationSet);
+			}
+		});
+		btn_go.startAnimation(scaleAnimation);
+
+	}
 
 	/**
 	 * 按钮模拟心脏跳动
