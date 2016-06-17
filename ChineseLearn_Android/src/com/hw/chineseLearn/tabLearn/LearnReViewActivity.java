@@ -71,7 +71,7 @@ public class LearnReViewActivity extends BaseActivity {
 		context = this;
 		CustomApplication.app.addActivity(this);
 		super.gestureDetector();
-		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 4;
+		width = CustomApplication.app.displayMetrics.widthPixels / 10 * 5;
 		height = CustomApplication.app.displayMetrics.heightPixels / 10 * 5;
 		resources = context.getResources();
 		init();
