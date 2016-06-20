@@ -31,6 +31,10 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
+    defaultConfig{
+        versionName "内测版：1.0"
+        versionCode 16
+    }
 
     /*packagingOptions {
         exclude 'META-INF/NOTICE' // will not include NOTICE file

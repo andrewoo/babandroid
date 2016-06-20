@@ -1,10 +1,5 @@
 package com.hw.chineseLearn.tabDiscover;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -62,6 +57,11 @@ import com.util.weight.LocusPassWordView.OnAnamationCompleteListener;
 import com.util.weight.LocusPassWordView.OnCompleteListener;
 import com.util.weight.Point;
 import com.util.weight.XieLineView;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 拼音发音课程练习页面

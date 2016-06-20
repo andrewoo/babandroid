@@ -1,11 +1,5 @@
 package com.hw.chineseLearn.tabMe;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,6 +38,12 @@ import com.util.tool.ImageLoader;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
 import com.util.weight.RoundImageView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 个人中心页面
@@ -101,7 +101,7 @@ public class MyAccountActivity extends BaseActivity {
 		});
 
 		img_photo = (RoundImageView) findViewById(R.id.img_photo);
-		img_photo.setOnClickListener(onClickListener);
+//		img_photo.setOnClickListener(onClickListener);
 		txt_email = (TextView) findViewById(R.id.txt_email);
 
 		emailString = CustomApplication.app.preferencesUtil.getValue(

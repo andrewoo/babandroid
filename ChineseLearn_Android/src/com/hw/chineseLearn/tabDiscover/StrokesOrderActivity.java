@@ -1,16 +1,19 @@
 package com.hw.chineseLearn.tabDiscover;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +25,9 @@ import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.CharGroup;
 import com.hw.chineseLearn.dao.bean.Character;
 import com.util.tool.UiUtil;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * 拼写练习
@@ -37,6 +43,39 @@ public class StrokesOrderActivity extends BaseActivity {
 	private MyExpandableListAdapterStrokes adapter;
 	ArrayList<CharGroup> charGroupList = new ArrayList<CharGroup>();
 	ArrayList<ArrayList<Character>> characterLists = new ArrayList<ArrayList<Character>>();
+	public static final int FLUSH_UI = 100;
+	Handler handler=new Handler(){
+
+
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+				case FLUSH_UI:
+
+					setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
+							"Strokes Order", View.GONE, View.GONE, 0);
+					expandableListView = (ExpandableListView) contentView
+							.findViewById(R.id.expandableListView);
+					adapter = new MyExpandableListAdapterStrokes(context, charGroupList,
+							characterLists);
+					expandableListView.setAdapter(adapter);
+					// 监听父列表的弹出事件
+					expandableListView
+							.setOnGroupExpandListener(new ExpandableListViewListenerC());
+					// 监听父列表的关闭事件
+					expandableListView
+							.setOnGroupCollapseListener(new ExpandableListViewListenerB());
+					// 监听子列表
+					expandableListView
+							.setOnChildClickListener(new ExpandableListViewListenerA());
+
+					mModifyDialog2.dismiss();
+					break;
+
+				default:
+					break;
+			}
+		};
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,30 +85,35 @@ public class StrokesOrderActivity extends BaseActivity {
 		setContentView(contentView);
 		CustomApplication.app.addActivity(this);
 		context = this;
+		showDialog();//弹出进度对话框 等待数据加载
 		init();
 	}
+	private AlertDialog mModifyDialog2;
+	private void showDialog() {
+		mModifyDialog2 = new AlertDialog.Builder(this).create();
+
+		LayoutInflater inflater = LayoutInflater.from(this);
+		View view = inflater.inflate(R.layout.progress,null);
+		FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		params.gravity= Gravity.CENTER;
+		mModifyDialog2.show();
+		mModifyDialog2.setContentView(view,params);
+	}
+
 
 	/**
 	 * 初始化
 	 */
 	public void init() {
-		initDatasFromDb();
-		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Strokes Order", View.GONE, View.GONE, 0);
-		expandableListView = (ExpandableListView) contentView
-				.findViewById(R.id.expandableListView);
-		adapter = new MyExpandableListAdapterStrokes(context, charGroupList,
-				characterLists);
-		expandableListView.setAdapter(adapter);
-		// 监听父列表的弹出事件
-		expandableListView
-				.setOnGroupExpandListener(new ExpandableListViewListenerC());
-		// 监听父列表的关闭事件
-		expandableListView
-				.setOnGroupCollapseListener(new ExpandableListViewListenerB());
-		// 监听子列表
-		expandableListView
-				.setOnChildClickListener(new ExpandableListViewListenerA());
+		new Thread(){
+			@Override
+			public void run() {
+				initDatasFromDb();
+				handler.sendEmptyMessage(FLUSH_UI);
+			}
+		}.start();
+
+
 	}
 
 	/**
