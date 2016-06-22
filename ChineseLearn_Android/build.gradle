@@ -32,6 +32,7 @@ android {
         release.setRoot('build-types/release')
     }
     defaultConfig{
+        applicationId "com.itutorgroup.babble"
         versionName "内测版：1.0"
         versionCode 16
     }
