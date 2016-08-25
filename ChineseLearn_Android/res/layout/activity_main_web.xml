@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:gravity="center"
-        android:text="LIKE US"
+        android:text="@string/tabme_like"
         android:textSize="18sp"
         android:textColor="@color/floralwhite"
         android:background="@color/chinese_skill_lOGIN_BULE"

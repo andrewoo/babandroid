@@ -54,7 +54,7 @@
                     android:layout_centerVertical="true"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:text="TestOut"
+                    android:text="@string/learn_testOut"
                     android:textColor="@color/white" />
 
                 <ImageView

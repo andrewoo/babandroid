@@ -1,13 +1,5 @@
 package com.hw.chineseLearn.tabDiscover;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -36,10 +28,17 @@ import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.TbMyPinyinTone;
 import com.hw.chineseLearn.model.PinyinToneLessonExerciseModel;
-import com.hw.chineseLearn.tabLearn.LessonViewActivity;
 import com.util.tool.FileTools;
 import com.util.tool.JsonUtil;
 import com.util.weight.SelfGridView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * 音调练习
@@ -86,7 +85,7 @@ public class PinyinToneActivity extends BaseActivity {
 	@SuppressWarnings("unchecked")
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Pinyin Tone", View.GONE, View.GONE, 0);
+				getString(R.string.title_pinyin_tone), View.GONE, View.GONE, 0);
 
 		centGridView = (SelfGridView) contentView
 				.findViewById(R.id.gv_tone_gridview);

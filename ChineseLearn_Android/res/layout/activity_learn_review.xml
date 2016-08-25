@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:text="Characters"
+                    android:text="@string/learn_characters"
                     android:textColor="@color/deep_grey"
                     android:textSize="@dimen/text_s16" />
 
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:text="Words"
+                    android:text="@string/learn_words"
                     android:textColor="@color/deep_grey"
                     android:textSize="@dimen/text_s16" />
 
@@ -138,7 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="Sentences"
+                    android:text="@string/learn_sentences"
                     android:textColor="@color/deep_grey"
                     android:textSize="@dimen/text_s16" />
 

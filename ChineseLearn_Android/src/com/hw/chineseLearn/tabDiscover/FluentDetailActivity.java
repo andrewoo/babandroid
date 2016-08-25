@@ -65,7 +65,7 @@ public class FluentDetailActivity extends BaseActivity {
 	FluentDetailAdapter adapter;
 	ArrayList<FluentDetailListModel> sents = new ArrayList<FluentDetailListModel>();
 	int selectIndex = 0;
-	String title = "Title";
+	String title ;
 	String fluentIdStr, awsId;
 	TbMyFluentNow model = null;
 	boolean isRecord = false;// 是否正在录音
@@ -87,6 +87,7 @@ public class FluentDetailActivity extends BaseActivity {
 		CustomApplication.app.addActivity(this);
 		context = this;
 		resources = context.getResources();
+		title=getString(R.string.title_title);
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			if (bundle.containsKey("model")) {

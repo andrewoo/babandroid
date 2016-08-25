@@ -167,7 +167,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@string/pemembered_perfectly"
+                android:text="@string/learn_flash_card_remembered_perfectly"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s12" />
 
@@ -184,7 +184,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:lines="1"
-                android:text="Remembered"
+                android:text="@string/learn_flash_card_remembered"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s12" />
 
@@ -201,7 +201,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:lines="2"
-                android:text="Barely Remembered"
+                android:text="@string/learn_flash_card_barely"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s12" />
         </LinearLayout>
@@ -224,7 +224,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:lines="2"
-                android:text="Almost Remembered"
+                android:text="@string/learn_flash_card_almost_remembered"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s12" />
 
@@ -241,7 +241,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:lines="1"
-                android:text="Forgot"
+                android:text="@string/learn_flash_card_forgot"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s12" />
 
@@ -258,7 +258,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:lines="2"
-                android:text="Don&apos;t konw"
+                android:text="@string/learn_flash_card_donot"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s12" />
         </LinearLayout>

@@ -1,16 +1,5 @@
 package com.hw.chineseLearn.tabDiscover;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -38,7 +27,6 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
@@ -49,18 +37,28 @@ import com.hw.chineseLearn.db.DatabaseHelper;
 import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.hw.chineseLearn.model.PinyinModel;
 import com.hw.chineseLearn.model.PinyinModel.PinyinListModel;
-import com.j256.ormlite.dao.Dao;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.util.tool.AudioRecorder;
+import com.util.tool.AudioRecorder.VMChangeListener;
 import com.util.tool.FileTools;
 import com.util.tool.MediaPlayUtil;
 import com.util.tool.Utility;
-import com.util.tool.AudioRecorder.VMChangeListener;
 import com.util.weight.CHScrollView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -307,7 +305,7 @@ public class PinyinExerciseActivity extends Activity implements
 		mListView = (ListView) findViewById(R.id.scroll_list);
 		
 		setTitle(View.GONE, View.VISIBLE,
-				R.drawable.back_btn, "Pinyin Exercise",
+				R.drawable.back_btn, getString(R.string.title_pinyin_exercise),
 				View.GONE, View.GONE, 0);
 		
 		myAdapter = new MyAdapter();

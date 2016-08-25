@@ -1,14 +1,11 @@
 package com.hw.chineseLearn.interfaces;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.SocketTimeoutException;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+
+import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -31,13 +28,15 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 
-import android.content.Context;
-import android.util.Log;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-
-import com.google.gson.Gson;
-import com.hw.chineseLearn.base.CustomApplication;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.SocketTimeoutException;
+import java.net.URLEncoder;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 网络请求
@@ -184,23 +183,23 @@ public class RestClient {
                 instream.close();
             }
         } catch (SocketTimeoutException e) {
-            CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
+//            CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
             e.printStackTrace();
         } catch (UnknownHostException e) {
             client.getConnectionManager().shutdown();
-            CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
+//            CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
             throw e;
         } catch (ClientProtocolException e) {
             client.getConnectionManager().shutdown();
-            CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
+//            CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
             e.printStackTrace();
         } catch (IOException e) {
             client.getConnectionManager().shutdown();
-            CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
+//            CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
             e.printStackTrace();
         } catch (Exception e) {
             client.getConnectionManager().shutdown();
-            CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
+//            CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
             e.printStackTrace();
         }
 
@@ -261,7 +260,7 @@ public class RestClient {
 
                 executeRequest(request_get, url);
             } catch (Exception e) {
-                CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
+//                CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
                 e.printStackTrace();
             }
             break;
@@ -313,7 +312,7 @@ public class RestClient {
 
                 executeRequest(request_post, url);
             } catch (Exception e) {
-                CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
+//                CustomApplication.app.showTimeoutMsg("网络超时，请重试！");
                 e.printStackTrace();
             }
             break;

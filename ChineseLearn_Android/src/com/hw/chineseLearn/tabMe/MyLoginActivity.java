@@ -1,8 +1,5 @@
 package com.hw.chineseLearn.tabMe;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +34,9 @@ import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.util.thread.ThreadWithDialogTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 登录
@@ -319,7 +319,7 @@ public class MyLoginActivity extends BaseActivity {
 
 			        @Override
 			        public void onFailure(HttpException error, String msg) {
-			        	Toast.makeText(MyLoginActivity.this, "login failed", Toast.LENGTH_SHORT).show();
+			        	Toast.makeText(MyLoginActivity.this, getString(R.string.tabme_login_fail), Toast.LENGTH_SHORT).show();
 			        }
 			});
 		}
@@ -340,13 +340,13 @@ public class MyLoginActivity extends BaseActivity {
 		Button ok = (Button) view.findViewById(R.id.commit_btn);
 		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
 
-		title.setText("Title");
+		title.setText(getString(R.string.title_title));
 		switch (editId) {
 		case R.id.txt_username:
-			content.setText("Please input your email");
+			content.setText(getString(R.string.tabme_email));
 			break;
 		case R.id.et_pwd:
-			content.setText("Please input your password");
+			content.setText(getString(R.string.tabme_input_password));
 			break;
 
 		default:
@@ -354,9 +354,9 @@ public class MyLoginActivity extends BaseActivity {
 		}
 
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
-		ok.setText("OK");
+		ok.setText(getString(R.string.tabme_ok));
 		cancel.setVisibility(View.GONE);
-		cancel.setText("Cancel");
+		cancel.setText(getString(R.string.tabme_cancel));
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

@@ -1,24 +1,25 @@
 package com.hw.chineseLearn.db;
 
-import java.io.File;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
 
 import com.hw.chineseLearn.base.CustomApplication;
+import com.hw.chineseLearn.interfaces.AppConstants;
 import com.j256.ormlite.android.AndroidConnectionSource;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.util.tool.FileTools;
 
+import java.io.File;
+
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	private static DatabaseHelper instance;
 
-	public static final String DATABASE_PATH = CustomApplication.app
-			.getFilesDir() + "/chineselearn.db";
+//	public static final String DATABASE_PATH = CustomApplication.app.getFilesDir() + "/chineselearn.db";
+	public static final String DATABASE_PATH = CustomApplication.app.getFilesDir() + "/"+ AppConstants.DBName;
 
 	private AndroidConnectionSource connectionSource;
 	private static String TAG = "==DatabaseHelper==";
@@ -38,6 +39,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	public static Boolean isFirstRunForApplication = false;
 
 	static {
+
 		if (Environment.MEDIA_MOUNTED.equals(Environment
 				.getExternalStorageState())) {
 			CACHE_DIR = Environment.getExternalStorageDirectory()
@@ -115,7 +117,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	}
 
 	public DatabaseHelper(Context context) {
-		super(context, "chineselearn.db", null, 1);
+		super(context, AppConstants.DBName, null, 1);
 	}
 
 	@Override

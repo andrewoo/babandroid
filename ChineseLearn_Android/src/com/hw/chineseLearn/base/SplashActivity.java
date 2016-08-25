@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 
@@ -17,6 +16,7 @@ import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.TbMyCategory;
 import com.hw.chineseLearn.db.DatabaseHelperMy;
+import com.hw.chineseLearn.interfaces.AppConstants;
 import com.util.tool.FileTools;
 import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
@@ -113,7 +113,9 @@ public class SplashActivity extends BaseActivity {
 
 		this.isFirstIn = preferences.getBoolean("isFirstIn", true);
 
-		FileTools.copyDb("chineselearn.db");
+//		FileTools.copyDb("chineselearn.db");
+
+		FileTools.copyDb(AppConstants.DBName);
 		if (!this.isFirstIn) {
 			this.mHandler.sendEmptyMessageDelayed(GO_HOME, SPLASH_DELAY_MILLIS);
 		} else {
@@ -133,7 +135,6 @@ public class SplashActivity extends BaseActivity {
 				// Toast.makeText(SplashActivity.this, "网络连接仍不可用，无法访问服务器数据！",
 				// Toast.LENGTH_SHORT).show();
 				// SplashActivity.this.finish();
-				Log.d(TAG, "网络连接仍不可用");
 			}
 		}
 	}
@@ -209,7 +210,7 @@ public class SplashActivity extends BaseActivity {
 	 * 复制数据库和插入初始值
 	 */
 	private void initDB() {
-		FileTools.copyDb("chineselearn.db");
+		FileTools.copyDb(AppConstants.DBName);
 		TbMyCategory tb=new TbMyCategory();
 		tb.setId(1);
 		tb.setComplete_dl(1);

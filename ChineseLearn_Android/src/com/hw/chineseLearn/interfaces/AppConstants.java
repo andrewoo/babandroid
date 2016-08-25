@@ -1,6 +1,10 @@
 package com.hw.chineseLearn.interfaces;
 
 
+import android.util.Log;
+
+import com.hw.chineseLearn.base.CustomApplication;
+
 /**
  * App常量配置
  * 
@@ -15,6 +19,18 @@ public class AppConstants {
 	 * 域名
 	 */
 	public static final String BASE_URL = "http://52.9.199.129";//
+	public static String dialogUrl=BASE_URL+"/babble-api-app/v1/dialogues?diffLevel=";//默认请求地址
+	public static String DBName="chineselearn.db";
+
+	static {
+		if("fr".equals(CustomApplication.getIntance().getAppLanguage())){//法语地址
+//			dialogUrl=BASE_URL+"/babble-api-app/v1/dialogues?language=fr&diffLevel=";
+			DBName="chineselearnfr.db";
+		}else{
+			Log.e("AppConstants", "static initializer: "+CustomApplication.getIntance().getAppLanguage() );
+		}
+	}
+
 
 	// 图片主地址
 	public static String BASE_IMG_URL = BASE_URL + "";
@@ -46,15 +62,10 @@ public class AppConstants {
 	public static final String UID = "uid";
 
 	public static final String NotSaveUsername = "NotSaveUsername";
-	/** 当前模式 */
 	public static final String CURRENT_MODE = "current_mode";
-	/** 车载模式 */
 	public static final String MODE_VEHICLE = "mode_vehicle";
-	/** 暂休模式 */
 	public static final String MODE_SLEEP = "mode_sleep";
-	/** 活氧杀菌模式 */
 	public static final String MODE_OXYGEN = "mode_oxygen";
-	/** 定时模式 */
 	public static final String MODE_TIMING = "mode_timing";
 
 	public static String lowPrice = "";

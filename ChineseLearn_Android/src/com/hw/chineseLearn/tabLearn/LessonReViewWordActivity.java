@@ -1,15 +1,8 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -40,6 +33,11 @@ import com.hw.chineseLearn.db.DatabaseHelperMy;
 import com.util.tool.AudioRecorder;
 import com.util.tool.AudioRecorder.VMChangeListener;
 import com.util.tool.MediaPlayUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * 课程复习-偏旁部首-页面
@@ -89,7 +87,7 @@ public class LessonReViewWordActivity extends BaseActivity {
 		img_loop.setOnClickListener(onClickListener);
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Word Review", View.GONE, View.VISIBLE, R.drawable.revie_pen);
+				getString(R.string.learn_word_review), View.GONE, View.VISIBLE, R.drawable.revie_pen);
 
 		listView = (ListView) contentView.findViewById(R.id.list_view);
 		tv_translations = (TextView) contentView

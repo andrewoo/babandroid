@@ -95,7 +95,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="RIGHT"
+                            android:text="@string/learn_lesson_result_right"
                             android:textColor="@color/chinese_skill_green"
                             android:textSize="@dimen/text_s14" />
                     </LinearLayout>
@@ -135,7 +135,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="WRONG"
+                            android:text="@string/learn_lesson_result_wrong"
                             android:textColor="@color/chinese_skill_red"
                             android:textSize="@dimen/text_s14" />
                     </LinearLayout>
@@ -182,7 +182,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="ACCURACY"
+                            android:text="@string/learn_lesson_result_accuracy"
                             android:textColor="@color/chinese_skill_yellow"
                             android:textSize="@dimen/text_s14" />
                     </LinearLayout>
@@ -211,7 +211,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="scores"
+                    android:text="@string/learn_lesson_result_scores"
                     android:textColor="@color/chinese_skill_blue"
                     android:textSize="@dimen/text_s14" />
             </LinearLayout>
@@ -253,7 +253,7 @@
             android:gravity="center"
             android:padding="10dip"
             android:singleLine="true"
-            android:text="REDO"
+            android:text="@string/learn_flash_card_result_redo"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s18" />
 
@@ -274,7 +274,7 @@
             android:gravity="center"
             android:padding="10dip"
             android:singleLine="true"
-            android:text="CONTINUE"
+            android:text="@string/learn_flash_card_result_continue"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s18" />
     </LinearLayout>

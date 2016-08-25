@@ -1,5 +1,7 @@
 package com.hw.chineseLearn.interfaces;
 
+import com.hw.chineseLearn.BuildConfig;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +14,7 @@ public abstract class BaseParser<T> {
 	 * @throws JSONException
 	 */
 	public String checkResponse(String paramString) throws JSONException {
+
 		String res=null;
 		if (paramString != null)
 		{

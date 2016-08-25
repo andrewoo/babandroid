@@ -30,7 +30,7 @@ public class DownloadMererialsActivity extends BaseActivity {
 		setContentView(contentView);
 		CustomApplication.app.addActivity(this);
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"DownLoad", View.GONE, View.GONE, 0);
+				getString(R.string.tabme_downLoad), View.GONE, View.GONE, 0);
 	}
 
 

@@ -207,7 +207,7 @@ public class MyAccountActivity extends BaseActivity {
 	
 	private void updateDB() {
 		TbSetting tb=new TbSetting();
-		tb.setSettingName("Unlock");
+		tb.setSettingName(getString(R.string.learn_unlock));
 		tb.setSettingValue(0);
 		try {
 			MyDao.getDaoMy(TbSetting.class).createOrUpdate(tb);
@@ -249,8 +249,8 @@ public class MyAccountActivity extends BaseActivity {
 		TextView content = (TextView) view.findViewById(R.id.dialog_content);
 		Button ok = (Button) view.findViewById(R.id.commit_btn);
 		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
-		title.setText("Logout");
-		content.setText("Are you sure to logout?");
+		title.setText(getString(R.string.tabme_logout));
+		content.setText(getString(R.string.tabme_sure));
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
 		ok.setText("Ok");
 		cancel.setText("Cancel");

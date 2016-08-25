@@ -1,10 +1,5 @@
 package com.hw.chineseLearn.adapter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -16,13 +11,19 @@ import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import at.technikum.mti.fancycoverflow.FancyCoverFlow;
-import at.technikum.mti.fancycoverflow.FancyCoverFlowAdapter;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.bean.Unit;
 import com.util.tool.UiUtil;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import at.technikum.mti.fancycoverflow.FancyCoverFlow;
+import at.technikum.mti.fancycoverflow.FancyCoverFlowAdapter;
 
 public class GalleryAdapter extends FancyCoverFlowAdapter {
 	Context mContext;
@@ -159,6 +160,7 @@ public class GalleryAdapter extends FancyCoverFlowAdapter {
 			}
 		}
 		//分割去掉数据库中特殊字符
+		//todo 死数据需要改
 			String description = descList.get(position);
 			String[] split = description.split("!@@@!");
 			String desc = "";
@@ -173,8 +175,8 @@ public class GalleryAdapter extends FancyCoverFlowAdapter {
 				
 				desc+=str+"\n";
 			}
-			String ofNumber=(position+1)+"of"+UiUtil.getListFormString(unit.getLessonList()).length;
-			holder.tv_title.setText("LESSON"+" "+ofNumber);
+			String ofNumber=(position+1)+mContext.getString(R.string.learn_of)+UiUtil.getListFormString(unit.getLessonList()).length;
+			holder.tv_title.setText(mContext.getString(R.string.learn_lesson)+" "+ofNumber);
 			holder.tv_description.setText(desc);
 		return reusableView;
 	}

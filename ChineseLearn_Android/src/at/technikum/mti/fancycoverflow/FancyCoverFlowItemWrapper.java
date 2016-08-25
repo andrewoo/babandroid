@@ -17,12 +17,19 @@
 
 package at.technikum.mti.fancycoverflow;
 
-import android.*;
-import android.R;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.LinearGradient;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Shader;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -168,7 +175,7 @@ class FancyCoverFlowItemWrapper extends ViewGroup {
             int measuredHeight = this.getMeasuredHeight();
 
             if (this.wrappedViewBitmap == null || this.wrappedViewBitmap.getWidth() != measuredWidth || this.wrappedViewBitmap.getHeight() != measuredHeight) {
-                this.wrappedViewBitmap = Bitmap.createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888);
+                this.wrappedViewBitmap = Bitmap.createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_4444);
                 this.wrappedViewDrawingCanvas = new Canvas(this.wrappedViewBitmap);
             }
 

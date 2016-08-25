@@ -87,7 +87,7 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:text="child;kid"
+                    android:text="@string/discover_pytone_exercise_child_kid"
                     android:textColor="@color/mid_grey"
                     android:textSize="@dimen/text_s12" />
             </RelativeLayout>
@@ -110,7 +110,7 @@
         android:gravity="center"
         android:padding="10dip"
         android:singleLine="true"
-        android:text="CONTINUE"
+        android:text="@string/learn_flash_card_result_continue"
         android:textColor="@color/white"
         android:textSize="@dimen/text_s18" />
 

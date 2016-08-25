@@ -122,7 +122,7 @@ public class LearnFragment extends BaseFragment implements OnClickListener {
 
 		try {
 			TbSetting tbSetting = (TbSetting) MyDao.getDaoMy(TbSetting.class)
-					.queryForId("Unlock");
+					.queryForId(getString(R.string.learn_unlock));
 			if (tbSetting != null) {
 				unLock = tbSetting.getSettingValue();
 			}

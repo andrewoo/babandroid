@@ -84,7 +84,7 @@ public class LearnReViewActivity extends BaseActivity {
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Babble Review", View.GONE, View.GONE, 0);
+				getString(R.string.learn_babble_review), View.GONE, View.GONE, 0);
 		//btn_go_circle
 		btn_go_circle = (ImageView) contentView.findViewById(R.id.btn_go_circle);
 

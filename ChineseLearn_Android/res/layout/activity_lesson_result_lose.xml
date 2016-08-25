@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="You losed all"
+                android:text="@string/learn_lesson_result_lose_all"
                 android:textColor="@color/deep_grey"
                 android:textSize="@dimen/text_s38" />
 
@@ -59,7 +59,7 @@
             android:gravity="center"
             android:padding="10dip"
             android:singleLine="true"
-            android:text="REDO"
+            android:text="@string/learn_flash_card_result_redo"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s18" />
 
@@ -80,7 +80,7 @@
             android:gravity="center"
             android:padding="10dip"
             android:singleLine="true"
-            android:text="CONTINUE"
+            android:text="@string/learn_flash_card_result_continue"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s18" />
     </LinearLayout>

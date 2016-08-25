@@ -1,16 +1,5 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,23 +7,17 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -42,10 +25,10 @@ import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
-import com.hw.chineseLearn.dao.bean.LGModelWord;
-import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.LGCharacterPart;
+import com.hw.chineseLearn.dao.bean.LGModelWord;
+import com.hw.chineseLearn.dao.bean.LGModelWord.SubLGModel;
 import com.hw.chineseLearn.dao.bean.LGModel_Sentence_010;
 import com.hw.chineseLearn.dao.bean.LGModel_Sentence_020;
 import com.hw.chineseLearn.dao.bean.LGModel_Sentence_030;
@@ -59,14 +42,20 @@ import com.hw.chineseLearn.dao.bean.LGModel_Word_060;
 import com.hw.chineseLearn.dao.bean.LGSentence;
 import com.hw.chineseLearn.dao.bean.LGWord;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
-import com.hw.chineseLearn.dao.bean.TbMyCharacter;
-import com.hw.chineseLearn.dao.bean.TbMySentence;
-import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.util.tool.MediaPlayerHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 课程练习页面
@@ -276,7 +265,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 		txt_lesson_score.setText("" + score);
 		exerciseIndex = 0;// 第一道题
 
-		panderLife = 5;
+		panderLife = 20;
 		panderView.clear();
 		lin_pander_life.removeAllViews();
 		for (int i = 0; i < panderLife; i++) {
@@ -467,11 +456,11 @@ public class LessonTestOutTestActivity extends BaseActivity {
 		Button ok = (Button) view.findViewById(R.id.commit_btn);
 		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
 
-		title.setText("Quit?");
-		content.setText("Are you sure you what to quit? You will lose all progress in this test");
+		title.setText(getString(R.string.dialog_quit_title));
+		content.setText(getString(R.string.dialog_quit_text));
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
-		ok.setText("Ok");
-		cancel.setText("Cancel");
+		ok.setText(getString(R.string.dialog_quit_ok));
+		cancel.setText(getString(R.string.dialog_quit_cancel));
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -544,9 +533,9 @@ public class LessonTestOutTestActivity extends BaseActivity {
 		}
 
 		if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
-			btn_next.setText("FINISH");
+			btn_next.setText(getString(R.string.button_finish));
 		} else {
-			btn_next.setText("CONTINUE");
+			btn_next.setText(getString(R.string.button_continue));
 		}
 
 		if (builder == null) {
@@ -1188,7 +1177,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 					+ lgWordAnswer.getPinyin();
 			modelWord.setAnswerText(left + "=" + right);// 拿到答案文本
 
-			question = "Select" + "\"" + lgWord1.getTranslations() + "\"";
+			question = getString(R.string.learn_select)+" " + "\"" + lgWord1.getTranslations() + "\"";
 			modelWord.setTitle(question);// 拿到title
 			String[] splitWordId = UiUtil.getListFormString(word_020
 					.getOptions());
@@ -1232,7 +1221,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 			// modelWord.setVoicePath(dirCode);
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			String title = lgWord.getTranslations();
-			modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title
+			modelWord.setTitle(getString(R.string.learn_select)+" " + "\"" + title + "\"");// 拿到title
 			modelWord.setLessonId(lessonId);// 拿到lessonId
 			int answer = Word_010.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案

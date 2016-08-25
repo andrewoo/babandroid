@@ -1,17 +1,7 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -25,22 +15,18 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.BaseFragment;
 import com.hw.chineseLearn.base.CustomApplication;
-import com.hw.chineseLearn.base.MainActivity;
 import com.hw.chineseLearn.dao.MyDao;
 import com.hw.chineseLearn.dao.bean.LGCharacter;
 import com.hw.chineseLearn.dao.bean.LGCharacterPart;
@@ -63,9 +49,17 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.j256.ormlite.dao.Dao;
-import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * 课程复习练习页面
@@ -530,11 +524,11 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 		Button ok = (Button) view.findViewById(R.id.commit_btn);
 		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
 
-		title.setText("Quit?");
-		content.setText("Are you sure you what to quit? You will lose all progress in this lesson");
+		title.setText(getString(R.string.dialog_quit_title));
+		content.setText(getString(R.string.dialog_quit_text));
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
-		ok.setText("Ok");
-		cancel.setText("Cancel");
+		ok.setText(getString(R.string.dialog_quit_ok));
+		cancel.setText(getString(R.string.dialog_quit_cancel));
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -607,9 +601,9 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 		}
 
 		if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
-			btn_next.setText("FINISH");
+			btn_next.setText(getString(R.string.button_finish));
 		} else {
-			btn_next.setText("CONTINUE");
+			btn_next.setText(getString(R.string.button_continue));
 		}
 
 		if (builder == null) {
@@ -1256,7 +1250,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 					+ lgWordAnswer.getPinyin();
 			modelWord.setAnswerText(left + "=" + right);// 拿到答案文本
 
-			question = "Select" + "\"" + lgWord1.getTranslations() + "\"";
+			question = getString(R.string.learn_select)+" " + "\"" + lgWord1.getTranslations() + "\"";
 			modelWord.setTitle(question);// 拿到title
 			String[] splitWordId = UiUtil.getListFormString(word_020
 					.getOptions());
@@ -1300,7 +1294,7 @@ public class LessonReviewExerciseActivity extends BaseActivity {
 			// modelWord.setVoicePath(dirCode);
 			modelWord.setWordId(lgTableId);// 拿到wordId
 			String title = lgWord.getTranslations();
-			modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title
+			modelWord.setTitle(getString(R.string.learn_select)+" " + "\"" + title + "\"");// 拿到title
 			modelWord.setLessonId(lessonId);// 拿到lessonId
 			int answer = Word_010.getAnswer();
 			modelWord.setAnswer(answer);// 拿到答案

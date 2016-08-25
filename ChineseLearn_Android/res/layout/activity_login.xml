@@ -39,7 +39,7 @@
                 android:layout_marginLeft="16dp"
                 android:background="@null"
                 android:padding="5dip"
-                android:text="Email"
+                android:text="@string/tabme_login_email"
                 android:textColor="@color/floralwhite"
                 android:textSize="14sp"
                 android:visibility="invisible" />
@@ -51,7 +51,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:background="@null"
-                android:hint="Email"
+                android:hint="@string/tabme_login_email"
                 android:imeOptions="actionNext"
                 android:padding="5dip"
                 android:singleLine="true"
@@ -74,7 +74,7 @@
                 android:layout_marginLeft="16dp"
                 android:background="@null"
                 android:padding="5dip"
-                android:text="Password"
+                android:text="@string/tabme_login_password"
                 android:textColor="@color/floralwhite"
                 android:textSize="14sp"
                 android:visibility="invisible" />
@@ -87,7 +87,7 @@
                 android:layout_marginRight="16dp"
                 android:background="@null"
                 android:drawableRight="@drawable/viewpassword"
-                android:hint="Password"
+                android:hint="@string/tabme_login_password"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:padding="5dip"
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:text="Password you entered is incorrect" 
+                android:text="@string/tabme_login_password_desc"
                 android:textColor="@color/red"
                 android:textSize="14sp"
                 android:visibility="invisible"
@@ -136,7 +136,7 @@
                     android:gravity="center"
                     android:padding="10dip"
                     android:singleLine="true"
-                    android:text="LOG IN "
+                    android:text="@string/tabme_login_login"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_s15"
                     android:textStyle="bold" />
@@ -153,7 +153,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="Sign Up Now"
+                    android:text="@string/tabme_login_sign_up_now"
                     android:textColor="@color/floralwhite"
                     android:textSize="@dimen/text_s15" />
 
@@ -164,7 +164,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="right"
                     android:paddingTop="10dp"
-                    android:text="Forgot Password"
+                    android:text="@string/tabme_login_forgot_password"
                     android:textColor="@color/floralwhite"
                     android:textSize="@dimen/text_s15" />
             </RelativeLayout>

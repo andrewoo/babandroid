@@ -44,7 +44,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Forgot Password"
+                    android:text="@string/tabme_forgot_password"
                     android:textColor="@color/floralwhite"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Enter your email address.you will receive a confirmation email with instruction to reset your password "
+                android:text="@string/tabme_forgot_desc"
                 android:textColor="@color/floralwhite"
                 android:textSize="14sp" />
 
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
                 android:background="@null"
-                android:hint="Emial"
+                android:hint="@string/tabme_forgot_email"
                 android:imeOptions="actionNext"
                 android:padding="5dip"
                 android:singleLine="true"
@@ -98,7 +98,7 @@
                 android:gravity="center"
                 android:padding="10dip"
                 android:singleLine="true"
-                android:text="Next"
+                android:text="@string/tabme_next"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s15"
                 android:textStyle="bold" />

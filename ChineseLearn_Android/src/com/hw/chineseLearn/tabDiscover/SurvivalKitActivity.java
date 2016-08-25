@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.adapter.SurvivalKitAdapter;
@@ -149,7 +148,7 @@ public class SurvivalKitActivity extends BaseActivity {
 	 */
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Survival Kit", View.GONE, View.GONE, 0);
+				getString(R.string.discover_survival_kit), View.GONE, View.GONE, 0);
 		lv_survival = (ListView) contentView.findViewById(R.id.lv_survival);
 		lv_survival.setOnItemClickListener(onItemclickListener);
 		initDBDatas();
@@ -459,7 +458,8 @@ public class SurvivalKitActivity extends BaseActivity {
 						SurvivalKitActivity.this.runOnUiThread(new Runnable() {
 							
 							@Override
-							public void run() {Toast.makeText(SurvivalKitActivity.this, "Download failure", Toast.LENGTH_SHORT).show();
+							public void run() {
+//								Toast.makeText(SurvivalKitActivity.this, "Download failure", Toast.LENGTH_SHORT).show();
 							}
 						});
 					}

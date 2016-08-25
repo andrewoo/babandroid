@@ -1,9 +1,5 @@
 package com.hw.chineseLearn.base;
 
-import java.util.List;
-
-import org.apache.http.cookie.Cookie;
-
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -37,6 +33,10 @@ import com.hw.chineseLearn.interfaces.RestClient;
 import com.util.tool.SystemHelper;
 import com.util.weight.MyDialog;
 import com.util.weight.MyDialog.MyDialogListener;
+
+import org.apache.http.cookie.Cookie;
+
+import java.util.List;
 
 /**
  * 网页跳转
@@ -332,22 +332,21 @@ public class MainWebActivity extends BaseActivity {
 	/**
 	 * 弹出设置网络连接的提示
 	 * 
-	 * @param activity
 	 */
 	public void createSetNetworkDialog() {
 		if (dialog == null) {
 			dialog = new MyDialog(MainWebActivity.this);
 		}
 
-		dialog.setTitle("Please set network");
-		dialog.setMessage("network is avliable？");
-		dialog.setOnButtonGroupClick("Cancel", new MyDialogListener() {
+		dialog.setTitle(getString(R.string.dialog_network_title));
+		dialog.setMessage(getString(R.string.dialog_network_message));
+		dialog.setOnButtonGroupClick(getString(R.string.dialog_network_cancel), new MyDialogListener() {
 			@Override
 			public void onClick() {
 				CustomApplication.app.finishActivity(MainWebActivity.this);
 				dialog.dismiss();
 			}
-		}, "Set", new MyDialogListener() {
+		}, getString(R.string.dialog_network_set), new MyDialogListener() {
 			@Override
 			public void onClick() {
 

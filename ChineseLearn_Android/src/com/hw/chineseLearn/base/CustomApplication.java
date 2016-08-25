@@ -1,10 +1,5 @@
 package com.hw.chineseLearn.base;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
@@ -22,9 +17,13 @@ import com.hw.chineseLearn.dao.bean.Unit;
 import com.hw.chineseLearn.db.DatabaseHelper;
 import com.hw.chineseLearn.db.SQLConnection;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
-import com.util.tool.ImageLoader;
 import com.util.tool.SharedPreferencesUtil;
 import com.util.tool.UiUtil;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 public class CustomApplication extends Application {
 	private String TAG = "CustomApplication";
@@ -252,7 +251,12 @@ public class CustomApplication extends Application {
 			}
 			activityStack.clear();
 		}
+	}
 
+	public String getAppLanguage(){
+
+		String language = getResources().getConfiguration().locale.getLanguage();
+		return language;
 	}
 
 	/**

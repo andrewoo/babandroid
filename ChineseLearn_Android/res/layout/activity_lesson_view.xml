@@ -43,7 +43,7 @@
             android:background="@color/chinese_skill_lOGIN_BULE"
             android:gravity="center"
             android:padding="15dp"
-            android:text="START"
+            android:text="@string/learn_lesson_view_start"
             android:textColor="@color/floralwhite"
             android:textSize="@dimen/text_s18" />
 
@@ -54,7 +54,7 @@
             android:background="@color/chinese_skill_green"
             android:gravity="center"
             android:padding="15dp"
-            android:text="REVIEW"
+            android:text="@string/learn_lesson_view_review"
             android:textColor="@color/floralwhite"
             android:textSize="@dimen/text_s18" />
 
@@ -65,7 +65,7 @@
             android:background="@color/chinese_skill_locked_grey"
             android:gravity="center"
             android:padding="15dp"
-            android:text="LOCKED"
+            android:text="@string/learn_lesson_view_locked"
             android:textColor="@color/floralwhite"
             android:textSize="@dimen/text_s18" />
     </RelativeLayout>

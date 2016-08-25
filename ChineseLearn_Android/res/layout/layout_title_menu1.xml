@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Display:"
+                android:text="@string/learn_display"
                 android:textColor="@color/deep_grey"
                 android:textSize="@dimen/text_s12" />
 
@@ -64,7 +64,7 @@
                     android:checked="true"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="Chinese"
+                    android:text="@string/learn_chinese"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
 
@@ -77,7 +77,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="Settings"
+                    android:text="@string/learn_settings"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
 
@@ -112,7 +112,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Default number:"
+                    android:text="@string/learn_default_number"
                     android:textColor="@color/deep_grey"
                     android:textSize="@dimen/text_s12" />
 
@@ -163,7 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Sounds auto play:"
+                    android:text="@string/learn_sounds_auto_play"
                     android:textColor="@color/deep_grey"
                     android:textSize="@dimen/text_s12" />
 
@@ -214,7 +214,7 @@
                     android:checked="false"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="Character"
+                    android:text="@string/learn_character"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
 
@@ -229,7 +229,7 @@
                     android:checked="false"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="Word"
+                    android:text="@string/learn_word"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
 
@@ -244,7 +244,7 @@
                     android:checked="false"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="Sentence"
+                    android:text="@string/learn_sentence"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
             </LinearLayout>

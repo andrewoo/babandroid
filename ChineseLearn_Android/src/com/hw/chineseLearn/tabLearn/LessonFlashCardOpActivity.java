@@ -134,7 +134,7 @@ public class LessonFlashCardOpActivity extends BaseActivity implements
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE,
-				R.drawable.btn_selector_top_left_white, "FlashCard", View.GONE,
+				R.drawable.btn_selector_top_left_white, getString(R.string.learn_flash_card), View.GONE,
 				View.VISIBLE, R.drawable.img_setting_white);
 		lin_1 = (LinearLayout) contentView.findViewById(R.id.lin_1);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

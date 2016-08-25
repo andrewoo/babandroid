@@ -155,7 +155,7 @@ public class LessonReViewCharacterActivity extends BaseActivity {
     public void init() {
 
         setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-                "Character Review", View.GONE, View.VISIBLE,
+                getString(R.string.learn_character_review), View.GONE, View.VISIBLE,
                 R.drawable.revie_pen);
         rel_mizige = (RelativeLayout) contentView.findViewById(R.id.rel_mizige);
 

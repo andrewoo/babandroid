@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Display in:"
+                android:text="@string/learn_display"
                 android:textColor="@color/deep_grey"
                 android:textSize="@dimen/text_s12" />
 
@@ -62,7 +62,7 @@
                     android:checked="true"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="CN_EG"
+                    android:text="@string/learn_CN_EG"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
 
@@ -75,7 +75,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="CN_aa"
+                    android:text="@string/learn_CN_aa"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
 
@@ -88,7 +88,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="EN_aa"
+                    android:text="@string/learn_EN_aa"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
             </RadioGroup>
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Font Size:"
+                android:text="@string/learn_font_size"
                 android:textColor="@color/deep_grey"
                 android:textSize="@dimen/text_s12" />
 
@@ -130,7 +130,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="Small"
+                    android:text="@string/learn_small"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
 
@@ -144,7 +144,7 @@
                     android:checked="true"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="Medium"
+                    android:text="@string/learn_medium"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
 
@@ -157,7 +157,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="Large"
+                    android:text="@string/learn_large"
                     android:textColor="@drawable/text_style_grey_to_white"
                     android:textSize="@dimen/text_s10" />
             </RadioGroup>

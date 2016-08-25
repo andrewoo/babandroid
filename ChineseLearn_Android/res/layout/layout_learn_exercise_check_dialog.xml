@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dip"
-                android:text="You are correct"
+                android:text="@string/learn_exercise_you_are_correct"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s18"
                 android:textStyle="bold" />
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dip"
-                android:text="color = 颜色"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_s14" />
         </LinearLayout>
@@ -62,7 +62,7 @@
         android:background="@color/chinese_skill_blue"
         android:gravity="center"
         android:padding="10dip"
-        android:text="CONTINUE"
+        android:text="@string/button_continue"
         android:textColor="@color/white"
         android:textSize="@dimen/text_s18" />
 

@@ -34,7 +34,7 @@
                     android:id="@+id/text_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sign in/Sign up"
+                    android:text="@string/tabme_sign_in_up"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -288,7 +288,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="Download Mererials"
+                        android:text="@string/tabme_download_materials"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -314,7 +314,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="Like us on Facebook"
+                        android:text="@string/tabme_like_us"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -339,7 +339,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="Rate this app"
+                        android:text="@string/tabme_download_rate_this_app"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -364,7 +364,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="Reminders"
+                        android:text="@string/tabme_reminders"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_s14" />
 

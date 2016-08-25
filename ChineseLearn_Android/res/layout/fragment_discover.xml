@@ -42,7 +42,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/img_survival_kit"
-                    android:text="Survival Kit"
+                    android:text="@string/discover_survival_kit"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/text_s14" />
 
@@ -86,7 +86,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/img_pinyin_chart"
-                    android:text="Pinyin Chart"
+                    android:text="@string/tabme_pinyin_chart"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/text_s14" />
 
@@ -125,7 +125,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/img_pinyin_tone"
-                    android:text="Pinyin Tone"
+                    android:text="@string/title_pinyin_tone"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/text_s14" />
 
@@ -163,7 +163,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/img_strokes_order"
-                    android:text="Strokes Order"
+                    android:text="@string/discover_strokes_order"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/text_s14" />
 
@@ -207,7 +207,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/img_fluent_now"
-                    android:text="Fluent Now"
+                    android:text="@string/title_fluent_now"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/text_s14" />
 

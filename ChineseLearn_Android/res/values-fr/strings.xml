@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_pic_util">PicUtilActivity</string>
+    <string name="title_activity_add_position">AddPositionActivity</string>
+
+    <string name="pull_to_refresh_footer_release_label">""</string>
+    <string name="pull_to_refresh_footer_pull_label">""</string>
+    <string name="pull_to_refresh_footer_refreshing_label">""</string>
+    <string name="chatcontacts_item_intro">&#040;%1$s&#041;</string>
+
+
+    <string-array name="chat_message_icon_array">
+        <item>@drawable/ic_chat_push</item>
+        <item>@drawable/ic_chat_system</item>
+    </string-array>
+
+    <string name="click_more">点击查看详情</string>
+    <string name="chatting_push">新推荐</string>
+    <string name="chatting_system">系统消息</string>
+    <string name="person_add_contact">添加联系人</string>
+    <string name="person_del_contact">删除联系人</string>
+    <string name="search_contacts_hint">手机号/有通告ID</string>
+    <string name="search_contacts_cancel">取消</string>
+    <string name="search_contacts_list_empty_hint">搜索联系人</string>
+    <string name="conversation_list_empty">暂无聊天信息</string>
+    <string name="chat_create_group_ok_format">确定&#040;%1$s&#041;</string>
+    <string name="chat_push_msg">新推荐</string>
+    <string name="chat_push_msg_format">新推荐&#040;%1$d&#041;</string>
+    <string name="chat_push_msg_format_moredata">新推荐...</string>
+    <string name="local_picture_not_found_toast">暂无外部存储，某些本地图片不可预览</string>
+    <string name="yesterday">昨天</string>
+    <string name="before_dawn">凌晨</string>
+    <string name="morning">早上</string>
+    <string name="afternoon">下午</string>
+    <string name="night">晚上</string>
+
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="second">秒</string>
+
+
+    <string name="app_name">BabbleApp</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="home_nav01">Découvrir</string>
+    <string name="home_nav02">Apprendre</string>
+    <string name="home_nav03">Moi</string>
+    <string name="home_nav04">Plus d\&apos;informations</string>
+    <string name="pemembered_perfectly">Appris par coeur&#x000A;Parfait</string>
+    <string name="monday">Lundi</string>
+    <string name="tuesday">Mardi</string>
+    <string name="wednesday">Mercredi</string>
+    <string name="thursday">Jeudi</string>
+    <string name="friday">Vendredi</string>
+    <string name="saturday">Samedi</string>
+    <string name="sunday">Dimanche</string>
+    <string name="str_copy">copier</string>
+    <string name="str_delete">supprimer</string>
+
+    //------------------tab--------------------------------
+
+    <string name="tab_learn">apprendre</string>
+    <string name="tab_complete">Compléter</string>
+    <string name="tab_discover">Découvrir</string>
+    <string name="tab_me">Moi</string>
+
+    //------------------title--------------------------------
+    <string name="title_addlearn">Ajouer des cours</string>
+    <string name="title_title">Titre</string>
+    <string name="title_fluent_now">Niveau intermédiaire</string>
+    <string name="title_pinyin_exercise">Exercices de Pinyin</string>
+    <string name="title_pinyin_tone">Tons du Pinyin</string>
+    //------------------dialog--------------------------------
+    <string name="dialog_network_title">Veuillez connecter à Internet</string>
+    <string name="dialog_network_message">Problème de connexion à Internet?</string>
+    <string name="dialog_network_cancel">Non</string>
+    <string name="dialog_network_set">Paramétrer</string>
+    <string name="dialog_quit_title">Voulez-vous quitter?</string>
+    <string name="dialog_quit_text">Voulez-vous vraiment quitter maintenant? Les notes de ce cours ne seront pas enregistrées.</string>
+    <string name="dialog_quit_ok">OUI</string>
+    <string name="dialog_quit_cancel">NON</string>
+
+   //------------------button--------------------------------
+    <string name="button_finish">Finir</string>
+    <string name="button_continue">Continuer</string>
+
+    //------------------toast--------------------------------
+    <string name="toast_network">Probléme de connexion à Internet</string>
+
+    //------------------discover--------------------------------
+
+    <string name="discover_survival_kit">Kit de survie</string>
+    <string name="discover_strokes_order">Ordre de trait</string>
+
+    //------------------learn-----------------------------------
+    <string name="learn_unlock">Débloqué</string>
+    <string name="learn_Testout">Test</string>
+
+    <string name="learn_babble_review">Babble Révision</string>
+    <string name="learn_select">Sélectionner</string>
+    <string name="learn_flash_card">Cartes-images</string>
+    <string name="learn_lesson_review">Révision des cours</string>
+    <string name="learn_character_review">Révision des caractères</string>
+    <string name="learn_sentence_review">Révision des phrases</string>
+    <string name="learn_word_review">Révision des mots</string>
+    <string name="learn_testOut">Test</string>
+    <string name="learn_testout_congratu">Félicitations</string>
+    <string name="learn_testout_congratu_text">Vous avez réussi le test</string>
+    <string name="learn_testout_congratu_ok">OK</string>
+
+    //------------------tabme-----------------------------------
+    <string name="tabme_downLoad">Télécharger</string>
+    <string name="tabme_like_us">Suivez-nous sur Facebook</string>
+    <string name="tabme_like">LIKEZ-NOUS</string>
+    <string name="tabme_sign_in_up">Connecter/S\&apos;inscrire</string>
+    <string name="tabme_logout">Déconnecter</string>
+    <string name="tabme_sure">Voulez-vous vraiment déconnecter?</string>
+    <string name="tabme_ok">OUI</string>
+    <string name="tabme_cancel">NON</string>
+
+    <string name="tabme_least">au moins 6 caractère</string>
+    <string name="tabme_consistent">Les deux de mots de passe ne sont pas pareils, veuillez ressaisir.</string>
+    <string name="tabme_change_failed">Problème de changement de mot de passe</string>
+    <string name="tabme_network_error">problème de connexion à Internet</string>
+    <string name="tabme_correct_email">Veuillez entrer la bonne forme de votre adresse mail</string>
+    <string name="tabme_two_password">Les deux de mots de passe ne sont pas pareils, veuillez ressaisir</string>
+
+    <string name="tabme_input_old_password">Veuillez entrer votre ancien mot de passe</string>
+    <string name="tabme_input_new_password">Veuillez entrer votre nouveau mot de passe</string>
+    <string name="tabme_email">Veuillez entrer votre adresse mail</string>
+    <string name="tabme_input_password">Veuillez entrer votre mot de passe</string>
+
+
+    <string name="tabme_login_fail">Problème de connexion</string>
+    <string name="tabme_register_failed">Problème d\&apos;inscription</string>
+
+    <string name="tabme_settings">Paramètres</string>
+    <string name="tabme_reminders">Mémentos</string>
+    //------tabme---login----xml------
+    <string name="tabme_login_email">Mail</string>
+    <string name="tabme_login_password">Mot de passe</string>
+    <string name="tabme_login_login">Connecter</string>
+    <string name="tabme_login_sign_up_now">S\&apos;inscrire maintenant</string>
+    <string name="tabme_login_forgot_password">Oublier le mot de passe</string>
+    <string name="tabme_login_password_desc">Le mot de passe que vous avez saisi n\&apos;est pas correct.</string>
+
+    //------tabme---account2----xml------
+    <string name="tabme_change_password">Changer mot de passe</string>
+    <string name="tabme_upload_progress">Télécharger les notes</string>
+    <string name="tabme_reset_progress">Réinitialiser les notes</string>
+    <string name="tabme_login_out">Déconnecter</string>
+    //------tabme---psw2----xml------
+    <string name="tabme_reset_password">Changer mot de passe</string>
+    <string name="tabme_new_password">Nouveau mot de passe</string>
+    <string name="tabme_submit">OK</string>
+    <string name="tabme_old_password">Ancien mot de passe</string>
+    <string name="tabme_re_new_password">Ressaisir le nouveau mot de passe</string>
+    //------tabme---forgot-psw----xml-----
+    <string name="tabme_forgot_password">Oublier le mot de passe</string>
+    <string name="tabme_forgot_desc">Entrez votre adresse mail, vous allez recevoir un mail de confirmation avec des étapes pour changer votre mot de passe </string>
+    <string name="tabme_forgot_email">Mail</string>
+    <string name="tabme_next">Suivant</string>
+
+    //------learn---review----xml------
+    <string name="learn_characters">Caractères</string>
+    <string name="learn_words">Mots</string>
+    <string name="learn_sentences">Phrases</string>
+    //------learn---lesson-exercise----xml------
+    <string name="learn_score">note</string>
+    <string name="learn_check">Vérifier</string>
+
+    <string name="learn_flash_card_remembered_perfectly">Appris par coeur&#x000A;Parfait</string>
+    <string name="learn_flash_card_remembered">Appris par coeur</string>
+    <string name="learn_flash_card_barely">À peine appris par coeur</string>
+    <string name="learn_flash_card_almost_remembered">Presque tout appris par coeur</string>
+    <string name="learn_flash_card_forgot">Oublier</string>
+    <string name="learn_flash_card_donot">Je ne sais pas</string><!--&apos;-->
+
+    //------learn---lesson-exercise--result--xml------
+    <string name="learn_flash_card_result_redo">Refaire</string>
+    <string name="learn_flash_card_result_continue">Continuer</string>
+    <string name="learn_lesson_result_defeat">Félicitations!Vous êtes plus fort(e) que </string>
+    <string name="learn_lesson_result_babbleapp_learners">%des babbleApp utilisateurs!</string>
+    <string name="learn_lesson_result_right">Correct</string>
+    <string name="learn_lesson_result_wrong">Faux</string>
+    <string name="learn_lesson_result_accuracy">Précision</string>
+    <string name="learn_lesson_result_scores">notes</string>
+
+    <string name="learn_lesson_result_lose_all">Vous êtes perdu(e)</string>
+    <string name="learn_lesson_result_rock">Vous avez réussi!</string>
+    <string name="learn_lesson_result_sorry">Désolé~</string>
+    <string name="learn_lesson_testout_fail">Échec~</string>
+
+    <string name="learn_lesson_view_start">Commencer</string>
+    <string name="learn_lesson_view_review">Révision</string>
+    <string name="learn_lesson_view_locked">Bloqué</string>
+
+    //------tabme-------------register--------xml------
+    <string name="tabme_register_email">Mail</string>
+    <string name="tabme_register_your_name">Votre nom</string>
+    <string name="tabme_register_password">Mot de passe</string>
+    <string name="tabme_register_confirm_password">Confirmer le mot de passe</string>
+    <string name="tabme_register_forgot_password">Oublier le mot de passe</string>
+
+    <string name="setting_sound_effect">Effets sonores</string>
+    <string name="setting_character_test_model">modèle de test de caractère</string>
+    <string name="setting_check_tone_when_test">Vérifier les tons</string>
+    <string name="setting_chinese_display">Démonstration</string>
+    <string name="setting_character">Caractère</string>
+    <string name="setting_pinyin">Pinyin</string>
+    <string name="setting_both">Touts les deux</string>
+
+    <string name="discover_pytone_exercise_child_kid">enfant;enfants</string>
+
+    <string name="setting_the_spring_festival_theme">Sujet de la fête de Printemps</string>
+    //------tabme--------down---reminder--------xml------
+    <string name="tabme_reminder_learn">Quels jours aimeriez-voue êtes rappelé à apprendre?</string>
+    <string name="tabme_reminder_what_time">A quelle heure dans la journée?</string>
+    <string name="tabme_reminder_remembered">Appris</string>
+    <string name="tabme_down_offline_desc">Télécharger tous les cours pour apprendre par tout sans connexion!</string>
+    <string name="tabme_down_the_rest">Télécharger tous les documents</string>
+
+    <string name="tabme_testout_unlock">Si vous réussisez le test, tous les sujets serons débloqués. Vous pouvez étudier ce que vous voulez.</string>
+    <string name="tabme_testout_TEST_NOW">Faire le text maintenant</string>
+
+    <string name="tabme_pinyin_chart">Table de Pinyin</string>
+
+    <string name="tabme_download_materials">Télécharger des documents</string>
+    <string name="tabme_download_rate_this_app">Évaluer cette app</string>
+    <string name="learn_exercise_you_are_correct">Vous êtes correct(e)</string>
+
+    <string name="learn_display">Démonstration:</string>
+    <string name="learn_chinese">Chinois</string>
+    <string name="learn_settings">Paramètres</string>
+    <string name="learn_default_number">Default number:</string>
+    <string name="learn_sounds_auto_play">Lecture automatique des enregistrements:</string>
+    <string name="learn_focused_on">Focaliser sur:</string>
+    <string name="learn_character">Caractère</string>
+    <string name="learn_word">Mot</string>
+    <string name="learn_sentence">Phrase</string>
+
+    <string name="learn_CN_EG">CN_FR</string>
+    <string name="learn_CN_aa">CN_aa</string>
+    <string name="learn_EN_aa">FR_aa</string>
+    <string name="learn_font_size">Taille des caractères:</string>
+    <string name="learn_small">Petit</string>
+    <string name="learn_medium">Intermédiaire</string>
+    <string name="learn_large">Grand</string>
+    <string name="learn_of">de</string>
+    <string name="learn_lesson">Cours</string>
+
+</resources>

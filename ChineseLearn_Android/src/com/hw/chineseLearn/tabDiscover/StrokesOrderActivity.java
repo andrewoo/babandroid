@@ -52,7 +52,7 @@ public class StrokesOrderActivity extends BaseActivity {
 				case FLUSH_UI:
 
 					setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-							"Strokes Order", View.GONE, View.GONE, 0);
+							getString(R.string.discover_strokes_order), View.GONE, View.GONE, 0);
 					expandableListView = (ExpandableListView) contentView
 							.findViewById(R.id.expandableListView);
 					adapter = new MyExpandableListAdapterStrokes(context, charGroupList,

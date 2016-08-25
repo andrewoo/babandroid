@@ -1,11 +1,13 @@
 package com.hw.chineseLearn.interfaces;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.hw.chineseLearn.model.RequestVo;
+import com.util.tool.AppFinal;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -24,15 +26,12 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.hw.chineseLearn.model.RequestVo;
-import com.util.tool.AppFinal;
-import com.util.tool.UiUtil;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -180,7 +179,6 @@ public class NetUtil {
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo workinfo = con.getActiveNetworkInfo();
 		if (workinfo == null || !workinfo.isAvailable()) {
-			UiUtil.showToast(context, "网络连接不可用");
 			return false;
 		}
 		return true;

@@ -77,8 +77,8 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 			break;
 		case R.id.rel_like_us_on_facebook:
 			Intent intentFacebook = new Intent();
-			intentFacebook.putExtra("url", "http://www.baidu.com");
-			intentFacebook.putExtra("title", "Like us on Facebook");
+			intentFacebook.putExtra("url", "http://www.facebook.com");
+			intentFacebook.putExtra("title", getString(R.string.tabme_like_us));
 			intentFacebook.setClass(getActivity(), MainWebActivity.class);
 			startActivity(intentFacebook);
 
@@ -223,7 +223,7 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 					.getValue(AppConstants.LOGIN_USERNAME, "");
 			text_name.setText(emailString);
 		} else {
-			text_name.setText("Sign in/Sign up");
+			text_name.setText(getString(R.string.tabme_sign_in_up));
 		}
 
 	}

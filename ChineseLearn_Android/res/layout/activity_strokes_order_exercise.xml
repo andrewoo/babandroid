@@ -193,7 +193,7 @@
             android:background="@drawable/bg_btn_remembered1"
             android:gravity="center"
             android:lines="1"
-            android:text="Remembered"
+            android:text="@string/tabme_reminder_remembered"
             android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
 
@@ -207,7 +207,7 @@
             android:background="@drawable/bg_btn_remembered_barely"
             android:gravity="center"
             android:lines="2"
-            android:text="Barely Remembered"
+            android:text="@string/learn_flash_card_barely"
             android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
     </LinearLayout>
@@ -231,7 +231,7 @@
             android:background="@drawable/bg_btn_remembered_almost"
             android:gravity="center"
             android:lines="2"
-            android:text="Almost Remembered"
+            android:text="@string/learn_flash_card_almost_remembered"
             android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
 
@@ -246,7 +246,7 @@
             android:background="@drawable/bg_btn_forgot1"
             android:gravity="center"
             android:lines="1"
-            android:text="Forgot"
+            android:text="@string/learn_flash_card_forgot"
             android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
 
@@ -259,7 +259,7 @@
             android:background="@drawable/bg_btn_dont_know"
             android:gravity="center"
             android:lines="2"
-            android:text="Don&apos;t konw"
+            android:text="@string/learn_flash_card_donot"
             android:textColor="@drawable/text_style_grey_to_white"
             android:textSize="@dimen/text_s12" />
     </LinearLayout>

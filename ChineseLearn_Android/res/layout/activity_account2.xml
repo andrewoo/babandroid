@@ -43,7 +43,7 @@
                     android:id="@+id/txt_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sign in/Sign up"
+                    android:text="@string/tabme_sign_in_up"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="Change Password"
+                        android:text="@string/tabme_change_password"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -92,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="Upload Progress"
+                        android:text="@string/tabme_upload_progress"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="Reset Progress"
+                        android:text="@string/tabme_reset_progress"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -139,7 +139,7 @@
                     android:padding="10dip"
                     android:layout_margin="20dp"
                     android:singleLine="true"
-                    android:text="LOGOU OUT "
+                    android:text="@string/tabme_login_out"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_s15"
                     android:textStyle="bold" />

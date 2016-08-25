@@ -1,11 +1,5 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +24,6 @@ import com.hw.chineseLearn.adapter.TestOutGalleryAdapter;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
 import com.hw.chineseLearn.dao.MyDao;
-import com.hw.chineseLearn.dao.bean.Lesson;
 import com.hw.chineseLearn.dao.bean.LessonRepeatRegex;
 import com.hw.chineseLearn.dao.bean.TbLessonMaterialStatus;
 import com.hw.chineseLearn.dao.bean.TbSetting;
@@ -38,6 +31,12 @@ import com.hw.chineseLearn.dao.bean.Unit;
 import com.hw.chineseLearn.model.LearnUnitBaseModel;
 import com.util.tool.UiUtil;
 import com.util.weight.MyGallery;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 /**
  * TestOut页面
@@ -81,7 +80,7 @@ public class LessonTestOutActivity extends BaseActivity implements
 	public void init() {
 
 		setTitle(View.GONE, View.VISIBLE,
-				R.drawable.btn_selector_top_left_white, "TestOut", View.GONE,
+				R.drawable.btn_selector_top_left_white, getString(R.string.learn_testOut), View.GONE,
 				View.GONE, 0);
 
 		LearnUnitBaseModel modelBase1 = new LearnUnitBaseModel();
@@ -292,10 +291,10 @@ public class LessonTestOutActivity extends BaseActivity implements
 		TextView content = (TextView) view.findViewById(R.id.dialog_content);
 		Button ok = (Button) view.findViewById(R.id.commit_btn);
 
-		title.setText("Congratulations");
-		content.setText("You have successfully passed the TestOut!");
+		title.setText(getString(R.string.learn_testout_congratu));
+		content.setText(getString(R.string.learn_testout_congratu_text));
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
-		ok.setText("Ok");
+		ok.setText(getString(R.string.learn_testout_congratu_ok));
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -381,8 +380,8 @@ public class LessonTestOutActivity extends BaseActivity implements
 			}
 		}
 		TbSetting tbSetting = new TbSetting();
-		tbSetting.setSettingName("Unlock");
-		tbSetting.setSettingString("Testout");
+		tbSetting.setSettingName(getString(R.string.learn_unlock));
+		tbSetting.setSettingString(getString(R.string.learn_Testout));
 		tbSetting.setSettingValue(1);
 		try {
 			MyDao.getDaoMy(TbSetting.class).createOrUpdate(tbSetting);

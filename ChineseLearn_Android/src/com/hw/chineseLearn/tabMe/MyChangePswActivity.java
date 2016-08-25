@@ -1,8 +1,5 @@
 package com.hw.chineseLearn.tabMe;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +33,9 @@ import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.util.thread.ThreadWithDialogTask;
-import com.util.tool.Utility;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 修改密码
@@ -182,11 +181,11 @@ public class MyChangePswActivity extends BaseActivity {
 				if (oldPwd.length() < 6 || newPwd.length() < 6
 						|| newCPwd.length() < 6) {
 					Toast.makeText(MyChangePswActivity.this,
-							"at lease 6 characters", Toast.LENGTH_SHORT).show();
+							getString(R.string.tabme_least), Toast.LENGTH_SHORT).show();
 					return;
 				} else if (!newPwd.equals(newCPwd)) {
 					Toast.makeText(MyChangePswActivity.this,
-							"Two passwords are not consistent please re-enter",
+							getString(R.string.tabme_consistent),
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
@@ -235,7 +234,7 @@ public class MyChangePswActivity extends BaseActivity {
 										return;
 									}
 									Toast.makeText(MyChangePswActivity.this,
-											"Changer failed",
+											getString(R.string.tabme_change_failed),
 											Toast.LENGTH_SHORT).show();
 								} catch (JSONException e) {
 									e.printStackTrace();
@@ -245,7 +244,7 @@ public class MyChangePswActivity extends BaseActivity {
 							@Override
 							public void onFailure(HttpException error,
 									String msg) {
-								Toast.makeText(context, "network error",
+								Toast.makeText(context, getString(R.string.tabme_network_error),
 										Toast.LENGTH_SHORT).show();
 							}
 						});
@@ -278,17 +277,17 @@ public class MyChangePswActivity extends BaseActivity {
 		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
 		cancel.setVisibility(View.GONE);
 
-		title.setText("Title");
+		title.setText(getString(R.string.title_title));
 		switch (editId) {
 		// et_old_psw, et_new_psw, et_confirm_new_psw;
 		case R.id.et_old_psw:
-			content.setText("Please input your old password");
+			content.setText(getString(R.string.tabme_input_old_password));
 			break;
 		case R.id.et_new_psw:
-			content.setText("Please input your new password");
+			content.setText(getString(R.string.tabme_input_new_password));
 			break;
 		case R.id.et_confirm_new_psw:
-			content.setText("Please input your new password");
+			content.setText(getString(R.string.tabme_input_new_password));
 			break;
 
 		default:
@@ -296,7 +295,7 @@ public class MyChangePswActivity extends BaseActivity {
 		}
 
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
-		ok.setText("OK");
+		ok.setText(getString(R.string.tabme_ok));
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -325,17 +324,17 @@ public class MyChangePswActivity extends BaseActivity {
 		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
 		cancel.setVisibility(View.GONE);
 
-		title.setText("Title");
+		title.setText(getString(R.string.title_title));
 		switch (editId) {
 		// et_old_psw, et_new_psw, et_confirm_new_psw;
 		case R.id.et_old_psw:
-			content.setText("Please input your old password");
+			content.setText(getString(R.string.tabme_input_old_password));
 			break;
 		case R.id.et_new_psw:
-			content.setText("Please input your new password");
+			content.setText(getString(R.string.tabme_input_new_password));
 			break;
 		case R.id.et_confirm_new_psw:
-			content.setText("Please input your new password");
+			content.setText(getString(R.string.tabme_input_new_password));
 			break;
 
 		default:
@@ -343,7 +342,7 @@ public class MyChangePswActivity extends BaseActivity {
 		}
 
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
-		ok.setText("OK");
+		ok.setText(getString(R.string.tabme_ok));
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

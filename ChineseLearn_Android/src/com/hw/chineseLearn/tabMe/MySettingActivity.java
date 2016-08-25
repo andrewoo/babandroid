@@ -2,7 +2,6 @@ package com.hw.chineseLearn.tabMe;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hw.chineseLearn.R;
@@ -56,7 +54,7 @@ public class MySettingActivity extends BaseActivity {
 	 */
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Settings", View.GONE, View.GONE, 0);
+				getString(R.string.tabme_settings), View.GONE, View.GONE, 0);
 
 //		rel_reminders = (RelativeLayout) findViewById(R.id.rel_reminders);
 //		rel_logout = (RelativeLayout) findViewById(R.id.rel_logout);

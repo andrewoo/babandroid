@@ -189,10 +189,10 @@ public class MyForgotPswActivity extends BaseActivity {
 		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
 		cancel.setVisibility(View.GONE);
 
-		title.setText("Title");
-		content.setText("Please input your email");
+		title.setText(getString(R.string.title_title));
+		content.setText(getString(R.string.tabme_email));
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
-		ok.setText("OK");
+		ok.setText(getString(R.string.tabme_ok));
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

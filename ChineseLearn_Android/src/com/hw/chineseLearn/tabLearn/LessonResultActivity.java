@@ -1,11 +1,6 @@
 package com.hw.chineseLearn.tabLearn;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,11 +22,12 @@ import com.hw.chineseLearn.dao.bean.TbMyCharacter;
 import com.hw.chineseLearn.dao.bean.TbMySentence;
 import com.hw.chineseLearn.dao.bean.TbMyWord;
 import com.hw.chineseLearn.dao.bean.Unit;
-import com.hw.chineseLearn.tabDiscover.FluentAddLessonActivity;
-import com.hw.chineseLearn.tabDiscover.FluentListActivity;
 import com.util.tool.DateUtil;
-import com.util.tool.UiUtil;
 import com.util.weight.RoundProgressBar;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 课程结果页面
@@ -268,8 +264,8 @@ public class LessonResultActivity extends BaseActivity {
 			}).start();
 
 			tv_result = (TextView) contentView.findViewById(R.id.tv_result);
-			tv_result.setText("Congratulations!You defeated " + progressCount
-					+ "%babbleApp learns!");
+			tv_result.setText(getString(R.string.learn_lesson_result_defeat) + progressCount
+					+ getString(R.string.learn_lesson_result_babbleapp_learners));
 
 			try {
 				ArrayList<TbMyCharacter> tbMyCharacterList = (ArrayList<TbMyCharacter>) MyDao

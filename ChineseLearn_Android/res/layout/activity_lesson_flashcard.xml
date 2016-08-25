@@ -71,7 +71,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Characters"
+                        android:text="@string/learn_characters"
                         android:textColor="@color/chinese_skill_red"
                         android:textSize="@dimen/text_s16" />
                 </LinearLayout>
@@ -100,7 +100,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Words"
+                        android:text="@string/learn_words"
                         android:textColor="@color/chinese_skill_green"
                         android:textSize="@dimen/text_s16" />
                 </LinearLayout>
@@ -129,7 +129,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sentences"
+                        android:text="@string/learn_sentences"
                         android:textColor="@color/chinese_skill_yellow"
                         android:textSize="@dimen/text_s16" />
                 </LinearLayout>

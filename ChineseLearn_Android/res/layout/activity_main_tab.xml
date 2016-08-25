@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:focusable="false"
-                android:text="@string/home_nav01"
+                android:text="@string/tab_discover"
                 android:textColor="@drawable/rb_selector_textcolor"
                 android:textSize="@dimen/text_s10" />
         </LinearLayout>
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:focusable="false"
-                android:text="@string/home_nav02"
+                android:text="@string/tab_learn"
                 android:textColor="@drawable/rb_selector_textcolor"
                 android:textSize="@dimen/text_s10" />
         </LinearLayout>
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:focusable="false"
-                android:text="Complete"
+                android:text="@string/tab_complete"
                 android:textColor="@drawable/rb_selector_textcolor"
                 android:textSize="@dimen/text_s10" />
         </LinearLayout>
@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:focusable="false"
-                android:text="@string/home_nav03"
+                android:text="@string/tab_me"
                 android:textColor="@drawable/rb_selector_textcolor"
                 android:textSize="@dimen/text_s10" />
         </LinearLayout>

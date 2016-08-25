@@ -1,10 +1,5 @@
 package com.hw.chineseLearn.tabMe;
 
-import java.io.File;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -23,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
 import com.hw.chineseLearn.R;
 import com.hw.chineseLearn.base.BaseActivity;
 import com.hw.chineseLearn.base.CustomApplication;
@@ -37,6 +31,9 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.Utility;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 注册
@@ -187,13 +184,13 @@ public class MyRegisterActivity extends BaseActivity {
 		pwd = et_pwd.getText().toString().trim();
 		String confirm_pwd = et_confirm_pwd.getText().toString().trim();
 		if(!Utility.isEmail(text)){
-			Toast.makeText(this, "Please enter the correct email format", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getString(R.string.tabme_correct_email), Toast.LENGTH_SHORT).show();
 			return;
 		}else if(pwd.length()<6 || confirm_pwd.length()<6){
-			Toast.makeText(this, "at lease 6 characters", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getString(R.string.tabme_least), Toast.LENGTH_SHORT).show();
 			return;
 		}else if(!pwd.equals(confirm_pwd)){
-			Toast.makeText(this, "Two passwords are not consistent please re-enter", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getString(R.string.tabme_two_password), Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
@@ -248,7 +245,7 @@ public class MyRegisterActivity extends BaseActivity {
 
 		        @Override
 		        public void onFailure(HttpException error, String msg) {
-		        	Toast.makeText(MyRegisterActivity.this, "register failed", Toast.LENGTH_SHORT).show();
+		        	Toast.makeText(MyRegisterActivity.this, getString(R.string.tabme_register_failed), Toast.LENGTH_SHORT).show();
 		        }
 		});
 		

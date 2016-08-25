@@ -65,7 +65,7 @@ public class MySettingRemindersActivity extends BaseActivity implements
      */
     public void init() {
         setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-                "Reminders", View.GONE, View.GONE, 0);
+                getString(R.string.tabme_reminders), View.GONE, View.GONE, 0);
         ll_xingqi_bg = (LinearLayout) findViewById(R.id.ll_xingqi_bg);
         int heightPixels = CustomApplication.app.getScreenSize().heightPixels;
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

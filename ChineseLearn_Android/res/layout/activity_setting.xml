@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:text="Sound Effect"
+                        android:text="@string/setting_sound_effect"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -75,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:text="Character test Model"
+                        android:text="@string/setting_character_test_model"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -108,7 +108,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:text="Check TONE when test"
+                        android:text="@string/setting_check_tone_when_test"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -140,7 +140,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:text="Chinese Display"
+                        android:text="@string/setting_chinese_display"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 
@@ -165,7 +165,7 @@
                             android:button="@null"
                             android:checked="true"
                             android:padding="8dp"
-                            android:text="Character"
+                            android:text="@string/setting_character"
                             android:textColor="@drawable/text_style_grey_to_white"
                             android:textSize="@dimen/text_s10" />
 
@@ -177,7 +177,7 @@
                             android:background="@drawable/btn_radio_selector_right1"
                             android:button="@null"
                             android:padding="8dp"
-                            android:text="Pinyin"
+                            android:text="@string/setting_pinyin"
                             android:textColor="@drawable/text_style_grey_to_white"
                             android:textSize="@dimen/text_s10" />
 
@@ -189,7 +189,7 @@
                             android:background="@drawable/btn_radio_selector_right1"
                             android:button="@null"
                             android:padding="8dp"
-                            android:text="Both"
+                            android:text="@string/setting_both"
                             android:textColor="@drawable/text_style_grey_to_white"
                             android:textSize="@dimen/text_s10" />
                     </RadioGroup>
@@ -212,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:text="The Spring Festival Theme"
+                        android:text="@string/setting_the_spring_festival_theme"
                         android:textColor="@color/deep_grey"
                         android:textSize="@dimen/text_s14" />
 

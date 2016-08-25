@@ -1,8 +1,5 @@
 package com.hw.chineseLearn.base;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -37,6 +34,9 @@ import com.util.thread.ThreadWithDialogTask;
 import com.util.tool.SystemHelper;
 import com.util.tool.UiUtil;
 import com.util.weight.CustomDialog;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements OnClickListener {
 	private String TAG = "==MainActivity==";
@@ -125,8 +125,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			interfaces = new HttpInterfaces(MainActivity.this);
 		}
 
-		setTitle(View.GONE, View.GONE, 0, "Learn", View.GONE, View.VISIBLE,
-				R.drawable.review_button, true);
+		setTitle(View.GONE, View.GONE, 0, getString(R.string.tab_learn), View.GONE, View.VISIBLE, R.drawable.review_button, true);
 
 	}
 
@@ -202,7 +201,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			}
 			View view_title = (View) this.findViewById(R.id.view_title);// rel_title_view
 			view_title.setVisibility(View.VISIBLE);
-			setTitle(View.GONE, View.GONE, 0, "Learn", View.GONE, View.VISIBLE,
+			setTitle(View.GONE, View.GONE, 0,getString(R.string.tab_learn), View.GONE, View.VISIBLE,
 					R.drawable.review_button, true);
 
 			break;
@@ -213,7 +212,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			// learnFragment = new LearnFragment();
 			// navigateToNoAnimWithId(learnFragment, R.id.container2);
 			// }
-			setTitle(View.GONE, View.GONE, 0, "Complete", View.GONE, View.GONE,
+			setTitle(View.GONE, View.GONE, 0, getString(R.string.tab_complete), View.GONE, View.GONE,
 					0, true);
 			break;
 		case R.id.lin_2:
@@ -223,7 +222,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				discoverFragment = new DiscoverFragment();
 				navigateToNoAnimWithId(discoverFragment, R.id.container3);
 			}
-			setTitle(View.GONE, View.GONE, 0, "Discover", View.GONE, View.GONE,
+			setTitle(View.GONE, View.GONE, 0, getString(R.string.tab_discover), View.GONE, View.GONE,
 					R.drawable.img_share, true);
 			break;
 		case R.id.lin_3:
@@ -232,7 +231,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				mineFragment = new MineFragment();
 				navigateToNoAnimWithId(mineFragment, R.id.container4);
 			}
-			setTitle(View.GONE, View.GONE, 0, "Me", View.GONE, View.GONE, 0,
+			setTitle(View.GONE, View.GONE, 0, getString(R.string.tab_me), View.GONE, View.GONE, 0,
 					false);
 			break;
 

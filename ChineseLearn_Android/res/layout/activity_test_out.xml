@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:padding="10dp"
-            android:text="If you pass TEST OUT,all skills will be unlocked.You are able to learn whatever you like."
+            android:text="@string/tabme_testout_unlock"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s12" />
 
@@ -45,7 +45,7 @@
             android:gravity="center"
             android:padding="10dip"
             android:singleLine="true"
-            android:text="TEST NOW"
+            android:text="@string/tabme_testout_TEST_NOW"
             android:textColor="@color/white"
             android:textSize="@dimen/text_s18" />
     </LinearLayout>

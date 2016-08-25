@@ -103,7 +103,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 		setLeftBtnColor(selectIndex);
 
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Add Lesson", View.GONE, View.GONE, 0);
+				getString(R.string.title_addlearn), View.GONE, View.GONE, 0);
 		pullToRefreshView = (PullToRefreshView) contentView
 				.findViewById(R.id.pullToRefreshView);
 		lv_add_lesson = (ListView) contentView.findViewById(R.id.lv_add_lesson);
@@ -255,8 +255,9 @@ public class FluentAddLessonActivity extends BaseActivity {
 	private void getDataFromServer(final String diffLevel) {
 
 		HttpUtils http = new HttpUtils();
-		http.send(HttpRequest.HttpMethod.GET, AppConstants.BASE_URL
-				+ "/babble-api-app/v1/dialogues?diffLevel=" + diffLevel,
+		String appLanguage = CustomApplication.getIntance().getAppLanguage();
+		String requestUrl=AppConstants.dialogUrl+diffLevel;
+		http.send(HttpRequest.HttpMethod.GET, requestUrl,
 				new RequestCallBack<String>() {
 
 					Gson gson = new Gson();
@@ -273,7 +274,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 
 						FluentModel dataObject = gson.fromJson(responseInfo.result, FluentModel.class);
 						if (dataObject == null) {
-							Log.e(TAG, "请求失败");
+							Log.e(TAG, "request fail");
 						} else {
 							boolean isScuess = dataObject.isSuccess();
 							Log.d(TAG, "isScuess:" + isScuess);

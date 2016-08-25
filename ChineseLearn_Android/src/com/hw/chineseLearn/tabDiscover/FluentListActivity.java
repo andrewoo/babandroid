@@ -54,7 +54,7 @@ public class FluentListActivity extends BaseActivity {
 	 */
 	public void init() {
 		setTitle(View.GONE, View.VISIBLE, R.drawable.btn_selector_top_left,
-				"Fluent Now", View.GONE, View.GONE, 0);
+				getString(R.string.title_fluent_now), View.GONE, View.GONE, 0);
 		View footerView = LayoutInflater.from(context).inflate(
 				R.layout.layout_fluent_list_footer, null);
 		lv_fluent_list = (ListView) contentView

@@ -265,7 +265,7 @@ public class LessonExerciseActivity extends BaseActivity {
         txt_lesson_score.setText("" + score);
         exerciseIndex = 0;// 第一道题
 
-        panderLife = 5;
+        panderLife = 20;
         panderView.clear();
         lin_pander_life.removeAllViews();
         for (int i = 0; i < panderLife; i++) {
@@ -535,11 +535,11 @@ public class LessonExerciseActivity extends BaseActivity {
         Button ok = (Button) view.findViewById(R.id.commit_btn);
         Button cancel = (Button) view.findViewById(R.id.cancel_btn);
 
-        title.setText("Quit?");
-        content.setText("Are you sure you what to quit? You will lose all progress in this lesson");
+        title.setText(getString(R.string.dialog_quit_title));
+        content.setText(getString(R.string.dialog_quit_text));
         title.setGravity(Gravity.CENTER_HORIZONTAL);
-        ok.setText("Ok");
-        cancel.setText("Cancel");
+        ok.setText(getString(R.string.dialog_quit_ok));
+        cancel.setText(getString(R.string.dialog_quit_cancel));
         ok.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -615,9 +615,9 @@ public class LessonExerciseActivity extends BaseActivity {
         }
 
         if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
-            btn_next.setText("FINISH");
+            btn_next.setText(getString(R.string.button_finish));
         } else {
-            btn_next.setText("CONTINUE");
+            btn_next.setText(getString(R.string.button_continue));
         }
 
         if (builder == null) {
@@ -1185,9 +1185,12 @@ public class LessonExerciseActivity extends BaseActivity {
             int answer = sentence010.getAnswer();
             String[] options = UiUtil.getListFormString(sentence010
                     .getOptions());
+
             for (int i = 0; i < options.length; i++) {
                 String[] option = options[i].split("=");
                 SubLGModel subLGModel = modelWord.new SubLGModel();
+                Log.e(TAG, "parseSentenseData2222: "+options[i]);
+                Log.e(TAG, "parseSentenseData1111111: "+option[0]);
                 int id = Integer.valueOf(option[0]);
                 subLGModel.setWordId(id);
                 subLGModel.setOption(option[1]);// 拿到每个选项
@@ -1287,7 +1290,7 @@ public class LessonExerciseActivity extends BaseActivity {
                     + lgWordAnswer.getPinyin();
             modelWord.setAnswerText(left + "=" + right);// 拿到答案文本
 
-            question = "Select" + "\"" + lgWord1.getTranslations() + "\"";
+            question = getString(R.string.learn_select)+ "\"" + lgWord1.getTranslations() + "\"";
             modelWord.setTitle(question);// 拿到title
             String[] splitWordId = UiUtil.getListFormString(word_020
                     .getOptions());
@@ -1331,7 +1334,7 @@ public class LessonExerciseActivity extends BaseActivity {
             // modelWord.setVoicePath(dirCode);
             modelWord.setWordId(lgTableId);// 拿到wordId
             String title = lgWord.getTranslations();
-            modelWord.setTitle("Select " + "\"" + title + "\"");// 拿到title
+            modelWord.setTitle(getString(R.string.learn_select)+" " + "\"" + title + "\"");// 拿到title
             modelWord.setLessonId(lessonId);// 拿到lessonId
             int answer = Word_010.getAnswer();
             modelWord.setAnswer(answer);// 拿到答案

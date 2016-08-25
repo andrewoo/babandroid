@@ -977,11 +977,11 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		Button ok = (Button) view.findViewById(R.id.commit_btn);
 		Button cancel = (Button) view.findViewById(R.id.cancel_btn);
 
-		title.setText("Quit?");
-		content.setText("Are you sure you what to quit? You will lose all progress in this lesson");
+		title.setText(getString(R.string.dialog_quit_title));
+		content.setText(getString(R.string.dialog_quit_text));
 		title.setGravity(Gravity.CENTER_HORIZONTAL);
-		ok.setText("Ok");
-		cancel.setText("Cancel");
+		ok.setText(getString(R.string.dialog_quit_ok));
+		cancel.setText(getString(R.string.dialog_quit_cancel));
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -1049,9 +1049,9 @@ public class PinyinToneExerciseActivity extends BaseActivity {
 		}
 
 		if (exerciseIndex == exerciseCount - 1) {// 最后一道题目
-			btn_next.setText("FINISH");
+			btn_next.setText(getString(R.string.button_finish));
 		} else {
-			btn_next.setText("CONTINUE");
+			btn_next.setText(getString(R.string.button_continue));
 		}
 
 		if (builder == null) {
