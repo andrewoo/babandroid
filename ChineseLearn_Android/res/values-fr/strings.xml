@@ -235,6 +235,7 @@
     <string name="learn_display">Démonstration:</string>
     <string name="learn_chinese">Chinois</string>
     <string name="learn_settings">Paramètres</string>
+    <string name="learn_pinyin">Pinyin</string>
     <string name="learn_default_number">Default number:</string>
     <string name="learn_sounds_auto_play">Lecture automatique des enregistrements:</string>
     <string name="learn_focused_on">Focaliser sur:</string>

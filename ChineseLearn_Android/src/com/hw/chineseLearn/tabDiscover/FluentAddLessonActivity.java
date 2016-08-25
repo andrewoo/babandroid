@@ -255,7 +255,6 @@ public class FluentAddLessonActivity extends BaseActivity {
 	private void getDataFromServer(final String diffLevel) {
 
 		HttpUtils http = new HttpUtils();
-		String appLanguage = CustomApplication.getIntance().getAppLanguage();
 		String requestUrl=AppConstants.dialogUrl+diffLevel;
 		http.send(HttpRequest.HttpMethod.GET, requestUrl,
 				new RequestCallBack<String>() {

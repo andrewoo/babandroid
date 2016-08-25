@@ -1,8 +1,7 @@
 package com.hw.chineseLearn.interfaces;
 
 
-import android.util.Log;
-
+import com.hw.chineseLearn.BuildConfig;
 import com.hw.chineseLearn.base.CustomApplication;
 
 /**
@@ -23,11 +22,17 @@ public class AppConstants {
 	public static String DBName="chineselearn.db";
 
 	static {
+		if("french".equals(BuildConfig.API_REQUEST_PARAMETER)){//
+			dialogUrl=BASE_URL+"/babble-api-app/v1/dialogues?lang=french&diffLevel=";
+		}else{
+
+		}
+
 		if("fr".equals(CustomApplication.getIntance().getAppLanguage())){//法语地址
 //			dialogUrl=BASE_URL+"/babble-api-app/v1/dialogues?language=fr&diffLevel=";
-			DBName="chineselearnfr.db";
+//			DBName="chineselearnfr.db";
 		}else{
-			Log.e("AppConstants", "static initializer: "+CustomApplication.getIntance().getAppLanguage() );
+//			Log.e("AppConstants", "static initializer: "+CustomApplication.getIntance().getAppLanguage() );
 		}
 	}
 

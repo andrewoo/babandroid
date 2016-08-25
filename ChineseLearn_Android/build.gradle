@@ -35,7 +35,20 @@ android {
         applicationId "com.itutorgroup.babble"
         versionName "内测版：1.0"
         versionCode 16
-        buildConfigField 'String','API_SERVER_URL','"http://test.flysnow.org/"'
+        buildConfigField 'String','API_REQUEST_PARAMETER','"english"'
+    }
+
+
+    //配置多版本的apk
+    productFlavors {
+        french { applicationId "com.itutorgroup.babblefrench"
+            buildConfigField 'String','API_REQUEST_PARAMETER','"french"'
+        }
+        defaultEn { }
+    }
+    sourceSets {
+        french { assets.srcDirs = ['french'] }
+        defaultEn { assets.srcDirs = ['defaultEn'] }
     }
 
     /*packagingOptions {
