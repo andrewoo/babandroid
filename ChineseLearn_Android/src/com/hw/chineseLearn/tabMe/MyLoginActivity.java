@@ -280,7 +280,7 @@ public class MyLoginActivity extends BaseActivity {
 			params.addBodyParameter("username", emailString);
 			params.addBodyParameter("password", pswString);
 			HttpUtils http = new HttpUtils();
-			String url=AppConstants.FAST_FDFS +"/babble-api-app/v1/users/login";
+			String url=AppConstants.BASE_URL_WEB +"/babble-api-app/v1/users/login";
 			http.send(HttpRequest.HttpMethod.POST,
 				url,
 			    params,
