@@ -1,8 +1,13 @@
 package com.hw.chineseLearn.interfaces;
 
 
+import android.content.res.Configuration;
+import android.util.DisplayMetrics;
+
 import com.hw.chineseLearn.BuildConfig;
 import com.hw.chineseLearn.base.CustomApplication;
+
+import java.util.Locale;
 
 /**
  * App常量配置
@@ -24,6 +29,14 @@ public class AppConstants {
 	static {
 		if("french".equals(BuildConfig.API_REQUEST_PARAMETER)){//
 			dialogUrl=BASE_URL+"/babble-api-app/v1/dialogues?lang=french&diffLevel=";
+
+			//动态设置语言
+			DisplayMetrics dm = CustomApplication.app.getResources().getDisplayMetrics();
+			String languageToLoad  = "fr"; // your language
+			Locale locale = new Locale(languageToLoad);
+			Configuration config = new Configuration();
+			config.locale = locale;
+			CustomApplication.app.getResources().updateConfiguration(config, dm);
 		}else{
 
 		}

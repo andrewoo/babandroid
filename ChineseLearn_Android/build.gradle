@@ -33,9 +33,10 @@ android {
     }
     defaultConfig{
         applicationId "com.itutorgroup.babble"
-        versionName "内测版：1.0"
-        versionCode 16
+        versionName "内测版"
+        versionCode 21
         buildConfigField 'String','API_REQUEST_PARAMETER','"english"'
+        manifestPlaceholders = [app_label:"@string/app_name"]
     }
 
 
@@ -43,6 +44,8 @@ android {
     productFlavors {
         french { applicationId "com.itutorgroup.babblefrench"
             buildConfigField 'String','API_REQUEST_PARAMETER','"french"'
+            manifestPlaceholders = [app_label:"@string/app_name_french"]
+            versionName "法语版"
         }
         defaultEn { }
     }

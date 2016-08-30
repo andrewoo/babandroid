@@ -44,6 +44,7 @@
 
 
     <string name="app_name">BabbleApp</string>
+    <string name="app_name_french">BabbleApp French</string>
     <string name="action_settings">Paramètres</string>
     <string name="home_nav01">Découvrir</string>
     <string name="home_nav02">Apprendre</string>

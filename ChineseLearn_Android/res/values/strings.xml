@@ -44,6 +44,7 @@
 
 
     <string name="app_name">BabbleApp</string>
+    <string name="app_name_french">BabbleApp French</string>
     <string name="action_settings">Settings</string>
     <string name="home_nav01">Discover</string>
     <string name="home_nav02">Learn</string>
@@ -252,7 +253,4 @@
     <string name="learn_large">Large</string>
     <string name="learn_of">of</string>
     <string name="learn_lesson">LESSON</string>
-
-
-
 </resources>
