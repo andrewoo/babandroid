@@ -22,13 +22,17 @@ public class AppConstants {
 	/**
 	 * 域名
 	 */
-	public static final String BASE_URL = "http://52.9.199.129";//
-	public static String dialogUrl=BASE_URL+"/babble-api-app/v1/dialogues?diffLevel=";//默认请求地址
+//	public static final String FAST_FDFS = "http://52.9.199.129";//
+	public static final String BASE_URL_WEB = "http://58.67.154.138:8150";//web请求地址
+	public static final String FAST_FDFS = "http://124.172.174.187";//Fast_FDfs 文件系统地址
+
+//	public static String dialogUrl=FAST_FDFS+"/babble-api-app/v1/dialogues?diffLevel=";//默认请求地址
+	public static String dialogUrl=BASE_URL_WEB+"/babble-api-app/v1/dialogues?diffLevel=";//默认请求地址
 	public static String DBName="chineselearn.db";
 
 	static {
 		if("french".equals(BuildConfig.API_REQUEST_PARAMETER)){//
-			dialogUrl=BASE_URL+"/babble-api-app/v1/dialogues?lang=french&diffLevel=";
+			dialogUrl=BASE_URL_WEB+"/babble-api-app/v1/dialogues?lang=french&diffLevel=";
 
 			//动态设置语言
 			DisplayMetrics dm = CustomApplication.app.getResources().getDisplayMetrics();
@@ -42,7 +46,7 @@ public class AppConstants {
 		}
 
 		if("fr".equals(CustomApplication.getIntance().getAppLanguage())){//法语地址
-//			dialogUrl=BASE_URL+"/babble-api-app/v1/dialogues?language=fr&diffLevel=";
+//			dialogUrl=FAST_FDFS+"/babble-api-app/v1/dialogues?language=fr&diffLevel=";
 //			DBName="chineselearnfr.db";
 		}else{
 //			Log.e("AppConstants", "static initializer: "+CustomApplication.getIntance().getAppLanguage() );
@@ -51,7 +55,7 @@ public class AppConstants {
 
 
 	// 图片主地址
-	public static String BASE_IMG_URL = BASE_URL + "";
+	public static String BASE_IMG_URL = FAST_FDFS + "";
 
 	/**************************************
 	 ************** 接口地址*****************
@@ -60,13 +64,13 @@ public class AppConstants {
 	/**
 	 * 0.退出登录
 	 */
-	public static String URL_LOGOUT = BASE_URL
+	public static String URL_LOGOUT = FAST_FDFS
 			+ "/ann/front/register/login/logout";
 
 	/**
 	 * 1.登录
 	 */
-	public static String URL_LOGIN = BASE_URL
+	public static String URL_LOGIN = FAST_FDFS
 			+ "/ann/front/register/login/login";
 
 	public static final String LOGIN_USERNAME = "Login_Username";
@@ -74,7 +78,7 @@ public class AppConstants {
 	public static final String LOGIN_TOKEN = "Login_Token";
 
 	// 查询
-	public static String URL_SEARCHDEVICE = BASE_URL + "/";
+	public static String URL_SEARCHDEVICE = FAST_FDFS + "/";
 
 	public static final String CHECKLOG = "checkLog";
 	public static final String UID = "uid";

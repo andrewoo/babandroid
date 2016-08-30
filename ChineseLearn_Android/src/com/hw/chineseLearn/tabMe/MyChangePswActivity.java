@@ -196,7 +196,7 @@ public class MyChangePswActivity extends BaseActivity {
 				params.addBodyParameter("newPwd", newPwd);
 				params.addBodyParameter("token", token);// token
 				HttpUtils http = new HttpUtils();
-				String url = AppConstants.BASE_URL+"/babble-api-app/v1/users/password/reset";
+				String url = AppConstants.FAST_FDFS +"/babble-api-app/v1/users/password/reset";
 				http.send(HttpRequest.HttpMethod.POST, url, params,
 						new RequestCallBack<String>() {
 

@@ -204,7 +204,7 @@ public class MyRegisterActivity extends BaseActivity {
 		params.addBodyParameter("password", pwd);
 
 		HttpUtils http = new HttpUtils();
-		String url=AppConstants.BASE_URL+"/babble-api-app/v1/users/register";
+		String url=AppConstants.FAST_FDFS +"/babble-api-app/v1/users/register";
 		http.send(HttpRequest.HttpMethod.POST,
 			url,
 		    params,

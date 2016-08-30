@@ -325,7 +325,7 @@ public class FluentAddLessonActivity extends BaseActivity {
 		HttpUtils http = new HttpUtils();
 		final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/"
 				+ dlFileName;
-		final String fileUrl = AppConstants.BASE_URL + "/" + dlFileName;
+		final String fileUrl = AppConstants.FAST_FDFS + "/" + dlFileName;
 		HttpHandler handler = http.download(fileUrl, filePath, true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
 				false, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
 				new RequestCallBack<File>() {
