@@ -265,7 +265,7 @@ public class LessonExerciseActivity extends BaseActivity {
         txt_lesson_score.setText("" + score);
         exerciseIndex = 0;// 第一道题
 
-        panderLife = 20;
+        panderLife = 5;
         panderView.clear();
         lin_pander_life.removeAllViews();
         for (int i = 0; i < panderLife; i++) {

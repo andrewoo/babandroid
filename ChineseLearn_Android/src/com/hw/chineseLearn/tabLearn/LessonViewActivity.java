@@ -104,11 +104,8 @@ public class LessonViewActivity extends BaseActivity implements OnItemSelectedLi
 					if ("".equals(lessonIdArray[i])) { // 如果为空就跳过此次
 						continue;
 					}
-					Lesson lesson = (Lesson) MyDao.getDao(Lesson.class)
-							.queryForId(Integer.valueOf(lessonIdArray[i]));
-					TbLessonMaterialStatus msLong = (TbLessonMaterialStatus) MyDao
-							.getDaoMy(TbLessonMaterialStatus.class).queryForId(
-									lesson.getLessonId());
+					Lesson lesson = (Lesson) MyDao.getDao(Lesson.class).queryForId(Integer.valueOf(lessonIdArray[i]));
+					TbLessonMaterialStatus msLong = (TbLessonMaterialStatus) MyDao.getDaoMy(TbLessonMaterialStatus.class).queryForId(lesson.getLessonId());
 					if (msLong != null) {
 						statusList.add(msLong.getStatus());// 拿到是否解锁的状态
 					} else {

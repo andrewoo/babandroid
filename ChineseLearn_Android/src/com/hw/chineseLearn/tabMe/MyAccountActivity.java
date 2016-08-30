@@ -568,7 +568,7 @@ public class MyAccountActivity extends BaseActivity {
 	// CustomApplication.app.loginBaseModel.getAnnMember()
 	// .setHeadimgurl("" + newImgUrl);
 	//
-	// img_photo.setTag(AppConstants.FAST_FDFS + newImgUrl);
+	// img_photo.setTag(AppConstants.FDFS_URL + newImgUrl);
 	// async(img_photo);// 设置用户头像
 	// // 更新用户聊天头像 by liyunlong 20150925 start
 	// UserInfo userInfo = new UserInfo(

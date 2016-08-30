@@ -22,11 +22,11 @@ public class AppConstants {
 	/**
 	 * 域名
 	 */
-//	public static final String FAST_FDFS = "http://52.9.199.129";//
+//	public static final String BASE_URL = "http://52.9.199.129";//
 	public static final String BASE_URL_WEB = "http://58.67.154.138:8150";//web请求地址
-	public static final String FAST_FDFS = "http://124.172.174.187";//Fast_FDfs 文件系统地址
+	public static final String FDFS_URL = "http://124.172.174.187";//Fast_FDfs 文件系统地址
 
-//	public static String dialogUrl=FAST_FDFS+"/babble-api-app/v1/dialogues?diffLevel=";//默认请求地址
+//	public static String dialogUrl=FDFS_URL+"/babble-api-app/v1/dialogues?diffLevel=";//默认请求地址
 	public static String dialogUrl=BASE_URL_WEB+"/babble-api-app/v1/dialogues?diffLevel=";//默认请求地址
 	public static String DBName="chineselearn.db";
 
@@ -46,7 +46,7 @@ public class AppConstants {
 		}
 
 		if("fr".equals(CustomApplication.getIntance().getAppLanguage())){//法语地址
-//			dialogUrl=FAST_FDFS+"/babble-api-app/v1/dialogues?language=fr&diffLevel=";
+//			dialogUrl=FDFS_URL+"/babble-api-app/v1/dialogues?language=fr&diffLevel=";
 //			DBName="chineselearnfr.db";
 		}else{
 //			Log.e("AppConstants", "static initializer: "+CustomApplication.getIntance().getAppLanguage() );
@@ -55,7 +55,7 @@ public class AppConstants {
 
 
 	// 图片主地址
-	public static String BASE_IMG_URL = FAST_FDFS + "";
+	public static String BASE_IMG_URL = FDFS_URL + "";
 
 	/**************************************
 	 ************** 接口地址*****************
@@ -64,13 +64,13 @@ public class AppConstants {
 	/**
 	 * 0.退出登录
 	 */
-	public static String URL_LOGOUT = FAST_FDFS
+	public static String URL_LOGOUT = FDFS_URL
 			+ "/ann/front/register/login/logout";
 
 	/**
 	 * 1.登录
 	 */
-	public static String URL_LOGIN = FAST_FDFS
+	public static String URL_LOGIN = FDFS_URL
 			+ "/ann/front/register/login/login";
 
 	public static final String LOGIN_USERNAME = "Login_Username";
@@ -78,7 +78,7 @@ public class AppConstants {
 	public static final String LOGIN_TOKEN = "Login_Token";
 
 	// 查询
-	public static String URL_SEARCHDEVICE = FAST_FDFS + "/";
+	public static String URL_SEARCHDEVICE = FDFS_URL + "/";
 
 	public static final String CHECKLOG = "checkLog";
 	public static final String UID = "uid";

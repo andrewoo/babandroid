@@ -355,7 +355,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
         final TbFileDownload tbAudioFileDownload = new TbFileDownload();
         final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/"
                 + dlAudioFileName;
-        final String fileUrl = AppConstants.FAST_FDFS + "/" + dlAudioFileName;//
+        final String fileUrl = AppConstants.FDFS_URL + "/" + dlAudioFileName;//
         Log.d(TAG, "downLoadAudioFiles()-fileUrl:" + fileUrl);
         HttpHandler handler = http.download(fileUrl, filePath, false, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将重新下载。
                 true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。
@@ -481,7 +481,7 @@ public class FluentAddLessonAdapter extends BaseAdapter {
         // 下载的位置
         final TbFileDownload tbContentFileDownload = new TbFileDownload();
         final String filePath = DatabaseHelperMy.CACHE_DIR_DOWNLOAD + "/" + dlTextFileName;
-        final String fileUrl = AppConstants.FAST_FDFS + "/" + dlTextFileName;
+        final String fileUrl = AppConstants.FDFS_URL + "/" + dlTextFileName;
         Log.d(TAG, "downLoadContentFiles()-fileUrl:" + fileUrl);
         HttpHandler handler = http.download(fileUrl, filePath, false, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。
                 true, // 如果从请求返回信息中获取到文件名，下载完成后自动重命名。

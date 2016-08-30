@@ -236,8 +236,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 	 * 初始化
 	 */
 	public void init() {
-		checkView = LayoutInflater.from(context).inflate(
-				R.layout.layout_learn_exercise_check_dialog, null);
+		checkView = LayoutInflater.from(context).inflate(R.layout.layout_learn_exercise_check_dialog, null);
 
 		btn_check = (Button) findViewById(R.id.btn_check);
 		btn_check.setOnClickListener(onClickListener);
@@ -265,7 +264,7 @@ public class LessonTestOutTestActivity extends BaseActivity {
 		txt_lesson_score.setText("" + score);
 		exerciseIndex = 0;// 第一道题
 
-		panderLife = 20;
+		panderLife = 5;
 		panderView.clear();
 		lin_pander_life.removeAllViews();
 		for (int i = 0; i < panderLife; i++) {
