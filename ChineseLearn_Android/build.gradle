@@ -34,7 +34,7 @@ android {
     defaultConfig{
         applicationId "com.itutorgroup.babble"
         versionName "内测版"
-        versionCode 21
+        versionCode 23
         buildConfigField 'String','API_REQUEST_PARAMETER','"english"'
         manifestPlaceholders = [app_label:"@string/app_name"]
     }

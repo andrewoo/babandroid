@@ -23,8 +23,11 @@ public class AppConstants {
 	 * 域名
 	 */
 //	public static final String BASE_URL = "http://52.9.199.129";//
-	public static final String BASE_URL_WEB = "http://58.67.154.138:8150";//web请求地址
-	public static final String FDFS_URL = "http://124.172.174.187";//Fast_FDfs 文件系统地址
+	public static final String BASE_URL_WEB = "http://52.9.199.129";
+//	public static final String BASE_URL_WEB = "http://58.67.154.138:8150";//web请求地址
+//	public static final String FDFS_URL = "http://124.172.174.187";//Fast_FDfs 文件系统地址
+	public static final String FDFS_URL = "http://52.9.199.129";//Fast_FDfs 文件系统地址
+
 
 //	public static String dialogUrl=FDFS_URL+"/babble-api-app/v1/dialogues?diffLevel=";//默认请求地址
 	public static String dialogUrl=BASE_URL_WEB+"/babble-api-app/v1/dialogues?diffLevel=";//默认请求地址

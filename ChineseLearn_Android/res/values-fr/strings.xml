@@ -69,7 +69,7 @@
     <string name="tab_me">Moi</string>
 
     //------------------title--------------------------------
-    <string name="title_addlearn">Ajouer des cours</string>
+    <string name="title_addlearn">Ajouter des cours</string>
     <string name="title_title">Titre</string>
     <string name="title_fluent_now">Niveau intermédiaire</string>
     <string name="title_pinyin_exercise">Exercices de Pinyin</string>
@@ -111,12 +111,13 @@
     <string name="learn_testout_congratu">Félicitations</string>
     <string name="learn_testout_congratu_text">Vous avez réussi le test</string>
     <string name="learn_testout_congratu_ok">OK</string>
+    <string name="learn_sentence_translation">Écrivez la traduction</string>
 
     //------------------tabme-----------------------------------
     <string name="tabme_downLoad">Télécharger</string>
     <string name="tabme_like_us">Suivez-nous sur Facebook</string>
     <string name="tabme_like">LIKEZ-NOUS</string>
-    <string name="tabme_sign_in_up">Connecter/S\&apos;inscrire</string>
+    <string name="tabme_sign_in_up">Se connecter/S\&apos;inscrire</string>
     <string name="tabme_logout">Déconnecter</string>
     <string name="tabme_sure">Voulez-vous vraiment déconnecter?</string>
     <string name="tabme_ok">OUI</string>

@@ -111,6 +111,8 @@
     <string name="learn_testout_congratu">Congratulations</string>
     <string name="learn_testout_congratu_text">You have successfully passed the TestOut!</string>
     <string name="learn_testout_congratu_ok">OK</string>
+    <string name="learn_sentence_translation">Write down the translation</string>
+
 
     //------------------tabme-----------------------------------
     <string name="tabme_downLoad">DownLoad</string>

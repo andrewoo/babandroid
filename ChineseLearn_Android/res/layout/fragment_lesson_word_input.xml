@@ -48,7 +48,7 @@
             android:layout_gravity="top|left"
             android:background="@null"
             android:gravity="top|left"
-            android:hint="Write down the translation"
+            android:hint="@string/learn_sentence_translation"
             android:minHeight="150dp"
             android:paddingTop="10dp"
             android:paddingLeft="15dp"
